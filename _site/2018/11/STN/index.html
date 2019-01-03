@@ -1,0 +1,514 @@
+<DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>STN论文笔记</title>
+  <meta name="description" content="paper 地址在 https://arxiv.org/pdf/1506.02025.pdf初步印象">
+  <meta name="author" content="leopardpan">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="STN论文笔记">
+  <meta name="twitter:description" content="paper 地址在 https://arxiv.org/pdf/1506.02025.pdf初步印象">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="STN论文笔记">
+  <meta property="og:description" content="paper 地址在 https://arxiv.org/pdf/1506.02025.pdf初步印象">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/11/STN/">
+  <link rel="alternate" type="application/rss+xml" title="倔强的生命！" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 倔强的生命！ 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                BEYOND
+                            
+                        </h2>
+                        <p>
+                           
+                                Come on!
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 倔强的生命！" class="blog-button">倔强的生命！</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">何不如此！</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">STN论文笔记</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2018-11-14 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-11-14</time>  
+         
+      <!--<span id="busuanzi_container_page_pv"> | 阅读:<span id="busuanzi_value_page_pv"></span>次</span> -->
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <!--more-->
+<p>paper 地址在 <a href="https://arxiv.org/pdf/1506.02025.pdf">https://arxiv.org/pdf/1506.02025.pdf</a></p>
+<h3 id="初步印象">初步印象</h3>
+
+<p>初步看了之后的感觉是这个模块是对img或者feature作了一个前期的处理，或者可以理解成在处理之前作了一个较准，因为较准后的图肯定会好一些，所以加上这个module之后，效果会好一些。可以把它放在cnn之前，
+可以放多个这个module进行串联起来，这样看起来还增加了网络的深度，也可以并行的做，比如alphapose里面就有这个结构，大致的思想就是用这个模块去学得一个变换，这个变换可以理解成align。那么是不是需要一些gt的变换呢？paper里面说并不需要，如果需要的话，gt的变换如何找就是个问题。至少要花费很多的力气来做这个gt。并且网络结构是可微的，这样可以使得梯度回传来更新参数。</p>
+<h3 id="motivation">motivation</h3>
+
+<p>因为实际自然中各种场景都有，而训练集总归是有限的一个很小的部分，那么如何在有限的数据集中训练出好的模型呢，比如一个图中有一个狗，把图作各种变换之后也至少能够识别出还是那个狗，不然的话网络就太差了，这就需要网络有一定的”不变性”，比如平移不变，roate不变等，有了这些之后无论图怎么变化，都能够对其作出准确的识别，这样才能够更加适合更加贴合自然的场景。我估计这种需求在自动驾驶里面非常之高，只是自己的猜测，因为那种要求的精度非常高，但是实际的场景又多种多样。</p>
+
+<p>其实加了max-Pooling层的网络是有一定的平移不变性，但是这种平移不变性能够接纳的平移度非常的小，因为往往其步长为2，这可能在一些小的任务上可行，比如机械臂这种，或者找关键点这种。即希望图抖一下之后还是能够精确的检测出。</p>
+
+<p>为了处理可能的自然场景，实际中往往会做一些数据增强的操作，比如随机crop， 旋转，光照，对比度，等等。但是感觉这些并非从其根本上来解决，这些只是让网络”尽可能多地做题”，而这里面的STN想法感觉是从网络本身来提高其性能，就像学ba一定没有天才厉害一样，修炼其资质才是根本。</p>
+
+<h3 id="具体">具体</h3>
+
+<p>网络结构如图所示，
+<img src="/images/stn1.png" alt="avator" /></p>
+
+<p>下面分别介绍三个网络的作用。</p>
+
+<ul>
+  <li>Localisation net</li>
+</ul>
+
+<p>它是以input feature U作输入，输出的是参数 <code class="highlighter-rouge">\theta</code>, 即 <code class="highlighter-rouge">\theta = f(U)</code>其中<code class="highlighter-rouge">\theta</code>的类型取决于变换的类型，其中<code class="highlighter-rouge">f</code>可以取fcn或者cnn都可以，但是需要最后一层是回归层来用得到变换的参数。</p>
+
+<ul>
+  <li>
+    <p>一个问题是，前面说没有变换的gt，那么变换的参数是如何学到的呢？</p>
+  </li>
+  <li>
+    <p>Grid generator</p>
+  </li>
+</ul>
+
+<p>从图上也可以看出，Grid generator 用上一步得到的变换参数，从而就可以得到一个sampling grid, 所以这一块叫 grid generator，</p>
+
+<ul>
+  <li>Sampler</li>
+</ul>
+
+<p>将input U 和 sampling grid 作为输入送到Sampler进行采样就可以得到输出的V。</p>
+
+<h3 id="parameterised-sampling-grid">Parameterised Sampling Grid</h3>
+
+<p>输出V的每个pixel上的值实际上都是经过一个sampling kernel 在input U上的一个特定的位置经过操作得到的。具体的这个核决定操作的类型，比如如果是affine map的话就是下面的形式的，</p>
+
+<p><img src="/images/stn2.png" alt="avator" /></p>
+
+<p>其中带左边带s上标的是input feature 上的位置，带t的是输出上的位置，其实上面的公式中代表着许多的内容，比如有crop, translation, rotation, scale, 
+crop是因为这个变换可以是压缩的，只要当右边<code class="highlighter-rouge">2*2</code>的矩阵的行列式小于1，那么mapped regular grid就会在一个range没有<code class="highlighter-rouge">xis, yis</code>大的平行四边行里面。</p>
+
+<p>其中的变换可以变得有限制，也可以很general，比如</p>
+
+<p><img src="/images/stn3.png" alt="avator" /></p>
+
+<p>这样就只能对应crop,istropic scale, translation, 
+再比如 变换甚至可以是平面上的投影变换，即每个像素都做个affine。</p>
+
+<h3 id="differentiable-image-sampling">Differentiable Image Sampling</h3>
+
+<p>刚才提到采样实际上是用采样核的，就像cnn中的filter一样，general的形式是</p>
+
+<p><img src="/images/stn4.png" alt="avator" /></p>
+
+<p>这个变换关于每个channel的形式是一样的，这样在channels之间保证空间上的一致性。
+理论上来说，只要梯度或者是次梯度可以关于输入<code class="highlighter-rouge">xis, yis</code>定义的话，就可以用。</p>
+
+<p>比如<code class="highlighter-rouge">integer sampling kernel</code></p>
+
+<p><img src="/images/stn5.png" alt="avator" /></p>
+
+<p>这个的意思是取离<code class="highlighter-rouge">xis, yis</code>最近的那个像素点位置上的值作为输出<code class="highlighter-rouge">xit, yit</code>上的位置。
+还有双线性interpolation,</p>
+
+<p><img src="/images/stn6.png" alt="avator" /></p>
+
+<h3 id="stn可以应用到哪里怎么用">STN可以应用到哪里，怎么用</h3>
+
+<p>STN可以放到CNN中去，并且因为其计算很快，并不会影响训练速度，有时候甚至会加快训练速度，因为STN里面是有采样的，而且作了变换之后，feature更好了一些，算loss的时候可能有用的信息就比较集中。</p>
+
+<p>也可以用STN去专门做一些上采样或者下采样的动作，只要采样核是固定的就可以了。</p>
+
+<p>可以使用多个STN，还可以并行的方式使用多个STN，这在alphapose中就用到了，因为那里对人做姿态估计，因为一张图上可能会有多人，通过这种方式可能会减少对人的检测的误判。</p>
+
+<p>更细节的东西需要根据代码来看。</p>
+
+<h3 id="示例代码">示例代码</h3>
+
+<p>在torch的教程上看到了一个代码，关于stn的部分是这样的。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Spatial transformer localization-network
+        self.localization = nn.Sequential(
+            nn.Conv2d(1, 8, kernel_size=7),
+            nn.MaxPool2d(2, stride=2),
+            nn.ReLU(True),
+            nn.Conv2d(8, 10, kernel_size=5),
+            nn.MaxPool2d(2, stride=2),
+            nn.ReLU(True)
+        )
+
+        # Regressor for the 3 * 2 affine matrix
+        self.fc_loc = nn.Sequential(
+            nn.Linear(10 * 3 * 3, 32),
+            nn.ReLU(True),
+            nn.Linear(32, 3 * 2)
+        )
+
+        # Initialize the weights/bias with identity transformation
+        self.fc_loc[2].weight.data.zero_()
+        self.fc_loc[2].bias.data.copy_(torch.tensor([1, 0, 0, 0, 1, 0], dtype=torch.float))
+
+</code></pre></div></div>
+
+<p>能够看到localization network就是和通常的block没有什么区别，就是作了两次的cnn-pooling-relu,可以理解成是提特征， 然后最后一层接了一个回归，会输出6个参数，（回归直观的理解就是输出可连续变化的量），这6个参数因为都是实数，所以是可连续变化的。然后初始化参数，先全部弄成0,然后再让它等于个identity matrix， 其shape是（2,3），</p>
+
+<p>然后是前向计算部分</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> # Spatial transformer network forward function
+    def stn(self, x):
+        xs = self.localization(x)
+        xs = xs.view(-1, 10 * 3 * 3)
+        theta = self.fc_loc(xs) 
+        theta = theta.view(-1, 2, 3)
+
+        grid = F.affine_grid(theta, x.size())
+        x = F.grid_sample(x, grid)
+
+        return x
+
+</code></pre></div></div>
+
+<p>可以看出，输入x，先进行predict参数，即得到theta， 然后 用theta来得到grid,这即paper里面说的grid-generator， 然后进行sampler，把input x和 grid作为输入得到最终的输出结果x。</p>
+
+<p>最后来看看它在网络中的具体位置，这个是mnist的情况，其他的有可能不一样</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>   def forward(self, x):
+        # transform the input
+        x = self.stn(x)
+
+        # Perform the usual forward pass
+        x = F.relu(F.max_pool2d(self.conv1(x), 2))
+        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
+        x = x.view(-1, 320)
+        x = F.relu(self.fc1(x))
+        x = F.dropout(x, training=self.training)
+        x = self.fc2(x)
+        return F.log_softmax(x, dim=1)
+
+
+</code></pre></div></div>
+
+<p>可见是在数据一进来的时候就用了stn，所以可以理解成是一个前期的数据处理。好像类似的网络也有其它的，比如SENET， DeformableCNN,感觉也有类似的思想在里面。感觉本质上是一样的，相当于是这里有两步操作，先变换后cnn，而他们那里直接就是在cnn的时候就寻求一些变化。
+前面提的那个问题现在也有了答案，从上面的代码中可以看出来要学的变换根本没有gt可以用，只是初始化的时候是一个identity，那么网络就会根据从后面传来的梯度进行更新和学习。</p>
+
+
+  </section>
+</article>
+
+<section>
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">多谢支持~</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+
+
+                <!--
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                --!> 
+        
+
+                <div class="shang_payimg">
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+            
+                <div class="pay_explain">
+                    扫码打赏，多谢支持~
+                </div>
+
+                <div class="shang_payselect">
+        
+
+
+
+                    <!--
+                      <div class="pay_item checked" data-id="alipay">
+                        <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                      </div>
+                    --!> 
+        
+                      <!--<div class="pay_item" data-id="weipay"> --!>
+                        <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                      <!-- </div> --!>
+                </div>
+            
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+            
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:280px;padding:10px;padding-left: 140px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:280px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin:10px auto;float:center;text-align:center;width:280px;height:280px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:5px auto;margin-top:20px;cursor:pointer;height:60px;width:500px;margin:90px auto;}
+              .shang_payselect .pay_item{display:inline-block;margin:140px auto;float:center;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2018/11/movie-share/" data-toggle="tooltip" data-placement="top" title="《拯救大兵瑞恩》">上一篇：  <span>《拯救大兵瑞恩》</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2018/11/AlphaPose/" data-toggle="tooltip" data-placement="top" title="AlphaPose论文笔记">下一篇：  <span>AlphaPose论文笔记</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/beyondpzk" title="@beyondpzk 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:pkzhengmath@pku.edu.cn" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+          <!--  Copyright &copy; 倔强的生命！ 2019 Theme by <a href="http://baixin.io/">leopardpan</a> |-->
+
+            Copyright &copy; 倔强的生命！ 2019
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=beyondpzk&repo=beyondpzk.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>

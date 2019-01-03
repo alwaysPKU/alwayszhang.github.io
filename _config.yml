@@ -1,12 +1,12 @@
 # Basic
-title: 倔强的生命！
-subtitle: 何不如此！  
-description: 欢迎~
+title: 半甜不要腻
+subtitle: suger  
+description:欢迎~
 # 头像里面的标题
 avatarTitle: BEYOND
 # 头像里面的描述
 avatarDesc: Come on!
-url: "http://beyondpzk.com/"
+url: "http://alwaysqi.github.io/"
 
 # Comment
 #comment:
@@ -16,9 +16,9 @@ url: "http://beyondpzk.com/"
 # Social
 social:
     #weibo: no 
-    github: beyondpzk
+    github: alwaysqi
     # twitter: 
-    mail: pkzhengmath@pku.edu.cn
+    mail: v.cpp@pku.edu.cn
 
 # 百度统计 
 # 使用博客模板请去掉或者更换 id 

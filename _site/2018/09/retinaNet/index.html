@@ -1,0 +1,838 @@
+<DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>retinaNet论文笔记</title>
+  <meta name="description" content="">
+  <meta name="author" content="leopardpan">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="retinaNet论文笔记">
+  <meta name="twitter:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="retinaNet论文笔记">
+  <meta property="og:description" content="">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/09/retinaNet/">
+  <link rel="alternate" type="application/rss+xml" title="倔强的生命！" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 倔强的生命！ 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                BEYOND
+                            
+                        </h2>
+                        <p>
+                           
+                                Come on!
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 倔强的生命！" class="blog-button">倔强的生命！</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">何不如此！</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">retinaNet论文笔记</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2018-09-01 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-09-01</time>  
+         
+      <!--<span id="busuanzi_container_page_pv"> | 阅读:<span id="busuanzi_value_page_pv"></span>次</span> -->
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <!--more-->
+
+<h3 id="初步认识">初步认识</h3>
+
+<p>这篇文章非常的有意义，是第一个意识到one-stage的检测器准确率不高的原因在于类别不平衡，即正负样本严重失衡，而在two-stage的rcnn系列其实也有这个问题，只不过比Onestage的稍微好了一点，因为RPN已经做了一次是前景还是背景的分类了。
+类别不平衡会出现什么问题，举个例子吧，假设有100个样本，里面有1个次品，那么假设分类器全部都把这100个认为是好的，准确率也有99%呢，但是实际经过学习之后的分类器可能还没有这个好，这就是类别不平衡造成的问题。</p>
+
+<h3 id="解决办法">解决办法</h3>
+
+<p>作者提出了用focal loss来解决这个问题，之前的loss是CE,现在在CE的基础上加了一些权重，即</p>
+
+<p><img src="/images/focalloss1.png" alt="avator" /></p>
+
+<p>另外，这个paper还有另外一个贡献，即设计了一个one-stage的精确度也比较高的retinaNet.</p>
+
+<p><img src="/images/focalloss2.png" alt="avator" /></p>
+
+<h1 id="-head">«««&lt; HEAD</h1>
+<h3 id="下面以resnet18为例来研究一下代码">下面以resnet18为例来研究一下代码</h3>
+
+<ul>
+  <li>basice blok</li>
+</ul>
+
+<p>这个是resnet的基本单元的一种，另外一种是<code class="highlighter-rouge">bottleneck</code></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+class BasicBlock(nn.Module):
+    expansion = 1
+
+    def __init__(self, inplanes, planes, stride=1, downsample=None):
+        super(BasicBlock, self).__init__()
+        self.conv1 = conv3x3(inplanes, planes, stride)
+        self.bn1 = nn.BatchNorm2d(planes)
+        self.relu = nn.ReLU(inplace=True)
+        self.conv2 = conv3x3(planes, planes)
+        self.bn2 = nn.BatchNorm2d(planes)
+        self.downsample = downsample
+        self.stride = stride
+
+    def forward(self, x):
+        residual = x
+
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = self.relu(out)
+
+        out = self.conv2(out)
+        out = self.bn2(out)
+
+        if self.downsample is not None:
+            residual = self.downsample(x)
+
+        out += residual
+        out = self.relu(out)
+
+        return out
+
+
+
+</code></pre></div></div>
+
+<p>然后 是resnet的前面的部分</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        x = self.conv1(img_batch)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
+
+
+
+</code></pre></div></div>
+<p>具体细节是</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
+        self.relu = nn.ReLU(inplace=True)
+        self.maxpool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+
+
+</code></pre></div></div>
+
+<p>如果输入的是<code class="highlighter-rouge">(1,3,320,480)(nchw)</code> 的话，那么到上面的出来之后就变成了<code class="highlighter-rouge">(1,64,80,120)</code>,</p>
+
+<p>然后经过下面4个提特征的层</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+        x1 = self.layer1(x)   #(1,64,40,60)
+        x2 = self.layer2(x1)  #(1,128,40,60)
+        x3 = self.layer3(x2)  #(1,256,20,30)
+        x4 = self.layer4(x3)  #(1,512,10,15)
+
+        features = self.fpn([x2, x3, x4])
+
+
+</code></pre></div></div>
+
+<p>其中<code class="highlighter-rouge">x2,x3,x4</code>被送入了fpn,接下来看看fpn的细节，</p>
+
+<h3 id="fpn">fpn</h3>
+
+<p>fpn的前向计算的代码是这样的</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def forward(self, inputs):
+
+        C3, C4, C5 = inputs
+
+        P5_x = self.P5_1(C5)
+        P5_upsampled_x = self.P5_upsampled(P5_x)
+        P5_x = self.P5_2(P5_x)    ## 
+
+
+        P4_x = self.P4_1(C4)
+        P4_x = P5_upsampled_x + P4_x
+        P4_upsampled_x = self.P4_upsampled(P4_x)
+        P4_x = self.P4_2(P4_x)
+
+        P3_x = self.P3_1(C3)
+        P3_x = P3_x + P4_upsampled_x
+        P3_x = self.P3_2(P3_x)
+
+        P6_x = self.P6(C5)
+
+        P7_x = self.P7_1(P6_x)
+        P7_x = self.P7_2(P7_x)
+
+        return [P3_x, P4_x, P5_x, P6_x, P7_x]
+
+
+
+</code></pre></div></div>
+
+<p>可以看出<code class="highlighter-rouge">C5</code>,<code class="highlighter-rouge">C4</code>在进行上采样之前和之后都进行了卷积操作，应该是让其在上采样之前和之后适应一下，
+还要注意 <code class="highlighter-rouge">C4</code>在进行上采样的时候，用到的有从<code class="highlighter-rouge">C5</code>那里进行上采样得到的feature,二者相加之后再采样，</p>
+
+<p><code class="highlighter-rouge">C5</code>除了去和<code class="highlighter-rouge">C4</code>做某些操作之外，还去产生了<code class="highlighter-rouge">p6,p7</code> 这一点有点像ssd里面的那几个multiscale的feature map类似，这里上采样采用的是<code class="highlighter-rouge">最邻近</code>的算法。真正经过上采样的只有<code class="highlighter-rouge">C5,C4</code>, 输出的5个feature,其channel是一样的。</p>
+
+<p>不同scale的feature提出来了之后，下面该用这feature去做predict了。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>        regression = torch.cat([self.regressionModel(feature) for feature in features], dim=1)
+        #print(regression.shape)
+
+        classification = torch.cat([self.classificationModel(feature) for feature in features], dim=1)
+
+
+</code></pre></div></div>
+
+<p>其中回归层的详细是这样的</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class RegressionModel(nn.Module):
+    def __init__(self, num_features_in, num_anchors=9, feature_size=256):
+        super(RegressionModel, self).__init__()
+
+        self.conv1 = nn.Conv2d(num_features_in, feature_size, kernel_size=3, padding=1)
+        self.act1 = nn.ReLU()
+
+        self.conv2 = nn.Conv2d(feature_size, feature_size, kernel_size=3, padding=1)
+        self.act2 = nn.ReLU()
+
+        self.conv3 = nn.Conv2d(feature_size, feature_size, kernel_size=3, padding=1)
+        self.act3 = nn.ReLU()
+
+        self.conv4 = nn.Conv2d(feature_size, feature_size, kernel_size=3, padding=1)
+        self.act4 = nn.ReLU()
+
+        self.output = nn.Conv2d(feature_size, num_anchors*4, kernel_size=3, padding=1)
+
+    def forward(self, x):
+
+        out = self.conv1(x)
+        out = self.act1(out)
+
+        out = self.conv2(out)
+        out = self.act2(out)
+
+        out = self.conv3(out)
+        out = self.act3(out)
+
+        out = self.conv4(out)
+        out = self.act4(out)
+
+        out = self.output(out)
+
+        # out is B x C x W x H, with C = 4*num_anchors
+        out = out.permute(0, 2, 3, 1)
+
+        return out.contiguous().view(out.shape[0], -1, 4)
+
+
+</code></pre></div></div>
+
+<p>就是不停地进行<code class="highlighter-rouge">conv--relu</code>的操作，最后输出的channels的数目是<code class="highlighter-rouge">num_anchors*4</code> 是因为对于输入的feature比如说<code class="highlighter-rouge">10×10</code>的大小的，
+那么会产生<code class="highlighter-rouge">10×10×9</code>个框，所以就会有<code class="highlighter-rouge">10*10*9*4</code>个值去pred, 而每个像素点上面是<code class="highlighter-rouge">9*4</code>。这里的输出是实数值。</p>
+
+<p>分类层几乎一样</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class ClassificationModel(nn.Module):
+    def __init__(self, num_features_in, num_anchors=9, num_classes=80, prior=0.01, feature_size=256):
+        super(ClassificationModel, self).__init__()
+        self.num_classes = num_classes
+        self.num_anchors = num_anchors
+
+        self.conv1 = nn.Conv2d(num_features_in, feature_size, kernel_size=3, padding=1)
+        self.act1 = nn.ReLU()
+
+        self.conv2 = nn.Conv2d(feature_size, feature_size, kernel_size=3, padding=1)
+        self.act2 = nn.ReLU()
+
+        self.conv3 = nn.Conv2d(feature_size, feature_size, kernel_size=3, padding=1)
+        self.act3 = nn.ReLU()
+
+        self.conv4 = nn.Conv2d(feature_size, feature_size, kernel_size=3, padding=1)
+        self.act4 = nn.ReLU()
+
+        self.output = nn.Conv2d(feature_size, num_anchors*num_classes, kernel_size=3, padding=1)
+        self.output_act = nn.Sigmoid()
+
+    def forward(self, x):
+
+        out = self.conv1(x)
+        out = self.act1(out)
+
+        out = self.conv2(out)
+        out = self.act2(out)
+
+        out = self.conv3(out)
+        out = self.act3(out)
+
+        out = self.conv4(out)
+        out = self.act4(out)
+
+        out = self.output(out)
+        out = self.output_act(out)
+
+        # out is B x C x W x H, with C = n_classes + n_anchors
+        out1 = out.permute(0, 2, 3, 1)
+
+        batch_size, width, height, channels = out1.shape
+
+        out2 = out1.view(batch_size, width, height, self.num_anchors, self.num_classes)
+
+        return out2.contiguous().view(x.shape[0], -1, self.num_classes)
+
+</code></pre></div></div>
+
+<p>也是不停地<code class="highlighter-rouge">conv--relu</code>,然后最后经过了一个<code class="highlighter-rouge">sigmoid</code>,因为输出的是probability,所以经过了这个之后就变成了<code class="highlighter-rouge">(0,1)</code>之间了，最后输出的channels是<code class="highlighter-rouge">num_chors*num_classes</code>,是因为每个anchor都要分类。</p>
+
+<p>到这里anchor还没有出现呢，这应该是one-stage和two-stage的非常重要的一个区别吧，two-stage的里面好像是拿proposal里面的feature去最后做的最终的分类和回归，而one-stage的用的是整个图的不同scale的feature去做的分类和回归。</p>
+
+<p>上面的部分相当于是网络的输出了，接下来看一下网絽的gt.</p>
+
+<h3 id="anchor">anchor</h3>
+
+<p>anchor就是直接去产生anchor了，</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>anchors = self.anchors(img_batch)
+
+</code></pre></div></div>
+
+<p>这里的<code class="highlighter-rouge">img_batch</code>是网络的输入，那么根据这个就可以推算出刚才从fpn出来的feature的大小，所以是可以算出具体的anchor的中心位置和左上、右下角，注意这里anchor的位置已经全部转化为相对于进入网络时候的图的大小了，注意但是不是相对于最初的图。</p>
+
+<h3 id="focal-loss-部分">focal loss 部分</h3>
+
+<p>理解loss,要先理解gt是什么，这里的和faster-rcnn中是一致的。</p>
+
+<p>也就是说网络输出的并不是预测的位置，而是相对于anchor的一个偏移，因为gt也是相对于anchor来做的，具体见</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+            # 计算gt相对于anchor的位置，这个是fast-rcnn paper里面的。
+            targets_dx = (gt_ctr_x - anchor_ctr_x_pi) / anchor_widths_pi
+            targets_dy = (gt_ctr_y - anchor_ctr_y_pi) / anchor_heights_pi
+            targets_dw = torch.log(gt_widths / anchor_widths_pi)
+            targets_dh = torch.log(gt_heights / anchor_heights_pi)
+</code></pre></div></div>
+
+<p>上面是gt，</p>
+
+<p>然后做loss的话就是SmoothL1，其中一步是</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>regression_diff = torch.abs(targets - regression[positive_indices, :])
+
+</code></pre></div></div>
+<p>注意这里回归的loss只有正例的才会有，因为负例的也没啥意义，不需要回归。所以整个计算loss的过程是先根据anchor和gt-bbox来给anchor打label,指定哪些是正的，负的和无效的，无效的是-1, 然后bce的时候是</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bce = -(targets * torch.log(classification) + (1.0 - targets) * torch.log(1.0 - classification))
+
+</code></pre></div></div>
+
+<p>其实我不是太理解这个式子，我甚至觉得这个式子的正确性，因为targets是0或1，它的意义是这个anchor与gt-bbox的接近程度，而classification是由这个anchor产生的最终的bbox的里面的物体的类别概率，感觉这两个其实好像关系不是太大。</p>
+
+<p>这个地方感觉和论文里说的不太一样。还需要再check.</p>
+
+<h3 id="上在的地方后来发现是我自己理解错了从头到尾细看的话发现是对的">上在的地方后来发现是我自己理解错了，从头到尾细看的话，发现是对的</h3>
+
+<p>先recall一下论文上面是如何写的。</p>
+
+<p><img src="/images/focalloss4.png" alt="avator" /></p>
+
+<p>这个是最原始的ce的定义，其中p是代表的是预测的是正样本的概率。所以当gt的<code class="highlighter-rouge">y=1</code>的时候，贡献的loss是<code class="highlighter-rouge">-logp</code>,当’gt=-1’或者为’0’的时候，贡的loss是’-log(1-p)’，因为此时’1-p’代表着预测的是负本本的概率。
+写在一起的话就是’pt’,所以ce就是’-log(pt)’.</p>
+
+<ul>
+  <li>balanced cross entropy</li>
+</ul>
+
+<p><img src="/images/focalloss5.png" alt="avator" /></p>
+
+<p>这个是在实验中发现加上一个权值之后效果会变好一些，这个’\alhpa’的设置可以设成与类别的相反的，比如类别是 ‘5:1’, 那么就设成’0.2’,’\alpha_t’的定义和’p_t’是类似的，即当这个是正的时候（注意这个正代表的是是那个类别）就是’\alpha’，否的话就是’1-alpha’.是与pt pointwise对应的，</p>
+
+<ul>
+  <li>focal loss</li>
+</ul>
+
+<p><img src="/images/focalloss6.png" alt="avator" /></p>
+
+<p>这个前面已经提到了，focal-loss有两个性质:(1)如果某个样本被误分类了，即pt很小，（这里包括两种，一种是gt是1,但是p很小，好认为是1的概率很小，一种是gt是0，但是p很大，即认为是1的概率很大，注意这里的1，0应该理解成是某个类别，不是某个类别）这种情况下表达式就和’-log(pt)’很接近，所以这种不受影响。
+（2）这个loss会把重点放在hard-example上面去，比如说本来这个样本的’gt是1’,那么预测的是0.9的话，这时候有了前面的权值的作用就会有个系数是’0.01’,而如果这时候预测的是p=0.1的话，这时候权重就会是0.981和之前的差不多（\g=2的时候）,所以这样弄了之后会更加专注于hard-examples上面去，这样学得才会有效果。</p>
+
+<p>最终的focal-loss是这样定义的
+<img src="/images/focalloss7.png" alt="avator" /></p>
+
+<p>关于focal-loss的完全代码见下面，是正确的。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class FocalLoss(nn.Module):
+    #def __init__(self):
+
+    def forward(self, classifications, regressions, anchors, annotations):
+        alpha = 0.25
+        gamma = 2.0 
+        batch_size = classifications.shape[0]
+        classification_losses = []
+        regression_losses = []
+
+        anchor = anchors[0, :, :]
+
+        anchor_widths  = anchor[:, 2] - anchor[:, 0]
+        anchor_heights = anchor[:, 3] - anchor[:, 1]
+        anchor_ctr_x   = anchor[:, 0] + 0.5 * anchor_widths
+        anchor_ctr_y   = anchor[:, 1] + 0.5 * anchor_heights
+
+        for j in range(batch_size):
+
+            classification = classifications[j, :, :]
+            regression = regressions[j, :, :]
+
+            bbox_annotation = annotations[j, :, :]
+            bbox_annotation = bbox_annotation[bbox_annotation[:, 4] != -1] 
+
+            if bbox_annotation.shape[0] == 0:
+                regression_losses.append(torch.tensor(0).float().cuda())
+                classification_losses.append(torch.tensor(0).float().cuda())
+
+                continue
+
+            classification = torch.clamp(classification, 1e-4, 1.0 - 1e-4)
+
+            IoU = calc_iou(anchors[0, :, :], bbox_annotation[:, :4]) # num_anchors x num_annotations
+
+            IoU_max, IoU_argmax = torch.max(IoU, dim=1) # num_anchors x 1
+    
+            targets = torch.ones(classification.shape) * -1
+            targets = targets.cuda()
+
+            targets[torch.lt(IoU_max, 0.4), :] = 0 
+
+            positive_indices = torch.ge(IoU_max, 0.5)
+
+            num_positive_anchors = positive_indices.sum()
+
+            assigned_annotations = bbox_annotation[IoU_argmax, :]
+            targets[positive_indices, :] = 0
+            targets[positive_indices, assigned_annotations[positive_indices, 4].long()] = 1
+
+            alpha_factor = torch.ones(targets.shape).cuda() * alpha
+
+            alpha_factor = torch.where(torch.eq(targets, 1.), alpha_factor, 1. - alpha_factor)
+            focal_weight = torch.where(torch.eq(targets, 1.), 1. - classification, classification)
+            focal_weight = alpha_factor * torch.pow(focal_weight, gamma)
+
+            bce = -(targets * torch.log(classification) + (1.0 - targets) * torch.log(1.0 - classification))
+
+            # cls_loss = focal_weight * torch.pow(bce, gamma)
+            cls_loss = focal_weight * bce
+
+            cls_loss = torch.where(torch.ne(targets, -1.0), cls_loss, torch.zeros(cls_loss.shape).cuda())
+
+            classification_losses.append(cls_loss.sum()/torch.clamp(num_positive_anchors.float(), min=1.0))
+
+            # compute the loss for regression
+
+            if positive_indices.sum() &gt; 0:
+                assigned_annotations = assigned_annotations[positive_indices, :]
+
+                anchor_widths_pi = anchor_widths[positive_indices]
+                anchor_heights_pi = anchor_heights[positive_indices]
+                anchor_ctr_x_pi = anchor_ctr_x[positive_indices]
+                anchor_ctr_y_pi = anchor_ctr_y[positive_indices]
+
+                gt_widths  = assigned_annotations[:, 2] - assigned_annotations[:, 0]
+                gt_heights = assigned_annotations[:, 3] - assigned_annotations[:, 1]
+                gt_ctr_x   = assigned_annotations[:, 0] + 0.5 * gt_widths
+                gt_ctr_y   = assigned_annotations[:, 1] + 0.5 * gt_heights
+
+                # clip widths to 1
+                gt_widths  = torch.clamp(gt_widths, min=1)
+                gt_heights = torch.clamp(gt_heights, min=1)
+
+                targets_dx = (gt_ctr_x - anchor_ctr_x_pi) / anchor_widths_pi
+                targets_dy = (gt_ctr_y - anchor_ctr_y_pi) / anchor_heights_pi
+                targets_dw = torch.log(gt_widths / anchor_widths_pi)
+                targets_dh = torch.log(gt_heights / anchor_heights_pi)
+
+                targets = torch.stack((targets_dx, targets_dy, targets_dw, targets_dh))
+                targets = targets.t()
+
+                targets = targets/torch.Tensor([[0.1, 0.1, 0.2, 0.2]]).cuda()
+
+
+                negative_indices = 1 - positive_indices
+
+                regression_diff = torch.abs(targets - regression[positive_indices, :])
+
+                regression_loss = torch.where(
+                    torch.le(regression_diff, 1.0 / 9.0),
+                    0.5 * 9.0 * torch.pow(regression_diff, 2),
+                    regression_diff - 0.5 / 9.0
+                )
+                regression_losses.append(regression_loss.mean())
+            else:
+                regression_losses.append(torch.tensor(0).float().cuda())
+
+        return torch.stack(classification_losses).mean(dim=0, keepdim=True), torch.stack(regression_losses).mean(dim=0, keepdim=True)
+
+
+                                                                                                                
+</code></pre></div></div>
+
+<p>上面的计算 iou的是</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def calc_iou(a, b):
+    area = (b[:, 2] - b[:, 0]) * (b[:, 3] - b[:, 1])
+
+    iw = torch.min(torch.unsqueeze(a[:, 2], dim=1), b[:, 2]) - torch.max(torch.unsqueeze(a[:, 0], 1), b[:, 0])
+    ih = torch.min(torch.unsqueeze(a[:, 3], dim=1), b[:, 3]) - torch.max(torch.unsqueeze(a[:, 1], 1), b[:, 1])
+
+    iw = torch.clamp(iw, min=0)
+    ih = torch.clamp(ih, min=0)
+
+    ua = torch.unsqueeze((a[:, 2] - a[:, 0]) * (a[:, 3] - a[:, 1]), dim=1) + area - iw * ih
+
+    ua = torch.clamp(ua, min=1e-8)
+
+    intersection = iw * ih
+
+    IoU = intersection / ua
+
+    return IoU
+
+
+
+</code></pre></div></div>
+
+<p>不过这里并不有加1,从代码里面可以看出传入的时候就是’float’。因为这里的标注的时候的位置不是像素点的整数坐标，而是距离数学上的坐标，所以没有加1.我理解应该是这样的。</p>
+<blockquote>
+  <blockquote>
+    <blockquote>
+      <blockquote>
+        <blockquote>
+          <blockquote>
+            <blockquote>
+              <p>6d923d60bf3b199fe698abbbc29f0262d41d8345</p>
+            </blockquote>
+          </blockquote>
+        </blockquote>
+      </blockquote>
+    </blockquote>
+  </blockquote>
+</blockquote>
+
+
+  </section>
+</article>
+
+<section>
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">多谢支持~</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+
+
+                <!--
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                --!> 
+        
+
+                <div class="shang_payimg">
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+            
+                <div class="pay_explain">
+                    扫码打赏，多谢支持~
+                </div>
+
+                <div class="shang_payselect">
+        
+
+
+
+                    <!--
+                      <div class="pay_item checked" data-id="alipay">
+                        <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                      </div>
+                    --!> 
+        
+                      <!--<div class="pay_item" data-id="weipay"> --!>
+                        <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                      <!-- </div> --!>
+                </div>
+            
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+            
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:280px;padding:10px;padding-left: 140px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:280px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin:10px auto;float:center;text-align:center;width:280px;height:280px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:5px auto;margin-top:20px;cursor:pointer;height:60px;width:500px;margin:90px auto;}
+              .shang_payselect .pay_item{display:inline-block;margin:140px auto;float:center;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2018/08/cuda-9/" data-toggle="tooltip" data-placement="top" title="CUDA-9">上一篇：  <span>CUDA-9</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2018/09/hope/" data-toggle="tooltip" data-placement="top" title="九月初">下一篇：  <span>九月初</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/beyondpzk" title="@beyondpzk 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:pkzhengmath@pku.edu.cn" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+          <!--  Copyright &copy; 倔强的生命！ 2019 Theme by <a href="http://baixin.io/">leopardpan</a> |-->
+
+            Copyright &copy; 倔强的生命！ 2019
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=beyondpzk&repo=beyondpzk.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>
