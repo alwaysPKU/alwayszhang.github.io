@@ -1,0 +1,476 @@
+<DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>倔强的生命！</title>
+  <meta name="description" content="欢迎~">
+  <meta name="author" content="leopardpan">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="倔强的生命！">
+  <meta name="twitter:description" content="欢迎~">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="倔强的生命！">
+  <meta property="og:description" content="欢迎~">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/page/2/">
+  <link rel="alternate" type="application/rss+xml" title="倔强的生命！" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover " style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 倔强的生命！ 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                BEYOND
+                            
+                        </h2>
+                        <p>
+                           
+                                Come on!
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 倔强的生命！" class="blog-button">倔强的生命！</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">何不如此！</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <div class="main-post-list hidden">
+
+  <ol class="post-list">
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/roc/" title="访问 cuda-计算roc">cuda-计算roc</a></h2>
+      <p class="excerpt">计算roc以前在看书的时候遇到过，当时就假想过如果数据量非常大的时候该如何算。就做了个demo,试了一下，矩阵的大小是15W*15W左右，花费在2秒内，感觉比cpu快了太多了。探索了好久，才探索出一个小的demo, 如果数据量再加很大的话，比如加大到GPU不够了，再加大CPU也不够了，这两种情况下又该去如何处理。现在的例子是GPU还可以，也不需要用多个GPU。代码如下, 写的比较差，不够通用。有些地方可以提出来，也有很多地方是重复的，比如读文件和写文件的时候。后面继续修改。#include...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-21 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-21</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">cuda</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/roc/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/nvcc/" title="访问 nvcc命令总结">nvcc命令总结</a></h2>
+      <p class="excerpt">总结一下nvcc命令的总结。  -shared会generate a shared library during linking      -o 这个和gcc差不多，可以指定一个输出的文件        -c  即--compile 即编译每个.c/.cc/.cpp/.cu 文件进入一个目标文件  -arch这个是计算能力 比如sm_61，用法是-arch=sm_61  -std这个可以指定用c++11， 用法是-std=c++11  -I这个是–include-path ，用法是-I/u...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-15 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-15</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">cuda</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/nvcc/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/mxnet-cuda/" title="访问 mxnet调用cuda">mxnet调用cuda</a></h2>
+      <p class="excerpt">之前用mxnet的调过cuda包，觉得还是挺方便的，所以还是想复习一下。如果要用mxnet的cuda运行时，需要在编译的时候加上ENABLE_CUDA_RTC = 1不然会报错的。按照官方的教程source = r'''extern "C" __global__ void axpy(const float *x, float *y, float alpha) {    int i = threadIdx.x + blockIdx.x * blockDim.x;    y[i] += alp...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-14 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-14</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">python</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/mxnet-cuda/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/mxnet-build/" title="访问 mxnet编译的一些问题">mxnet编译的一些问题</a></h2>
+      <p class="excerpt">之前用mxnet的时候觉得非常的方便，最近用pytorch用的比较多，但是感觉pytorch调cuda没有mxnet调cuda方便，所以就又找了一下之前学mxnet的时候，然后又在自己的pc上重装了mxnet,然后这次遇到了问题，可能之前我也遇到了，但是都解决了，就没有记下来，这次打算得全部记下来。做准备安装各种需要的软件sudo apt-get updatesudo apt-get install -y build-essential git  mathsudo apt-get inst...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-13 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-13</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">python</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/mxnet-build/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/all/" title="访问 python-__all__的作用">python-__all__的作用</a></h2>
+      <p class="excerpt">经常在看代码时，看到开头会有__all__ = ['a','b','c'] 这样的，所以就查了一下。写一个代码测试一下就知道其用处了。# fun.py__all__ = ['a', 'b']a = 3b = 4c = 5def myPrint():    print("Hello, world")再写一个测试的from fun import *print("a", a)print("b", b)print("1")print("c", c)myPrint()结果如下a 3b 41Trace...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-11 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-11</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">python</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/all/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/pip/" title="访问 用pip一次性安装多个包">用pip一次性安装多个包</a></h2>
+      <p class="excerpt">比如某个项目需要在一个新机子上配环境的时候，可以一次性用pip安装多个包，方法是把需要安装的包写在一个叫’requirements.txt’里面比如cythoncffieasydictmatplotlib然后运行pip install -r requirements.txt就可以一下子安装多个了。&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-10 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-10</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">python</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/pip/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/stacked-hourglass/" title="访问 Stacked Hourglass 论文笔记">Stacked Hourglass 论文笔记</a></h2>
+      <p class="excerpt">前面的两个paper里面都相继提到了这个paper,自己之前也看过这个paper，再复习一下。大致的想法是把几个hourglass给stacked到一块儿，形成级联的形式的网络结构，然后不断地进行一个bottom-up,top-down的过程，也可以有趣地理解成筛沙子，多加几个漏斗的话，筛到最后就比较纯了。pose-estimation的任务是非常重要的，也有很多的应用，比如理解一个图中的人的行为，在安防领域里可以在一群人里面根据这个人的姿态来判断他是不是有暴力倾向，在人机交互方面也有很多...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-10 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-10</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">论文笔记</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/stacked-hourglass/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/associative-embedding/" title="访问 Associative Embedding 论文笔记">Associative Embedding 论文笔记</a></h2>
+      <p class="excerpt">大致想法有很多的任务的模式是先检测后分组，比如多人姿态估计，实例分割，多目标追踪。之前在这类任务上大部分是多个stage的想法来做的，即先做检测再做分组，但是这个Paper里提出的方法是检测和分组可以同时做，其想法是在检测的同时附加上一个embedding用来打tag,然后利用这些tag去分组，这样就一步到位了，而且作者在paper里提到，其实分多个stage的办法并没有充分利用到一个feature上的语义信息，而同时做检测和分组，就可以做到这一点。网络会输出检测的heatmap，也会同时...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-09 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-09</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">论文笔记</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/associative-embedding/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/math/" title="访问 在markdown中使用数学公式">在markdown中使用数学公式</a></h2>
+      <p class="excerpt">如何在github上写数学公式居中格式:靠左格式: \(xxx\)\(x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}\)测试\(l(x_i) = - \log_2 P(x_i)\)&lt;script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"&gt;&lt;/script&gt;居中格式: $$xxx$$$$x=\frac{-b\...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-08 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-08</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">论文笔记</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/math/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/cornerNet/" title="访问 cornerNet论文笔记">cornerNet论文笔记</a></h2>
+      <p class="excerpt">感觉这篇文章写的非常好！初步认识这个paper用的检测目标的方法和之前用的很不一样，之前基本采用的是’rcnn’系列或者是’ssd,yolo’系列，但是这些基本上都用了anchor的思想，（好像yolo1是没有用anchor的，记不太清了），而这个paper里面采用的是keypoints里面的heatmap的想法，之前用anchor的时候要检测bbox的4个点，而现在只需要检测对角就可以了，所以叫corner-Net,名字得于此。但是问题立马就来了，如何确定一个点就是物体所在的某个框的角呢...&hellip;</p>
+      <div class="post-list__meta">        
+        <time datetime="2018-12-07 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-07</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+        </div>
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">论文笔记</span>
+          </div>
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/cornerNet/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+  </ol>
+
+  <hr class="post-list__divider " />
+
+<nav class="pagination" role="navigation">
+
+	<!-- 百度搜索 -->
+	<script type="text/javascript">(function(){document.write(unescape('%3Cdiv id="bdcs"%3E%3C/div%3E'));var bdcs = document.createElement('script');bdcs.type = 'text/javascript';bdcs.async = true;bdcs.src = 'http://znsv.baidu.com/customer_search/api/js?sid=12441349038163667913' + '&plate_url=' + encodeURIComponent(window.location.href) + '&t=' + Math.ceil(new Date()/3600000);var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(bdcs, s);})();
+	</script>
+	
+    
+        <a class="newer-posts pagination__newer btn btn-small btn-tertiary" href="/#blog">&larr; 最近</a>
+    
+    <span class="pagination__page-number">2 / 16</span>
+    
+        <a class="older-posts pagination__older btn btn-small btn-tertiary" href="/page/3/#blog">更早 &rarr;</a>
+    
+
+</nav>
+
+
+</div>
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/beyondpzk" title="@beyondpzk 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:pkzhengmath@pku.edu.cn" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+          <!--  Copyright &copy; 倔强的生命！ 2019 Theme by <a href="http://baixin.io/">leopardpan</a> |-->
+
+            Copyright &copy; 倔强的生命！ 2019
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=beyondpzk&repo=beyondpzk.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>

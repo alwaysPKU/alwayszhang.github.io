@@ -1,0 +1,381 @@
+<DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>fcn论文笔记</title>
+  <meta name="description" content="">
+  <meta name="author" content="leopardpan">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="fcn论文笔记">
+  <meta name="twitter:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="fcn论文笔记">
+  <meta property="og:description" content="">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/12/fcn/">
+  <link rel="alternate" type="application/rss+xml" title="倔强的生命！" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 倔强的生命！ 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                BEYOND
+                            
+                        </h2>
+                        <p>
+                           
+                                Come on!
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 倔强的生命！" class="blog-button">倔强的生命！</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">何不如此！</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">fcn论文笔记</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2018-12-26 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-12-26</time>  
+         
+      <!--<span id="busuanzi_container_page_pv"> | 阅读:<span id="busuanzi_value_page_pv"></span>次</span> -->
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <!--more-->
+
+<p>fcn之前读过一次，现在在想想其中的一些值得回味的东西,图像分割任务是将一幅图中各个实体的边界确定下来，这样就可以通过寻找这个实体的边界来确定实体的位置，感觉会在自动驾驶任务中用的非常多。而目前的做法是采用分类的办法来做的，即对图像的每个像素点都进行分类，分类完成后，最后把相邻并且属于同一类别的像素点聚集起来。</p>
+
+<h3 id="fcn的方案">fcn的方案：</h3>
+
+<p>fcn不包含全连接层，但是它为什么要设计成这样呢？</p>
+
+<p>先recall一下fc层的用处，比如在Alexnet做cifar10的分类的时候，每个图片经过提取特征转化成为了一个长为4096的向量，然后就进入了fc层去做了分类，那时候一张图上只有一个物体，而现在一张图上可能有多个物体，如果再用fc层的话，也需要把得到的特征flatten一个一维的，然后才能进入fc层，但是这样就失去了其位置的信息，而全部采用cnn就可以避免出现上面的问题，也就是说使用全cnn是一种目前想到的解决方式。</p>
+
+<h3 id="新的问题">新的问题：</h3>
+
+<p>既然要对每个像素都进行分类，那么输出的shape和输入的shape一定是一样的，不然就不会是每个像素点的分类了，那这样一个自然的想法是，在每经过一个层的时候都不要改变其shape就行了，这样输出就和输入的shape肯定是一样的了，但是这样新的问题出现了。因为都用同一个shape的话，计算量明显增加了，特别是对于输入比较大的情况，这是不符合’小，轻，快，准’的要求的.</p>
+
+<p>进一步想，能不能先将信息提出出来再”还原”出来，这就是现在经常看到的一种encode-decode的结构，而且还可以利用不同scale的feature,fcn也是这种架构，里面进行了卷积和反卷积的操作，卷积是变小的操作，反卷积是变大的操作，关于变大的操作有的是直接用的’upsampling’，但是这样太暴力了，所以往往会在’upsampling’之前和之后都接一个小的卷积层，让其先适应一下。fcn中用的反卷积操作也是为了防止太暴力而提出的解决方案，不过需要注意的是，其实任何形式的这种由小维度变成大维度的时候，都会有一些精度损失，为了提高精度，采用的办法是融合，即融合不同scale的特征。</p>
+
+<h3 id="评测">评测</h3>
+
+<p>虽然是对每个像素都做了分类，但是计算Loss的时候好像并不是用的所有的像素点，感觉这样是对的，因为如果所有的像素点都用到的话，首先是计算量大，其次的原因是相邻的像素点的信息可能大多数都一样（只有两个物体的边界的那些部分不太一样），比如一张图上如果有一只老虎和一只蚂蚁的话，那如果所有的像素点全部采用的话，loss将会由属于老虎的那些像素点来提供，那么就会偏重于老虎这一部分。</p>
+
+<p>评测的办法用的是IOU， 这个感觉也挺自然的，一方面预测的有一片区域A，而gt也有一部分区域B，所以自然地想到的是IOU，注意IOU只是一个让人来看的指标，并不是Loss，这种想法也可以用到其他的任务上面，比如缺陷检测。</p>
+
+
+
+  </section>
+</article>
+
+<section>
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">多谢支持~</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+
+
+                <!--
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                --!> 
+        
+
+                <div class="shang_payimg">
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+            
+                <div class="pay_explain">
+                    扫码打赏，多谢支持~
+                </div>
+
+                <div class="shang_payselect">
+        
+
+
+
+                    <!--
+                      <div class="pay_item checked" data-id="alipay">
+                        <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                      </div>
+                    --!> 
+        
+                      <!--<div class="pay_item" data-id="weipay"> --!>
+                        <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                      <!-- </div> --!>
+                </div>
+            
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+            
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:280px;padding:10px;padding-left: 140px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:280px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin:10px auto;float:center;text-align:center;width:280px;height:280px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:5px auto;margin-top:20px;cursor:pointer;height:60px;width:500px;margin:90px auto;}
+              .shang_payselect .pay_item{display:inline-block;margin:140px auto;float:center;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2018/12/opencv/" data-toggle="tooltip" data-placement="top" title="opencv中的一些用法积累(不断更新)">上一篇：  <span>opencv中的一些用法积累(不断更新)</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2018/12/torch-common/" data-toggle="tooltip" data-placement="top" title="torch常用总结（不断更新）">下一篇：  <span>torch常用总结（不断更新）</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/beyondpzk" title="@beyondpzk 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:pkzhengmath@pku.edu.cn" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+          <!--  Copyright &copy; 倔强的生命！ 2019 Theme by <a href="http://baixin.io/">leopardpan</a> |-->
+
+            Copyright &copy; 倔强的生命！ 2019
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=beyondpzk&repo=beyondpzk.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>

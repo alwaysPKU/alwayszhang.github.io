@@ -1,0 +1,539 @@
+<DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Stacked Hourglass 论文笔记</title>
+  <meta name="description" content="">
+  <meta name="author" content="leopardpan">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Stacked Hourglass 论文笔记">
+  <meta name="twitter:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stacked Hourglass 论文笔记">
+  <meta property="og:description" content="">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/12/stacked-hourglass/">
+  <link rel="alternate" type="application/rss+xml" title="倔强的生命！" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 倔强的生命！ 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                BEYOND
+                            
+                        </h2>
+                        <p>
+                           
+                                Come on!
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 倔强的生命！" class="blog-button">倔强的生命！</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">何不如此！</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">Stacked Hourglass 论文笔记</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2018-12-10 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-12-10</time>  
+         
+      <!--<span id="busuanzi_container_page_pv"> | 阅读:<span id="busuanzi_value_page_pv"></span>次</span> -->
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <!--more-->
+
+<p>前面的两个paper里面都相继提到了这个paper,自己之前也看过这个paper，再复习一下。大致的想法是把几个hourglass给stacked到一块儿，形成级联的形式的网络结构，然后不断地进行一个bottom-up,top-down的过程，也可以有趣地理解成筛沙子，多加几个漏斗的话，筛到最后就比较纯了。pose-estimation的任务是非常重要的，也有很多的应用，比如理解一个图中的人的行为，在安防领域里可以在一群人里面根据这个人的姿态来判断他是不是有暴力倾向，在人机交互方面也有很多应用，比如如果一个机器人如果看出来主人正在做什么，或许就能提供相应的帮助。
+网络结构的构造是down的时候采用卷积和max-pooling,同时会copy出一份用于后面上采样之后二者进行一个结合，不过这里提到用的上采样是最邻近办法，在最后接两个1-1的卷积调整输出的channels从而产生最终的输出。</p>
+
+<h3 id="层的实现的细节">层的实现的细节</h3>
+
+<p>作者在层的实现的时候做了很多的实验，最终采用的是两个连着的3-3的卷积，来代替一个大的卷积核，这在resnetV2中也用过，这个应该是经验吧，或者可以理解成让网络学得更透彻一些，清楚一些，而不是让它一口就吃个大胖子，并且超过3-3的核都没有用。</p>
+
+<h3 id="stacked">stacked</h3>
+<p>在很多的网络中都采用了类似的思想，比如DeepPose,OpenPose，这里也采用了级联的思想,我在openpose中做过类似的实验，级联的数目确实会影响效果，不同的任务中级联的个数不一样，需要做实验才能知道，过少可能精度不好，过多又会影响效率。</p>
+
+<ul>
+  <li>下一个stacked的输入是什么？</li>
+</ul>
+
+<p>下一个stacked的输入并不是上一个stacked的简单的输出，也并不是所有的stacked输入都是来自于之前的一个feature，而是上一个stacked的输入加上本层的stacked的“输出”，这个“输出”加上引号是因为这个输出也是做了处理的。看代码</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    def forward(self, x):
+        out = []
+        x = self.conv1(x)
+        x = self.bn1(x)
+        x = self.relu(x) 
+
+        x = self.layer1(x)
+        x = self.maxpool(x)
+
+        x = self.layer2(x)
+        x = self.layer3(x)
+
+        for i in range(self.num_stacks):
+            y = self.hg[i](x)  # 即在每一个stack之后都做了一个res的操作
+            #print("1", y.shape)
+            y = self.res[i](y)
+            #print("2", y.shape)
+            y = self.fc[i](y)
+            #print("3", y.shape)
+            score = self.score[i](y)
+            #print("4", score.shape)
+            out.append(score)
+
+            if i &lt; self.num_stacks-1:  # 不是最后一个stack的还做了这样的处理。这样是有用的，即前面的stack的输出并不是直接暴力地相加的，这样做是要好一些的。
+                fc_ = self.fc_[i](y)
+                score_ = self.score_[i](score)
+                x = x + fc_ + score_   # 也就是说下一个stack的输入是上一个stack的输入加上本stack的输出score_和fc_,
+
+        return out
+
+</code></pre></div></div>
+
+<p>我理解这样做的原因，作者应该试过暴力相加的效果不好，还是让网络自己决定是否要相加，因为虽然看上去是相加，但是如果<code class="highlighter-rouge">fc_</code>和<code class="highlighter-rouge">score_</code>都是0的话，那就没有相加，也就是说这样的操作会让网络自己决定，而不是人为的暴力相加。</p>
+
+<p>上在的<code class="highlighter-rouge">fc_</code>层就是一个简单的1-1卷积-bn-relu.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bn = nn.BatchNorm2d(inplanes)
+        conv = nn.Conv2d(inplanes, outplanes, kernel_size=1, bias=True)
+        return nn.Sequential(
+                conv,
+                bn,
+                self.relu,
+            )
+
+</code></pre></div></div>
+
+<p>而<code class="highlighter-rouge">score_</code>就是一个卷积</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> score_.append(nn.Conv2d(num_classes, ch, kernel_size=1, bias=True))
+
+</code></pre></div></div>
+<p>这种操作在其他的网络中也有，不宜过大，所以都很simple.
+最终的输出是<code class="highlighter-rouge">[16, 64, 64]</code>,那么大的，16是类别的数目，代表的是关键点的总个数。可能有一个是背景。</p>
+
+<p>从上面的</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            y = self.hg[i](x)  # 即在每一个stack之后都做了一个res的操作
+            #print("1", y.shape)
+            y = self.res[i](y)
+            #print("2", y.shape)
+            y = self.fc[i](y)
+            #print("3", y.shape)
+            score = self.score[i](y)
+            #print("4", score.shape)
+            out.append(score)
+
+</code></pre></div></div>
+
+<p>也能看出来，每经过一个hourglass–block之后并没有直接地就是作为输出，而是先经过了一个<code class="highlighter-rouge">res</code>后经过一个<code class="highlighter-rouge">fc</code>的操作。
+其中<code class="highlighter-rouge">res</code>的操作是几个bottleneck连接起来的。而<code class="highlighter-rouge">fc</code>就是和刚才的<code class="highlighter-rouge">fc_</code>是一样的。</p>
+
+<p>其实在原paper里面好像是没有<code class="highlighter-rouge">fc_</code>的操作，可能是实现者在实现的时候发现这样可能更好一些吧，
+在原paper里面是这样的.
+<img src="/images/hourglass3.png" alt="avator" /></p>
+
+<p>原paper里面的一个小方框代表一个bottle-neck，但是在实现的时候，也可以每个接多个bottle-neck.
+原paper里的是这样的。
+<img src="/images/hourglass4.png" alt="avator" />
+如图所示，这时候的深度是4，即先降到最低时经过的bottleneck的数目，这个过程可以用递归来实现，上图中的每一条线都可以换上多个bottle-neck的拼接或者本来没有bottle-neck的时候加上bottle-neck，这些都可以使网络的容量变大，但是这也要看具体的任务，如果任务不是那么难，就没有必要加那么多的bottle-neck.在整个hourglass中，channels的数目一直都没有发生变化，变化的只是shape.</p>
+
+<p>下面实现一下这个网络。</p>
+
+<p>首先是bottle-neck的部分</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Bottleneck(nn.Module):
+    expansion = 2  #
+    def __init__(self, inplanes, planes, stride=1, downsample=None):
+        super(Bottleneck, self).__init__()
+        self.bn1 = nn.BatchNorm2d(inplanes)
+        self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=1, bias=True)
+        self.bn2 = nn.BatchNorm2d(planes)
+        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, stride=stride,
+                               padding=1, bias=True)
+        self.bn3 = nn.BatchNorm2d(planes)
+        self.conv3 = nn.Conv2d(planes, planes * 2, kernel_size=1, bias=True)
+        self.relu = nn.ReLU(inplace=True)
+        self.downsample = downsample
+        self.stride = stride
+    def forward(self, x): 
+        residual = x 
+        out = self.bn1(x)
+        out = self.relu(out)
+        out = self.conv1(out)
+        out = self.bn2(out)
+        out = self.relu(out)
+        out = self.conv2(out)
+        out = self.bn3(out)
+        out = self.relu(out)
+        out = self.conv3(out)
+        if self.downsample is not None:
+            residual = self.downsample(x)
+        out += residual
+        return out
+
+</code></pre></div></div>
+<p>即两个1-1的卷积中间夹了一个3-3的卷积，输出的chnnels是<code class="highlighter-rouge">planes*2</code>,输入的channels多少都是可以的。</p>
+
+<p>然后是hourglass的部分了，（不包括前期的处理部分）。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Hourglass(nn.Module):
+    def __init__(self, block, planes, depth):
+        super(Hourglass, self).__init__()
+        self.depth = depth
+        self.block = block
+        self.upsample = nn.Upsample(scale_factor=2)
+        self.hg = self._make_hour_glass(block, planes, depth)
+
+    def _make_residual(self, block, planes):
+        layer = block(planes*block.expansion, planes)
+        return layer                                         # 这个就相当于paper里面的一个小方框.
+
+    def _make_hour_glass(self, block, planes, depth):
+        hg = []
+        for i in range(depth):          # depth是下降时经过的block的个数，即paper里面的图的最左边的4个，res指的就是这个东西。
+            hg.append(self._make_residual(block , planes))
+        return nn.ModuleList(hg)
+
+    def _hour_glass_forward(self, n, x):    # n深度。  这个过程指的是从前一个深度到后一个深度的过程，是用递归写的。
+                                                                # 注意最左边的是深度3,今次是3,2,1,0,这个只是记号而已.
+        up1 = self.hg[n-1](x)   
+        low1 = F.max_pool2d(x, 2, stride=2)
+
+        if n &gt; 1:
+            low2 = self._hour_glass_forward(n-1, low1)
+        else:
+            low2 = self.hg[n-1](low1)
+            low2 = F.max_pool2d(low2, 2, stride=2) 
+
+        # 到这网络相当于shape到最底了。
+        # 然后是三个block。
+        for i in range(3):
+            low2 = self.hg[n-1](low2)
+        up2 = self.upsample(low2)
+        out = up1 + up2
+        return out
+
+    def forward(self, x):
+        return self._hour_glass_forward(self.depth, x)
+
+</code></pre></div></div>
+
+
+
+  </section>
+</article>
+
+<section>
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">多谢支持~</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+
+
+                <!--
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                --!> 
+        
+
+                <div class="shang_payimg">
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+            
+                <div class="pay_explain">
+                    扫码打赏，多谢支持~
+                </div>
+
+                <div class="shang_payselect">
+        
+
+
+
+                    <!--
+                      <div class="pay_item checked" data-id="alipay">
+                        <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                      </div>
+                    --!> 
+        
+                      <!--<div class="pay_item" data-id="weipay"> --!>
+                        <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                      <!-- </div> --!>
+                </div>
+            
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+            
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:280px;padding:10px;padding-left: 140px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:280px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin:10px auto;float:center;text-align:center;width:280px;height:280px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:5px auto;margin-top:20px;cursor:pointer;height:60px;width:500px;margin:90px auto;}
+              .shang_payselect .pay_item{display:inline-block;margin:140px auto;float:center;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2018/12/associative-embedding/" data-toggle="tooltip" data-placement="top" title="Associative Embedding 论文笔记">上一篇：  <span>Associative Embedding 论文笔记</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2018/12/pip/" data-toggle="tooltip" data-placement="top" title="用pip一次性安装多个包">下一篇：  <span>用pip一次性安装多个包</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/beyondpzk" title="@beyondpzk 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:pkzhengmath@pku.edu.cn" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+          <!--  Copyright &copy; 倔强的生命！ 2019 Theme by <a href="http://baixin.io/">leopardpan</a> |-->
+
+            Copyright &copy; 倔强的生命！ 2019
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=beyondpzk&repo=beyondpzk.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>

@@ -1,0 +1,608 @@
+<DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>torch-cifar10</title>
+  <meta name="description" content="">
+  <meta name="author" content="leopardpan">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="torch-cifar10">
+  <meta name="twitter:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="torch-cifar10">
+  <meta property="og:description" content="">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/11/torch_cifar10/">
+  <link rel="alternate" type="application/rss+xml" title="倔强的生命！" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 倔强的生命！ 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                BEYOND
+                            
+                        </h2>
+                        <p>
+                           
+                                Come on!
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 倔强的生命！" class="blog-button">倔强的生命！</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">何不如此！</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">torch-cifar10</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2018-11-04 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-11-04</time>  
+         
+      <!--<span id="busuanzi_container_page_pv"> | 阅读:<span id="busuanzi_value_page_pv"></span>次</span> -->
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <!--more-->
+
+<h3 id="之前一直想整理下torch的用法从这篇blog开始吧">之前一直想整理下torch的用法，从这篇blog开始吧。</h3>
+
+<p>这是用torch来做kaggle cifar10的例子。希望在总结的时候，能够把其中的关键地方给学习到，以后能够用到其他的模型训练上面。</p>
+
+<h3 id="第一步准备数据">第一步，准备数据</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 1.prepare train data and test data
+# data augment
+# transforms on PIL image
+transform_train = transforms.Compose([
+                        transforms.RandomCrop(32, padding=4),
+                        transforms.RandomHorizontalFlip(),
+                        transforms.ToTensor(),
+                        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),  
+           ])
+
+# Normalize(mean, std)  # the len of mean or std corresponding to the number of channels，
+transform_test = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+                    
+            ])
+
+# train data
+
+trainset = torchvision.datasets.CIFAR10(root='./data', train=True, download=True, transform=transform_train)
+trainloader = torch.utils.data.DataLoader(trainset, batch_size=128, shuffle=True, num_workers=2)
+
+testset = torchvision.datasets.CIFAR10(root='./data', train=False, download=True, transform=transform_test)
+testloader = torch.utils.data.DataLoader(testset, batch_size=100, shuffle=True, num_workers=2)
+
+</code></pre></div></div>
+
+<p>这里面最important的函数是</p>
+
+<p><code class="highlighter-rouge">torch.utils.data.DataLoader(Data, batch_size=, shuffle=True, num_workers=2) </code></p>
+
+<p>其中的Data需要是</p>
+
+<p><code class="highlighter-rouge">torch.utils.data.Dataset</code></p>
+
+<p>的一个对象。这里是用了已经有了的CIFAR10了，但是实际中在做项目的时候，可能只有Imgs，可能需要自己写一个类来继承</p>
+
+<p><code class="highlighter-rouge">torch.utils.data.Dataset</code></p>
+
+<p>比如下面就是一个框架， 当然其他的函数可以自己根据需要来加上去。</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Data(torch.utils.data.Dataset):
+    
+    def __init__(self, fileDir, transformer=None):
+        # 下面的就省略了，其中transformer是做数据增强的时候用的变换，这个变换可以自己实现，也可以用torch里面自带的，上面用的就是torch自带的，但是有时候可能不能够完成自己的任务 ，所以必要的时候需要自己写一个来实现具体的任务。
+
+    def __getitem__(self, index):
+        # 用这个的好处是可以通过index来得到对应的数据
+
+
+    def __len__(self):
+        return 有关数据的长度
+
+</code></pre></div></div>
+
+<h3 id="构建网络结构">构建网络结构</h3>
+
+<p>这里用LeNet来做的。为了有结构化，可以新建一个models的文件目录专门来放模型。
+然后里面加上</p>
+
+<p><code class="highlighter-rouge"> __init__.py </code></p>
+
+<p>如果希望在其他的文件里面直接</p>
+
+<p><code class="highlighter-rouge"> from models import * </code></p>
+
+<p>的话，需要在 <code class="highlighter-rouge">__init__.py </code> 的里面加上
+<code class="highlighter-rouge">from lenet import *</code>
+ 之类的，到时候就可以用models下面的所有的东西了，包括类。</p>
+
+<p>这里建立一个 “modles/lenet.py” 来写</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># 2. construct model
+import torch.nn as nn
+import torch.nn.functional as F
+
+class LeNet(nn.Module):
+    def __init__(self):
+        super(LeNet, self).__init__()
+        self.conv1 = nn.Conv2d(3,6,5)
+        self.conv2 = nn.Conv2d(6,16,5)
+        self.fc1 = nn.Linear(16*5*5, 120)
+        self.fc2 = nn.Linear(120, 84) 
+        self.fc3 = nn.Linear(84,10)
+
+    def forward(self, x): 
+        out = F.relu(self.conv1(x))
+        out = F.max_pool2d(out, 2)
+        out = F.relu(self.conv2(out))
+        out = F.max_pool2d(out, 2)
+        out = out.view(out.size(0), -1) 
+        out = F.relu(self.fc1(out))
+        out = F.relu(self.fc2(out))
+        out = self.fc3(out)
+        return out 
+
+</code></pre></div></div>
+
+<p>写网络结构这一部分，和其他的框架基本上一样，比如mxnet， 这里需要是</p>
+
+<p><code class="highlighter-rouge">torch.nn.Module</code></p>
+
+<p>的子类， 需要实现</p>
+
+<p><code class="highlighter-rouge">__init__</code></p>
+
+<p>函数和前向计算的</p>
+
+<p><code class="highlighter-rouge">forward</code></p>
+
+<p>函数,有的网络结构比较复杂的可能要先得到网络每层的配置信息，然后写一个专门的</p>
+
+<p><code class="highlighter-rouge">_makelayer</code></p>
+
+<p>来制作每一个block.</p>
+
+<h3 id="准备训练">准备训练</h3>
+
+<p>这一步需要的东西 有一些多，比如下面的这些</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    # 3.get the network
+    net = lenet.LeNet() 
+    # choose which device to train
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    net = net.to(device)
+    if device == 'cuda':
+        net = torch.nn.DataParallel(net)
+        cudnn.benchmark=True
+    # 4. loss function
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.SGD(net.parameters(), lr=args.lr, momentum=0.9, weight_decay=5e-4)
+
+</code></pre></div></div>
+
+<p>其中有决定在哪里训练的，是在gpu还是cpu上面，如果在gpu 上面的话，需要用</p>
+
+<p>“net = torch.nn.DataParallel(net)”</p>
+
+<p>然后要指定 <code class="highlighter-rouge">cudnn.benchmark=True</code>, 加了这个cudnn的好处是可以让cudnn内置的auto-tuner自动寻找最适合当前配置的高效算法，来达到优化运行效率的问题.当然这个并不是加了一定就好，</p>
+
+<ul>
+  <li>
+    <p>如果网络的输入的数据维度或类型上变化不大，这样设置可以增加效率</p>
+  </li>
+  <li>
+    <p>如果网络的输入数据在每次iter的时候都变化的话，会导致cudnn每次都要去寻找一遍最优的配置，这样反而会降低运行效率。</p>
+  </li>
+</ul>
+
+<p><code class="highlighter-rouge"> torch.cuda.is_available()</code> 是判断有没有cuda的。</p>
+
+<p>如果是多gpu的话，需要指定</p>
+
+<p>“net = torch.nn.DataParallel(net, device_ids=args.gpu)“</p>
+
+<p>其中 <code class="highlighter-rouge">args.gpu</code> 是个列表，比如[0,2,3]其中第一个必须得是0,因为torch在训练的时候是有一个主训练的device，这个就是”0“号device，其中数据必需放在”0”号上面，参数更新也是在”0“号上面完成的，这一点要特别注意，另外，这里的”0“号并不一定是机子上的第一块gpu，而是从</p>
+
+<p>“CUDA_VISIBLE_DEVICES = ‘2,3,4,8’ “ 中的第一个。</p>
+
+<h3 id="开始训练和测试">开始训练和测试</h3>
+
+<p>代码如下</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def train(epoch):
+    print("\n Epoch: %d" % epoch)
+    net.train()
+    train_loss = 0
+    correct = 0
+    total = 0
+    for batch_idx, (inputs, targets) in enumerate(trainloader):
+        inputs, targets = inputs.to(device), targets.to(device)   # put the data onto device
+        optimizer.zero_grad()  # clear the gradients
+        outputs = net(inputs)  # get the pred output
+        loss = criterion(outputs, targets)
+        # bp
+        loss.backward()
+        optimizer.step()
+        train_loss += loss.item()
+        _, predicted = outputs.max(1)  # or torch.max(outpus.data, 1)   
+        total += targets.size(0)
+        correct += predicted.eq(targets).sum().item()   # the num of predict true
+        print("Train's loss: %.4f, Train's acc: %.6f" %(train_loss/(batch_idx+1), 1.0*correct/total))
+
+def test(epoch):
+    global best_acc
+    net.eval()   # just like net.train()
+    test_loss = 0
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for batch_idx, (inputs, targets) in enumerate(testloader):
+            inputs, targets = inputs.to(device), targets.to(device)
+            outputs = net(inputs)
+            loss = criterion(outputs, targets)
+            test_loss += loss.item()
+            _, predicted = outputs.max(1)
+            total += targets.size(0)
+            correct += predicted.eq(targets).sum().item()
+            print("Test's loss: %.4f, Test's acc: %.6f" %(test_loss/(batch_idx+1), 1.0*correct/total))
+</code></pre></div></div>
+
+<p>需要注意的地方有</p>
+
+<p>“loss=criterion(outputs, targets)”</p>
+
+<p>因为从上面可以看出从LeNet出来的并不一定在（0,1）之间，然后这个targets现在也不清晰长什么 样，正常的话，如果batch 是16，那么输出的应该 是（16,10)，
+而targets也是(16,10)的话这样就好做ce了，即one-hot的方式来表示label, 但是经过把outputs和targets打印出来之后发现outputs是（128,10）的，而targets是(128,)的，里面的内容是0到9.
+查了一下torch的源码，知道了需要outputs就是网络的输出，不一定经过softmax都可以，
+而targets是真实的label,是个一维的向量，这里刚好都满足。</p>
+
+<h3 id="保存模型">保存模型</h3>
+
+<p>下面是一种保存的方式</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> #8. decide to save model
+    acc = 1.0 *correct/total
+    if acc &gt; best_acc:
+        print("Saving...")
+        state = { 
+                'net':net.state_dict(),
+                'acc':acc,
+                'epoch':epoch,
+                }
+        if not os.path.isdir('checkpoint'):
+            os.mkdir('checkpoint')
+        torch.save(state, './checkpoint/cifar.t7')
+        best_acc = acc 
+
+</code></pre></div></div>
+
+<p>这里是以准确率来判断是否要更新模型的，这种办法最直观，在实际中常这样，因为看上去效果好了。</p>
+
+<h3 id="run">run</h3>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for epoch in range(start_epoch, start_epoch+200):
+    train(epoch)
+    test(epoch)
+
+</code></pre></div></div>
+
+<p>其他的用到的参数需要在代码前面补充，包括用到的包。</p>
+
+
+  </section>
+</article>
+
+<section>
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">多谢支持~</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+
+
+                <!--
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                --!> 
+        
+
+                <div class="shang_payimg">
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+            
+                <div class="pay_explain">
+                    扫码打赏，多谢支持~
+                </div>
+
+                <div class="shang_payselect">
+        
+
+
+
+                    <!--
+                      <div class="pay_item checked" data-id="alipay">
+                        <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                      </div>
+                    --!> 
+        
+                      <!--<div class="pay_item" data-id="weipay"> --!>
+                        <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                      <!-- </div> --!>
+                </div>
+            
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+            
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:280px;padding:10px;padding-left: 140px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:280px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin:10px auto;float:center;text-align:center;width:280px;height:280px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:5px auto;margin-top:20px;cursor:pointer;height:60px;width:500px;margin:90px auto;}
+              .shang_payselect .pay_item{display:inline-block;margin:140px auto;float:center;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2018/11/torch_cifar10-3/" data-toggle="tooltip" data-placement="top" title="torch-cifar10-3">上一篇：  <span>torch-cifar10-3</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2018/11/openpose-1/" data-toggle="tooltip" data-placement="top" title="openpose-exercise-1">下一篇：  <span>openpose-exercise-1</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/beyondpzk" title="@beyondpzk 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:pkzhengmath@pku.edu.cn" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+          <!--  Copyright &copy; 倔强的生命！ 2019 Theme by <a href="http://baixin.io/">leopardpan</a> |-->
+
+            Copyright &copy; 倔强的生命！ 2019
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=beyondpzk&repo=beyondpzk.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>
