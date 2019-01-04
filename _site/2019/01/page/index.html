@@ -157,7 +157,7 @@
     <h1 class="post-title">制作github pages</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2019-01-02 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-02</time>  
+      <time datetime="2019-01-03 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-03</time>  
          
       <!--<span id="busuanzi_container_page_pv"> | 阅读:<span id="busuanzi_value_page_pv"></span>次</span> -->
     </p>
@@ -172,7 +172,6 @@
 <hr />
 
 <p>之前在阿里云租借服务器搭建网站，需要昂贵的费用很麻烦。所以改在用github上搭建自己的个人博客，既方便又美观（免费）。</p>
-
 <h3 id="1-环境">1. 环境</h3>
 
 <ul class="task-list">
@@ -185,19 +184,20 @@
 </ul>
 
 <h3 id="2-配置">2. 配置</h3>
-<p>为了方便，直接上<a href="http://baixin.io/2016/10/jekyll_tutorials1/">大神教程</a>。内容很详细，直接按着来就行了。我这里就只写一些遇到的问题。
-####jekyll server报错：
-我的原因是ruby版本太老，于是更新。安装rvm（ruby版本管理工具Ruby Version Manager）</p>
+<p>为了方便，直接上<a href="http://baixin.io/2016/10/jekyll_tutorials1/">大神教程</a>。内容很详细，直接按着来就行了。我这里就只写一些遇到的问题。</p>
+<h5 id="1-jekyll-server报错">1) jekyll server报错：</h5>
+<p>我的原因是ruby版本太老，于是更新。安装rvm（ruby版本管理工具Ruby Version Manager）</p>
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>curl -L get.rvm.io | bash -s stable
 source ~/.bashrc  
 source ~/.bash_profile   (如果你的终端个性化配置过，可能会出差错，不要怕，退出重开就好了)
-rvm -v  查看
+rvm -v  查看版本
 rvm list known 查看可用版本
-rvm install 2.4.1
+rvm install 2.4.1（可以换你需要的版本）
 </code></pre></div></div>
-<p>如果缺少一些包，比如xxx，直接直接执行<code class="highlighter-rouge">gem install xxx</code>就行了（我缺少 minima）
-####gem 源的问题：
-<code class="highlighter-rouge">gem sources -a http://gems.ruby-china.com/</code>(淘宝源没了，http://gems.ruby-china.org也没了，这是最新的，截止2019.1.3)</p>
+<p>如果缺少一些包，比如xxx，直接直接执行<code class="highlighter-rouge">gem install xxx</code>就行了（我缺少 minima）</p>
+<h5 id="2-gem-源的问题">2) gem 源的问题：</h5>
+<p><code class="highlighter-rouge">gem sources -a http://gems.ruby-china.com/</code>
+(淘宝源没了，http://gems.ruby-china.org也没了，这是最新的，2019.1.3实验可用)</p>
 
 <h3 id="3-本地运行效果">3. 本地运行效果</h3>
 <p><code class="highlighter-rouge">$ jekyll server </code>就行了
@@ -299,6 +299,11 @@ rvm install 2.4.1
        <ul class="pager">
         
         
+        <li class="next">
+            <a href="/2019/01/markdown/" data-toggle="tooltip" data-placement="top" title="MarkDown支持的格式样例（from作业部落）">下一篇：  <span>MarkDown支持的格式样例（from作业部落）</span>
+            </a>
+        </li>
+        
     </ul>
 </section>
 
@@ -362,7 +367,7 @@ rvm install 2.4.1
             <iframe
                 style="margin-left: 2px; margin-bottom:-5px;"
                 frameborder="0" scrolling="0" width="91px" height="20px"
-                src="https://ghbtns.com/github-btn.html?user=beyondpzk&repo=beyondpzk.github.io&type=star&count=true" >
+                src="https://ghbtns.com/github-btn.html?user=alwaysqi&repo=alwaysqi.github.io&type=star&count=true" >
             </iframe>
             </p>
         	<div align="right">
