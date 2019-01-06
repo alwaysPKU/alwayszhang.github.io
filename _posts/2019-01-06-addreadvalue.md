@@ -138,11 +138,11 @@ leancloud:
 
 
 ##### 3._layouts/default.html
-添加```{% include leancloud-analytics.html %}```
+添加
+```{% include leancloud-analytics.html %}```
 
 ##### 4._layouts/post.html
 添加
-
 ```html
 {% if site.leancloud.enable %}
        <span id="{{ page.url }}" class="leancloud_visitors" data-flag-title="{{ page.title }}">
