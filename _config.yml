@@ -8,6 +8,12 @@ avatarTitle: BEYOND
 avatarDesc: Come on!
 url: "http://alwaysqi.github.io/"
 
+#阅读量
+leanc loud:
+  enable: true
+  app_id: TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz
+  app_key: 8NibCKPlTVw5om1DF1dMaQvN
+
 # Comment
 #comment:
 #    disqus: leopard

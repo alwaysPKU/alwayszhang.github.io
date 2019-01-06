@@ -5,8 +5,8 @@
     <description>welcome to my page</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 04 Jan 2019 15:17:58 +0800</pubDate>
-    <lastBuildDate>Fri, 04 Jan 2019 15:17:58 +0800</lastBuildDate>
+    <pubDate>Sun, 06 Jan 2019 18:36:37 +0800</pubDate>
+    <lastBuildDate>Sun, 06 Jan 2019 18:36:37 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -241,6 +241,25 @@ Bob--&amp;gt;Alice: I am good thanks!
         
         
         <category>杂记</category>
+        
+      </item>
+    
+      <item>
+        <title>blog push到远程仓库（github pages）出错</title>
+        <description>&lt;!--more--&gt;
+
+&lt;p&gt;本地仓库更新blog后，需要远程推送到github仓库。用命令&lt;code class=&quot;highlighter-rouge&quot;&gt;git push xxx(远程库名字，有的默认origin) master&lt;/code&gt;。但是出现错误。
+我怀疑是因为远程仓库被访问后，有些修改，所以需要pull到本地，再push，还没验证。
+但是也可以&lt;code class=&quot;highlighter-rouge&quot;&gt;git push -f xxx master&lt;/code&gt;强制覆盖，反正也是你自己一个人在维护blog，–force也不会有人想要砍死你😎&lt;/p&gt;
+</description>
+        <pubDate>Thu, 03 Jan 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/01/pushgithubpage/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/01/pushgithubpage/</guid>
+        
+        <category>github</category>
+        
+        
+        <category>github</category>
         
       </item>
     

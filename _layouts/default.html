@@ -30,10 +30,12 @@
         <div class="content-wrapper__inner">
             {{ content }}
             {% include footer.html %}
+            {% include leancloud-analytics.html %}
         </div>
     </div>
-    
+    {% include leancloud-analytics.html %}
     {% include external.html %}
+    
     
   </body>
 
