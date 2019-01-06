@@ -55,14 +55,14 @@
       <div class="nav_container">
          <nav class="nav-menu-item" style = "float:right">
             <i class="nav-menu-item">
-              <a href="/#blog" title="" class="blog-button">  博客主页
+              <a href="/#blog" title="" class="blog-button">  主页
               </a>
             </i>
             
                 <i class="nav-menu-item">
 
                   <a href="/archive" title="archive" class="btn-mobile-menu__icon">
-                      所有文章
+                      文章
                   </a>
                 </i>
             
@@ -97,7 +97,7 @@
                     <div class="info-back">
                         <h2> 
                             
-                                BEYOND
+                                CuteJ
                             
                         </h2>
                         <p>
@@ -125,9 +125,9 @@
           <div>
             <nav class="cover-navigation cover-navigation--primary">
               <ul class="navigation">
-                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">主页</a></li>
                 
-                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                  <li class="navigation__item"><a href="/archive" title="archive">文章</a></li>
                 
                   <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
                 
@@ -159,12 +159,18 @@
       <img src="/images/calendar.png" width="20px"/> 
       <time datetime="2019-01-04 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-04</time>  
 
-      
+       
+       <span id="/2019/01/markdown/" class="leancloud_visitors" data-flag-title="MarkDown支持的格式样例（from作业部落）">
+        <span class="post-meta-divider tags" ></span>
+        <span class="post-meta-item-text tags">  阅读量:  </span>
+        <span class="leancloud-visitors-count tags"></span>
+
+       </span>
       
       
 
          
-      <--<span id="busuanzi_container_page_pv"> | 阅读:<span id="busuanzi_value_page_pv"></span>次</span> -->
+      <!--<span id="busuanzi_container_page_pv"> | 阅读:<span id="busuanzi_value_page_pv"></span>次</span> -->
     </p>
     </div>
   </header>
@@ -567,10 +573,114 @@ Bob--&gt;Alice: I am good thanks!
 
             
 
+<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz", "8NibCKPlTVw5om1DF1dMaQvN");</script>
+<script>
+    function showHitCount(Counter) {
+        /* 这是给一个页面中有多篇文章时所调用的，例如博客主界面或者存档界面。
+      */
+        var query = new AV.Query(Counter);
+        var entries = [];
+        var $visitors = $(".leancloud_visitors");
+        $visitors.each(function () {
+            entries.push( $(this).attr("id").trim() );
+        });
+        query.containedIn('url', entries);
+        query.find()
+                .done(function (results) {
+                    console.log("results",results);
+                    var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+                    if (results.length === 0) {
+                        $visitors.find(COUNT_CONTAINER_REF).text(0);
+                        return;
+                    }
+                    for (var i = 0; i < results.length; i++) {
+                        var item = results[i];
+                        var url = item.get('url');
+                        var hits = item.get('hits');
+                        var element = document.getElementById(url);
+                        $(element).find(COUNT_CONTAINER_REF).text(hits);
+                    }
+                    for(var i = 0; i < entries.length; i++) {
+                        var url = entries[i];
+                        var element = document.getElementById(url);
+                        var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                        if( countSpan.text() == '') {
+                            countSpan.text(0);
+                        }
+                    }
+                })
+                .fail(function (object, error) {
+                    console.log("Error: " + error.code + " " + error.message);
+                });
+    }
+    function addCount(Counter) {
+        // 页面（博客文章）中的信息：leancloud_visitors
+      // id为page.url， data-flag-title为page.title
+        var $visitors = $(".leancloud_visitors");
+        var url = $visitors.attr('id').trim();
+        var title = $visitors.attr('data-flag-title').trim();
+        var query = new AV.Query(Counter);
+        query.equalTo("url", url);
+        query.find({
+            success: function(results) {
+                if (results.length > 0) {
+                    var counter = results[0];
+                    counter.fetchWhenSave(true);
+                    counter.increment("hits");
+                    counter.save(null, {
+                        success: function(counter) {
+                            var $element = $(document.getElementById(url));
+                            $element.find('.leancloud-visitors-count').text(counter.get('hits'));
+                        },
+                        error: function(counter, error) {
+                            console.log('Failed to save Visitor num, with error message: ' + error.message);
+                        }
+                    });
+                } else {
+                    var newcounter = new Counter();
+                    /* Set ACL */
+                    var acl = new AV.ACL();
+                    acl.setPublicReadAccess(true);
+                    acl.setPublicWriteAccess(true);
+                    newcounter.setACL(acl);
+                    /* End Set ACL */
+                    newcounter.set("title", title);
+                    newcounter.set("url", url);
+                    newcounter.set("hits", 1);
+                    newcounter.save(null, {
+                        success: function(newcounter) {
+                            var $element = $(document.getElementById(url));
+                            $element.find('.leancloud-visitors-count').text(newcounter.get('hits'));
+                        },
+                        error: function(newcounter, error) {
+                            console.log('Failed to create');
+                        }
+                    });
+                }
+            },
+            error: function(error) {
+                console.log('Error:' + error.code + " " + error.message);
+            }
+        });
+    }
+    $(function() {
+        var Counter = AV.Object.extend("Counter");
+        if ($('.leancloud_visitors').length == 1) {
+            // in post.html, so add 1 to hit counts
+            addCount(Counter);
+        } else if ($('.post-link').length > 1){
+            // in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
+            showHitCount(Counter);
+        }
+    });
+</script>
+
+
         </div>
     </div>
     
-
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 <script type="text/javascript" src="/js/main.js"></script>
 
@@ -583,5 +693,4 @@ Bob--&gt;Alice: I am good thanks!
     
   </body>
   
-
 </html>
