@@ -8,17 +8,18 @@ layout: default
     {% for post in paginator.posts %}
     <li>
       <h2 class="post-list__post-title post-title"><a href="{{ post.url }}" title="访问 {{ post.title }}">{{ post.title }}</a> 
+      </h2>
+      <p class="excerpt">{{ post.content | strip_html | strip_newlines | truncate: 250 }}&hellip;</p>
       <!--
+      找找为什么不能在主页上显示阅读量的原因
       {% if site.leancloud.enable %}
         <span id="{{ post.url }}" class="leancloud_visitors" data-flag-title="{{ post.title }}">
          <span class="post-meta-divider">|</span>
          <span class="post-meta-item-text"> 阅读量:  </span>
          <span class="leancloud-visitors-count"></span>
         </span>
-        {% endif %}
+      {% endif %}
       -->
-      </h2>
-      <p class="excerpt">{{ post.content | strip_html | strip_newlines | truncate: 250 }}&hellip;</p>
       <div class="post-list__meta">        
         <time datetime="{{post.date | date: date_to_xmlschema}}" class="post-list__meta--date date">
           <img src="/images/calendar.png" width="20px" /> 
