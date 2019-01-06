@@ -161,10 +161,10 @@
 
        
        <span id="/2019/01/page/" class="leancloud_visitors" data-flag-title="制作github pages">
-        <span class="post-meta-divider tags" ></span>
-        <span class="post-meta-item-text tags">  阅读量:  </span>
-        <span class="leancloud-visitors-count tags"></span>
-
+        <span class="post-meta-divider" ></span>
+        <span class="post-meta-item-text">  <--阅读量:  </span>
+        <span class="leancloud-visitors-count"></span>
+        -->
        </span>
       
       
@@ -412,10 +412,10 @@ rvm install 2.4.1（可以换你需要的版本）
 <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
 <script>AV.initialize("TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz", "8NibCKPlTVw5om1DF1dMaQvN");</script>
+<!--<script>console.log("Error: " + error.code + " " + error.message);</script>-->
 <script>
     function showHitCount(Counter) {
-        /* 这是给一个页面中有多篇文章时所调用的，例如博客主界面或者存档界面。
-      */
+        console.log("i was called");
         var query = new AV.Query(Counter);
         var entries = [];
         var $visitors = $(".leancloud_visitors");
@@ -452,8 +452,6 @@ rvm install 2.4.1（可以换你需要的版本）
                 });
     }
     function addCount(Counter) {
-        // 页面（博客文章）中的信息：leancloud_visitors
-      // id为page.url， data-flag-title为page.title
         var $visitors = $(".leancloud_visitors");
         var url = $visitors.attr('id').trim();
         var title = $visitors.attr('data-flag-title').trim();
@@ -503,6 +501,9 @@ rvm install 2.4.1（可以换你需要的版本）
     }
     $(function() {
         var Counter = AV.Object.extend("Counter");
+        console.log('this is a test');
+        console.log('this is a test-add',$('.leancloud_visitors'));
+        console.log('this is a test-show',$('.post-link'));
         if ($('.leancloud_visitors').length == 1) {
             // in post.html, so add 1 to hit counts
             addCount(Counter);
@@ -512,7 +513,6 @@ rvm install 2.4.1（可以换你需要的版本）
         }
     });
 </script>
-
 
         </div>
     </div>
