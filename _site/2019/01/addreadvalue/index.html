@@ -178,127 +178,130 @@
   <section class="post">
     <!--more-->
 
-<h1 id="github-pages添加阅读量">github pages添加阅读量</h1>
-
 <p>标签： github</p>
 
 <hr />
 
-<p><code class="highlighter-rouge">前提是已经搭建好github pages</code></p>
+<h3 id="前提是已经搭建好github-pages">前提是已经搭建好github pages</h3>
 
-<p>### 注册LeanCloud
- ### 创建应用，申请appid和appkey
- ### 创建一个class，随便起名，例如Counter
- ### 修改代码
- ##### 1. _config.yml文件</p>
+<h3 id="1注册leancloud">1.注册LeanCloud</h3>
+
+<h3 id="2创建应用申请appid和appkey">2.创建应用，申请appid和appkey</h3>
+
+<h3 id="3创建一个class随便起名例如counter">3.创建一个class，随便起名，例如Counter</h3>
+
+<h3 id="4修改代码">4.修改代码:</h3>
+
+<h5 id="1-_configyml文件">1. _config.yml文件</h5>
+
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>leancloud:
-  enable: true
-  app_id: your_id
-  app_key: your_key
+enable: true
+app_id: your_id
+app_key: your_key
 </code></pre></div></div>
 
-<p>##### 2.添加include/leancloud-analytics.html</p>
+<h5 id="2添加includeleancloud-analyticshtml">2.添加include/leancloud-analytics.html</h5>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
 
 &lt;script src="https://code.jquery.com/jquery-3.2.0.min.js"&gt;&lt;/script&gt;
 &lt;script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"&gt;&lt;/script&gt;
 &lt;script&gt;AV.initialize("TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz", "8NibCKPlTVw5om1DF1dMaQvN");&lt;/script&gt;
 &lt;script&gt;
-    function showHitCount(Counter) {
-        var query = new AV.Query(Counter);
-        var entries = [];
-        var $visitors = $(".leancloud_visitors");
-        $visitors.each(function () {
-            entries.push( $(this).attr("id").trim() );
-        });
-        query.containedIn('url', entries);
-        query.find()
-                .done(function (results) {
-                    console.log("results",results);
-                    var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-                    if (results.length === 0) {
-                        $visitors.find(COUNT_CONTAINER_REF).text(0);
-                        return;
-                    }
-                    for (var i = 0; i &lt; results.length; i++) {
-                        var item = results[i];
-                        var url = item.get('url');
-                        var hits = item.get('hits');
-                        var element = document.getElementById(url);
-                        $(element).find(COUNT_CONTAINER_REF).text(hits);
-                    }
-                    for(var i = 0; i &lt; entries.length; i++) {
-                        var url = entries[i];
-                        var element = document.getElementById(url);
-                        var countSpan = $(element).find(COUNT_CONTAINER_REF);
-                        if( countSpan.text() == '') {
-                            countSpan.text(0);
-                        }
-                    }
-                })
-                .fail(function (object, error) {
-                    console.log("Error: " + error.code + " " + error.message);
-                });
-    }
-    function addCount(Counter) {
-        var $visitors = $(".leancloud_visitors");
-        var url = $visitors.attr('id').trim();
-        var title = $visitors.attr('data-flag-title').trim();
-        var query = new AV.Query(Counter);
-        query.equalTo("url", url);
-        query.find({
-            success: function(results) {
-                if (results.length &gt; 0) {
-                    var counter = results[0];
-                    counter.fetchWhenSave(true);
-                    counter.increment("hits");
-                    counter.save(null, {
-                        success: function(counter) {
-                            var $element = $(document.getElementById(url));
-                            $element.find('.leancloud-visitors-count').text(counter.get('hits'));
-                        },
-                        error: function(counter, error) {
-                            console.log('Failed to save Visitor num, with error message: ' + error.message);
-                        }
-                    });
-                } else {
-                    var newcounter = new Counter();
-                    /* Set ACL */
-                    var acl = new AV.ACL();
-                    acl.setPublicReadAccess(true);
-                    acl.setPublicWriteAccess(true);
-                    newcounter.setACL(acl);
-                    /* End Set ACL */
-                    newcounter.set("title", title);
-                    newcounter.set("url", url);
-                    newcounter.set("hits", 1);
-                    newcounter.save(null, {
-                        success: function(newcounter) {
-                            var $element = $(document.getElementById(url));
-                            $element.find('.leancloud-visitors-count').text(newcounter.get('hits'));
-                        },
-                        error: function(newcounter, error) {
-                            console.log('Failed to create');
-                        }
-                    });
-                }
-            },
-            error: function(error) {
-                console.log('Error:' + error.code + " " + error.message);
-            }
-        });
-    }
-    $(function() {
-        var Counter = AV.Object.extend("Counter");
-        if ($('.leancloud_visitors').length == 1) {
-            // in post.html, so add 1 to hit counts
-            addCount(Counter);
-        } else if ($('.post-link').length &gt; 1){
-            // in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
-            showHitCount(Counter);
-        }
-    });
+function showHitCount(Counter) {
+var query = new AV.Query(Counter);
+var entries = [];
+var $visitors = $(".leancloud_visitors");
+$visitors.each(function () {
+entries.push( $(this).attr("id").trim() );
+});
+query.containedIn('url', entries);
+query.find()
+.done(function (results) {
+console.log("results",results);
+var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+if (results.length === 0) {
+$visitors.find(COUNT_CONTAINER_REF).text(0);
+return;
+}
+for (var i = 0; i &lt; results.length; i++) {
+var item = results[i];
+var url = item.get('url');
+var hits = item.get('hits');
+var element = document.getElementById(url);
+$(element).find(COUNT_CONTAINER_REF).text(hits);
+}
+for(var i = 0; i &lt; entries.length; i++) {
+var url = entries[i];
+var element = document.getElementById(url);
+var countSpan = $(element).find(COUNT_CONTAINER_REF);
+if( countSpan.text() == '') {
+countSpan.text(0);
+}
+}
+})
+.fail(function (object, error) {
+console.log("Error: " + error.code + " " + error.message);
+});
+}
+function addCount(Counter) {
+var $visitors = $(".leancloud_visitors");
+var url = $visitors.attr('id').trim();
+var title = $visitors.attr('data-flag-title').trim();
+var query = new AV.Query(Counter);
+query.equalTo("url", url);
+query.find({
+success: function(results) {
+if (results.length &gt; 0) {
+var counter = results[0];
+counter.fetchWhenSave(true);
+counter.increment("hits");
+counter.save(null, {
+success: function(counter) {
+var $element = $(document.getElementById(url));
+$element.find('.leancloud-visitors-count').text(counter.get('hits'));
+},
+error: function(counter, error) {
+console.log('Failed to save Visitor num, with error message: ' + error.message);
+}
+});
+} else {
+var newcounter = new Counter();
+/* Set ACL */
+var acl = new AV.ACL();
+acl.setPublicReadAccess(true);
+acl.setPublicWriteAccess(true);
+newcounter.setACL(acl);
+/* End Set ACL */
+newcounter.set("title", title);
+newcounter.set("url", url);
+newcounter.set("hits", 1);
+newcounter.save(null, {
+success: function(newcounter) {
+var $element = $(document.getElementById(url));
+$element.find('.leancloud-visitors-count').text(newcounter.get('hits'));
+},
+error: function(newcounter, error) {
+console.log('Failed to create');
+}
+});
+}
+},
+error: function(error) {
+console.log('Error:' + error.code + " " + error.message);
+}
+});
+}
+$(function() {
+var Counter = AV.Object.extend("Counter");
+if ($('.leancloud_visitors').length == 1) {
+// in post.html, so add 1 to hit counts
+addCount(Counter);
+} else if ($('.post-link').length &gt; 1){
+// in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
+showHitCount(Counter);
+}
+});
 &lt;/script&gt;
 
 </code></pre></div></div>
@@ -415,17 +418,19 @@
 <h5 id="4_layoutsposthtml">4._layouts/post.html</h5>
 <p>添加</p>
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-       <span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">"/2019/01/addreadvalue/"</span> <span class="na">class=</span><span class="s">"leancloud_visitors"</span> <span class="na">data-flag-title=</span><span class="s">"github pages添加阅读量"</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"post-meta-divider"</span><span class="nt">&gt;</span>|<span class="nt">&lt;/span&gt;</span>
-        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"post-meta-item-text"</span><span class="nt">&gt;</span> Hits:  <span class="nt">&lt;/span&gt;</span>
-        <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"leancloud-visitors-count"</span><span class="nt">&gt;&lt;/span&gt;</span>
-       <span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">"/2019/01/addreadvalue/"</span> <span class="na">class=</span><span class="s">"leancloud_visitors"</span> <span class="na">data-flag-title=</span><span class="s">"github pages添加阅读量"</span><span class="nt">&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"post-meta-divider"</span><span class="nt">&gt;</span>|<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"post-meta-item-text"</span><span class="nt">&gt;</span> Hits:  <span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"leancloud-visitors-count"</span><span class="nt">&gt;&lt;/span&gt;</span>
+<span class="nt">&lt;/span&gt;</span>
 
 </code></pre></div></div>
 
-<p>reference:
-[1]<a href="https://blog.csdn.net/u013553529/article/details/63357382">在个人博客中添加文章点击次数</a>
-[2]<a href="https://github.com/galian123/galian123.github.io">github</a></p>
+<p>reference:</p>
+
+<p>[1]<a href="https://blog.csdn.net/u013553529/article/details/63357382">在个人博客中添加文章点击次数</a></p>
+
+<p>[2]<a href="https://github.com/galian123/galian123.github.io">github</a></p>
 
 
   </section>
