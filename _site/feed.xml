@@ -5,8 +5,8 @@
     <description>welcome to my page</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 07 Jan 2019 17:18:09 +0800</pubDate>
-    <lastBuildDate>Mon, 07 Jan 2019 17:18:09 +0800</lastBuildDate>
+    <pubDate>Mon, 07 Jan 2019 19:42:50 +0800</pubDate>
+    <lastBuildDate>Mon, 07 Jan 2019 19:42:50 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -345,10 +345,10 @@
         <link>http://localhost:4000/2019/01/FCN/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/01/FCN/</guid>
         
-        <category>CNN</category>
+        <category>深度学习-视觉</category>
         
         
-        <category>CNN</category>
+        <category>深度学习-视觉</category>
         
       </item>
     
@@ -622,6 +622,24 @@ showHitCount(Counter);
       </item>
     
       <item>
+        <title>NVIDIA tx2刷机教程</title>
+        <description>&lt;!--more--&gt;
+
+&lt;p&gt;上个月买了个tx2开发板，跑一些深度模型，记录一下刷机教程。&lt;/p&gt;
+
+</description>
+        <pubDate>Sat, 05 Jan 2019 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2019/01/tx2shuaji/</link>
+        <guid isPermaLink="true">http://localhost:4000/2019/01/tx2shuaji/</guid>
+        
+        <category>硬件</category>
+        
+        
+        <category>硬件</category>
+        
+      </item>
+    
+      <item>
         <title>MarkDown支持的格式样例（from作业部落）</title>
         <description>&lt;!--more--&gt;
 
@@ -849,10 +867,10 @@ Bob--&amp;gt;Alice: I am good thanks!
         <link>http://localhost:4000/2019/01/markdown/</link>
         <guid isPermaLink="true">http://localhost:4000/2019/01/markdown/</guid>
         
-        <category>杂记</category>
+        <category>拾遗</category>
         
         
-        <category>杂记</category>
+        <category>拾遗</category>
         
       </item>
     
