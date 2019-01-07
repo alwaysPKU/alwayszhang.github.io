@@ -6,14 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>github pages添加阅读量</title>
+  <title>全卷积神经网络(FCN)</title>
   <meta name="description" content="">
   <meta name="author" content="leopardpan">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="github pages添加阅读量">
+  <meta name="twitter:title" content="全卷积神经网络(FCN)">
   <meta name="twitter:description" content="">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="github pages添加阅读量">
+  <meta property="og:title" content="全卷积神经网络(FCN)">
   <meta property="og:description" content="">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2019/01/addreadvalue/">
+  <link rel="canonical" href="http://localhost:4000/2019/01/yolo/">
   <link rel="alternate" type="application/rss+xml" title="半甜不要腻" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -154,13 +154,13 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">github pages添加阅读量</h1>
+    <h1 class="post-title">全卷积神经网络(FCN)</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2019-01-06 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-06</time>  
+      <time datetime="2019-01-07 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-07</time>  
 
        
-       <span id="/2019/01/addreadvalue/" class="leancloud_visitors" data-flag-title="github pages添加阅读量">
+       <span id="/2019/01/yolo/" class="leancloud_visitors" data-flag-title="全卷积神经网络(FCN)">
         <span class="post-meta-divider" ></span>
         <span class="post-meta-item-text">  <--阅读量:</span>
         <span class="leancloud-visitors-count"></span>
@@ -178,259 +178,105 @@
   <section class="post">
     <!--more-->
 
-<p>标签： github</p>
+<p>标签： CNN，深度学习，检测</p>
+
+<h1 id="yolo论文">Yolo论文</h1>
+
+<p>标签： 深度学习，CNN</p>
 
 <hr />
 
-<h3 id="前提是已经搭建好github-pages">前提是已经搭建好github pages</h3>
+<p><a href="https://arxiv.org/abs/1506.02640">You Only Look Once: Unified, Real-Time Object Detection</a></p>
 
-<h3 id="1注册leancloud">1.注册LeanCloud</h3>
+<hr />
+<h3 id="翻译">翻译</h3>
 
-<h3 id="2创建应用申请appid和appkey">2.创建应用，申请appid和appkey</h3>
+<h4 id="abstract">Abstract</h4>
+<p>We present YOLO, a new approach to object detection. Prior work on object detection repurposes classifiers to perform detection. Instead, we frame object detection as a regression problem to spatially separated bounding boxes and associated class probabilities. A single neural network predicts bounding boxes and class probabilities directly from full images in one evaluation. Since the whole detection pipeline is a single network, it can be optimized end-to-end directly on detection performance.</p>
 
-<h3 id="3创建一个class随便起名例如counter">3.创建一个class，随便起名，例如Counter</h3>
-
-<h3 id="4修改代码">4.修改代码:</h3>
-
-<h5 id="1-_configyml文件">1. _config.yml文件</h5>
-
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>leancloud:
-enable: true
-app_id: your_id
-app_key: your_key
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>摘要
+我们提出了YOLO，一种新的目标检测方法。以前的目标检测工作重新利用分类器来执行检测。相反，我们将目标检测框架看作回归问题从空间上分割边界框和相关的类别概率。单个神经网络在一次评估中直接从完整图像上预测边界框和类别概率。由于整个检测流水线是单一网络，因此可以直接对检测性能进行端到端的优化。
 </code></pre></div></div>
 
-<h5 id="2添加includeleancloud-analyticshtml">2.添加include/leancloud-analytics.html</h5>
+<p>Our unified architecture is extremely fast. Our base YOLO model processes images in real-time at 45 frames per second. A smaller version of the network, Fast YOLO, processes an astounding 155 frames per second while still achieving double the mAP of other real-time detectors. Compared to state-of-the-art detection systems, YOLO makes more localization errors but is less likely to predict false positives on background. Finally, YOLO learns very general representations of objects. It outperforms other detection methods, including DPM and R-CNN, when generalizing from natural images to other domains like artwork.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>我们的统一架构非常快。我们的基础YOLO模型以45帧/秒的速度实时处理图像。网络的一个较小版本，快速YOLO，每秒能处理惊人的155帧，同时实现其它实时检测器两倍的mAP。与最先进的检测系统相比，YOLO产生了更多的定位误差，但不太可能在背景上的预测假阳性。最后，YOLO学习目标非常通用的表示。当从自然图像到艺术品等其它领域泛化时，它都优于其它检测方法，包括DPM和R-CNN。
+</code></pre></div></div>
 
-&lt;script src="https://code.jquery.com/jquery-3.2.0.min.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"&gt;&lt;/script&gt;
-&lt;script&gt;AV.initialize("TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz", "8NibCKPlTVw5om1DF1dMaQvN");&lt;/script&gt;
-&lt;script&gt;
-function showHitCount(Counter) {
-var query = new AV.Query(Counter);
-var entries = [];
-var $visitors = $(".leancloud_visitors");
-$visitors.each(function () {
-entries.push( $(this).attr("id").trim() );
-});
-query.containedIn('url', entries);
-query.find()
-.done(function (results) {
-console.log("results",results);
-var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-if (results.length === 0) {
-$visitors.find(COUNT_CONTAINER_REF).text(0);
-return;
-}
-for (var i = 0; i &lt; results.length; i++) {
-var item = results[i];
-var url = item.get('url');
-var hits = item.get('hits');
-var element = document.getElementById(url);
-$(element).find(COUNT_CONTAINER_REF).text(hits);
-}
-for(var i = 0; i &lt; entries.length; i++) {
-var url = entries[i];
-var element = document.getElementById(url);
-var countSpan = $(element).find(COUNT_CONTAINER_REF);
-if( countSpan.text() == '') {
-countSpan.text(0);
-}
-}
-})
-.fail(function (object, error) {
-console.log("Error: " + error.code + " " + error.message);
-});
-}
-function addCount(Counter) {
-var $visitors = $(".leancloud_visitors");
-var url = $visitors.attr('id').trim();
-var title = $visitors.attr('data-flag-title').trim();
-var query = new AV.Query(Counter);
-query.equalTo("url", url);
-query.find({
-success: function(results) {
-if (results.length &gt; 0) {
-var counter = results[0];
-counter.fetchWhenSave(true);
-counter.increment("hits");
-counter.save(null, {
-success: function(counter) {
-var $element = $(document.getElementById(url));
-$element.find('.leancloud-visitors-count').text(counter.get('hits'));
-},
-error: function(counter, error) {
-console.log('Failed to save Visitor num, with error message: ' + error.message);
-}
-});
-} else {
-var newcounter = new Counter();
-/* Set ACL */
-var acl = new AV.ACL();
-acl.setPublicReadAccess(true);
-acl.setPublicWriteAccess(true);
-newcounter.setACL(acl);
-/* End Set ACL */
-newcounter.set("title", title);
-newcounter.set("url", url);
-newcounter.set("hits", 1);
-newcounter.save(null, {
-success: function(newcounter) {
-var $element = $(document.getElementById(url));
-$element.find('.leancloud-visitors-count').text(newcounter.get('hits'));
-},
-error: function(newcounter, error) {
-console.log('Failed to create');
-}
-});
-}
-},
-error: function(error) {
-console.log('Error:' + error.code + " " + error.message);
-}
-});
-}
-$(function() {
-var Counter = AV.Object.extend("Counter");
-if ($('.leancloud_visitors').length == 1) {
-// in post.html, so add 1 to hit counts
-addCount(Counter);
-} else if ($('.post-link').length &gt; 1){
-// in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
-showHitCount(Counter);
-}
-});
-&lt;/script&gt;
+<h4 id="1-introduction">1. Introduction</h4>
+<p>Humans glance at an image and instantly know what objects are in the image, where they are, and how they interact. The human visual system is fast and accurate, allowing us to perform complex tasks like driving with little conscious thought. Fast, accurate algorithms for object detection would allow computers to drive cars without specialized sensors, enable assistive devices to convey real-time scene information to human users, and unlock the potential for general purpose, responsive robotic systems.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>1. 引言
+人们瞥一眼图像，立即知道图像中的物体是什么，它们在哪里以及它们如何相互作用。人类的视觉系统是快速和准确的，使我们能够执行复杂的任务，如驾驶时没有多少有意识的想法。快速，准确的目标检测算法可以让计算机在没有专门传感器的情况下驾驶汽车，使辅助设备能够向人类用户传达实时的场景信息，并表现出对一般用途和响应机器人系统的潜力。
+</code></pre></div></div>
+
+<p>Current detection systems repurpose classifiers to perform detection. To detect an object, these systems take a classifier for that object and evaluate it at various locations and scales in a test image. Systems like deformable parts models (DPM) use a sliding window approach where the classifier is run at evenly spaced locations over the entire image [10].</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>目前的检测系统重用分类器来执行检测。为了检测目标，这些系统为该目标提供一个分类器，并在不同的位置对其进行评估，并在测试图像中进行缩放。像可变形部件模型（DPM）这样的系统使用滑动窗口方法，其分类器在整个图像的均匀间隔的位置上运行[10]。
+</code></pre></div></div>
+
+<p>More recent approaches like R-CNN use region proposal methods to first generate potential bounding boxes in an image and then run a classifier on these proposed boxes. After classification, post-processing is used to refine the bounding boxes, eliminate duplicate detections, and rescore the boxes based on other objects in the scene [13]. These complex pipelines are slow and hard to optimize because each individual component must be trained separately.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>最近的方法，如R-CNN使用区域提出方法首先在图像中生成潜在的边界框，然后在这些提出的框上运行分类器。在分类之后，后处理用于细化边界框，消除重复的检测，并根据场景中的其它目标重新定位边界框[13]。这些复杂的流程很慢，很难优化，因为每个单独的组件都必须单独进行训练。
+</code></pre></div></div>
+
+<p>We reframe object detection as a single regression problem, straight from image pixels to bounding box coordinates and class probabilities. Using our system, you only look once (YOLO) at an image to predict what objects are present and where they are.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>我们将目标检测重新看作单一的回归问题，直接从图像像素到边界框坐标和类概率。使用我们的系统，您只需要在图像上看一次（YOLO），以预测出现的目标和位置。
+</code></pre></div></div>
+
+<p>YOLO is refreshingly simple: see Figure 1. A single convolutional network simultaneously predicts multiple bounding boxes and class probabilities for those boxes. YOLO trains on full images and directly optimizes detection performance. This unified model has several benefits over traditional methods of object detection.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>YOLO很简单：参见图1。单个卷积网络同时预测这些盒子的多个边界框和类概率。YOLO在全图像上训练并直接优化检测性能。这种统一的模型比传统的目标检测方法有一些好处。
+</code></pre></div></div>
+
+<p><img src="/images/posts/yolo/1.png" alt="1" /></p>
+
+<p>Figure 1: The YOLO Detection System. Processing images with YOLO is simple and straightforward. Our system (1) resizes the input image to 448 × 448, (2) runs a single convolutional network on the image, and (3) thresholds the resulting detections by the model’s confidence.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>图1：YOLO检测系统。用YOLO处理图像简单直接。我们的系统（1）将输入图像调整为448×448，（2）在图像上运行单个卷积网络，以及（3）由模型的置信度对所得到的检测进行阈值处理。
+</code></pre></div></div>
+
+<p>First, YOLO is extremely fast. Since we frame detection as a regression problem we don’t need a complex pipeline. We simply run our neural network on a new image at test time to predict detections. Our base network runs at 45 frames per second with no batch processing on a Titan X GPU and a fast version runs at more than 150 fps. This means we can process streaming video in real-time with less than 25 milliseconds of latency. Furthermore, YOLO achieves more than twice the mean average precision of other real-time systems. For a demo of our system running in real-time on a webcam please see our project webpage: <a href="http://pjreddie.com/yolo/">http://pjreddie.com/yolo/</a>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>首先，YOLO速度非常快。由于我们将检测视为回归问题，所以我们不需要复杂的流程。测试时我们在一张新图像上简单的运行我们的神经网络来预测检测。我们的基础网络以每秒45帧的速度运行，在Titan X GPU上没有批处理，快速版本运行速度超过150fps。这意味着我们可以在不到25毫秒的延迟内实时处理流媒体视频。此外，YOLO实现了其它实时系统两倍以上的平均精度。关于我们的系统在网络摄像头上实时运行的演示，请参阅我们的项目网页：http://pjreddie.com/yolo/。
+</code></pre></div></div>
+
+<p>Second, YOLO reasons globally about the image when making predictions. Unlike sliding window and region proposal-based techniques, YOLO sees the entire image during training and test time so it implicitly encodes contextual information about classes as well as their appearance. Fast R-CNN, a top detection method [14], mistakes background patches in an image for objects because it can’t see the larger context. YOLO makes less than half the number of background errors compared to Fast R-CNN.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>其次，YOLO在进行预测时，会对图像进行全面地推理。与基于滑动窗口和区域提出的技术不同，YOLO在训练期间和测试时会看到整个图像，所以它隐式地编码了关于类的上下文信息以及它们的外观。fast R-CNN是一种顶级的检测方法[14]，因为它看不到更大的上下文，所以在图像中会将背景块误检为目标。与快速R-CNN相比，YOLO的背景误检数量少了一半。
+</code></pre></div></div>
+
+<p>Third, YOLO learns generalizable representations of objects. When trained on natural images and tested on artwork, YOLO outperforms top detection methods like DPM and R-CNN by a wide margin. Since YOLO is highly generalizable it is less likely to break down when applied to new domains or unexpected inputs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>第三，YOLO学习目标的泛化表示。当在自然图像上进行训练并对艺术作品进行测试时，YOLO大幅优于DPM和R-CNN等顶级检测方法。由于YOLO具有高度泛化能力，因此在应用于新领域或碰到意外的输入时不太可能出故障。
+</code></pre></div></div>
+
+<p>YOLO still lags behind state-of-the-art detection systems in accuracy. While it can quickly identify objects in images it struggles to precisely localize some objects, especially small ones. We examine these tradeoffs further in our experiments.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>YOLO在精度上仍然落后于最先进的检测系统。虽然它可以快速识别图像中的目标，但它仍在努力精确定位一些目标，尤其是小的目标。我们在实验中会进一步检查这些权衡。
+</code></pre></div></div>
+
+<p>All of our training and testing code is open source. A variety of pretrained models are also available to download.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>我们所有的训练和测试代码都是开源的。各种预训练模型也都可以下载。
 
 </code></pre></div></div>
 
-<h5 id="3_layoutsdefaulthtml">3._layouts/default.html</h5>
-<p>添加</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-&lt;script src="https://code.jquery.com/jquery-3.2.0.min.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"&gt;&lt;/script&gt;
-&lt;script&gt;AV.initialize("TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz", "8NibCKPlTVw5om1DF1dMaQvN");&lt;/script&gt;
-&lt;!--&lt;script&gt;console.log("Error: " + error.code + " " + error.message);&lt;/script&gt;--&gt;
-&lt;script&gt;
-    function showHitCount(Counter) {
-        console.log("i was called");
-        var query = new AV.Query(Counter);
-        var entries = [];
-        var $visitors = $(".leancloud_visitors");
-        $visitors.each(function () {
-            entries.push( $(this).attr("id").trim() );
-        });
-        query.containedIn('url', entries);
-        query.find()
-                .done(function (results) {
-                    console.log("results",results);
-                    var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-                    if (results.length === 0) {
-                        $visitors.find(COUNT_CONTAINER_REF).text(0);
-                        return;
-                    }
-                    for (var i = 0; i &lt; results.length; i++) {
-                        var item = results[i];
-                        var url = item.get('url');
-                        var hits = item.get('hits');
-                        var element = document.getElementById(url);
-                        $(element).find(COUNT_CONTAINER_REF).text(hits);
-                    }
-                    for(var i = 0; i &lt; entries.length; i++) {
-                        var url = entries[i];
-                        var element = document.getElementById(url);
-                        var countSpan = $(element).find(COUNT_CONTAINER_REF);
-                        if( countSpan.text() == '') {
-                            countSpan.text(0);
-                        }
-                    }
-                })
-                .fail(function (object, error) {
-                    console.log("Error: " + error.code + " " + error.message);
-                });
-    }
-    function addCount(Counter) {
-        var $visitors = $(".leancloud_visitors");
-        var url = $visitors.attr('id').trim();
-        var title = $visitors.attr('data-flag-title').trim();
-        var query = new AV.Query(Counter);
-        query.equalTo("url", url);
-        query.find({
-            success: function(results) {
-                if (results.length &gt; 0) {
-                    var counter = results[0];
-                    counter.fetchWhenSave(true);
-                    counter.increment("hits");
-                    counter.save(null, {
-                        success: function(counter) {
-                            var $element = $(document.getElementById(url));
-                            $element.find('.leancloud-visitors-count').text(counter.get('hits'));
-                        },
-                        error: function(counter, error) {
-                            console.log('Failed to save Visitor num, with error message: ' + error.message);
-                        }
-                    });
-                } else {
-                    var newcounter = new Counter();
-                    /* Set ACL */
-                    var acl = new AV.ACL();
-                    acl.setPublicReadAccess(true);
-                    acl.setPublicWriteAccess(true);
-                    newcounter.setACL(acl);
-                    /* End Set ACL */
-                    newcounter.set("title", title);
-                    newcounter.set("url", url);
-                    newcounter.set("hits", 1);
-                    newcounter.save(null, {
-                        success: function(newcounter) {
-                            var $element = $(document.getElementById(url));
-                            $element.find('.leancloud-visitors-count').text(newcounter.get('hits'));
-                        },
-                        error: function(newcounter, error) {
-                            console.log('Failed to create');
-                        }
-                    });
-                }
-            },
-            error: function(error) {
-                console.log('Error:' + error.code + " " + error.message);
-            }
-        });
-    }
-    $(function() {
-        var Counter = AV.Object.extend("Counter");
-        console.log('this is a test');
-        console.log('this is a test-add',$('.leancloud_visitors'));
-        console.log('this is a test-show',$('.post-link'));
-        if ($('.leancloud_visitors').length == 1) {
-            // in post.html, so add 1 to hit counts
-            addCount(Counter);
-        } else if ($('.post-link').length &gt; 1){
-            // in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
-            showHitCount(Counter);
-        }
-    });
-&lt;/script&gt;
+<h4 id="2-unified-detection">2. Unified Detection</h4>
+<p>We unify the separate components of object detection into a single neural network. Our network uses features from the entire image to predict each bounding box. It also predicts all bounding boxes across all classes for an image simultaneously. This means our network reasons globally about the full image and all the objects in the image. The YOLO design enables end-to-end training and real-time speeds while maintaining high average precision.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2. 统一检测
+我们将目标检测的单独组件集成到单个神经网络中。我们的网络使用整个图像的特征来预测每个边界框。它还可以同时预测一张图像中的所有类别的所有边界框。这意味着我们的网络全面地推理整张图像和图像中的所有目标。YOLO设计可实现端到端训练和实时的速度，同时保持较高的平均精度。
 </code></pre></div></div>
 
-<h5 id="4_layoutsposthtml">4._layouts/post.html</h5>
-<p>添加</p>
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">"/2019/01/addreadvalue/"</span> <span class="na">class=</span><span class="s">"leancloud_visitors"</span> <span class="na">data-flag-title=</span><span class="s">"github pages添加阅读量"</span><span class="nt">&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"post-meta-divider"</span><span class="nt">&gt;</span>|<span class="nt">&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"post-meta-item-text"</span><span class="nt">&gt;</span> Hits:  <span class="nt">&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"leancloud-visitors-count"</span><span class="nt">&gt;&lt;/span&gt;</span>
-<span class="nt">&lt;/span&gt;</span>
+<p>Our system divides the input image into an S×S grid. If the center of an object falls into a grid cell, that grid cell is responsible for detecting that object.</p>
 
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>我们的系统将输入图像分成S×S的网格。如果一个目标的中心落入一个网格单元中，该网格单元负责检测该目标。
 </code></pre></div></div>
 
-<p>reference:</p>
+<p>Each grid cell predicts B bounding boxes and confidence scores for those boxes. These confidence scores reflect how confident the model is that the box contains an object and also how accurate it thinks the box is that it predicts. Formally we define confidence as \Pr(\textrm{Object}) * \textrm{IOU}_{\textrm{pred}}^{\textrm{truth}} . If no object exists in that cell, the confidence scores should be zero. Otherwise we want the confidence score to equal the intersection over union (IOU) between the predicted box and the ground truth.</p>
 
-<p>[1]<a href="https://blog.csdn.net/u013553529/article/details/63357382">在个人博客中添加文章点击次数</a></p>
-
-<p>[2]<a href="https://github.com/galian123/galian123.github.io">github</a></p>
 
 
   </section>
@@ -520,13 +366,13 @@ showHitCount(Counter);
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2019/01/tx2shuaji/" data-toggle="tooltip" data-placement="top" title="NVIDIA tx2刷机教程">上一篇：  <span>NVIDIA tx2刷机教程</span>
+            <a href="/2019/01/addreadvalue/" data-toggle="tooltip" data-placement="top" title="github pages添加阅读量">上一篇：  <span>github pages添加阅读量</span>
             </a>
         </li>
         
         
         <li class="next">
-            <a href="/2019/01/yolo/" data-toggle="tooltip" data-placement="top" title="全卷积神经网络(FCN)">下一篇：  <span>全卷积神经网络(FCN)</span>
+            <a href="/2019/01/FCN/" data-toggle="tooltip" data-placement="top" title="全卷积神经网络(FCN)">下一篇：  <span>全卷积神经网络(FCN)</span>
             </a>
         </li>
         
