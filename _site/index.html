@@ -35,6 +35,18 @@
 <!-- 百度统计 -->
   
 
+<!--latex-->
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+
 <!-- google 统计 -->
   
 
@@ -157,6 +169,44 @@
   <ol class="post-list">
     
     <li>
+      <h2 class="post-list__post-title post-title"><a href="/2019/01/supportLatex/" title="访问 jekyll支持latex公式">jekyll支持latex公式</a> 
+      </h2>
+      <p class="excerpt">标签： 拾遗在incloud/head.html文件里加入以下代码：&lt;script type="text/x-mathjax-config"&gt;MathJax.Hub.Config({tex2jax: {skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],inlineMath: [['$','$']]}});&lt;/script&gt;&lt;script src='https://cdnjs.cloudfl...&hellip;</p>
+      <!--
+      找找为什么不能在主页上显示阅读量的原因
+      
+        <span id="/2019/01/supportLatex/" class="leancloud_visitors" data-flag-title="jekyll支持latex公式">
+         <span class="post-meta-divider">|</span>
+         <span class="post-meta-item-text"> 阅读量:  </span>
+         <span class="leancloud-visitors-count"></span>
+        </span>
+      
+      -->
+      <div class="post-list__meta">        
+        <time datetime="2019-01-08 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2019-01-08</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+
+        </div>
+        
+        
+
+
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">拾遗</span>
+          </div>
+
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2019/01/supportLatex/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
       <h2 class="post-list__post-title post-title"><a href="/2019/01/FCN/" title="访问 全卷积神经网络(FCN)">全卷积神经网络(FCN)</a> 
       </h2>
       <p class="excerpt">标签： CNN，深度学习，检测FCN又称全卷积神经网络《Fully Convolutional Networks for Semantic Segmentation》FCN的精髓      1、把卷积层 -&gt; 全连接层，看成是对一整张图片的卷积层运算。    2、把全连接层 -&gt; 全连接层，看成是采用1*1大小的卷积核，进行卷积层运算。  论文翻译先来原文的翻译（大部分来最于这里，进行些许微整理）摘要卷积网络在特征分层领域是非常强大的视觉模型。我们证明了经过端到端、像素到像素训...&hellip;</p>
@@ -189,44 +239,6 @@
 
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2019/01/FCN/>阅读全文 » </a>
-          </div>
-      </div>
-      <hr class="post-list__divider" />
-    </li>
-    
-    <li>
-      <h2 class="post-list__post-title post-title"><a href="/2019/01/yolo/" title="访问 全卷积神经网络(FCN)">全卷积神经网络(FCN)</a> 
-      </h2>
-      <p class="excerpt">标签： CNN，深度学习，检测Yolo论文标签： 深度学习，CNNYou Only Look Once: Unified, Real-Time Object Detection翻译AbstractWe present YOLO, a new approach to object detection. Prior work on object detection repurposes classifiers to perform detection. Instead, we frame ob...&hellip;</p>
-      <!--
-      找找为什么不能在主页上显示阅读量的原因
-      
-        <span id="/2019/01/yolo/" class="leancloud_visitors" data-flag-title="全卷积神经网络(FCN)">
-         <span class="post-meta-divider">|</span>
-         <span class="post-meta-item-text"> 阅读量:  </span>
-         <span class="leancloud-visitors-count"></span>
-        </span>
-      
-      -->
-      <div class="post-list__meta">        
-        <time datetime="2019-01-07 00:00:00 +0800" class="post-list__meta--date date">
-          <img src="/images/calendar.png" width="20px" /> 
-          2019-01-07</time> 
-        <div class = "tag-img-icon">
-          <img src="/images/tag-icon.svg" width="20px" /> 
-
-        </div>
-        
-        
-
-
-        <a href="/tags">
-          <div class = "post-list-icon-mate">
-            <span class="post-list__meta--tags-right">深度学习-视觉</span>
-          </div>
-
-          <div class = "post-list-small-mate">
-          <a class="btn-border-small" href=/2019/01/yolo/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
@@ -417,6 +429,44 @@
 
           <div class = "post-list-small-mate">
           <a class="btn-border-small" href=/2019/01/page/>阅读全文 » </a>
+          </div>
+      </div>
+      <hr class="post-list__divider" />
+    </li>
+    
+    <li>
+      <h2 class="post-list__post-title post-title"><a href="/2018/12/yolo/" title="访问 yolo">yolo</a> 
+      </h2>
+      <p class="excerpt">标签： CNN，深度学习，检测You Only Look Once: Unified, Real-Time Object DetectionAbstractWe present YOLO, a new approach to object detection. Prior work on object detection repurposes classifiers to perform detection. Instead, we frame object detection as a ...&hellip;</p>
+      <!--
+      找找为什么不能在主页上显示阅读量的原因
+      
+        <span id="/2018/12/yolo/" class="leancloud_visitors" data-flag-title="yolo">
+         <span class="post-meta-divider">|</span>
+         <span class="post-meta-item-text"> 阅读量:  </span>
+         <span class="leancloud-visitors-count"></span>
+        </span>
+      
+      -->
+      <div class="post-list__meta">        
+        <time datetime="2018-12-31 00:00:00 +0800" class="post-list__meta--date date">
+          <img src="/images/calendar.png" width="20px" /> 
+          2018-12-31</time> 
+        <div class = "tag-img-icon">
+          <img src="/images/tag-icon.svg" width="20px" /> 
+
+        </div>
+        
+        
+
+
+        <a href="/tags">
+          <div class = "post-list-icon-mate">
+            <span class="post-list__meta--tags-right">深度学习-视觉</span>
+          </div>
+
+          <div class = "post-list-small-mate">
+          <a class="btn-border-small" href=/2018/12/yolo/>阅读全文 » </a>
           </div>
       </div>
       <hr class="post-list__divider" />
