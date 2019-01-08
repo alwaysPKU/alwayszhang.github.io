@@ -1,6 +1,6 @@
 ---
 layout: post
-title: jekyll支持latex公式
+title: jekyll&valine实现评论功能
 date: 2019-01-08
 categories: [拾遗]
 tags: 拾遗
