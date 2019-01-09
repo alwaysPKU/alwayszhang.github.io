@@ -358,13 +358,13 @@ $Pr(Class_i|Object)$。这些概率以包含目标的网格单元为条件。每
 <p>During training we optimize the following, multi-part loss function:
 <script type="math/tex">\begin{multline} \lambda_\textbf{coord} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}     \mathbb{𝟙}_{ij}^{\text{obj}}             \left[             \left(                 x_i - \hat{x}_i             \right)^2 +             \left(                 y_i - \hat{y}_i             \right)^2             \right] \\ + \lambda_\textbf{coord} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}         \mathbb{𝟙}_{ij}^{\text{obj}}          \left[         \left(             \sqrt{w_i} - \sqrt{\hat{w}_i}         \right)^2 +         \left(             \sqrt{h_i} - \sqrt{\hat{h}_i}         \right)^2         \right] \\ + \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}         \mathbb{𝟙}_{ij}^{\text{obj}}         \left(             C_i - \hat{C}_i         \right)^2 \\ + \lambda_\textrm{noobj} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}     \mathbb{𝟙}_{ij}^{\text{noobj}}         \left(             C_i - \hat{C}_i         \right)^2 \\ + \sum_{i = 0}^{S^2} \mathbb{𝟙}_i^{\text{obj}}     \sum_{c \in \textrm{classes}}         \left(             p_i(c) - \hat{p}_i(c)         \right)^2 \end{multline}</script></p>
 
-<p>where $\mathbb{𝟙}_i^{\text{obj}}$ denotes if object appears in cell $i$ and $\mathbb{𝟙}_i^{\text{obj}}$ denotes that the $j$th bounding box predictor in cell $i$ is “responsible” for that prediction.</p>
+<p>where $\mathbb{𝟙}_i^{\text{obj}}$ denotes if object appears in cell $i$ and <script type="math/tex">\mathbb{𝟙}_{ij}^{\text{obj}}</script> denotes that the $j$th bounding box predictor in cell $i$ is “responsible” for that prediction.</p>
 
 <p>在训练期间，我们优化以下多部分损失函数：</p>
 
 <script type="math/tex; mode=display">\begin{multline} \lambda_\textbf{coord} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}     \mathbb{𝟙}_{ij}^{\text{obj}}             \left[             \left(                 x_i - \hat{x}_i             \right)^2 +             \left(                 y_i - \hat{y}_i             \right)^2             \right] \\ + \lambda_\textbf{coord} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}         \mathbb{𝟙}_{ij}^{\text{obj}}          \left[         \left(             \sqrt{w_i} - \sqrt{\hat{w}_i}         \right)^2 +         \left(             \sqrt{h_i} - \sqrt{\hat{h}_i}         \right)^2         \right] \\ + \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}         \mathbb{𝟙}_{ij}^{\text{obj}}         \left(             C_i - \hat{C}_i         \right)^2 \\ + \lambda_\textrm{noobj} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}     \mathbb{𝟙}_{ij}^{\text{noobj}}         \left(             C_i - \hat{C}_i         \right)^2 \\ + \sum_{i = 0}^{S^2} \mathbb{𝟙}_i^{\text{obj}}     \sum_{c \in \textrm{classes}}         \left(             p_i(c) - \hat{p}_i(c)         \right)^2 \end{multline}</script>
 
-<p>其中$\mathbb{𝟙}_i^{\text{obj}}$表示目标是否出现在网格单元i中，$\mathbb{𝟙}_i^{\text{obj}}$表示网格单元$i$中的第$j$个边界框预测器“负责”该预测。</p>
+<p>其中$\mathbb{𝟙}_i^{\text{obj}}$表示目标是否出现在网格单元$i$中，<script type="math/tex">\mathbb{𝟙}_{ij}^{\text{obj}}</script>表示网格单元$i$中的第$j$个边界框预测器“负责”该预测。</p>
 
 <p>Note that the loss function only penalizes classification error if an object is present in that grid cell (hence the conditional class probability discussed earlier). It also only penalizes bounding box coordinate error if that predictor is “responsible” for the ground truth box (i.e. has the highest IOU of any predictor in that grid cell).</p>
 
@@ -797,6 +797,11 @@ International Conference on, volume 1, pages I–900. IEEE, 2002. 4</p>
             </style>
 
        <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2018/12/AlexNet/" data-toggle="tooltip" data-placement="top" title="AlexNet">上一篇：  <span>AlexNet</span>
+            </a>
+        </li>
         
         
         <li class="next">
