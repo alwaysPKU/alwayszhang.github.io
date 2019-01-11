@@ -1,0 +1,1002 @@
+<DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>ResNet</title>
+  <meta name="description" content="">
+  <meta name="author" content="leopardpan">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="ResNet">
+  <meta name="twitter:description" content="">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="ResNet">
+  <meta property="og:description" content="">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+
+  <link rel="canonical" href="http://localhost:4000/2018/12/resnet/">
+  <link rel="alternate" type="application/rss+xml" title="半甜不要腻" href="http://localhost:4000/feed.xml">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+
+<!--latex-->
+  <script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+      inlineMath: [['$','$']]
+    }
+  });
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      分类
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 半甜不要腻 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                                CuteJ
+                            
+                        </h2>
+                        <p>
+                           
+                                Come on!
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for 半甜不要腻" class="blog-button">半甜不要腻</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">halfsuger</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">welcome to my page</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">分类</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">ResNet</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2018-12-27 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2018-12-27</time>  
+
+       
+       <span id="/2018/12/resnet/" class="leancloud_visitors" data-flag-title="ResNet">
+        <span class="post-meta-divider" ></span>
+        <span class="post-meta-item-text">  <--阅读量:</span>
+        <span class="leancloud-visitors-count"></span>
+        -->
+       </span>
+      
+      
+
+         
+      <!--<span id="busuanzi_container_page_pv"> | 阅读:<span id="busuanzi_value_page_pv"></span>次</span> -->
+    </p>
+    </div>
+  </header>
+
+  <section class="post">
+    <!--more-->
+
+<p>标签： 深度学习-视觉</p>
+
+<hr />
+
+<h3 id="deep-residual-learning-for-image-recognition"><a href="https://arxiv.org/abs/1512.03385">Deep Residual Learning for Image Recognition</a></h3>
+
+<h4 id="深度残差学习图片识别">深度残差学习图片识别</h4>
+<hr />
+
+<h3 id="abstract">Abstract</h3>
+<h4 id="摘要">摘要</h4>
+<p>Deeper neural networks are more difficult to train. We present a residual learning framework to ease the training of networks that are substantially deeper than those used previously. We explicitly reformulate the layers as learning residual functions with reference to the layer inputs, instead of learning unreferenced functions. We provide comprehensive empirical evidence showing that these residual networks are easier to optimize, and can gain accuracy from considerably increased depth. On the ImageNet dataset we evaluate residual nets with a depth of up to 152 layers——8× deeper than VGG nets [40] but still having lower complexity. An ensemble of these residual nets achieves 3.57% error on the ImageNet test set. This result won the 1st place on the ILSVRC 2015 classification task. We also present analysis on CIFAR-10 with 100 and 1000 layers.</p>
+
+<p><strong>更深的神经网络更难训练。我们提出了一种残差学习框架来减轻网络训练的难度，这些网络比以前使用的网络更深。我们明确地将层变为学习关于层输入的残差函数，而不是学习未参考的函数。我们提供了全面的经验证据说明这些残差网络很容易优化，并可以显著增加深度来提高准确性。在ImageNet数据集上我们评估了深度高达152层的残差网络——比VGG[40]深8倍但仍具有较低的复杂度。这些残差网络的集合在ImageNet测试集上取得了3.57%的错误率。这个结果在ILSVRC 2015分类任务上赢得了第一名。我们也在CIFAR-10上分析了100层和1000层的残差网络。</strong></p>
+
+<p>The depth of representations is of central importance for many visual recognition tasks. Solely due to our extremely deep representations, we obtain a 28% relative improvement on the COCO object detection dataset. Deep residual nets are foundations of our submissions to ILSVRC &amp; COCO 2015 competitions, where we also won the 1st places on the tasks of ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation.</p>
+
+<p><strong>对于许多视觉识别任务而言，表示的深度是至关重要的。仅由于我们非常深度的表示，我们便在COCO目标检测数据集上得到了28%的相对提高。深度残差网络是我们向ILSVRC和COCO 2015竞赛提交的基础，我们也赢得了ImageNet检测任务，ImageNet定位任务，COCO检测和COCO分割任务的第一名。</strong></p>
+
+<h3 id="1-introduction">1. Introduction</h3>
+<h4 id="1-引言">1. 引言</h4>
+<p>Deep convolutional neural networks [22, 21] have led to a series of breakthroughs for image classification [21, 49, 39]. Deep networks naturally integrate low/mid/high-level features [49] and classifiers in an end-to-end multi-layer fashion, and the “levels” of features can be enriched by the number of stacked layers (depth). Recent evidence [40, 43] reveals that network depth is of crucial importance, and the leading results [40, 43, 12, 16] on the challenging ImageNet dataset [35] all exploit “very deep” [40] models, with a depth of sixteen [40] to thirty [16]. Many other non-trivial visual recognition tasks [7, 11, 6, 32, 27] have also greatly benefited from very deep models.</p>
+
+<p><strong>深度卷积神经网络[22, 21]导致了图像分类[21, 49, 39]的一系列突破。深度网络自然地将低/中/高级特征[49]和分类器以端到端多层方式进行集成，特征的“级别”可以通过堆叠层的数量（深度）来丰富。最近的证据[40, 43]显示<code class="highlighter-rouge">网络深度至关重要</code>，在具有挑战性的ImageNet数据集上领先的结果都采用了“非常深”[40]的模型，深度从16 [40]到30 [16]之间。许多其它重要的视觉识别任务[7, 11, 6, 32, 27]也从非常深的模型中得到了极大受益。</strong></p>
+
+<p>Driven by the significance of depth, a question arises: Is learning better networks as easy as stacking more layers? An obstacle to answering this question was the notorious problem of vanishing/exploding gradients [14, 1, 8], which hamper convergence from the beginning. This problem, however, has been largely addressed by normalized initialization [23, 8, 36, 12] and intermediate normalization layers [16], which enable networks with tens of layers to start converging for stochastic gradient descent (SGD) with backpropagation [22].</p>
+
+<p><strong>在深度重要性的推动下，出现了一个问题：学些更好的网络是否像堆叠更多的层一样容易？回答这个问题的一个障碍是梯度消失/爆炸[14, 1, 8]这个众所周知的问题，它从一开始就阻碍了收敛。然而，这个问题通过标准初始化[23, 8, 36, 12]和中间标准化层[16]在很大程度上已经解决，这使得数十层的网络能通过具有反向传播的随机梯度下降（SGD）开始收敛。</strong></p>
+
+<p>When deeper networks are able to start converging, a degradation problem has been exposed: with the network depth increasing, accuracy gets saturated (which might be unsurprising) and then degrades rapidly. Unexpectedly, such degradation is not caused by overfitting, and adding more layers to a suitably deep model leads to higher training error, as reported in [10, 41] and thoroughly verified by our experiments. Fig. 1 shows a typical example.</p>
+
+<p><strong>当更深的网络能够开始收敛时，暴露了一个退化问题：随着网络深度的增加，准确率达到饱和（这可能并不奇怪）然后迅速下降。意外的是，<code class="highlighter-rouge">这种下降不是由过拟合引起的</code>，并且在适当的深度模型上添加更多的层会导致更高的训练误差，正如[10, 41]中报告的那样，并且由我们的实验完全证实。图1显示了一个典型的例子。</strong></p>
+
+<p><img src="/images/posts/ResNet/1.png" alt="1" /></p>
+
+<p>Figure 1. Training error (left) and test error (right) on CIFAR-10 with 20-layer and 56-layer “plain” networks. The deeper network has higher training error, and thus test error. Similar phenomena on ImageNet is presented in Fig. 4.</p>
+
+<p><strong>图1 20层和56层的“简单”网络在CIFAR-10上的训练误差（左）和测试误差（右）。更深的网络有更高的训练误差和测试误差。ImageNet上的类似现象如图4所示。</strong></p>
+
+<p>The degradation (of training accuracy) indicates that not all systems are similarly easy to optimize. Let us consider a shallower architecture and its deeper counterpart that adds more layers onto it. There exists a solution by construction to the deeper model: the added layers are identity mapping, and the other layers are copied from the learned shallower model. The existence of this constructed solution indicates that a deeper model should produce no higher training error than its shallower counterpart. But experiments show that our current solvers on hand are unable to find solutions that are comparably good or better than the constructed solution (or unable to do so in feasible time).</p>
+
+<p><strong>退化（训练准确率）表明不是所有的系统都很容易优化。让我们考虑一个较浅的架构及其更深层次的对象，为其添加更多的层。存在通过构建得到更深层模型的解决方案：添加的层是恒等映射，其他层是从学习到的较浅模型的拷贝。 这种构造解决方案的存在表明，较深的模型不应该产生比其对应的较浅模型更高的训练误差。但是实验表明，我们目前现有的解决方案无法找到与构建的解决方案相比相对不错或更好的解决方案（或在合理的时间内无法实现）。</strong></p>
+
+<p>In this paper, we address the degradation problem by introducing a deep residual learning framework. Instead of hoping each few stacked layers directly fit a desired underlying mapping, we explicitly let these layers fit a residual mapping. Formally, denoting the desired underlying mapping as $H(x)$, we let the stacked nonlinear layers fit another mapping of $F(x):=H(x)−x$. The original mapping is recast into $F(x)+x$. We hypothesize that it is easier to optimize the residual mapping than to optimize the original, unreferenced mapping. To the extreme, if an identity mapping were optimal, it would be easier to push the residual to zero than to fit an identity mapping by a stack of nonlinear layers.</p>
+
+<p><strong>在本文中，我们通过引入深度残差学习框架解决了退化问题。我们明确地让这些层拟合残差映射，而不是希望每几个堆叠的层直接拟合期望的基础映射。形式上，将期望的基础映射表示为$H(x)$，我们将堆叠的非线性层拟合另一个映射$F(x):=H(x)−x$。原始的映射重写为$F(x)+x$。我们假设残差映射比原始的、未参考的映射更容易优化。在极端情况下，如果一个恒等映射是最优的，那么将残差置为零比通过一堆非线性层来拟合恒等映射更容易。</strong></p>
+
+<p>The formulation of $F(x)+x$ can be realized by feedforward neural networks with “shortcut connections” (Fig. 2). Shortcut connections [2, 33, 48] are those skipping one or more layers. In our case, the shortcut connections simply perform identity mapping, and their outputs are added to the outputs of the stacked layers (Fig. 2). Identity shortcut connections add neither extra parameter nor computational complexity. The entire network can still be trained end-to-end by SGD with backpropagation, and can be easily implemented using common libraries (e.g., Caffe [19]) without modifying the solvers.</p>
+
+<p><strong>公式$F(x)+x$可以通过带有“快捷连接”的前向神经网络（图2）来实现。快捷连接[2, 33, 48]是那些<code class="highlighter-rouge">跳过一层或更多层的连接</code>。在我们的案例中，快捷连接简单地执行恒等映射，并将其输出添加到堆叠层的输出（图2）。<code class="highlighter-rouge">恒等快捷连接既不增加额外的参数也不增加计算复杂度</code>。整个网络仍然可以由带有反向传播的SGD进行端到端的训练，并且可以使用公共库（例如，Caffe [19]）轻松实现，而无需修改求解器。</strong></p>
+
+<p><img src="/images/posts/ResNet/2.png" alt="2" /></p>
+
+<p>Figure 2. Residual learning: a building block.</p>
+
+<p><strong>图2. 残差学习：构建块</strong></p>
+
+<p>We present comprehensive experiments on ImageNet [35] to show the degradation problem and evaluate our method. We show that: 1) Our extremely deep residual nets are easy to optimize, but the counterpart “plain” nets (that simply stack layers) exhibit higher training error when the depth increases; 2) Our deep residual nets can easily enjoy accuracy gains from greatly increased depth, producing results substantially better than previous networks.</p>
+
+<p><strong>我们在ImageNet[35]上进行了综合实验来显示退化问题并评估我们的方法。我们发现：1）我们极深的残差网络易于优化，但当深度增加时，对应的“简单”网络（简单堆叠层）表现出更高的训练误差；2）我们的深度残差网络可以从大大增加的深度中轻松获得准确性收益，生成的结果实质上比以前的网络更好。</strong></p>
+
+<p>Similar phenomena are also shown on the CIFAR-10 set [20], suggesting that the optimization difficulties and the effects of our method are not just akin to a particular dataset. We present successfully trained models on this dataset with over 100 layers, and explore models with over 1000 layers.</p>
+
+<p><strong>CIFAR-10数据集上[20]也显示出类似的现象，这表明了优化的困难以及我们的方法的影响不仅仅是针对一个特定的数据集。我们在这个数据集上展示了成功训练的超过100层的模型，并探索了超过1000层的模型。</strong></p>
+
+<p>On the ImageNet classification dataset [35], we obtain excellent results by extremely deep residual nets. Our 152-layer residual net is the deepest network ever presented on ImageNet, while still having lower complexity than VGG nets [40]. Our ensemble has 3.57% top-5 error on the ImageNet test set, and won the 1st place in the ILSVRC 2015 classification competition. The extremely deep representations also have excellent generalization performance on other recognition tasks, and lead us to further win the 1st places on: ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation in ILSVRC &amp; COCO 2015 competitions. This strong evidence shows that the residual learning principle is generic, and we expect that it is applicable in other vision and non-vision problems.</p>
+
+<p><strong>在ImageNet分类数据集[35]中，我们通过非常深的残差网络获得了很好的结果。我们的152层残差网络是ImageNet上最深的网络，同时还具有比VGG网络[40]更低的复杂性。我们的模型集合在ImageNet测试集上有3.57% top-5的错误率，并在ILSVRC 2015分类比赛中获得了第一名。极深的表示在其它识别任务中也有极好的泛化性能，并带领我们在进一步赢得了第一名：包括ILSVRC &amp; COCO 2015竞赛中的ImageNet检测，ImageNet定位，COCO检测和COCO分割。坚实的证据表明残差学习准则是通用的，并且我们期望它适用于其它的视觉和非视觉问题。</strong></p>
+
+<h3 id="2-related-work">2. Related Work</h3>
+<h4 id="2-相关工作">2. 相关工作</h4>
+<p><code class="highlighter-rouge">Residual Representations</code>. In image recognition, VLAD [18] is a representation that encodes by the residual vectors with respect to a dictionary, and Fisher Vector [30] can be formulated as a probabilistic version [18] of VLAD. Both of them are powerful shallow representations for image retrieval and classification [4, 47]. For vector quantization, encoding residual vectors [17] is shown to be more effective than encoding original vectors.</p>
+
+<p><strong><code class="highlighter-rouge">残差表示</code>。在图像识别中，VLAD[18]是一种通过关于字典的残差向量进行编码的表示形式，Fisher矢量[30]可以表示为VLAD的概率版本[18]。它们都是图像检索和图像分类[4,47]中强大的浅层表示。对于矢量量化，编码残差矢量[17]被证明比编码原始矢量更有效。</strong></p>
+
+<p>In low-level vision and computer graphics, for solving Partial Differential Equations (PDEs), the widely used Multigrid method [3] reformulates the system as subproblems at multiple scales, where each subproblem is responsible for the residual solution between a coarser and a finer scale. An alternative to Multigrid is hierarchical basis preconditioning [44, 45], which relies on variables that represent residual vectors between two scales. It has been shown [3, 44, 45] that these solvers converge much faster than standard solvers that are unaware of the residual nature of the solutions. These methods suggest that a good reformulation or preconditioning can simplify the optimization.</p>
+
+<p><strong>在低级视觉和计算机图形学中，为了求解偏微分方程（PDE），广泛使用的Multigrid方法[3]将系统重构为在多个尺度上的子问题，其中每个子问题负责较粗尺度和较细尺度的残差解。Multigrid的替代方法是层次化基础预处理[44,45]，它依赖于表示两个尺度之间残差向量的变量。已经被证明[3,44,45]这些求解器比不知道解的残差性质的标准求解器收敛得更快。这些方法表明，良好的重构或预处理可以简化优化。</strong></p>
+
+<p><code class="highlighter-rouge">Shortcut Connections</code>. Practices and theories that lead to shortcut connections [2, 33, 48] have been studied for a long time. An early practice of training multi-layer perceptrons (MLPs) is to add a linear layer connected from the network input to the output [33, 48]. In [43, 24], a few intermediate layers are directly connected to auxiliary classifiers for addressing vanishing/exploding gradients. The papers of [38, 37, 31, 46] propose methods for centering layer responses, gradients, and propagated errors, implemented by shortcut connections. In [43], an “inception” layer is composed of a shortcut branch and a few deeper branches.</p>
+
+<p><strong><code class="highlighter-rouge">快捷连接</code>。导致快捷连接[2,33,48]的实践和理论已经被研究了很长时间。训练多层感知机（MLP）的早期实践是添加一个线性层来连接网络的输入和输出[33,48]。在[43,24]中，一些中间层直接连接到辅助分类器，用于解决梯度消失/爆炸。论文[38,37,31,46]提出了通过快捷连接实现层间响应，梯度和传播误差的方法。在[43]中，一个“inception”层由一个快捷分支和一些更深的分支组成。</strong></p>
+
+<p>Concurrent with our work, “highway networks” [41, 42] present shortcut connections with gating functions [15]. These gates are data-dependent and have parameters, in contrast to our identity shortcuts that are parameter-free. When a gated shortcut is “closed” (approaching zero), the layers in highway networks represent non-residual functions. On the contrary, our formulation always learns residual functions; our identity shortcuts are never closed, and all information is always passed through, with additional residual functions to be learned. In addition, highway networks have not demonstrated accuracy gains with extremely increased depth (e.g., over 100 layers).</p>
+
+<p><strong>和我们同时进行的工作，“highway networks” [41, 42]提出了门功能[15]的快捷连接。这些门是数据相关且有参数的，与我们不具有参数的恒等快捷连接相反。当门控快捷连接“关闭”（接近零）时，高速网络中的层表示非残差函数。相反，我们的公式总是学习残差函数；我们的恒等快捷连接永远不会关闭，所有的信息总是通过，还有额外的残差函数要学习。此外，高速网络还没有证实极度增加的深度（例如，超过100个层）带来的准确性收益。</strong></p>
+
+<h3 id="3-deep-residual-learning">3. Deep Residual Learning</h3>
+<h4 id="3-深度残差学习">3. 深度残差学习</h4>
+
+<hr />
+
+<h4 id="31-residual-learning">3.1. Residual Learning</h4>
+<h4 id="31-残差学习">3.1. 残差学习</h4>
+
+<p>Let us consider $H(x)$ as an underlying mapping to be fit by a few stacked layers (not necessarily the entire net), with $x$ denoting the inputs to the first of these layers. If one hypothesizes that multiple nonlinear layers can asymptotically approximate complicated functions, then it is equivalent to hypothesize that they can asymptotically approximate the residual functions, i.e., $H(x)−x$ (assuming that the input and output are of the same dimensions). So rather than expect stacked layers to approximate $H(x)$, we explicitly let these layers approximate a residual function $F(x):=H(x)−x$. The original function thus becomes $F(x)+x$. Although both forms should be able to asymptotically approximate the desired functions (as hypothesized), the ease of learning might be different.</p>
+
+<p><strong>我们考虑$H(x)$作为几个堆叠层（不必是整个网络）要拟合的基础映射，$x$表示这些层中第一层的输入。假设多个非线性层可以渐近地近似复杂函数，它等价于假设它们可以渐近地近似残差函数，即$H(x)−x$(假设输入输出是相同维度)。因此，我们明确让这些层近似参数函数 $F(x):=H(x)−x$，而不是期望堆叠层近似$H(x)$。因此原始函数变为$F(x)+x$。尽管两种形式应该都能渐近地近似要求的函数（如假设），但学习的难易程度可能是不同的。</strong></p>
+
+<p>This reformulation is motivated by the counterintuitive phenomena about the degradation problem (Fig. 1, left). As we discussed in the introduction, if the added layers can be constructed as identity mappings, a deeper model should have training error no greater than its shallower counterpart. The degradation problem suggests that the solvers might have difficulties in approximating identity mappings by multiple nonlinear layers. With the residual learning reformulation, if identity mappings are optimal, the solvers may simply drive the weights of the multiple nonlinear layers toward zero to approach identity mappings.</p>
+
+<p><strong>关于退化问题的反直觉现象激发了这种重构（图1左）。正如我们在引言中讨论的那样，如果添加的层可以被构建为恒等映射，更深模型的训练误差应该不大于它对应的更浅版本。退化问题表明求解器通过多个非线性层来近似恒等映射可能有困难。通过残差学习的重构，如果恒等映射是最优的，求解器可能简单地将多个非线性连接的权重推向零来接近恒等映射。</strong></p>
+
+<p>In real cases, it is unlikely that identity mappings are optimal, but our reformulation may help to precondition the problem. If the optimal function is closer to an identity mapping than to a zero mapping, it should be easier for the solver to find the perturbations with reference to an identity mapping, than to learn the function as a new one. We show by experiments (Fig. 7) that the learned residual functions in general have small responses, suggesting that identity mappings provide reasonable preconditioning.</p>
+
+<p><strong>在实际情况下，恒等映射不太可能是最优的，但是我们的重构可能有助于对问题进行预处理。如果最优函数比零映射更接近于恒等映射，则求解器应该更容易找到关于恒等映射的抖动，而不是将该函数作为新函数来学习。我们通过实验（图7）显示学习的残差函数通常有更小的响应，表明恒等映射提供了合理的预处理。</strong></p>
+
+<p><img src="/images/posts/ResNet/3.png" alt="3" /></p>
+
+<p>Figure 7. Standard deviations (std) of layer responses on CIFAR-10. The responses are the outputs of each 3×3 layer, after BN and before nonlinearity. Top: the layers are shown in their original order. Bottom: the responses are ranked in descending order.</p>
+
+<p><strong>图7。层响应在CIFAR-10上的标准差（std）。这些响应是每个3×3层的输出，在BN之后非线性之前。上面：以原始顺序显示层。下面：响应按降序排列。</strong></p>
+
+<hr />
+
+<h4 id="32-identity-mapping-by-shortcuts">3.2. Identity Mapping by Shortcuts</h4>
+<h4 id="32-快捷恒等映射">3.2. 快捷恒等映射</h4>
+<p>We adopt residual learning to every few stacked layers. A building block is shown in Fig. 2. Formally, in this paper we consider a building block defined as:</p>
+
+<p><strong>我们每隔几个堆叠层采用残差学习。构建块如图2所示。在本文中我们考虑构建块正式定义为：</strong></p>
+
+<p><script type="math/tex">y = F(x, {W_i}) + x</script>
+(1)</p>
+
+<p>Here $x$ and $y$ are the input and output vectors of the layers considered. The function $F(x, {W_i})$ represents the residual mapping to be learned. For the example in Fig. 2 that has two layers, $F = W_2 \sigma(W_1x)$ in which $σ$ denotes ReLU [29] and the biases are omitted for simplifying notations. The operation $F+x$ is performed by a shortcut connection and element-wise addition. We adopt the second nonlinearity after the addition (i.e., σ(y), see Fig. 2).</p>
+
+<p><strong>$x$和$y$是考虑的层的输入和输出向量。函数$F(x, {W_i})$表示要学习的残差映射。图2中的例子有两层，$F = W_2 \sigma(W_1x)$中$σ$表示ReLU[29]，为了简化写法忽略偏置项。$F+x$操作通过快捷连接和各个元素相加来执行。在相加之后我们采纳了第二种非线性（即σ(y)，看图2）。</strong></p>
+
+<p>The shortcut connections in Eqn.(1) introduce neither extra parameter nor computation complexity. This is not only attractive in practice but also important in our comparisons between plain and residual networks. We can fairly compare plain/residual networks that simultaneously have the same number of parameters, depth, width, and computational cost (except for the negligible element-wise addition).</p>
+
+<p><strong>方程(1)中的快捷连接既没有引入外部参数又没有增加计算复杂度。这不仅在实践中有吸引力，而且在简单网络和残差网络的比较中也很重要。我们可以公平地比较同时具有相同数量的参数，相同深度，宽度和计算成本的简单/残差网络（除了不可忽略的元素加法之外）。</strong></p>
+
+<p>The dimensions of $x$ and $F$ must be equal in Eqn.(1). If this is not the case (e.g., when changing the input/output channels), we can perform a linear projection $W_s$ by the shortcut connections to match the dimensions:</p>
+
+<p><strong>方程(1)中$x$和$F$的维度必须是相等的。如果不是这种情况（例如，当更改输入/输出通道时），我们可以通过快捷连接执行线性投影$W_s$来匹配维度：</strong></p>
+
+<p><script type="math/tex">y = F(x, {W_i }) + W_sx</script>
+(2)</p>
+
+<p>We can also use a square matrix $W_s$ in Eqn.(1). But we will show by experiments that the identity mapping is sufficient for addressing the degradation problem and is economical, and thus $W_s$ is only used when matching dimensions.</p>
+
+<p><strong>我们也可以使用方程(1)中的方阵$W_s$。但是我们将通过实验表明，恒等映射足以解决退化问题，并且是合算的，因此$W_s$仅在匹配维度时使用。</strong></p>
+
+<p>The form of the residual function $F$ is flexible. Experiments in this paper involve a function $F$ that has two or three layers (Fig. 5), while more layers are possible. But if $F$ has only a single layer, Eqn.(1) is similar to a linear layer: $y = W_1x + x$, for which we have not observed advantages.</p>
+
+<p><strong>残差函数$F$的形式是可变的。本文中的实验包括有两层或三层（图5）的函数$F$，同时可能有更多的层。但如果$F$只有一层，方程(1)类似于线性层：$y = W_1x + x$，我们没有看到优势。</strong></p>
+
+<p><img src="/images/posts/ResNet/4.png" alt="4" /></p>
+
+<p>Figure 5. A deeper residual function $F$ for ImageNet. Left: a building block (on 56×56 feature maps) as in Fig. 3 for ResNet-34. Right: a “bottleneck” building block for ResNet-50/101/152.</p>
+
+<p><strong>图5。ImageNet的深度残差函数$F$。左：ResNet-34的构建块（在56×56的特征图上），如图3。右：ResNet-50/101/152的“bottleneck”构建块。</strong></p>
+
+<p>We also note that although the above notations are about fully-connected layers for simplicity, they are applicable to convolutional layers. The function $F(x,{W_i})$ can represent multiple convolutional layers. The element-wise addition is performed on two feature maps, channel by channel.</p>
+
+<p><strong>我们还注意到，为了简单起见，尽管上述符号是关于全连接层的，但它们同样适用于卷积层。函数$F(x,{W_i})$可以表示多个卷积层。元素加法在两个特征图上逐通道进行。</strong></p>
+
+<hr />
+
+<h4 id="33-network-architectures">3.3. Network Architectures</h4>
+<h4 id="33-网络架构">3.3. 网络架构</h4>
+<p>We have tested various plain/residual nets, and have observed consistent phenomena. To provide instances for discussion, we describe two models for ImageNet as follows.</p>
+
+<p><strong>我们测试了各种简单/残差网络，并观察到了一致的现象。为了提供讨论的实例，我们描述了ImageNet的两个模型如下。</strong></p>
+
+<p><code class="highlighter-rouge">Plain Network</code>. Our plain baselines (Fig. 3, middle) are mainly inspired by the philosophy of VGG nets 40. The convolutional layers mostly have 3×3 filters and follow two simple design rules: (i) for the same output feature map size, the layers have the same number of filters; and (ii) if the feature map size is halved, the number of filters is doubled so as to preserve the time complexity per layer. We perform downsampling directly by convolutional layers that have a stride of 2. The network ends with a global average pooling layer and a 1000-way fully-connected layer with softmax. The total number of weighted layers is 34 in Fig. 3 (middle).</p>
+
+<p><code class="highlighter-rouge">简单网络</code>。 我们简单网络的基准（图3，中间）主要受到VGG网络[40]（图3，左图）的哲学启发。卷积层主要有3×3的滤波器，并遵循两个简单的设计规则：（i）<code class="highlighter-rouge">对于相同的输出特征图尺寸，层具有相同数量的滤波器</code>；（ii）<code class="highlighter-rouge">如果特征图尺寸减半，则滤波器数量加倍，以便保持每层的时间复杂度</code>。我们通过步长为2的卷积层直接执行下采样。网络以全局平均池化层和具有softmax的1000维全连接层结束。图3（中间）的加权层总数为34。</p>
+
+<p><img src="/images/posts/ResNet/5.png" alt="5" /></p>
+
+<p>Figure 3. Example network architectures for ImageNet. Left: the VGG-19 model [40] (19.6 billion FLOPs) as a reference. Middle: a plain network with 34 parameter layers (3.6 billion FLOPs). Right: a residual network with 34 parameter layers (3.6 billion FLOPs). The dotted shortcuts increase dimensions. Table 1 shows more details and other variants.</p>
+
+<p><strong>图3。ImageNet的网络架构例子。左：作为参考的VGG-19模型40。中：具有34个参数层的简单网络（36亿FLOPs）。右：具有34个参数层的残差网络（36亿FLOPs）。带点的快捷连接增加了维度。表1显示了更多细节和其它变种。</strong></p>
+
+<p><img src="/images/posts/ResNet/6.png" alt="6" /></p>
+
+<p>Table 1. Architectures for ImageNet. Building blocks are shown in brackets (see also Fig. 5), with the numbers of blocks stacked. Down-
+sampling is performed by conv3_1, conv4_1, and conv5_1 with a stride of 2.</p>
+
+<p><strong>表1。ImageNet架构。构建块显示在括号中（也可看图5），以及构建块的堆叠数量。下采样通过步长为2的conv3_1, conv4_1和conv5_1执行。</strong></p>
+
+<p>It is worth noticing that our model has fewer filters and lower complexity than VGG nets 40. Our 34-layer baseline has 3.6 billion FLOPs (multiply-adds), which is only 18% of VGG-19 (19.6 billion FLOPs).</p>
+
+<p><strong>值得注意的是我们的模型与VGG网络（图3左）相比，有更少的滤波器和更低的复杂度。我们的34层基准有36亿FLOP(乘加)，仅是VGG-19（196亿FLOP）的18%。</strong></p>
+
+<p><code class="highlighter-rouge">Residual Network</code>. Based on the above plain network, we insert shortcut connections (Fig. 3, right) which turn the network into its counterpart residual version. The identity shortcuts (Eqn.(1)) can be directly used when the input and output are of the same dimensions (solid line shortcuts in Fig. 3). When the dimensions increase (dotted line shortcuts in Fig. 3), we consider two options: (A) The shortcut still performs identity mapping, with extra zero entries padded for increasing dimensions. This option introduces no extra parameter; (B) The projection shortcut in Eqn.(2) is used to match dimensions (done by 1×1 convolutions). For both options, when the shortcuts go across feature maps of two sizes, they are performed with a stride of 2.</p>
+
+<p><strong><code class="highlighter-rouge">残差网络</code>。 基于上述的简单网络，我们插入快捷连接（图3，右），将网络转换为其对应的残差版本。当输入和输出具有相同的维度时（图3中的实线快捷连接）时，可以直接使用恒等快捷连接（方程（1））。<code class="highlighter-rouge">当维度增加（图3中的虚线快捷连接）时</code>，我们考虑两个选项：（A）<code class="highlighter-rouge">快捷连接仍然执行恒等映射，额外填充零输入以增加维度</code>。此选项不会引入额外的参数；（B）<code class="highlighter-rouge">方程（2）中的投影快捷连接用于匹配维度（由1×1卷积完成）</code>。对于这两个选项，当快捷连接跨越两种尺寸的特征图时，它们执行时步长为2。</strong></p>
+
+<hr />
+
+<h4 id="34-implementation">3.4. Implementation</h4>
+<h4 id="34-实现">3.4. 实现</h4>
+<p>Our implementation for ImageNet follows the practice in [21, 40]. The image is resized with its shorter side randomly sampled in [256, 480] for scale augmentation [40]. A 224×224 crop is randomly sampled from an image or its horizontal flip, with the per-pixel mean subtracted [21]. The standard color augmentation in [21] is used. We adopt batch normalization (BN) [16] right after each convolution and before activation, following [16]. We initialize the weights as in [12] and train all plain/residual nets from scratch. We use SGD with a mini-batch size of 256. The learning rate starts from 0.1 and is divided by 10 when the error plateaus, and the models are trained for up to $60 × 10^4$ iterations. We use a weight decay of 0.0001 and a momentum of 0.9. We do not use dropout [13], following the practice in [16].</p>
+
+<p><strong>ImageNet中我们的实现遵循[21，40]的实践。调整图像大小，其较短的边在[256,480]之间进行随机采样，用于尺度增强[40]。224×224裁剪是从图像或其水平翻转中随机采样，并逐像素减去均值[21]。使用了[21]中的标准颜色增强。<code class="highlighter-rouge">在每个卷积之后和激活之前，我们采用批量归一化（BN）</code>[16]。我们按照[12]的方法初始化权重，从零开始训练所有的简单/残差网络。我们使用批大小为256的SGD方法。学习速度从0.1开始，当误差稳定时学习率除以10，并且模型训练高达$60 × 10^4$次迭代。我们使用的权重衰减为0.0001，动量为0.9。根据[16]的实践，我们不使用丢弃[13]。</strong></p>
+
+<p>In testing, for comparison studies we adopt the standard 10-crop testing [21]. For best results, we adopt the fully-convolutional form as in [40, 12], and average the scores at multiple scales (images are resized such that the shorter side is in {224, 256, 384, 480, 640}).</p>
+
+<p><strong>在测试阶段，为了比较学习我们采用标准的10-crop测试[21]。对于最好的结果，我们采用如[40, 12]中的全卷积形式，并在多尺度上对分数进行平均（图像归一化，短边位于{224, 256, 384, 480, 640}中）。</strong></p>
+
+<h3 id="4-experiments">4. Experiments</h3>
+<h4 id="4-实验">4. 实验</h4>
+
+<hr />
+
+<h4 id="41-imagenet-classification">4.1. ImageNet Classification</h4>
+<h4 id="41-imagenet分类">4.1. ImageNet分类</h4>
+
+<p>We evaluate our method on the ImageNet 2012 classification dataset [35] that consists of 1000 classes. The models are trained on the 1.28 million training images, and evaluated on the 50k validation images. We also obtain a final result on the 100k test images, reported by the test server. We evaluate both top-1 and top-5 error rates.</p>
+
+<p><strong>我们在ImageNet 2012分类数据集[35]对我们的方法进行了评估，该数据集由1000个类别组成。这些模型在128万张训练图像上进行训练，并在5万张验证图像上进行评估。我们也获得了测试服务器报告的在10万张测试图像上的最终结果。我们评估了top-1和top-5错误率。</strong></p>
+
+<p><code class="highlighter-rouge">Plain Networks</code>. We first evaluate 18-layer and 34-layer plain nets. The 34-layer plain net is in Fig. 3 (middle). The 18-layer plain net is of a similar form. See Table 1 for detailed architectures.</p>
+
+<p><code class="highlighter-rouge">简单网络</code>。我们首先评估18层和34层的简单网络。34层简单网络在图3（中间）。18层简单网络是一种类似的形式。有关详细的体系结构，请参见表1。</p>
+
+<p>The results in Table 2 show that the deeper 34-layer plain net has higher validation error than the shallower 18-layer plain net. To reveal the reasons, in Fig. 4 (left) we compare their training/validation errors during the training procedure. We have observed the degradation problem —— the 34-layer plain net has higher training error throughout the whole training procedure, even though the solution space of the 18-layer plain network is a subspace of that of the 34-layer one.</p>
+
+<p><strong>表2中的结果表明，较深的34层简单网络比较浅的18层简单网络有更高的验证误差。为了揭示原因，在图4（左图）中，我们比较训练过程中的训练/验证误差。我们观察到退化问题——虽然18层简单网络的解空间是34层简单网络解空间的子空间，但34层简单网络在整个训练过程中具有较高的训练误差。</strong></p>
+
+<p><img src="/images/posts/ResNet/7.png" alt="7" /></p>
+
+<p>Table 2. Top-1 error (%, 10-crop testing) on ImageNet validation. Here the ResNets have no extra parameter compared to their plain counterparts. Fig. 4 shows the training procedures.</p>
+
+<p><strong>表2中的结果表明，较深的34层简单网络比较浅的18层简单网络有更高的验证误差。为了揭示原因，在图4（左图）中，我们比较训练过程中的训练/验证误差。我们观察到退化问题——<code class="highlighter-rouge">虽然18层简单网络的解空间是34层简单网络解空间的子空间</code>，但34层简单网络在整个训练过程中具有较高的训练误差。</strong></p>
+
+<p><img src="/images/posts/ResNet/8.png" alt="8" /></p>
+
+<p>Figure 4. Training on ImageNet. Thin curves denote training error, and bold curves denote validation error of the center crops. Left: plain networks of 18 and 34 layers. Right: ResNets of 18 and 34 layers. In this plot, the residual networks have no extra parameter compared to their plain counterparts.</p>
+
+<p><strong>图4。在ImageNet上训练。细曲线表示训练误差，粗曲线表示中心裁剪图像的验证误差。左：18层和34层的简单网络。右：18层和34层的ResNet。在本图中，残差网络与对应的简单网络相比没有额外的参数。</strong></p>
+
+<p>We argue that this optimization difficulty is unlikely to be caused by vanishing gradients. These plain networks are trained with BN [16], which ensures forward propagated signals to have non-zero variances. We also verify that the backward propagated gradients exhibit healthy norms with BN. So neither forward nor backward signals vanish. In fact, the 34-layer plain net is still able to achieve competitive accuracy (Table 3), suggesting that the solver works to some extent. We conjecture that the deep plain nets may have exponentially low convergence rates, which impact the reducing of the training error. The reason for such optimization difficulties will be studied in the future.</p>
+
+<p><strong>我们认为这种优化难度不可能是由于梯度消失引起的。这些简单网络使用BN[16]训练，这保证了前向传播信号有非零方差。我们还验证了反向传播的梯度，结果显示其符合BN的正常标准。因此既不是前向信号消失也不是反向信号消失。实际上，34层简单网络仍能取得有竞争力的准确率（表3），这表明在某种程度上来说求解器仍工作。我们推测深度简单网络可能有指数级低收敛特性，这影响了训练误差的降低。这种优化困难的原因将来会研究。</strong></p>
+
+<p><img src="/images/posts/ResNet/9.png" alt="9" /></p>
+
+<p>Table 3. Error rates (%, 10-crop testing) on ImageNet validation. VGG-16 is based on our test. ResNet-50/101/152 are of option B that only uses projections for increasing dimensions.</p>
+
+<p><strong>表3。ImageNet验证集错误率（%，10个裁剪图像测试）。VGG16是基于我们的测试结果的。ResNet-50/101/152的选择B仅使用投影增加维度。</strong></p>
+
+<p><code class="highlighter-rouge">Residual Networks</code>. Next we evaluate 18-layer and 34-layer residual nets (ResNets). The baseline architectures are the same as the above plain nets, expect that a shortcut connection is added to each pair of 3×3 filters as in Fig. 3 (right). In the first comparison (Table 2 and Fig. 4 right), we use identity mapping for all shortcuts and zero-padding for increasing dimensions (option A). So they have no extra parameter compared to the plain counterparts.</p>
+
+<p><strong><code class="highlighter-rouge">残差网络</code>。接下来我们评估18层和34层残差网络（ResNets）。基准架构与上述的简单网络相同，如图3（右）所示，预计每对3×3滤波器都会添加快捷连接。在第一次比较（表2和图4右侧）中，我们对所有快捷连接都使用<code class="highlighter-rouge">恒等映射和零填充以增加维度</code>（选项A）。所以与对应的简单网络相比，它们没有额外的参数。</strong></p>
+
+<p>We have three major observations from Table 2 and Fig. 4. First, the situation is reversed with residual learning —— the 34-layer ResNet is better than the 18-layer ResNet (by 2.8%). More importantly, the 34-layer ResNet exhibits considerably lower training error and is generalizable to the validation data. This indicates that the degradation problem is well addressed in this setting and we manage to obtain accuracy gains from increased depth.</p>
+
+<p><strong>我们从表2和图4中可以看到三个主要的观察结果。首先，残留学习的情况变了——34层ResNet比18层ResNet更好（2.8％）。更重要的是，34层ResNet显示出较低的训练误差，并且可以泛化到验证数据。这表明在这种情况下，退化问题得到了很好的解决，我们从增加的深度中设法获得了准确性收益。</strong></p>
+
+<p>Second, compared to its plain counterpart, the 34-layer ResNet reduces the top-1 error by 3.5% (Table 2), resulting from the successfully reduced training error (Fig. 4 right vs. left). This comparison verifies the effectiveness of residual learning on extremely deep systems.</p>
+
+<p><strong>第二，与对应的简单网络相比，由于成功的减少了训练误差，34层ResNet降低了3.5%的top-1错误率。这种比较证实了在极深系统中残差学习的有效性。</strong></p>
+
+<p>Last, we also note that the 18-layer plain/residual nets are comparably accurate (Table 2), but the 18-layer ResNet converges faster (Fig. 4 right vs. left). When the net is “not overly deep” (18 layers here), the current SGD solver is still able to find good solutions to the plain net. In this case, the ResNet eases the optimization by providing faster convergence at the early stage.</p>
+
+<p><strong>最后，我们还注意到18层的简单/残差网络同样地准确（表2），但18层ResNet收敛更快（图4右和左）。当网络“不过度深”时（18层），目前的SGD求解器仍能在简单网络中找到好的解。在这种情况下，ResNet通过在早期提供更快的收敛简便了优化。</strong></p>
+
+<p><code class="highlighter-rouge">Identity vs. Projection Shortcuts</code>. We have shown that parameter-free, identity shortcuts help with training. Next we investigate projection shortcuts (Eqn.(2)). In Table 3 we compare three options: (A) zero-padding shortcuts are used for increasing dimensions, and all shortcuts are parameter-free (the same as Table 2 and Fig. 4 right); (B) projection shortcuts are used for increasing dimensions, and other shortcuts are identity; and (C) all shortcuts are projections.</p>
+
+<p><code class="highlighter-rouge">恒等和投影快捷连接</code>。我们已经表明没有参数，恒等快捷连接有助于训练。接下来我们调查投影快捷连接（方程2）。在表3中我们比较了三个选项：(A) <code class="highlighter-rouge">零填充</code>快捷连接用来增加维度，所有的快捷连接是没有参数的（与表2和图4右相同）；(B)<code class="highlighter-rouge">投影快捷连接</code>用来增加维度，其它的快捷连接是恒等的；（C）<code class="highlighter-rouge">所有的快捷连接都是投影</code>。</p>
+
+<p>Table 3 shows that all three options are considerably better than the plain counterpart. B is slightly better than A. We argue that this is because the zero-padded dimensions in A indeed have no residual learning. C is marginally better than B, and we attribute this to the extra parameters introduced by many (thirteen) projection shortcuts. But the small differences among A/B/C indicate that projection shortcuts are not essential for addressing the degradation problem. So we do not use option C in the rest of this paper, to reduce memory/time complexity and model sizes. Identity shortcuts are particularly important for not increasing the complexity of the bottleneck architectures that are introduced below.</p>
+
+<p><strong>表3显示，所有三个选项都比对应的简单网络好很多。选项B比A略好。我们认为这是因为A中的零填充确实没有残差学习。选项C比B稍好，我们把这归因于许多（十三）投影快捷连接引入了额外参数。但A/B/C之间的细微差异表明，投影快捷连接对于解决退化问题不是至关重要的。因为我们在本文的剩余部分不再使用选项C，以减少内存/时间复杂性和模型大小。恒等快捷连接对于不增加下面介绍的瓶颈结构的复杂性尤为重要。</strong></p>
+
+<p>Deeper Bottleneck Architectures. Next we describe our deeper nets for ImageNet. Because of concerns on the training time that we can afford, we modify the building block as a bottleneck design. For each residual function $F$ , we use a stack of 3 layers instead of 2 (Fig. 5). The three layers are 1×1, 3×3, and 1×1 convolutions, where the 1×1 layers are responsible for reducing and then increasing (restoring) dimensions, leaving the 3×3 layer a bottleneck with smaller input/output dimensions. Fig. 5 shows an example, where both designs have similar time complexity.</p>
+
+<p><strong><code class="highlighter-rouge">更深的瓶颈结构</code>。接下来我们描述ImageNet中我们使用的更深的网络网络。由于关注我们能承受的训练时间，我们将构建块修改为瓶颈设计。对于每个残差函数$F$，我们使用3层堆叠而不是2层（图5）。三层是1×1，3×3和1×1卷积，其中1×1层负责减小然后增加（恢复）维度，使3×3层成为具有较小输入/输出维度的瓶颈。图5展示了一个示例，两个设计具有相似的时间复杂度。</strong></p>
+
+<p>The parameter-free identity shortcuts are particularly important for the bottleneck architectures. If the identity shortcut in Fig. 5 (right) is replaced with projection, one can show that the time complexity and model size are doubled, as the shortcut is connected to the two high-dimensional ends. So identity shortcuts lead to more efficient models for the bottleneck designs.</p>
+
+<p><strong>无参数恒等快捷连接对于瓶颈架构尤为重要。如果图5（右）中的恒等快捷连接被投影替换，则可以显示出时间复杂度和模型大小加倍，因为快捷连接是连接到两个高维端。因此，恒等快捷连接可以为瓶颈设计得到更有效的模型。</strong></p>
+
+<p>50-layer ResNet: We replace each 2-layer block in the 34-layer net with this 3-layer bottleneck block, resulting in a 50-layer ResNet (Table 1). We use option B for increasing dimensions. This model has 3.8 billion FLOPs.</p>
+
+<p><strong><code class="highlighter-rouge">50层ResNet</code>：我们用3层瓶颈块替换34层网络中的每一个2层块，得到了一个50层ResNet（表1）。我们使用选项B来增加维度。该模型有38亿FLOP。</strong></p>
+
+<p>101-layer and 152-layer ResNet: We construct 101-layer and 152-layer ResNets by using more 3-layer blocks (Table 1). Remarkably, although the depth is significantly increased, the 152-layer ResNet (11.3 billion FLOPs) still has lower complexity than VGG-16/19 nets (15.3/19.6 billion FLOPs).</p>
+
+<p><strong><code class="highlighter-rouge">101层和152层ResNet</code>：我们通过使用更多的3层瓶颈块来构建101层和152层ResNets（表1）。值得注意的是，尽管深度显著增加，但152层ResNet（113亿FLOP）仍然比VGG-16/19网络（153/196亿FLOP）具有更低的复杂度。</strong></p>
+
+<p>The 50/101/152-layer ResNets are more accurate than the 34-layer ones by considerable margins (Table 3 and 4). We do not observe the degradation problem and thus enjoy significant accuracy gains from considerably increased depth. The benefits of depth are witnessed for all evaluation metrics (Table 3 and 4).</p>
+
+<p><strong>50/101/152层ResNet比34层ResNet的准确性要高得多（表3和4）。我们没有观察到退化问题，因此可以从显著增加的深度中获得显著的准确性收益。所有评估指标都能证明深度的收益（表3和表4）。</strong></p>
+
+<p><code class="highlighter-rouge">Comparisons with State-of-the-art Methods</code>. In Table 4 we compare with the previous best single-model results. Our baseline 34-layer ResNets have achieved very competitive accuracy. Our 152-layer ResNet has a single-model top-5 validation error of 4.49%. This single-model result outperforms all previous ensemble results (Table 5). We combine six models of different depth to form an ensemble (only with two 152-layer ones at the time of submitting). This leads to 3.57% top-5 error on the test set (Table 5). This entry won the 1st place in ILSVRC 2015.</p>
+
+<p><strong><code class="highlighter-rouge">与最先进的方法比较</code>。在表4中，我们与以前最好的单一模型结果进行比较。我们基准的34层ResNet已经取得了非常有竞争力的准确性。我们的152层ResNet具有单模型4.49％的top-5错误率。这种单一模型的结果胜过以前的所有综合结果（表5）。我们结合了六种不同深度的模型，形成一个集合（在提交时仅有两个152层）。这在测试集上得到了3.5％的top-5错误率（表5）。这次提交在2015年ILSVRC中荣获了第一名。</strong></p>
+
+<p><img src="/images/posts/ResNet/10.png" alt="10" /></p>
+
+<p>Table 4. Error rates (%) of single-model results on the ImageNet validation set (except reported on the test set).</p>
+
+<p><strong>表4。单一模型在ImageNet验证集上的错误率（%）(除了†是测试集上报告的错误率)。</strong></p>
+
+<p><img src="/images/posts/ResNet/11.png" alt="11" /></p>
+
+<p>Table 5. Error rates (%) of ensembles. The top-5 error is on the test set of ImageNet and reported by the test server.</p>
+
+<p><strong>表5。模型综合的错误率(%)。top-5错误率是ImageNet测试集上的并由测试服务器报告的。</strong></p>
+
+<hr />
+
+<h4 id="42-cifar-10-and-analysis">4.2. CIFAR-10 and Analysis</h4>
+<h4 id="42-cifar-10和分析">4.2. CIFAR-10和分析</h4>
+
+<p>We conducted more studies on the CIFAR-10 dataset [20], which consists of 50k training images and 10k testing images in 10 classes. We present experiments trained on the training set and evaluated on the test set. Our focus is on the behaviors of extremely deep networks, but not on pushing the state-of-the-art results, so we intentionally use simple architectures as follows.</p>
+
+<p><strong>我们对CIFAR-10数据集[20]进行了更多的研究，其中包括10个类别中的5万张训练图像和1万张测试图像。我们介绍了在训练集上进行训练和在测试集上进行评估的实验。我们的焦点在于极深网络的行为，但不是推动最先进的结果，所以我们有意使用如下的简单架构。</strong></p>
+
+<p>The plain/residual architectures follow the form in Fig. 3 (middle/right). The network inputs are 32×32 images, with the per-pixel mean subtracted. The first layer is 3×3 convolutions. Then we use a stack of 6n layers with 3×3 convolutions on the feature maps of sizes {32, 16, 8} respectively, with 2n layers for each feature map size. The numbers of filters are {16, 32, 64} respectively. The subsampling is performed by convolutions with a stride of 2. The network ends with a global average pooling, a 10-way fully-connected layer, and softmax. There are totally 6n+2 stacked weighted layers. The following table summarizes the architecture:</p>
+
+<p><strong>简单/残差架构遵循图3（中/右）的形式。网络输入是32×32的图像，每个像素减去均值。第一层是3×3卷积。然后我们在大小为{32,16,8}的特征图上分别使用了带有3×3卷积的6n个堆叠层，每个特征图大小使用2n层。滤波器数量分别为{16,32,64}。下采样由步长为2的卷积进行。网络以全局平均池化，一个10维全连接层和softmax作为结束。共有6n+2个堆叠的加权层。下表总结了这个架构：</strong></p>
+
+<p><img src="/images/posts/ResNet/12.png" alt="12" /></p>
+
+<p>When shortcut connections are used, they are connected to the pairs of 3×3 layers (totally 3n shortcuts). On this dataset we use identity shortcuts in all cases (i.e., option A), so our residual models have exactly the same depth, width, and number of parameters as the plain counterparts.</p>
+
+<p><strong>当使用快捷连接时，它们连接到成对的3×3卷积层上（共3n个快捷连接）。在这个数据集上，我们在所有案例中都使用恒等快捷连接（即选项A），因此我们的残差模型与对应的简单模型具有完全相同的深度，宽度和参数数量。</strong></p>
+
+<p>We use a weight decay of 0.0001 and momentum of 0.9, and adopt the weight initialization in [12] and BN [16] but with no dropout. These models are trained with a mini-batch size of 128 on two GPUs. We start with a learning rate of 0.1, divide it by 10 at 32k and 48k iterations, and terminate training at 64k iterations, which is determined on a 45k/5k train/val split. We follow the simple data augmentation in [24] for training: 4 pixels are padded on each side, and a 32×32 crop is randomly sampled from the padded image or its horizontal flip. For testing, we only evaluate the single view of the original 32×32 image.</p>
+
+<p><strong>我们使用的权重衰减为0.0001和动量为0.9，并采用[12]和BN[16]中的权重初始化，但没有使用丢弃。这些模型在两个GPU上进行训练，批处理大小为128。我们开始使用的学习率为0.1，在32k次和48k次迭代后学习率除以10，并在64k次迭代后终止训练，这是由45k/5k的训练/验证集分割决定的。我们按照[24]中的简单数据增强进行训练：每边填充4个像素，并从填充图像或其水平翻转图像中随机采样32×32的裁剪图像。对于测试，我们只评估原始32×32图像的单一视图。</strong></p>
+
+<p>We compare $n=3,5,7,9$, leading to 20, 32, 44, and 56-layer networks. Fig. 6 (left) shows the behaviors of the plain nets. The deep plain nets suffer from increased depth, and exhibit higher training error when going deeper. This phenomenon is similar to that on ImageNet (Fig. 4, left) and on MNIST (see [41]), suggesting that such an optimization difficulty is a fundamental problem.</p>
+
+<p><strong>我们比较了$n=3,5,7,9$，得到了20层，32层，44层和56层的网络。图6（左）显示了简单网络的行为。深度简单网络经历了深度增加，随着深度增加表现出了更高的训练误差。这种现象类似于ImageNet中（图4，左）和MNIST中（请看[41]）的现象，表明这种优化困难是一个基本的问题。</strong></p>
+
+<p><img src="/images/posts/ResNet/13.png" alt="13" /></p>
+
+<p>Figure 6. Training on CIFAR-10. Dashed lines denote training error, and bold lines denote testing error. Left: plain networks. The error of plain-110 is higher than 60% and not displayed. Middle: ResNets. Right: ResNets with 110 and 1202 layers.</p>
+
+<p><strong>图6。在CIFAR-10上训练。虚线表示训练误差，粗线表示测试误差。左：简单网络。简单的110层网络错误率超过60%没有展示。中间：ResNet。右：110层ResNet和1202层ResNet。</strong></p>
+
+<p>Fig. 6 (middle) shows the behaviors of ResNets. Also similar to the ImageNet cases (Fig. 4, right), our ResNets manage to overcome the optimization difficulty and demonstrate accuracy gains when the depth increases.</p>
+
+<p><strong>图6（中）显示了ResNet的行为。与ImageNet的情况类似（图4，右），我们的ResNet设法克服优化困难并随着深度的增加展示了准确性收益。</strong></p>
+
+<p>We further explore $n=18$ that leads to a 110-layer ResNet. In this case, we find that the initial learning rate of 0.1 is slightly too large to start converging. So we use 0.01 to warm up the training until the training error is below 80% (about 400 iterations), and then go back to 0.1 and continue training. The rest of the learning schedule is as done previously. This 110-layer network converges well (Fig. 6, middle). It has fewer parameters than other deep and thin networks such as FitNet [34] and Highway [41] (Table 6), yet is among the state-of-the-art results (6.43%, Table 6).</p>
+
+<p><strong>我们进一步探索了$n=18$得到了110层的ResNet。在这种情况下，我们发现0.1的初始学习率对于收敛来说太大了。因此我们使用0.01的学习率开始训练，直到训练误差低于80%（大约400次迭代），然后学习率变回到0.1并继续训练。学习过程的剩余部分与前面做的一样。这个110层网络收敛的很好（图6，中）。它与其它的深且窄的网络例如FitNet[34]和Highway41相比有更少的参数，但结果仍在目前最好的结果之间（6.43%，表6）。</strong></p>
+
+<p><img src="/images/posts/ResNet/14.png" alt="14" /></p>
+
+<p>Table 6. Classification error on the CIFAR-10 test set. All methods are with data augmentation. For ResNet-110, we run it 5 times and show “best (mean±std)” as in [42].</p>
+
+<p><strong>表6。在CIFAR-10测试集上的分类误差。所有的方法都使用了数据增强。对于ResNet-110，像论文[42]中那样，我们运行了5次并展示了“最好的(mean±std)”。</strong></p>
+
+<p><code class="highlighter-rouge">Analysis of Layer Responses</code>. Fig. 7 shows the standard deviations (std) of the layer responses. The responses are the outputs of each 3×3 layer, after BN and before other nonlinearity (ReLU/addition). For ResNets, this analysis reveals the response strength of the residual functions. Fig. 7 shows that ResNets have generally smaller responses than their plain counterparts. These results support our basic motivation (Sec.3.1) that the residual functions might be generally closer to zero than the non-residual functions. We also notice that the deeper ResNet has smaller magnitudes of responses, as evidenced by the comparisons among ResNet-20, 56, and 110 in Fig. 7. When there are more layers, an individual layer of ResNets tends to modify the signal less.</p>
+
+<p><code class="highlighter-rouge">层响应分析</code>。图7显示了层响应的标准偏差（std）。这些响应每个3×3层的输出，在BN之后和其他非线性（ReLU/加法）之前。对于ResNets，该分析揭示了残差函数的响应强度。图7显示ResNet的响应比其对应的简单网络的响应更小。这些结果支持了我们的基本动机（第3.1节），残差函数通常具有比非残差函数更接近零。我们还注意到，更深的ResNet具有较小的响应幅度，如图7中ResNet-20，56和110之间的比较所证明的。当层数更多时，单层ResNet趋向于更少地修改信号。</p>
+
+<p><code class="highlighter-rouge">Exploring Over 1000 layers</code>. We explore an aggressively deep model of over 1000 layers. We set $n=200$ that leads to a 1202-layer network, which is trained as described above. Our method shows no optimization difficulty, and this $10^3$-layer network is able to achieve training error &lt;0.1% (Fig. 6, right). Its test error is still fairly good (7.93%, Table 6).</p>
+
+<p><strong><code class="highlighter-rouge">探索超过1000层</code>。我们探索超过1000层的过深的模型。我们设置$n=200$，得到了1202层的网络，其训练如上所述。我们的方法显示没有优化困难，这个$10^3$层网络能够实现训练误差&lt;0.1％（图6，右图）。其测试误差仍然很好（7.93％，表6）。</strong></p>
+
+<p>But there are still open problems on such aggressively deep models. The testing result of this 1202-layer network is worse than that of our 110-layer network, although both have similar training error. We argue that this is because of overfitting. The 1202-layer network may be unnecessarily large (19.4M) for this small dataset. Strong regularization such as maxout [9] or dropout [13] is applied to obtain the best results ([9, 25, 24, 34]) on this dataset. In this paper, we use no maxout/dropout and just simply impose regularization via deep and thin architectures by design, without distracting from the focus on the difficulties of optimization. But combining with stronger regularization may improve results, which we will study in the future.</p>
+
+<p><strong>但是，这种极深的模型仍然存在着开放的问题。这个1202层网络的测试结果比我们的110层网络的测试结果更差，虽然两者都具有类似的训练误差。我们认为这是因为过拟合。对于这种小型数据集，1202层网络可能是不必要的大（19.4M）。在这个数据集应用强大的正则化，如maxout[9]或者dropout[13]来获得最佳结果（[9,25,24,34]）。在本文中，我们不使用maxout/dropout，只是简单地通过设计深且窄的架构简单地进行正则化，而不会分散集中在优化难点上的注意力。但结合更强的正规化可能会改善结果，我们将来会研究。</strong></p>
+
+<hr />
+
+<h4 id="43-object-detection-on-pascal-and-ms-coco">4.3. Object Detection on PASCAL and MS COCO</h4>
+<h4 id="43-在pascal和ms-coco上的目标检测">4.3. 在PASCAL和MS COCO上的目标检测</h4>
+
+<p>Our method has good generalization performance on other recognition tasks. Table 7 and 8 show the object detection baseline results on PASCAL VOC 2007 and 2012 [5] and COCO [26]. We adopt Faster R-CNN [32] as the detection method. Here we are interested in the improvements of replacing VGG-16 [40] with ResNet-101. The detection implementation (see appendix) of using both models is the same, so the gains can only be attributed to better networks. Most remarkably, on the challenging COCO dataset we obtain a 6.0% increase in COCO’s standard metric (mAP@[.5, .95]), which is a 28% relative improvement. This gain is solely due to the learned representations.</p>
+
+<p><strong>我们的方法对其他识别任务有很好的泛化性能。表7和表8显示了PASCAL VOC 2007和2012[5]以及COCO[26]的目标检测基准结果。我们采用更快的R-CNN[32]作为检测方法。在这里，我们感兴趣的是用ResNet-101替换VGG-16[40]。使用这两种模式的检测实现（见附录）是一样的，所以收益只能归因于更好的网络。最显著的是，在有挑战性的COCO数据集中，COCO的标准度量指标（mAP@[.5，.95]）增长了6.0％，相对改善了28％。这种收益完全是由于学习表示。</strong></p>
+
+<p><img src="/images/posts/ResNet/15.png" alt="15" /></p>
+
+<p>Table 7. Object detection mAP (%) on the PASCAL VOC 2007/2012 test sets using baseline Faster R-CNN. See also appendix for better results.</p>
+
+<p><strong>表7。在PASCAL VOC 2007/2012测试集上使用基准Faster R-CNN的目标检测mAP(%)。更好的结果请看附录。</strong></p>
+
+<p><img src="/images/posts/ResNet/16.png" alt="16" /></p>
+
+<p>Table 8. Object detection mAP (%) on the COCO validation set using baseline Faster R-CNN. See also appendix for better results.</p>
+
+<p><strong>表8。在COCO验证集上使用基准Faster R-CNN的目标检测mAP(%)。更好的结果请看附录。</strong></p>
+
+<p>Based on deep residual nets, we won the 1st places in several tracks in ILSVRC &amp; COCO 2015 competitions: ImageNet detection, ImageNet localization, COCO detection, and COCO segmentation. The details are in the appendix.</p>
+
+<p><strong>基于深度残差网络，我们在ILSVRC &amp; COCO 2015竞赛的几个任务中获得了第一名，分别是：ImageNet检测，ImageNet定位，COCO检测，COCO分割。跟多细节请看附录。</strong></p>
+
+<p>References
+[1] Y.Bengio,P.Simard,andP.Frasconi.Learning long-term dependencies with gradient descent is difficult. IEEE Transactions on Neural Networks, 5(2):157–166, 1994.</p>
+
+<p>[2] C. M. Bishop. Neural networks for pattern recognition. Oxford university press, 1995.</p>
+
+<p>[3] W. L. Briggs, S. F. McCormick, et al. A Multigrid Tutorial. Siam, 2000.</p>
+
+<p>[4] K. Chatfield, V. Lempitsky, A. Vedaldi, and A. Zisserman. The devil is in the details: an evaluation of recent feature encoding methods. In BMVC, 2011.</p>
+
+<p>[5] M. Everingham, L. Van Gool, C. K. Williams, J. Winn, and A. Zisserman. The Pascal Visual Object Classes (VOC) Challenge. IJCV, pages 303–338, 2010.</p>
+
+<p>[6] R. Girshick. Fast R-CNN. In ICCV, 2015.</p>
+
+<p>[7] R. Girshick, J. Donahue, T. Darrell, and J. Malik. Rich feature hierarchies for accurate object detection and semantic segmentation. In
+CVPR, 2014.</p>
+
+<p>[8] X. Glorot and Y. Bengio. Understanding the difficulty of training deep feedforward neural networks. In AISTATS, 2010.</p>
+
+<p>[9] I. J. Goodfellow, D. Warde-Farley, M. Mirza, A. Courville, and Y. Bengio. Maxout networks. arXiv:1302.4389, 2013.</p>
+
+<p>[10] K.Heand J.Sun. Convolutional neural networks at constrained time cost. In CVPR, 2015.</p>
+
+<p>[11] K.He, X.Zhang, S.Ren, and J.Sun. Spatial pyramid pooling in deep convolutional networks for visual recognition. In ECCV, 2014.</p>
+
+<p>[12] K. He, X. Zhang, S. Ren, and J. Sun. Delving deep into rectifiers: Surpassing human-level performance on imagenet classification. In
+ICCV, 2015.</p>
+
+<p>[13] G. E. Hinton, N. Srivastava, A. Krizhevsky, I. Sutskever, and R. R. Salakhutdinov. Improving neural networks by preventing co-adaptation of feature detectors. arXiv:1207.0580, 2012.</p>
+
+<p>[14] S. Hochreiter. Untersuchungen zu dynamischen neuronalen netzen. Diploma thesis, TU Munich, 1991.</p>
+
+<p>[15] S. Hochreiter and J. Schmidhuber. Long short-term memory. Neural computation, 9(8):1735–1780, 1997.</p>
+
+<p>[16] S. Ioffe and C. Szegedy. Batch normalization: Accelerating deep network training by reducing internal covariate shift. In ICML, 2015.</p>
+
+<p>[17] H.Jegou, M.Douze, and C.Schmid. Product quantization for nearest neighbor search. TPAMI, 33, 2011.</p>
+
+<p>[18] H. Jegou, F. Perronnin, M. Douze, J. Sanchez, P. Perez, and C. Schmid. Aggregating local image descriptors into compact codes.
+TPAMI, 2012.</p>
+
+<p>[19] Y. Jia, E. Shelhamer, J. Donahue, S. Karayev, J. Long, R. Girshick, S. Guadarrama, and T. Darrell. Caffe: Convolutional architecture for
+fast feature embedding. arXiv:1408.5093, 2014.</p>
+
+<p>[20] A. Krizhevsky. Learning multiple layers of features from tiny images. Tech Report, 2009.</p>
+
+<p>[21] A. Krizhevsky, I. Sutskever, and G. Hinton. Imagenet classification with deep convolutional neural networks. In NIPS, 2012.</p>
+
+<p>[22] Y. LeCun, B. Boser, J. S. Denker, D. Henderson, R. E. Howard, W. Hubbard, and L. D. Jackel. Backpropagation applied to hand-written zip code recognition. Neural computation, 1989.</p>
+
+<p>[23] Y.LeCun,L.Bottou,G.B.Orr,and K.-R.Muller. Efficient back prop. In Neural Networks: Tricks of the Trade, pages 9–50. Springer, 1998.</p>
+
+<p>[24] C.-Y. Lee, S. Xie, P. Gallagher, Z. Zhang, and Z. Tu. Deeply-supervised nets. arXiv:1409.5185, 2014.</p>
+
+<p>[25] M. Lin, Q. Chen, and S. Yan. Network in network. arXiv:1312.4400,2013.</p>
+
+<p>[26] T.-Y. Lin, M. Maire, S. Belongie, J. Hays, P. Perona, D. Ramanan, P. Dollar, and C. L. Zitnick. Microsoft COCO: Common objects in
+context. In ECCV. 2014.</p>
+
+<p>[27] J. Long, E. Shelhamer, and T. Darrell. Fully convolutional networks for semantic segmentation. In CVPR, 2015.</p>
+
+<p>[28] G. Montufar, R. Pascanu, K. Cho, and Y. Bengio. On the number of linear regions of deep neural networks. In NIPS, 2014.</p>
+
+<p>[29] V. Nair and G. E. Hinton. Rectified linear units improve restricted boltzmann machines. In ICML, 2010.</p>
+
+<p>[30] F. Perronnin and C. Dance. Fisher kernels on visual vocabularies for image categorization. In CVPR, 2007.</p>
+
+<p>[31] T. Raiko, H. Valpola, and Y. LeCun. Deep learning made easier by linear transformations in perceptrons. In AISTATS, 2012.</p>
+
+<p>[32] S. Ren, K. He, R. Girshick, and J. Sun. Faster R-CNN: Towards real-time object detection with region proposal networks. In NIPS, 2015.</p>
+
+<p>[33] B. D. Ripley. Pattern recognition and neural networks. Cambridge university press, 1996.</p>
+
+<p>[34] A. Romero, N. Ballas, S. E. Kahou, A. Chassang, C. Gatta, and Y. Bengio. Fitnets: Hints for thin deep nets. In ICLR, 2015.</p>
+
+<p>[35] O. Russakovsky, J. Deng, H. Su, J. Krause, S. Satheesh, S. Ma, Z. Huang, A. Karpathy, A. Khosla, M. Bernstein, et al. Imagenet large scale visual recognition challenge. arXiv:1409.0575, 2014.</p>
+
+<p>[36] A. M. Saxe, J. L. McClelland, and S. Ganguli. Exact solutions to the nonlinear dynamics of learning in deep linear neural networks. arXiv:1312.6120, 2013.</p>
+
+<p>[37] N.N.Schraudolph. Accelerated gradient descent by factor-centering decomposition. Technical report, 1998.</p>
+
+<p>[38] N. N. Schraudolph. Centering neural network gradient factors. In Neural Networks: Tricks of the Trade, pages 207–226. Springer, 1998.</p>
+
+<p>[39] P.Sermanet, D.Eigen, X.Zhang, M.Mathieu, R.Fergus, and Y.LeCun. Overfeat: Integrated recognition, localization and detection using convolutional networks. In ICLR, 2014.</p>
+
+<p>[40] K. Simonyan and A. Zisserman. Very deep convolutional networks for large-scale image recognition. In ICLR, 2015.</p>
+
+<p>[41] R. K. Srivastava, K. Greff, and J. Schmidhuber. Highway networks. arXiv:1505.00387, 2015.</p>
+
+<p>[42] R. K. Srivastava, K. Greff, and J. Schmidhuber. Training very deep networks. 1507.06228, 2015.</p>
+
+<p>[43] C. Szegedy, W. Liu, Y. Jia, P. Sermanet, S. Reed, D. Anguelov, D. Erhan, V. Vanhoucke, and A. Rabinovich. Going deeper with convolutions. In CVPR, 2015.</p>
+
+<p>[44] R. Szeliski. Fast surface interpolation using hierarchical basis functions. TPAMI, 1990.</p>
+
+<p>[45] R. Szeliski. Locally adapted hierarchical basis preconditioning. In SIGGRAPH, 2006.</p>
+
+<p>[46] T. Vatanen, T. Raiko, H. Valpola, and Y. LeCun. Pushing stochastic gradient towards second-order methods–backpropagation learning with transformations in nonlinearities. In Neural Information Processing, 2013.</p>
+
+<p>[47] A. Vedaldi and B. Fulkerson. VLFeat: An open and portable library of computer vision algorithms, 2008.</p>
+
+<p>[48] W. Venables and B. Ripley. Modern applied statistics with s-plus. 1999.</p>
+
+<p>[49] M. D. Zeiler and R. Fergus. Visualizing and understanding convolutional neural networks. In ECCV, 2014.</p>
+
+
+
+  </section>
+</article>
+
+
+
+<section>
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">多谢支持~</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+
+
+                <!--
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                --!> 
+        
+
+                <div class="shang_payimg">
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+            
+                <div class="pay_explain">
+                    扫码打赏，多谢支持~
+                </div>
+
+                <div class="shang_payselect">
+        
+
+
+
+                    <!--
+                      <div class="pay_item checked" data-id="alipay">
+                        <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                      </div>
+                    --!> 
+        
+                      <!--<div class="pay_item" data-id="weipay"> --!>
+                        <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                      <!-- </div> --!>
+                </div>
+            
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+            
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:280px;padding:10px;padding-left: 140px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:280px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin:10px auto;float:center;text-align:center;width:280px;height:280px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:5px auto;margin-top:20px;cursor:pointer;height:60px;width:500px;margin:90px auto;}
+              .shang_payselect .pay_item{display:inline-block;margin:140px auto;float:center;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2018/12/vgg/" data-toggle="tooltip" data-placement="top" title="VGG">上一篇：  <span>VGG</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2018/12/ssd/" data-toggle="tooltip" data-placement="top" title="SSD">下一篇：  <span>SSD</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+
+  
+
+</section>
+
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+    <div id="comment"></div>
+
+<script>
+    var valine = new Valine();
+    valine.init({
+        el:'#comment',
+        appId:'TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz',
+        appKey:'8NibCKPlTVw5om1DF1dMaQvN',
+        notify:true,
+        path: '/2018/12/resnet/',
+        placeholder:'别害羞，请说话'
+    })
+</script>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/alwaysqi" title="@alwaysqi 的 Github" target="_blank">
+              <i class='social fa fa-github fa-2x'></i>
+              <span class="label">Github</span>
+            </a>
+          </li>
+          
+          
+          
+
+          
+
+          <!-- RSS -->
+          <li class="navigation__item_social">
+            <a href="/feed.xml" rel="author" title="RSS" target="_blank">
+              <i class='social fa fa-rss fa-2x'></i>
+              <span class="label">RSS</span>
+            </a>
+          </li>
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:v.cpp@pku.edu.cn" title="Contact me">
+              <i class='social fa fa-envelope fa-2x'></i>
+              <span class="label">Email</span>
+            </a>
+          </li>
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+          <!--  Copyright &copy; 半甜不要腻 2019 Theme by <a href="http://baixin.io/">leopardpan</a> |-->
+
+            Copyright &copy; 半甜不要腻 2019
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=alwaysqi&repo=alwaysqi.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+            
+
+<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+<script>AV.initialize("TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz", "8NibCKPlTVw5om1DF1dMaQvN");</script>
+<!--<script>console.log("Error: " + error.code + " " + error.message);</script>-->
+<script>
+    function showHitCount(Counter) {
+        console.log("i was called");
+        var query = new AV.Query(Counter);
+        var entries = [];
+        var $visitors = $(".leancloud_visitors");
+        $visitors.each(function () {
+            entries.push( $(this).attr("id").trim() );
+        });
+        query.containedIn('url', entries);
+        query.find()
+                .done(function (results) {
+                    console.log("results",results);
+                    var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+                    if (results.length === 0) {
+                        $visitors.find(COUNT_CONTAINER_REF).text(0);
+                        return;
+                    }
+                    for (var i = 0; i < results.length; i++) {
+                        var item = results[i];
+                        var url = item.get('url');
+                        var hits = item.get('hits');
+                        var element = document.getElementById(url);
+                        $(element).find(COUNT_CONTAINER_REF).text(hits);
+                    }
+                    for(var i = 0; i < entries.length; i++) {
+                        var url = entries[i];
+                        var element = document.getElementById(url);
+                        var countSpan = $(element).find(COUNT_CONTAINER_REF);
+                        if( countSpan.text() == '') {
+                            countSpan.text(0);
+                        }
+                    }
+                })
+                .fail(function (object, error) {
+                    console.log("Error: " + error.code + " " + error.message);
+                });
+    }
+    function addCount(Counter) {
+        var $visitors = $(".leancloud_visitors");
+        var url = $visitors.attr('id').trim();
+        var title = $visitors.attr('data-flag-title').trim();
+        var query = new AV.Query(Counter);
+        query.equalTo("url", url);
+        query.find({
+            success: function(results) {
+                if (results.length > 0) {
+                    var counter = results[0];
+                    counter.fetchWhenSave(true);
+                    counter.increment("hits");
+                    counter.save(null, {
+                        success: function(counter) {
+                            var $element = $(document.getElementById(url));
+                            $element.find('.leancloud-visitors-count').text(counter.get('hits'));
+                        },
+                        error: function(counter, error) {
+                            console.log('Failed to save Visitor num, with error message: ' + error.message);
+                        }
+                    });
+                } else {
+                    var newcounter = new Counter();
+                    /* Set ACL */
+                    var acl = new AV.ACL();
+                    acl.setPublicReadAccess(true);
+                    acl.setPublicWriteAccess(true);
+                    newcounter.setACL(acl);
+                    /* End Set ACL */
+                    newcounter.set("title", title);
+                    newcounter.set("url", url);
+                    newcounter.set("hits", 1);
+                    newcounter.save(null, {
+                        success: function(newcounter) {
+                            var $element = $(document.getElementById(url));
+                            $element.find('.leancloud-visitors-count').text(newcounter.get('hits'));
+                        },
+                        error: function(newcounter, error) {
+                            console.log('Failed to create');
+                        }
+                    });
+                }
+            },
+            error: function(error) {
+                console.log('Error:' + error.code + " " + error.message);
+            }
+        });
+    }
+    $(function() {
+        var Counter = AV.Object.extend("Counter");
+        console.log('this is a test');
+        console.log('this is a test-add',$('.leancloud_visitors'));
+        console.log('this is a test-show',$('.post-link'));
+        if ($('.leancloud_visitors').length == 1) {
+            // in post.html, so add 1 to hit counts
+            addCount(Counter);
+        } else if ($('.post-link').length > 1){
+            // in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
+            showHitCount(Counter);
+        }
+    });
+</script>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+    
+  </body>
+  
+</html>
