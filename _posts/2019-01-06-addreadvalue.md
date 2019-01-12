@@ -143,7 +143,8 @@ showHitCount(Counter);
 
 ##### 3._layouts/default.html
 添加
-```{% include leancloud-analytics.html %}```
+
+{% include leancloud-analytics.html %}
 
 ##### 4._layouts/post.html
 添加
