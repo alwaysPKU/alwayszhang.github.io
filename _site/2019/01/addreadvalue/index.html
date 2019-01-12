@@ -319,13 +319,17 @@ showHitCount(Counter);
 </code></pre></div></div>
 
 <h5 id="3_layoutsdefaulthtml">3._layouts/default.html</h5>
-<p>添加</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-&lt;script src="https://code.jquery.com/jquery-3.2.0.min.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"&gt;&lt;/script&gt;
-&lt;script&gt;AV.initialize("TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz", "8NibCKPlTVw5om1DF1dMaQvN");&lt;/script&gt;
-&lt;!--&lt;script&gt;console.log("Error: " + error.code + " " + error.message);&lt;/script&gt;--&gt;
-&lt;script&gt;
+<p>添加
+“</p>
+
+<script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+
+<script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+
+<script>AV.initialize("TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz", "8NibCKPlTVw5om1DF1dMaQvN");</script>
+
+<!--<script>console.log("Error: " + error.code + " " + error.message);</script>-->
+<script>
     function showHitCount(Counter) {
         console.log("i was called");
         var query = new AV.Query(Counter);
@@ -343,14 +347,14 @@ showHitCount(Counter);
                         $visitors.find(COUNT_CONTAINER_REF).text(0);
                         return;
                     }
-                    for (var i = 0; i &lt; results.length; i++) {
+                    for (var i = 0; i < results.length; i++) {
                         var item = results[i];
                         var url = item.get('url');
                         var hits = item.get('hits');
                         var element = document.getElementById(url);
                         $(element).find(COUNT_CONTAINER_REF).text(hits);
                     }
-                    for(var i = 0; i &lt; entries.length; i++) {
+                    for(var i = 0; i < entries.length; i++) {
                         var url = entries[i];
                         var element = document.getElementById(url);
                         var countSpan = $(element).find(COUNT_CONTAINER_REF);
@@ -371,7 +375,7 @@ showHitCount(Counter);
         query.equalTo("url", url);
         query.find({
             success: function(results) {
-                if (results.length &gt; 0) {
+                if (results.length > 0) {
                     var counter = results[0];
                     counter.fetchWhenSave(true);
                     counter.increment("hits");
@@ -419,22 +423,24 @@ showHitCount(Counter);
         if ($('.leancloud_visitors').length == 1) {
             // in post.html, so add 1 to hit counts
             addCount(Counter);
-        } else if ($('.post-link').length &gt; 1){
+        } else if ($('.post-link').length > 1){
             // in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
             showHitCount(Counter);
         }
     });
-&lt;/script&gt;
-</code></pre></div></div>
+</script>
+
+<p>”</p>
 
 <h5 id="4_layoutsposthtml">4._layouts/post.html</h5>
 <p>添加</p>
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-<span class="nt">&lt;span</span> <span class="na">id=</span><span class="s">"/2019/01/addreadvalue/"</span> <span class="na">class=</span><span class="s">"leancloud_visitors"</span> <span class="na">data-flag-title=</span><span class="s">"github pages添加阅读量"</span><span class="nt">&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"post-meta-divider"</span><span class="nt">&gt;</span>|<span class="nt">&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"post-meta-item-text"</span><span class="nt">&gt;</span> Hits:  <span class="nt">&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"leancloud-visitors-count"</span><span class="nt">&gt;&lt;/span&gt;</span>
-<span class="nt">&lt;/span&gt;</span>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+&lt;span id="/2019/01/addreadvalue/" class="leancloud_visitors" data-flag-title="github pages添加阅读量"&gt;
+&lt;span class="post-meta-divider"&gt;|&lt;/span&gt;
+&lt;span class="post-meta-item-text"&gt; 阅读量:  &lt;/span&gt;
+&lt;span class="leancloud-visitors-count"&gt;&lt;/span&gt;
+&lt;/span&gt;
 
 </code></pre></div></div>
 

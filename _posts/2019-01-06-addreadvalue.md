@@ -147,11 +147,12 @@ showHitCount(Counter);
 
 ##### 4._layouts/post.html
 添加
+
 ```
 {% if site.leancloud.enable %}
 <span id="{{ page.url }}" class="leancloud_visitors" data-flag-title="{{ page.title }}">
 <span class="post-meta-divider">|</span>
-<span class="post-meta-item-text"> Hits:  </span>
+<span class="post-meta-item-text"> 阅读量:  </span>
 <span class="leancloud-visitors-count"></span>
 </span>
 {% endif %}

@@ -5,8 +5,8 @@
     <description>welcome to my page</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Fri, 11 Jan 2019 21:28:51 +0800</pubDate>
-    <lastBuildDate>Fri, 11 Jan 2019 21:28:51 +0800</lastBuildDate>
+    <pubDate>Sat, 12 Jan 2019 22:32:37 +0800</pubDate>
+    <lastBuildDate>Sat, 12 Jan 2019 22:32:37 +0800</lastBuildDate>
     <generator>Jekyll v3.8.3</generator>
     
       <item>
@@ -565,13 +565,17 @@ showHitCount(Counter);
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h5 id=&quot;3_layoutsdefaulthtml&quot;&gt;3._layouts/default.html&lt;/h5&gt;
-&lt;p&gt;添加&lt;/p&gt;
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&amp;lt;script src=&quot;https://code.jquery.com/jquery-3.2.0.min.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-&amp;lt;script src=&quot;https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js&quot;&amp;gt;&amp;lt;/script&amp;gt;
-&amp;lt;script&amp;gt;AV.initialize(&quot;TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz&quot;, &quot;8NibCKPlTVw5om1DF1dMaQvN&quot;);&amp;lt;/script&amp;gt;
-&amp;lt;!--&amp;lt;script&amp;gt;console.log(&quot;Error: &quot; + error.code + &quot; &quot; + error.message);&amp;lt;/script&amp;gt;--&amp;gt;
-&amp;lt;script&amp;gt;
+&lt;p&gt;添加
+“&lt;/p&gt;
+
+&lt;script src=&quot;https://code.jquery.com/jquery-3.2.0.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script src=&quot;https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;AV.initialize(&quot;TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz&quot;, &quot;8NibCKPlTVw5om1DF1dMaQvN&quot;);&lt;/script&gt;
+
+&lt;!--&lt;script&gt;console.log(&quot;Error: &quot; + error.code + &quot; &quot; + error.message);&lt;/script&gt;--&gt;
+&lt;script&gt;
     function showHitCount(Counter) {
         console.log(&quot;i was called&quot;);
         var query = new AV.Query(Counter);
@@ -589,14 +593,14 @@ showHitCount(Counter);
                         $visitors.find(COUNT_CONTAINER_REF).text(0);
                         return;
                     }
-                    for (var i = 0; i &amp;lt; results.length; i++) {
+                    for (var i = 0; i &lt; results.length; i++) {
                         var item = results[i];
                         var url = item.get('url');
                         var hits = item.get('hits');
                         var element = document.getElementById(url);
                         $(element).find(COUNT_CONTAINER_REF).text(hits);
                     }
-                    for(var i = 0; i &amp;lt; entries.length; i++) {
+                    for(var i = 0; i &lt; entries.length; i++) {
                         var url = entries[i];
                         var element = document.getElementById(url);
                         var countSpan = $(element).find(COUNT_CONTAINER_REF);
@@ -617,7 +621,7 @@ showHitCount(Counter);
         query.equalTo(&quot;url&quot;, url);
         query.find({
             success: function(results) {
-                if (results.length &amp;gt; 0) {
+                if (results.length &gt; 0) {
                     var counter = results[0];
                     counter.fetchWhenSave(true);
                     counter.increment(&quot;hits&quot;);
@@ -665,22 +669,24 @@ showHitCount(Counter);
         if ($('.leancloud_visitors').length == 1) {
             // in post.html, so add 1 to hit counts
             addCount(Counter);
-        } else if ($('.post-link').length &amp;gt; 1){
+        } else if ($('.post-link').length &gt; 1){
             // in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
             showHitCount(Counter);
         }
     });
-&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/script&gt;
+
+&lt;p&gt;”&lt;/p&gt;
 
 &lt;h5 id=&quot;4_layoutsposthtml&quot;&gt;4._layouts/post.html&lt;/h5&gt;
 &lt;p&gt;添加&lt;/p&gt;
-&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;/2019/01/addreadvalue/&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;leancloud_visitors&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-flag-title=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;github pages添加阅读量&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post-meta-divider&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;|&lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;post-meta-item-text&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt; Hits:  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;leancloud-visitors-count&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&amp;lt;span id=&quot;/2019/01/addreadvalue/&quot; class=&quot;leancloud_visitors&quot; data-flag-title=&quot;github pages添加阅读量&quot;&amp;gt;
+&amp;lt;span class=&quot;post-meta-divider&quot;&amp;gt;|&amp;lt;/span&amp;gt;
+&amp;lt;span class=&quot;post-meta-item-text&quot;&amp;gt; 阅读量:  &amp;lt;/span&amp;gt;
+&amp;lt;span class=&quot;leancloud-visitors-count&quot;&amp;gt;&amp;lt;/span&amp;gt;
+&amp;lt;/span&amp;gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
