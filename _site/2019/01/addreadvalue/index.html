@@ -29,7 +29,7 @@
 
 <!-- 站点统计 -->
   <script 
-  async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+  async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
   </script>  
 
 <!-- 百度统计 -->
@@ -170,6 +170,12 @@
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
       <time datetime="2019-01-06 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-06</time>  
+      |本文
+      314
+      字|
+      需要时间:
+      1 
+      分钟|   
 
        
        <span id="/2019/01/addreadvalue/" class="leancloud_visitors" data-flag-title="github pages添加阅读量">
@@ -214,232 +220,19 @@ app_key: your_key
 
 <h5 id="2添加includeleancloud-analyticshtml">2.添加include/leancloud-analytics.html</h5>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-
-&lt;script src="https://code.jquery.com/jquery-3.2.0.min.js"&gt;&lt;/script&gt;
-&lt;script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"&gt;&lt;/script&gt;
-&lt;script&gt;AV.initialize("TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz", "8NibCKPlTVw5om1DF1dMaQvN");&lt;/script&gt;
-&lt;script&gt;
-function showHitCount(Counter) {
-var query = new AV.Query(Counter);
-var entries = [];
-var $visitors = $(".leancloud_visitors");
-$visitors.each(function () {
-entries.push( $(this).attr("id").trim() );
-});
-query.containedIn('url', entries);
-query.find()
-.done(function (results) {
-console.log("results",results);
-var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-if (results.length === 0) {
-$visitors.find(COUNT_CONTAINER_REF).text(0);
-return;
-}
-for (var i = 0; i &lt; results.length; i++) {
-var item = results[i];
-var url = item.get('url');
-var hits = item.get('hits');
-var element = document.getElementById(url);
-$(element).find(COUNT_CONTAINER_REF).text(hits);
-}
-for(var i = 0; i &lt; entries.length; i++) {
-var url = entries[i];
-var element = document.getElementById(url);
-var countSpan = $(element).find(COUNT_CONTAINER_REF);
-if( countSpan.text() == '') {
-countSpan.text(0);
-}
-}
-})
-.fail(function (object, error) {
-console.log("Error: " + error.code + " " + error.message);
-});
-}
-function addCount(Counter) {
-var $visitors = $(".leancloud_visitors");
-var url = $visitors.attr('id').trim();
-var title = $visitors.attr('data-flag-title').trim();
-var query = new AV.Query(Counter);
-query.equalTo("url", url);
-query.find({
-success: function(results) {
-if (results.length &gt; 0) {
-var counter = results[0];
-counter.fetchWhenSave(true);
-counter.increment("hits");
-counter.save(null, {
-success: function(counter) {
-var $element = $(document.getElementById(url));
-$element.find('.leancloud-visitors-count').text(counter.get('hits'));
-},
-error: function(counter, error) {
-console.log('Failed to save Visitor num, with error message: ' + error.message);
-}
-});
-} else {
-var newcounter = new Counter();
-/* Set ACL */
-var acl = new AV.ACL();
-acl.setPublicReadAccess(true);
-acl.setPublicWriteAccess(true);
-newcounter.setACL(acl);
-/* End Set ACL */
-newcounter.set("title", title);
-newcounter.set("url", url);
-newcounter.set("hits", 1);
-newcounter.save(null, {
-success: function(newcounter) {
-var $element = $(document.getElementById(url));
-$element.find('.leancloud-visitors-count').text(newcounter.get('hits'));
-},
-error: function(newcounter, error) {
-console.log('Failed to create');
-}
-});
-}
-},
-error: function(error) {
-console.log('Error:' + error.code + " " + error.message);
-}
-});
-}
-$(function() {
-var Counter = AV.Object.extend("Counter");
-if ($('.leancloud_visitors').length == 1) {
-// in post.html, so add 1 to hit counts
-addCount(Counter);
-} else if ($('.post-link').length &gt; 1){
-// in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.
-showHitCount(Counter);
-}
-});
-&lt;/script&gt;
-
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这里本来是一段html代码
+但是会执行，册那
 </code></pre></div></div>
 
 <h5 id="3_layoutsdefaulthtml">3._layouts/default.html</h5>
 <p>添加</p>
-
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://code.jquery.com/jquery-3.2.0.min.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script&gt;</span><span class="nx">AV</span><span class="p">.</span><span class="nx">initialize</span><span class="p">(</span><span class="s2">"TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz"</span><span class="p">,</span> <span class="s2">"8NibCKPlTVw5om1DF1dMaQvN"</span><span class="p">);</span><span class="nt">&lt;/script&gt;</span>
-<span class="c">&lt;!--&lt;script&gt;console.log("Error: " + error.code + " " + error.message);&lt;/script&gt;--&gt;</span>
-<span class="nt">&lt;script&gt;</span>
-    <span class="kd">function</span> <span class="nx">showHitCount</span><span class="p">(</span><span class="nx">Counter</span><span class="p">)</span> <span class="p">{</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"i was called"</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AV</span><span class="p">.</span><span class="nx">Query</span><span class="p">(</span><span class="nx">Counter</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">entries</span> <span class="o">=</span> <span class="p">[];</span>
-        <span class="kd">var</span> <span class="nx">$visitors</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">".leancloud_visitors"</span><span class="p">);</span>
-        <span class="nx">$visitors</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-            <span class="nx">entries</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s2">"id"</span><span class="p">).</span><span class="nx">trim</span><span class="p">()</span> <span class="p">);</span>
-        <span class="p">});</span>
-        <span class="nx">query</span><span class="p">.</span><span class="nx">containedIn</span><span class="p">(</span><span class="s1">'url'</span><span class="p">,</span> <span class="nx">entries</span><span class="p">);</span>
-        <span class="nx">query</span><span class="p">.</span><span class="nx">find</span><span class="p">()</span>
-                <span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"results"</span><span class="p">,</span><span class="nx">results</span><span class="p">);</span>
-                    <span class="kd">var</span> <span class="nx">COUNT_CONTAINER_REF</span> <span class="o">=</span> <span class="s1">'.leancloud-visitors-count'</span><span class="p">;</span>
-                    <span class="k">if</span> <span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span> <span class="o">===</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="nx">$visitors</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="nx">COUNT_CONTAINER_REF</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-                        <span class="k">return</span><span class="p">;</span>
-                    <span class="p">}</span>
-                    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">results</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="kd">var</span> <span class="nx">item</span> <span class="o">=</span> <span class="nx">results</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-                        <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s1">'url'</span><span class="p">);</span>
-                        <span class="kd">var</span> <span class="nx">hits</span> <span class="o">=</span> <span class="nx">item</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s1">'hits'</span><span class="p">);</span>
-                        <span class="kd">var</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
-                        <span class="nx">$</span><span class="p">(</span><span class="nx">element</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="nx">COUNT_CONTAINER_REF</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">hits</span><span class="p">);</span>
-                    <span class="p">}</span>
-                    <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">entries</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">entries</span><span class="p">[</span><span class="nx">i</span><span class="p">];</span>
-                        <span class="kd">var</span> <span class="nx">element</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">url</span><span class="p">);</span>
-                        <span class="kd">var</span> <span class="nx">countSpan</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nx">element</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="nx">COUNT_CONTAINER_REF</span><span class="p">);</span>
-                        <span class="k">if</span><span class="p">(</span> <span class="nx">countSpan</span><span class="p">.</span><span class="nx">text</span><span class="p">()</span> <span class="o">==</span> <span class="s1">''</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="nx">countSpan</span><span class="p">.</span><span class="nx">text</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-                        <span class="p">}</span>
-                    <span class="p">}</span>
-                <span class="p">})</span>
-                <span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">object</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"Error: "</span> <span class="o">+</span> <span class="nx">error</span><span class="p">.</span><span class="nx">code</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
-                <span class="p">});</span>
-    <span class="p">}</span>
-    <span class="kd">function</span> <span class="nx">addCount</span><span class="p">(</span><span class="nx">Counter</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">$visitors</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s2">".leancloud_visitors"</span><span class="p">);</span>
-        <span class="kd">var</span> <span class="nx">url</span> <span class="o">=</span> <span class="nx">$visitors</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'id'</span><span class="p">).</span><span class="nx">trim</span><span class="p">();</span>
-        <span class="kd">var</span> <span class="nx">title</span> <span class="o">=</span> <span class="nx">$visitors</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'data-flag-title'</span><span class="p">).</span><span class="nx">trim</span><span class="p">();</span>
-        <span class="kd">var</span> <span class="nx">query</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AV</span><span class="p">.</span><span class="nx">Query</span><span class="p">(</span><span class="nx">Counter</span><span class="p">);</span>
-        <span class="nx">query</span><span class="p">.</span><span class="nx">equalTo</span><span class="p">(</span><span class="s2">"url"</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
-        <span class="nx">query</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span>
-            <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">results</span><span class="p">)</span> <span class="p">{</span>
-                <span class="k">if</span> <span class="p">(</span><span class="nx">results</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-                    <span class="kd">var</span> <span class="nx">counter</span> <span class="o">=</span> <span class="nx">results</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
-                    <span class="nx">counter</span><span class="p">.</span><span class="nx">fetchWhenSave</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-                    <span class="nx">counter</span><span class="p">.</span><span class="nx">increment</span><span class="p">(</span><span class="s2">"hits"</span><span class="p">);</span>
-                    <span class="nx">counter</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span>
-                        <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">counter</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="kd">var</span> <span class="nx">$element</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">url</span><span class="p">));</span>
-                            <span class="nx">$element</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'.leancloud-visitors-count'</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">counter</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s1">'hits'</span><span class="p">));</span>
-                        <span class="p">},</span>
-                        <span class="na">error</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">counter</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Failed to save Visitor num, with error message: '</span> <span class="o">+</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
-                        <span class="p">}</span>
-                    <span class="p">});</span>
-                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-                    <span class="kd">var</span> <span class="nx">newcounter</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Counter</span><span class="p">();</span>
-                    <span class="cm">/* Set ACL */</span>
-                    <span class="kd">var</span> <span class="nx">acl</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">AV</span><span class="p">.</span><span class="nx">ACL</span><span class="p">();</span>
-                    <span class="nx">acl</span><span class="p">.</span><span class="nx">setPublicReadAccess</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-                    <span class="nx">acl</span><span class="p">.</span><span class="nx">setPublicWriteAccess</span><span class="p">(</span><span class="kc">true</span><span class="p">);</span>
-                    <span class="nx">newcounter</span><span class="p">.</span><span class="nx">setACL</span><span class="p">(</span><span class="nx">acl</span><span class="p">);</span>
-                    <span class="cm">/* End Set ACL */</span>
-                    <span class="nx">newcounter</span><span class="p">.</span><span class="kd">set</span><span class="p">(</span><span class="s2">"title"</span><span class="p">,</span> <span class="nx">title</span><span class="p">);</span>
-                    <span class="nx">newcounter</span><span class="p">.</span><span class="kd">set</span><span class="p">(</span><span class="s2">"url"</span><span class="p">,</span> <span class="nx">url</span><span class="p">);</span>
-                    <span class="nx">newcounter</span><span class="p">.</span><span class="kd">set</span><span class="p">(</span><span class="s2">"hits"</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
-                    <span class="nx">newcounter</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="p">{</span>
-                        <span class="na">success</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newcounter</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="kd">var</span> <span class="nx">$element</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="nx">url</span><span class="p">));</span>
-                            <span class="nx">$element</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">'.leancloud-visitors-count'</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">newcounter</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="s1">'hits'</span><span class="p">));</span>
-                        <span class="p">},</span>
-                        <span class="na">error</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">newcounter</span><span class="p">,</span> <span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
-                            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Failed to create'</span><span class="p">);</span>
-                        <span class="p">}</span>
-                    <span class="p">});</span>
-                <span class="p">}</span>
-            <span class="p">},</span>
-            <span class="na">error</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">)</span> <span class="p">{</span>
-                <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'Error:'</span> <span class="o">+</span> <span class="nx">error</span><span class="p">.</span><span class="nx">code</span> <span class="o">+</span> <span class="s2">" "</span> <span class="o">+</span> <span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">);</span>
-            <span class="p">}</span>
-        <span class="p">});</span>
-    <span class="p">}</span>
-    <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">Counter</span> <span class="o">=</span> <span class="nx">AV</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="s2">"Counter"</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'this is a test'</span><span class="p">);</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'this is a test-add'</span><span class="p">,</span><span class="nx">$</span><span class="p">(</span><span class="s1">'.leancloud_visitors'</span><span class="p">));</span>
-        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">'this is a test-show'</span><span class="p">,</span><span class="nx">$</span><span class="p">(</span><span class="s1">'.post-link'</span><span class="p">));</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'.leancloud_visitors'</span><span class="p">).</span><span class="nx">length</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-            <span class="c1">// in post.html, so add 1 to hit counts</span>
-            <span class="nx">addCount</span><span class="p">(</span><span class="nx">Counter</span><span class="p">);</span>
-        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">'.post-link'</span><span class="p">).</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">){</span>
-            <span class="c1">// in index.html, there are many 'leancloud_visitors' and 'post-link', so just show hit counts.</span>
-            <span class="nx">showHitCount</span><span class="p">(</span><span class="nx">Counter</span><span class="p">);</span>
-        <span class="p">}</span>
-    <span class="p">});</span>
-<span class="nt">&lt;/script&gt;</span>
-
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这里也有代码
 </code></pre></div></div>
 
 <h5 id="4_layoutsposthtml">4._layouts/post.html</h5>
 <p>添加</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-&lt;span id="/2019/01/addreadvalue/" class="leancloud_visitors" data-flag-title="github pages添加阅读量"&gt;
-&lt;span class="post-meta-divider"&gt;|&lt;/span&gt;
-&lt;span class="post-meta-item-text"&gt; 阅读量:  &lt;/span&gt;
-&lt;span class="leancloud-visitors-count"&gt;&lt;/span&gt;
-&lt;/span&gt;
-
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>这里也有代码🤣
 </code></pre></div></div>
 
 <p>reference:</p>

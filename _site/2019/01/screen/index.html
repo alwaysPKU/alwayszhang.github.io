@@ -6,14 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>jekyll支持latex公式</title>
+  <title>screen 小妙用</title>
   <meta name="description" content="">
   <meta name="author" content="leopardpan">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="jekyll支持latex公式">
+  <meta name="twitter:title" content="screen 小妙用">
   <meta name="twitter:description" content="">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="jekyll支持latex公式">
+  <meta property="og:title" content="screen 小妙用">
   <meta property="og:description" content="">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2019/01/supportLatex/">
+  <link rel="canonical" href="http://localhost:4000/2019/01/screen/">
   <link rel="alternate" type="application/rss+xml" title="半甜不要腻" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -166,19 +166,19 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">jekyll支持latex公式</h1>
+    <h1 class="post-title">screen 小妙用</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2019-01-08 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-08</time>  
+      <time datetime="2019-01-13 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-13</time>  
       |本文
-      331
+      1348
       字|
       需要时间:
-      1 
+      4 
       分钟|   
 
        
-       <span id="/2019/01/supportLatex/" class="leancloud_visitors" data-flag-title="jekyll支持latex公式">
+       <span id="/2019/01/screen/" class="leancloud_visitors" data-flag-title="screen 小妙用">
         <span class="post-meta-divider" ></span>
         <span class="post-meta-item-text">  <--阅读量:</span>
         <span class="leancloud-visitors-count"></span>
@@ -196,24 +196,100 @@
   <section class="post">
     <!--more-->
 
-<p>标签： 拾遗</p>
+<p>有时候需要关闭终端，然后打开后又能看到输出。这时候可以用
+screen</p>
 
-<hr />
+<h3 id="语法">语法</h3>
+<p>screen [-AmRvx -ls -wipe][-d <作业名称>][-h <行数>][-r <作业名称>][-s ][-S <作业名称>]</作业名称></作业名称></行数></作业名称></p>
 
-<p>在incloud/head.html文件里加入以下代码：</p>
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/x-mathjax-config"</span><span class="nt">&gt;</span>
-<span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">Config</span><span class="p">({</span>
-<span class="na">tex2jax</span><span class="p">:</span> <span class="p">{</span>
-<span class="na">skipTags</span><span class="p">:</span> <span class="p">[</span><span class="s1">'script'</span><span class="p">,</span> <span class="s1">'noscript'</span><span class="p">,</span> <span class="s1">'style'</span><span class="p">,</span> <span class="s1">'textarea'</span><span class="p">,</span> <span class="s1">'pre'</span><span class="p">],</span>
-<span class="na">inlineMath</span><span class="p">:</span> <span class="p">[[</span><span class="s1">'$'</span><span class="p">,</span><span class="s1">'$'</span><span class="p">]]</span>
-<span class="p">}</span>
-<span class="p">});</span>
-<span class="nt">&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML'</span> <span class="na">async</span><span class="nt">&gt;&lt;/script&gt;</span>
-</code></pre></div></div>
+<p>参数说明</p>
 
-<p>来个秀：
-<script type="math/tex">\begin{multline} \lambda_\textbf{coord} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}     \mathbb{𝟙}_{ij}^{\text{obj}}             \left[             \left(                 x_i - \hat{x}_i             \right)^2 +             \left(                 y_i - \hat{y}_i             \right)^2             \right] \\ + \lambda_\textbf{coord} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}         \mathbb{𝟙}_{ij}^{\text{obj}}          \left[         \left(             \sqrt{w_i} - \sqrt{\hat{w}_i}         \right)^2 +         \left(             \sqrt{h_i} - \sqrt{\hat{h}_i}         \right)^2         \right] \\ + \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}         \mathbb{𝟙}_{ij}^{\text{obj}}         \left(             C_i - \hat{C}_i         \right)^2 \\ + \lambda_\textrm{noobj} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}     \mathbb{𝟙}_{ij}^{\text{noobj}}         \left(             C_i - \hat{C}_i         \right)^2 \\ + \sum_{i = 0}^{S^2} \mathbb{𝟙}_i^{\text{obj}}     \sum_{c \in \textrm{classes}}         \left(             p_i(c) - \hat{p}_i(c)         \right)^2 \end{multline}</script></p>
+<p>-A 　将所有的视窗都调整为目前终端机的大小。</p>
+
+<p>-d <作业名称> 　将指定的screen作业离线。</作业名称></p>
+
+<p>-h <行数> 　指定视窗的缓冲区行数。</行数></p>
+
+<p>-m 　即使目前已在作业中的screen作业，仍强制建立新的screen作业。</p>
+
+<p>-r <作业名称> 　恢复离线的screen作业。</作业名称></p>
+
+<p>-R 　先试图恢复离线的作业。若找不到离线的作业，即建立新的screen作业。</p>
+
+<p>-s 　指定建立新视窗时，所要执行的shell。</p>
+
+<p>-S <作业名称> 　指定screen作业的名称。</作业名称></p>
+
+<p>-v 　显示版本信息。</p>
+
+<p>-x 　恢复之前离线的screen作业。</p>
+
+<p>-ls或–list 　显示目前所有的screen作业。</p>
+
+<p>-wipe 　检查目前所有的screen作业，并删除已经无法使用的screen作业。</p>
+
+<h3 id="常用参数">常用参数</h3>
+<p>screen -S yourname -&gt; 新建一个叫yourname的session</p>
+
+<p>screen -ls -&gt; 列出当前所有的session</p>
+
+<p>screen -r yourname -&gt; 回到yourname这个session</p>
+
+<p>screen -d yourname -&gt; 远程detach某个session</p>
+
+<p>screen -d -r yourname -&gt; 结束当前session并回到yourname这个session</p>
+
+<p><code class="highlighter-rouge">在每个screen session 下，所有命令都以 ctrl+a(C-a) 开始。</code></p>
+
+<p>C-a ? -&gt; 显示所有键绑定信息</p>
+
+<p>C-a c -&gt; 创建一个新的运行shell的窗口并切换到该窗口</p>
+
+<p>C-a n -&gt; Next，切换到下一个 window</p>
+
+<p>C-a p -&gt; Previous，切换到前一个 window</p>
+
+<p>C-a 0..9 -&gt; 切换到第 0..9 个 window</p>
+
+<p>Ctrl+a [Space] -&gt; 由视窗0循序切换到视窗9</p>
+
+<p>C-a C-a -&gt; 在两个最近使用的 window 间切换</p>
+
+<p>C-a x -&gt; 锁住当前的 window，需用用户密码解锁</p>
+
+<p>C-a d -&gt; detach，暂时离开当前session，将目前的 screen session (可能含有多个 windows) 丢到后台执行，并会回到还没进 screen 时的状态，此时在 screen session 里，每个 window 内运行的 process (无论是前台/后台)都在继续执行，即使 logout 也不影响。</p>
+
+<p><code class="highlighter-rouge">C-a z -&gt; 把当前session放到后台执行，用 shell 的 fg 命令则可回去。</code></p>
+
+<p>C-a w -&gt; 显示所有窗口列表</p>
+
+<p>C-a t -&gt; Time，显示当前时间，和系统的 load</p>
+
+<p>C-a k -&gt; kill window，强行关闭当前的 window</p>
+
+<p>C-a [ -&gt; 进入 copy mode，在 copy mode 下可以回滚、搜索、复制就像用使用 vi 一样</p>
+
+<p>C-b Backward，PageUp</p>
+
+<p>C-f Forward，PageDown</p>
+
+<p>H(大写) High，将光标移至左上角</p>
+
+<p>L Low，将光标移至左下角</p>
+
+<p>0 移到行首</p>
+
+<p>$ 行末</p>
+
+<p>w forward one word，以字为单位往前移</p>
+
+<p>b backward one word，以字为单位往后移</p>
+
+<p>Space 第一次按为标记区起点，第二次按为终点</p>
+
+<p>Esc 结束 copy mode</p>
+
+<p>C-a ] -&gt; Paste，把刚刚在 copy mode 选定的内容贴上</p>
 
 
 
@@ -304,13 +380,13 @@
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2019/01/FCN/" data-toggle="tooltip" data-placement="top" title="全卷积神经网络(FCN)">上一篇：  <span>全卷积神经网络(FCN)</span>
+            <a href="/2019/01/jupyter/" data-toggle="tooltip" data-placement="top" title="jupyter">上一篇：  <span>jupyter</span>
             </a>
         </li>
         
         
         <li class="next">
-            <a href="/2019/01/supportcomment/" data-toggle="tooltip" data-placement="top" title="jekyll&valine实现评论功能">下一篇：  <span>jekyll&valine实现评论功能</span>
+            <a href="/2019/01/conda/" data-toggle="tooltip" data-placement="top" title="conda 常用命令">下一篇：  <span>conda 常用命令</span>
             </a>
         </li>
         
@@ -334,7 +410,7 @@
         appId:'TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz',
         appKey:'8NibCKPlTVw5om1DF1dMaQvN',
         notify:true,
-        path: '/2019/01/supportLatex/',
+        path: '/2019/01/screen/',
         placeholder:'别害羞，请说话'
     })
 </script>

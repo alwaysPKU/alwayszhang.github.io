@@ -6,14 +6,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>jekyll支持latex公式</title>
+  <title>conda 常用命令</title>
   <meta name="description" content="">
   <meta name="author" content="leopardpan">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="jekyll支持latex公式">
+  <meta name="twitter:title" content="conda 常用命令">
   <meta name="twitter:description" content="">
   <meta property="og:type" content="article">
-  <meta property="og:title" content="jekyll支持latex公式">
+  <meta property="og:title" content="conda 常用命令">
   <meta property="og:description" content="">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="/css/main.css">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-  <link rel="canonical" href="http://localhost:4000/2019/01/supportLatex/">
+  <link rel="canonical" href="http://localhost:4000/2019/01/conda/">
   <link rel="alternate" type="application/rss+xml" title="半甜不要腻" href="http://localhost:4000/feed.xml">
   
   <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
@@ -166,19 +166,19 @@
         <div class="content-wrapper__inner">
             <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">jekyll支持latex公式</h1>
+    <h1 class="post-title">conda 常用命令</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2019-01-08 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-08</time>  
+      <time datetime="2019-01-14 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2019-01-14</time>  
       |本文
-      331
+      532
       字|
       需要时间:
-      1 
+      2 
       分钟|   
 
        
-       <span id="/2019/01/supportLatex/" class="leancloud_visitors" data-flag-title="jekyll支持latex公式">
+       <span id="/2019/01/conda/" class="leancloud_visitors" data-flag-title="conda 常用命令">
         <span class="post-meta-divider" ></span>
         <span class="post-meta-item-text">  <--阅读量:</span>
         <span class="leancloud-visitors-count"></span>
@@ -196,24 +196,20 @@
   <section class="post">
     <!--more-->
 
-<p>标签： 拾遗</p>
-
-<hr />
-
-<p>在incloud/head.html文件里加入以下代码：</p>
-<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/x-mathjax-config"</span><span class="nt">&gt;</span>
-<span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">Config</span><span class="p">({</span>
-<span class="na">tex2jax</span><span class="p">:</span> <span class="p">{</span>
-<span class="na">skipTags</span><span class="p">:</span> <span class="p">[</span><span class="s1">'script'</span><span class="p">,</span> <span class="s1">'noscript'</span><span class="p">,</span> <span class="s1">'style'</span><span class="p">,</span> <span class="s1">'textarea'</span><span class="p">,</span> <span class="s1">'pre'</span><span class="p">],</span>
-<span class="na">inlineMath</span><span class="p">:</span> <span class="p">[[</span><span class="s1">'$'</span><span class="p">,</span><span class="s1">'$'</span><span class="p">]]</span>
-<span class="p">}</span>
-<span class="p">});</span>
-<span class="nt">&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML'</span> <span class="na">async</span><span class="nt">&gt;&lt;/script&gt;</span>
-</code></pre></div></div>
-
-<p>来个秀：
-<script type="math/tex">\begin{multline} \lambda_\textbf{coord} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}     \mathbb{𝟙}_{ij}^{\text{obj}}             \left[             \left(                 x_i - \hat{x}_i             \right)^2 +             \left(                 y_i - \hat{y}_i             \right)^2             \right] \\ + \lambda_\textbf{coord} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}         \mathbb{𝟙}_{ij}^{\text{obj}}          \left[         \left(             \sqrt{w_i} - \sqrt{\hat{w}_i}         \right)^2 +         \left(             \sqrt{h_i} - \sqrt{\hat{h}_i}         \right)^2         \right] \\ + \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}         \mathbb{𝟙}_{ij}^{\text{obj}}         \left(             C_i - \hat{C}_i         \right)^2 \\ + \lambda_\textrm{noobj} \sum_{i = 0}^{S^2}     \sum_{j = 0}^{B}     \mathbb{𝟙}_{ij}^{\text{noobj}}         \left(             C_i - \hat{C}_i         \right)^2 \\ + \sum_{i = 0}^{S^2} \mathbb{𝟙}_i^{\text{obj}}     \sum_{c \in \textrm{classes}}         \left(             p_i(c) - \hat{p}_i(c)         \right)^2 \end{multline}</script></p>
+<ul>
+  <li>conda -V conda版本</li>
+  <li>conda list 安装了哪些包</li>
+  <li>conda env list 或 conda info -e或 conda info –envs 查看当前存在哪些虚拟环境</li>
+  <li>conda update conda 检查更新当前conda</li>
+  <li>使用 conda create -n your_env_name python=X.X（2.7、3.6等)命令创建python版本为X.X、名字为your_env_name的虚拟环境。your_env_name文件可以在Anaconda安装目录envs文件下找到。</li>
+  <li>Linux:  <code class="highlighter-rouge">source activate your_env_name</code>(虚拟环境名称)</li>
+  <li>Windows: activate your_env_name(虚拟环境名称)</li>
+  <li>使用命令conda install -n your_env_name [package]即可安装package到your_env_name中</li>
+  <li>Linux: <code class="highlighter-rouge">source deactivate</code> 关闭</li>
+  <li>Windows: deactivate 关闭</li>
+  <li>使用命令conda remove -n your_env_name(虚拟环境名称) –all， 即可删除。删除环境</li>
+  <li>使用命令conda remove –name your_env_name  package_name 即可。删除环境中的某个包。</li>
+</ul>
 
 
 
@@ -304,15 +300,10 @@
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2019/01/FCN/" data-toggle="tooltip" data-placement="top" title="全卷积神经网络(FCN)">上一篇：  <span>全卷积神经网络(FCN)</span>
+            <a href="/2019/01/screen/" data-toggle="tooltip" data-placement="top" title="screen 小妙用">上一篇：  <span>screen 小妙用</span>
             </a>
         </li>
         
-        
-        <li class="next">
-            <a href="/2019/01/supportcomment/" data-toggle="tooltip" data-placement="top" title="jekyll&valine实现评论功能">下一篇：  <span>jekyll&valine实现评论功能</span>
-            </a>
-        </li>
         
     </ul>
 </section>
@@ -334,7 +325,7 @@
         appId:'TKFClR9mFN7woW6NwHuQAxDb-gzGzoHsz',
         appKey:'8NibCKPlTVw5om1DF1dMaQvN',
         notify:true,
-        path: '/2019/01/supportLatex/',
+        path: '/2019/01/conda/',
         placeholder:'别害羞，请说话'
     })
 </script>

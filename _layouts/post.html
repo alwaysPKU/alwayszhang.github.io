@@ -8,6 +8,12 @@ layout: default
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
       <time datetime="{{page.date | date: date_to_xmlschema}}" itemprop="datePublished" class="post-meta__date date">{{page.date | date: "%F"}}</time>  
+      |本文
+      {{ page.content | strip_html | strip_newlines | remove: " " | size }}
+      字|
+      需要时间:
+      {{ page.content | strip_html | strip_newlines | remove: " " | size | divided_by: 350 | plus: 1 }} 
+      分钟|   
 
       {% if site.leancloud.enable %} 
        <span id="{{ page.url }}" class="leancloud_visitors" data-flag-title="{{ page.title }}">
