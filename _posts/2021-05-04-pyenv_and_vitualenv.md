@@ -6,7 +6,7 @@ categories: [拾遗]
 tags: 拾遗
 ---
 
-##vituralenv和pyenv
+#vituralenv和pyenv
 ## 场景
     1. pyenv 是一个开源的 Python 版本管理工具，可以轻松地给系统安装任意 Python 版本，想玩哪个版本，瞬间就可以切换。有了 pyenv，我们不需要再为系统多版本 Python 共存问题而发愁，也不用为手动编译安装其他 Python 版本而浪费时间，只需要执行一条简单的命令就可以切换并使用任何其他版本，该工具真正地做到了开箱即用，简单实用。
     
