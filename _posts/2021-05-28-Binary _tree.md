@@ -25,6 +25,7 @@ tags: leetcode
  * 二叉搜索树
    * [98.验证二叉搜索树 ](https://leetcode-cn.com/problems/validate-binary-search-tree/)
    * [501.二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/)
+   * [230.二叉搜索树中第K小的元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
    
 ---
 ```
@@ -383,6 +384,7 @@ class Solution:
 
 ### [501.二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/)
 ```
+利用二叉搜索树中序遍历的有序性
 # Definition for a binary tree node.
 # class TreeNode:
 #     def __init__(self, val=0, left=None, right=None):
@@ -417,4 +419,30 @@ class Solution:
                 max_count = count
             node = node.right
         return res
+```
+
+### [230.二叉搜索树中第K小的元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
+```
+利用二叉搜索树中序遍历的有序性
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def kthSmallest(self, root: TreeNode, k: int) -> int:
+        node = root
+        stack = list()
+        count = 0
+        while node or stack:
+            while node:
+                stack.append(node)
+                node = node.left
+            node = stack.pop()
+            val = node.val
+            count += 1
+            if count == k:
+                return val
+            node = node.right
 ```
