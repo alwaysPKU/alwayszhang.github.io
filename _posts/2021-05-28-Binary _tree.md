@@ -24,14 +24,13 @@ tags: leetcode
       * [637.二叉树的层平均值](https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/)
  * 二叉搜索树
    * [98.验证二叉搜索树 ](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+   * [501.二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/)
    
    
-   
-> 深度优先遍历：从根节点出发，沿着左子树方向进行纵向遍历，直到找到叶子节点为止。然后回溯到前一个节点，进行右子树节点的遍历，直到遍历完所有可达节点为止。
-
-> 广度优先遍历：从根节点出发，在横向遍历二叉树层段节点的基础上纵向遍历二叉树的层次。
+* 深度优先遍历：从根节点出发，沿着左子树方向进行纵向遍历，直到找到叶子节点为止。然后回溯到前一个节点，进行右子树节点的遍历，直到遍历完所有可达节点为止。
+* 广度优先遍历：从根节点出发，在横向遍历二叉树层段节点的基础上纵向遍历二叉树的层次。
 ---
-
+---
 # 一、遍历
 # 1.1 深度优先
 ### 1.递归
@@ -378,4 +377,42 @@ class Solution:
                 return False
             node = node.right
         return True
+```
+
+### [501.二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/)
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findMode(self, root: TreeNode) -> List[int]:
+        res = list()
+        node = root
+        if not node:
+            return node
+        stack = list()
+        base = float('-inf')
+        count = 0
+        max_count = 0
+        while node or stack:
+            while node:
+                stack.append(node)
+                node = node.left
+            node = stack.pop()
+            val = node.val
+            if val == base:
+                count += 1
+            else:
+                base = val
+                count = 1
+            if count == max_count:
+                res.append(val)
+            elif count > max_count:
+                res = [val]
+                max_count = count
+            node = node.right
+        return res
 ```
