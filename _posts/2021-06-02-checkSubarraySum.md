@@ -3,12 +3,12 @@ layout: post
 title: 连续子数组的和
 date: 2021-06-02
 categories: [leetcode]
-tags: leetcode, 动态规划
+tags: leetcode
 ---
 
 ### 连续子数组的和
 [523.连续的子数组和](https://leetcode-cn.com/problems/continuous-subarray-sum/)
-##### 1.动态规划
+##### 1.前缀法
 ```
 class Solution:
     def checkSubarraySum(self, nums: List[int], k: int) -> bool:
