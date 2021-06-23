@@ -2,8 +2,8 @@
 layout: post
 title: 从源码安装python
 date: 2021-06-16
-categories: [拾遗]
-tags: 拾遗
+categories: [python]
+tags: python
 ---
 
 ### 1. 下载python源码包. [下载python](https://www.python.org/downloads/source/)
