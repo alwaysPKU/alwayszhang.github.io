@@ -2,8 +2,8 @@
 layout: post
 title: pyenv 和 vitualenv
 date: 2021-05-04
-categories: [拾遗]
-tags: 拾遗
+categories: [python]
+tags: python
 ---
 
 #vituralenv和pyenv
