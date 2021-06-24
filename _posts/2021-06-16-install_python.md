@@ -19,7 +19,7 @@ tags: python
 此时你已经吧pyton3.7安装到了/a/b/Python3.7
 ```
 ### 5.创建python虚拟环境，方便开发
-1. mkdir /a/b/python3.7-virtual/【虚拟环境目录】 && virtualenv -p /a/b/Python3.7/bin/python3 /a/b/python3.7-virtual/
+1. mkdir /a/b/python3.7-virtual/【虚拟环境目录】 && virtualenv --no-site-packages -p /a/b/Python3.7/bin/python3 /a/b/python3.7-virtual/
 2. 开启虚拟环境 source /a/b/python3.7-virtual/bin/activate
 3. 此时，which python 你会发现地址应该是/a/b/python3.7-virtual/bin/python
 4. 开启你的专属python开发环境吧。
