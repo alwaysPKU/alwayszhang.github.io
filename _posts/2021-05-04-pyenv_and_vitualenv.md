@@ -39,5 +39,5 @@ tags: python
         3. 查看有哪些版本 pyenv versions (默认的前面有个*)
     
     2. virtualenv
-        1. 创建：mkdir xxx && virtualenv -p ${python版本} --no-site-packages xxx  # --no-site-packages是不会复制当前oython环境的所有第三方包
+        1. 创建：mkdir xxx && virtualenv --no-site-packages -p ${python版本} xxx  # --no-site-packages是不会复制当前oython环境的所有第三方包
         2. 启动: source xxx/bin/activate
