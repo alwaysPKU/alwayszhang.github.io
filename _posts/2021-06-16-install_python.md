@@ -9,7 +9,7 @@ tags: python
 ### 1. 下载python源码包. [下载python](https://www.python.org/downloads/source/)
 ### 2. 解压tar zxvf xxx.tar.gz 到当前文件夹(假如路径是/a/b/Python-3.7.0)
 ### 3. 安装路径 mkdir /a/b/Python3.7(你想要的安装python的路径)
-### 4. 安装
+### 4. 安装 [参考](https://zwpku.cn/2020/02/makeinstall/)
 1. cd /a/b/Python-3.7.0 
 2. 配置： ./configure --prefix=/a/b/Python3.7
 3. 编译：make
