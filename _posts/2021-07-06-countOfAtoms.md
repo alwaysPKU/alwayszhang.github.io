@@ -6,8 +6,7 @@ categories: [leetcode]
 tags: leetcode
 ---
 
-
-[726.原子的数量]（https://leetcode-cn.com/problems/number-of-atoms/）
+[726.原子的数量](https://leetcode-cn.com/problems/number-of-atoms/)
 ```
 from collections import defaultdict, deque
 class Solution:
