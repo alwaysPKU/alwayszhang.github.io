@@ -2,7 +2,7 @@
 layout: post
 title: 和相同的二元子数组
 date: 2021-07-08
-categories: [leetcode][前缀和]
+categories: [leetcode]
 tags: leetcode
 ---
 
