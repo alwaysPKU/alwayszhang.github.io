@@ -12,5 +12,16 @@ tags: 任意门
 - **labuladong 刷题技巧**  
   - [gitee](https://labuladong.gitee.io/algo/)
   - [github](https://labuladong.github.io/algo/)
-- **待更新**
-- **待更新**
+- **牛客**
+
+### 标记语言
+  - **markdown**
+    - d
+
+### 语言
+  - **python**
+
+
+### 论文
+  - **CV**
+  - **NLP**
