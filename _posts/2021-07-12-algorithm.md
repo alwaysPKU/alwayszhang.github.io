@@ -13,6 +13,7 @@ tags: 任意门
   - [gitee](https://labuladong.gitee.io/algo/)
   - [github](https://labuladong.github.io/algo/)
 - **牛客**
+  - [官网](https://www.nowcoder.com/) #面经/刷题/工作  
 
 ### 标记语言
   - **markdown**
@@ -22,6 +23,11 @@ tags: 任意门
 
 ### 语言
   - **python**
+    - [官网](https://www.python.org/)
+    - [pip镜像源](https://www.runoob.com/w3cnote/pip-cn-mirror.html)  #方便下载python包
+  - **C++**
+    - [官网]()
+  - **JAVA**
 
 
 ### 论文
