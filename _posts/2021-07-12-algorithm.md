@@ -12,7 +12,7 @@ tags: 任意门
 - **leetcode**
   - [国内](https://leetcode-cn.com/)
   - [国外](https://leetcode.com/)
-- **labuladong 刷题技巧** #一个维护很好的刷题博客
+- **labuladong 刷题技巧**   __#一个维护很好的刷题博客__
   - [gitee](https://labuladong.gitee.io/algo/)
   - [github](https://labuladong.github.io/algo/)
 - **牛客**
