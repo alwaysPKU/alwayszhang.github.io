@@ -10,32 +10,34 @@ tags: 任意门
 ### 面试/刷题
 
 - **<font color=Blue> leetcode </font>**
-  - [国内](https://leetcode-cn.com/)
-  - [国外](https://leetcode.com/)
-- **labuladong 刷题技巧**  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _#一个维护很好的刷题博客_
-  - [gitee](https://labuladong.gitee.io/algo/)
-  - [github](https://labuladong.github.io/algo/)
-- **牛客**
+  - [国内官网](https://leetcode-cn.com/)
+  - [国外官网](https://leetcode.com/)
+- **<font color=Blue>labuladong 刷题技巧</font>**  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _#一个维护很好的刷题博客_
+  - [gitee依赖](https://labuladong.gitee.io/algo/)
+  - [github依赖](https://labuladong.github.io/algo/)
+- **<font color=Blue>牛客</font>**
   - [官网](https://www.nowcoder.com/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_#面经/刷题/工作_
 
 ### 标记语言
-  - **markdown**
+  - **<font color=Blue>markdown</font>**
     - [在线编辑](https://tool.lu/markdown)
     - [菜鸟](https://www.runoob.com/markdown/md-tutorial.html)
-  - [Overleaf](https://www.overleaf.com/)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _#在线LaTeX编辑器，可写简历_
+  - **<font color=Blue>OverLeaf</font>**
+    - [Overleaf官网](https://www.overleaf.com/)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _#在线LaTeX编辑器，可写简历_
 
 ### 语言
-  - **python**
+  - **<font color=Blue>python</font>**
     - [官网](https://www.python.org/)
     - [pip镜像源](https://www.runoob.com/w3cnote/pip-cn-mirror.html)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_#方便下载python包_
-  - **C++**
+  - **<font color=Blue>C++</font>**
     - [官网]()
-  - **JAVA**
+  - **<font color=Blue>JAVA</font>**
 
 
 ### 论文
-  - **CV**
-  - **NLP**
+  - **<font color=Blue>CV</font>**
+  - **<font color=Blue>NLP</font>**
 
 ### 官方大杂烩
-  - **菜鸟** [菜鸟](https://www.runoob.com/)
+  - **<font color=Blue>菜鸟</font>** 
+    - [官网主页](https://www.runoob.com/)
