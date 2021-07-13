@@ -30,8 +30,9 @@ tags: 任意门
     - [官网](https://www.python.org/)
     - [pip镜像源](https://www.runoob.com/w3cnote/pip-cn-mirror.html)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_#方便下载python包_
   - **<font color=Blue>C++</font>**
-    - [官网]()
+    - [官网](https://isocpp.org/)
   - **<font color=Blue>JAVA</font>**
+    - [官网](https://developer.oracle.com/java/)
 
 
 ### 论文
