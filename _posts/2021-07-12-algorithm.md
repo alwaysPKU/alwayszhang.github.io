@@ -22,6 +22,7 @@ tags: 任意门
   - **<font color=Blue>markdown</font>**
     - [在线编辑](https://tool.lu/markdown)
     - [菜鸟](https://www.runoob.com/markdown/md-tutorial.html)
+    - [作业部落](https://www.zybuluo.com/mdeditor)
   - **<font color=Blue>OverLeaf</font>**
     - [Overleaf官网](https://www.overleaf.com/)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _#在线LaTeX编辑器，可写简历_
 
@@ -58,6 +59,15 @@ tags: 任意门
     - [document](https://numpy.org/doc/)
 
 ### 七、深度学习
+  - **<font color=Blue>入门教程</font>** 
+    - **<font color=green>本人很喜欢的@hanbingtao的教程</font>** [备份](https://cdn.jsdelivr.net/gh/it-ebooks-0/it-ebooks-2017-07to11/%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%EF%BC%88hanbingtao%EF%BC%89.pdf) 作业部落的图貌似没了
+      - [零基础入门深度学习(1) - 感知器](https://zybuluo.com/hanbingtao/note/433855)
+      - [零基础入门深度学习(2) - 线性单元和梯度下降](https://www.zybuluo.com/hanbingtao/note/448086)
+      - [零基础入门深度学习(3) - 神经网络和反向传播算法](https://www.zybuluo.com/hanbingtao/note/476663)
+      - [零基础入门深度学习(4) - 卷积神经网络](https://www.zybuluo.com/hanbingtao/note/485480)
+      - [零基础入门深度学习(5) - 循环神经网络](https://zybuluo.com/hanbingtao/note/541458)
+      - [零基础入门深度学习(6) - 长短时记忆网络(LSTM)](https://zybuluo.com/hanbingtao/note/581764)
+      - [零基础入门深度学习(7) - 递归神经网络](https://zybuluo.com/hanbingtao/note/626300)
   - **<font color=Blue>框架</font>** 
     - **<font color=green>TensorFlow</font>** 
       - [中文官网](https://tensorflow.google.cn/)
