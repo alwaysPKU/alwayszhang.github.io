@@ -38,6 +38,7 @@ tags: 任意门
 ### 四、论文
   - **<font color=Blue>CV</font>**
   - **<font color=Blue>NLP</font>**
+  - [arXiv](https://arxiv.org/)
 
 ### 五、官方大杂烩
   - **<font color=Blue>菜鸟</font>** 
@@ -52,7 +53,8 @@ tags: 任意门
       - [Docs](https://matplotlib.org/stable/contents.html)
   - **<font color=Blue>Numpy</font>** 
     - [中文官网](https://www.numpy.org.cn/)
-    - [github]()
+    - [github](https://github.com/numpy/numpy)
+    - [document](https://numpy.org/doc/)
 
 ### 七、深度学习
   - **<font color=Blue>框架</font>** 
@@ -64,6 +66,8 @@ tags: 任意门
     - **<font color=green>MxNet</font>** 
       - [官网](https://mxnet.apache.org/versions/1.8.0/)  
       - #更节省显存，可训练更大的模型
+    - **<font color=green>caffe</font>**
+      - [Tour](https://caffe.berkeleyvision.org/tutorial/)
   - **<font color=Blue>《动手学深度学习》</font>** 
     - MxNet：[《动手学深度学习》](https://zh-v2.d2l.ai/)
     - Pytorch：[《动手学深度学习》](https://tangshusen.me/Dive-into-DL-PyTorch/#/)
