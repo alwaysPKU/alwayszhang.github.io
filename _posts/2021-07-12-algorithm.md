@@ -37,6 +37,7 @@ tags: 任意门
 
 ### 四、论文
   - **<font color=Blue>CV</font>**
+    - [snailtyan整理](https://github.com/SnailTyan/deep-learning-papers-translation) #网友整理 
   - **<font color=Blue>NLP</font>**
   - [arXiv](https://arxiv.org/)
 
@@ -60,6 +61,7 @@ tags: 任意门
   - **<font color=Blue>框架</font>** 
     - **<font color=green>TensorFlow</font>** 
       - [中文官网](https://tensorflow.google.cn/)
+      - [官方文档翻译整理](https://www.w3cschool.cn/tensorflow_python/)  #w3cshool整理
     - **<font color=green>pytorch</font>** 
       - [官网](https://pytorch.org/)
       - [python API](https://pytorch.org/docs/stable/index.html) 
@@ -68,6 +70,22 @@ tags: 任意门
       - #更节省显存，可训练更大的模型
     - **<font color=green>caffe</font>**
       - [Tour](https://caffe.berkeleyvision.org/tutorial/)
+  - **<font color=Blue>网络模型结构可视化工具</font>**
+    - [Netscope](http://ethereon.github.io/netscope/quickstart.html)   #通过.prototxt看
+      - [AlexNet](http://ethereon.github.io/netscope/#/preset/alexnet) 
+      - [CaffeNet](http://ethereon.github.io/netscope/#/preset/caffenet)
+      - [FCN Three Stream 8s](http://ethereon.github.io/netscope/#/preset/fcn-8s-pascal)
+      - [Network in Network](http://ethereon.github.io/netscope/#/preset/nin)
+      - [VGG-16](http://ethereon.github.io/netscope/#/preset/vgg-16)
+    - [Netron](https://netron.app/)  #支持linux，windows，mac 支持ONNX，TensorFlow，Tensorflow-lite，Keras，Caffe，TorchScript，Core ML, Darknet
+      - ONNX:[](https://netron.app/?url=https://media.githubusercontent.com/media/onnx/models/master/vision/classification/squeezenet/model/squeezenet1.0-3.onnx)
+      - []()
+      - []()
+      - []()
+      - []()
+      - []()
+      - []()
+      - Darknet: [yolo](https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolo.cfg) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolo.cfg)]
   - **<font color=Blue>《动手学深度学习》</font>** 
     - MxNet：[《动手学深度学习》](https://zh-v2.d2l.ai/)
     - Pytorch：[《动手学深度学习》](https://tangshusen.me/Dive-into-DL-PyTorch/#/)
