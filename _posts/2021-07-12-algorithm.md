@@ -42,3 +42,7 @@ tags: 任意门
 ### 官方大杂烩
   - **<font color=Blue>菜鸟</font>** 
     - [官网主页](https://www.runoob.com/)
+
+### 好用的python包
+  - **<font color=Blue>科学画图</font>** 
+    - [scikit](https://scikit-plot.readthedocs.io/en/stable/index.html)
