@@ -7,7 +7,7 @@ tags: 任意门
 ---
 
 
-### 面试/刷题
+### 一、面试/刷题
 
 - **<font color=Blue> leetcode </font>**
   - [国内官网](https://leetcode-cn.com/)
@@ -18,14 +18,14 @@ tags: 任意门
 - **<font color=Blue>牛客</font>**
   - [官网](https://www.nowcoder.com/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_#面经/刷题/工作_
 
-### 标记语言
+### 二、标记语言
   - **<font color=Blue>markdown</font>**
     - [在线编辑](https://tool.lu/markdown)
     - [菜鸟](https://www.runoob.com/markdown/md-tutorial.html)
   - **<font color=Blue>OverLeaf</font>**
     - [Overleaf官网](https://www.overleaf.com/)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; _#在线LaTeX编辑器，可写简历_
 
-### 语言
+### 三、语言
   - **<font color=Blue>python</font>**
     - [官网](https://www.python.org/)
     - [pip镜像源](https://www.runoob.com/w3cnote/pip-cn-mirror.html)  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_#方便下载python包_
@@ -35,15 +35,15 @@ tags: 任意门
     - [官网](https://developer.oracle.com/java/)
 
 
-### 论文
+### 四、论文
   - **<font color=Blue>CV</font>**
   - **<font color=Blue>NLP</font>**
 
-### 官方大杂烩
+### 五、官方大杂烩
   - **<font color=Blue>菜鸟</font>** 
     - [官网主页](https://www.runoob.com/)
 
-### 好用的python包
+### 六、好用的python包
   - **<font color=Blue>科学画图</font>** 
     - scikit-plot
       - [Docs](https://scikit-plot.readthedocs.io/en/stable/index.html)
@@ -54,7 +54,7 @@ tags: 任意门
     - [中文官网](https://www.numpy.org.cn/)
     - [github]()
 
-### 深度学习
+### 七、深度学习
   - **<font color=Blue>框架</font>** 
     - **<font color=green>TensorFlow</font>** 
       - [中文官网](https://tensorflow.google.cn/)
