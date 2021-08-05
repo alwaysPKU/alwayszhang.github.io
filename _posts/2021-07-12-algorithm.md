@@ -83,11 +83,15 @@ tags: 任意门
       - [TensorFlow Lite](https://www.tensorflow.org/lite/guide): [hair_segmentation](https://raw.githubusercontent.com/google/mediapipe/master/mediapipe/models/hair_segmentation.tflite) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/google/mediapipe/master/mediapipe/models/hair_segmentation.tflite)]
         -  **<font color=red>TensorFlow Lite</font>** 是一组工具，可帮助开发者在移动设备、嵌入式设备和 IoT 设备上运行 TensorFlow 模型。它支持设备端机器学习推断，延迟较低，并且二进制文件很小。
       - TensorFlow: [chessbot](https://raw.githubusercontent.com/srom/chessbot/master/model/chessbot.pb) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/srom/chessbot/master/model/chessbot.pb)]
-      - Keras: [mobilenet](https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/demos/imagetagger/tests/data/mobilenet.h5) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/demos/imagetagger/tests/data/mobilenet.h5)]
+      - [Keras](https://keras.io/zh/): [mobilenet](https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/demos/imagetagger/tests/data/mobilenet.h5) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/demos/imagetagger/tests/data/mobilenet.h5)]
+        - **<font color=red>Keras</font>** 是一个用 Python 编写的高级神经网络 API，它能够以 TensorFlow, CNTK, 或者 Theano 作为后端运行。Keras 的开发重点是支持快速的实验。能够以最小的时延把你的想法转换为实验结果，是做好研究的关键。
       - Caffe: [mobilenet_v2](https://raw.githubusercontent.com/shicai/MobileNet-Caffe/master/mobilenet_v2.caffemodel) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/shicai/MobileNet-Caffe/master/mobilenet_v2.caffemodel)]
-      - TorchScript: [traced_online_pred_layer](https://raw.githubusercontent.com/ApolloAuto/apollo/master/modules/prediction/data/traced_online_pred_layer.pt) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/ApolloAuto/apollo/master/modules/prediction/data/traced_online_pred_layer.pt)]
-      - Core ML: [exermote](https://raw.githubusercontent.com/Lausbert/Exermote/master/ExermoteInference/ExermoteCoreML/ExermoteCoreML/Model/Exermote.mlmodel) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/Lausbert/Exermote/master/ExermoteInference/ExermoteCoreML/ExermoteCoreML/Model/Exermote.mlmodel)]
-      - Darknet: [yolo](https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolo.cfg) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolo.cfg)]
+      - [TorchScript](https://pytorch.org/docs/stable/jit.html): [traced_online_pred_layer](https://raw.githubusercontent.com/ApolloAuto/apollo/master/modules/prediction/data/traced_online_pred_layer.pt) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/ApolloAuto/apollo/master/modules/prediction/data/traced_online_pred_layer.pt)]
+        - **<font color=red>TorchScript</font>** 是一种从PyTorch代码创建可序列化和可优化模型的方法。任何TorchScript程序都可以从Python进程中保存，并加载到没有Python依赖的进程中。 
+      - [Core ML](https://developer.apple.com/documentation/coreml): [exermote](https://raw.githubusercontent.com/Lausbert/Exermote/master/ExermoteInference/ExermoteCoreML/ExermoteCoreML/Model/Exermote.mlmodel) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/Lausbert/Exermote/master/ExermoteInference/ExermoteCoreML/ExermoteCoreML/Model/Exermote.mlmodel)]
+        -  **<font color=red>CoreML</font>** 是iOS 11新推出的机器学习框架，是人工智能的核心内容，他可以在训练好的机器学习模型应用到APP中
+      - [Darknet](https://pjreddie.com/darknet/): [yolo](https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolo.cfg) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolo.cfg)]
+        - YOLO作者自己写的一个深度学习框架叫 **<font color=red>darknet</font>** 
   - **<font color=Blue>《动手学深度学习》</font>** 
     - MxNet：[《动手学深度学习》](https://zh-v2.d2l.ai/)
     - Pytorch：[《动手学深度学习》](https://tangshusen.me/Dive-into-DL-PyTorch/#/)
