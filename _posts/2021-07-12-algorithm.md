@@ -71,13 +71,13 @@ tags: 任意门
     - **<font color=green>caffe</font>**
       - [Tour](https://caffe.berkeleyvision.org/tutorial/)
   - **<font color=Blue>网络模型结构可视化工具</font>**
-    - [Netscope](http://ethereon.github.io/netscope/quickstart.html)   #通过.prototxt看
+    - [**<font color=green>Netscope</font>**](http://ethereon.github.io/netscope/quickstart.html)   #通过.prototxt看
       - [AlexNet](http://ethereon.github.io/netscope/#/preset/alexnet) 
       - [CaffeNet](http://ethereon.github.io/netscope/#/preset/caffenet)
       - [FCN Three Stream 8s](http://ethereon.github.io/netscope/#/preset/fcn-8s-pascal)
       - [Network in Network](http://ethereon.github.io/netscope/#/preset/nin)
       - [VGG-16](http://ethereon.github.io/netscope/#/preset/vgg-16)
-    - [Netron](https://netron.app/)  #支持linux，windows，mac 支持ONNX，TensorFlow，Tensorflow-lite，Keras，Caffe，TorchScript，Core ML, Darknet
+    - [**<font color=green>Netron</font>**](https://netron.app/)  #支持linux，windows，mac 支持ONNX，TensorFlow，Tensorflow-lite，Keras，Caffe，TorchScript，Core ML, Darknet
       - [ONNX](https://github.com/onnx/tutorials): [squeezenet](https://media.githubusercontent.com/media/onnx/models/master/vision/classification/squeezenet/model/squeezenet1.0-3.onnx) [[看图](https://netron.app/?url=https://media.githubusercontent.com/media/onnx/models/master/vision/classification/squeezenet/model/squeezenet1.0-3.onnx)] 
         - Open Neural Network Exchange（**<font color=red>ONNX</font>**，开放神经网络交换）格式，是一个用于表示深度学习模型的标准，可使模型在不同框架之间进行转移。
       - [TensorFlow Lite](https://www.tensorflow.org/lite/guide): [hair_segmentation](https://raw.githubusercontent.com/google/mediapipe/master/mediapipe/models/hair_segmentation.tflite) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/google/mediapipe/master/mediapipe/models/hair_segmentation.tflite)]
