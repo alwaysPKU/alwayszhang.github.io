@@ -46,10 +46,10 @@ tags: 任意门
 
 ### 六、好用的python包
   - **<font color=Blue>科学画图</font>** 
-    - scikit-plot
+    - **<font color=green>scikit-plot</font>**
       - [Docs](https://scikit-plot.readthedocs.io/en/stable/index.html)
       - [leetcode](https://github.com/reiinakano/scikit-plot)
-    - matplotlib
+    - **<font color=green>matplotlib</font>**
       - [Docs](https://matplotlib.org/stable/contents.html)
   - **<font color=Blue>Numpy</font>** 
     - [中文官网](https://www.numpy.org.cn/)
