@@ -78,13 +78,15 @@ tags: 任意门
       - [Network in Network](http://ethereon.github.io/netscope/#/preset/nin)
       - [VGG-16](http://ethereon.github.io/netscope/#/preset/vgg-16)
     - [Netron](https://netron.app/)  #支持linux，windows，mac 支持ONNX，TensorFlow，Tensorflow-lite，Keras，Caffe，TorchScript，Core ML, Darknet
-      - ONNX:[](https://netron.app/?url=https://media.githubusercontent.com/media/onnx/models/master/vision/classification/squeezenet/model/squeezenet1.0-3.onnx)
-      - []()
-      - []()
-      - []()
-      - []()
-      - []()
-      - []()
+      - [ONNX](https://github.com/onnx/tutorials): [squeezenet](https://media.githubusercontent.com/media/onnx/models/master/vision/classification/squeezenet/model/squeezenet1.0-3.onnx) [[看图](https://netron.app/?url=https://media.githubusercontent.com/media/onnx/models/master/vision/classification/squeezenet/model/squeezenet1.0-3.onnx)] 
+        - Open Neural Network Exchange（**<font color=red>ONNX</font>**，开放神经网络交换）格式，是一个用于表示深度学习模型的标准，可使模型在不同框架之间进行转移。
+      - [TensorFlow Lite](https://www.tensorflow.org/lite/guide): [hair_segmentation](https://raw.githubusercontent.com/google/mediapipe/master/mediapipe/models/hair_segmentation.tflite) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/google/mediapipe/master/mediapipe/models/hair_segmentation.tflite)]
+        -  **<font color=red>TensorFlow Lite</font>** 是一组工具，可帮助开发者在移动设备、嵌入式设备和 IoT 设备上运行 TensorFlow 模型。它支持设备端机器学习推断，延迟较低，并且二进制文件很小。
+      - TensorFlow: [chessbot](https://raw.githubusercontent.com/srom/chessbot/master/model/chessbot.pb) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/srom/chessbot/master/model/chessbot.pb)]
+      - Keras: [mobilenet](https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/demos/imagetagger/tests/data/mobilenet.h5) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/aio-libs/aiohttp-demos/master/demos/imagetagger/tests/data/mobilenet.h5)]
+      - Caffe: [mobilenet_v2](https://raw.githubusercontent.com/shicai/MobileNet-Caffe/master/mobilenet_v2.caffemodel) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/shicai/MobileNet-Caffe/master/mobilenet_v2.caffemodel)]
+      - TorchScript: [traced_online_pred_layer](https://raw.githubusercontent.com/ApolloAuto/apollo/master/modules/prediction/data/traced_online_pred_layer.pt) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/ApolloAuto/apollo/master/modules/prediction/data/traced_online_pred_layer.pt)]
+      - Core ML: [exermote](https://raw.githubusercontent.com/Lausbert/Exermote/master/ExermoteInference/ExermoteCoreML/ExermoteCoreML/Model/Exermote.mlmodel) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/Lausbert/Exermote/master/ExermoteInference/ExermoteCoreML/ExermoteCoreML/Model/Exermote.mlmodel)]
       - Darknet: [yolo](https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolo.cfg) [[看图](https://netron.app/?url=https://raw.githubusercontent.com/AlexeyAB/darknet/master/cfg/yolo.cfg)]
   - **<font color=Blue>《动手学深度学习》</font>** 
     - MxNet：[《动手学深度学习》](https://zh-v2.d2l.ai/)
