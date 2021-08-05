@@ -45,4 +45,25 @@ tags: 任意门
 
 ### 好用的python包
   - **<font color=Blue>科学画图</font>** 
-    - [scikit](https://scikit-plot.readthedocs.io/en/stable/index.html)
+    - scikit-plot
+      - [Docs](https://scikit-plot.readthedocs.io/en/stable/index.html)
+      - [leetcode](https://github.com/reiinakano/scikit-plot)
+    - matplotlib
+      - [Docs](https://matplotlib.org/stable/contents.html)
+  - **<font color=Blue>Numpy</font>** 
+    - [中文官网](https://www.numpy.org.cn/)
+    - [github]()
+
+### 深度学习
+  - **<font color=Blue>框架</font>** 
+    - **<font color=green>TensorFlow</font>** 
+      - [中文官网](https://tensorflow.google.cn/)
+    - **<font color=green>pytorch</font>** 
+      - [官网](https://pytorch.org/)
+      - [python API](https://pytorch.org/docs/stable/index.html) 
+    - **<font color=green>MxNet</font>** 
+      - [官网](https://mxnet.apache.org/versions/1.8.0/)  
+      - #更节省显存，可训练更大的模型
+  - **<font color=Blue>《动手学深度学习》</font>** 
+    - MxNet：[《动手学深度学习》](https://zh-v2.d2l.ai/)
+    - Pytorch：[《动手学深度学习》](https://tangshusen.me/Dive-into-DL-PyTorch/#/)
