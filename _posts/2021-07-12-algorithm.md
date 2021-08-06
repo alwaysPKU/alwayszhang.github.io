@@ -105,3 +105,6 @@ tags: 任意门
   - **<font color=Blue>《动手学深度学习》</font>** 
     - MxNet：[《动手学深度学习》](https://zh-v2.d2l.ai/)
     - Pytorch：[《动手学深度学习》](https://tangshusen.me/Dive-into-DL-PyTorch/#/)
+
+### 八、实战
+- [kaggle](https://link.zhihu.com/?target=https%3A//www.kaggle.com/)
