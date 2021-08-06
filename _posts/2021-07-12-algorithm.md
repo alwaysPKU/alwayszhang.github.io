@@ -69,6 +69,9 @@ tags: 任意门
     - [中文官网](https://www.numpy.org.cn/)
     - [github](https://github.com/numpy/numpy)
     - [document](https://numpy.org/doc/)
+  - **<font color=blue>Scikit-Learn</font>**
+    - [官网](https://link.zhihu.com/?target=https%3A//scikit-learn.org/stable/index.html) 
+    - [中文文档](https://link.zhihu.com/?target=http%3A//sklearn.apachecn.org/%23/)
 
 ### 七、深度学习
   - **<font color=Blue>入门教程</font>** 
