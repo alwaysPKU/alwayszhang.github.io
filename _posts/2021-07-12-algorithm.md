@@ -7,6 +7,15 @@ tags: 任意门
 ---
 
 
+- 一、面试/刷题
+- 二、标记语言
+- 三、语言
+- 四、论文
+- 五、大杂烩
+- 六、好用的python包
+- 七、深度学习
+- 八、实战
+---
 ### 一、面试/刷题
 
 - **<font color=Blue> leetcode </font>**
@@ -42,7 +51,7 @@ tags: 任意门
   - **<font color=Blue>NLP</font>**
   - [arXiv](https://arxiv.org/)
 
-### 五、官方大杂烩
+### 五、大杂烩
   - **<font color=Blue>菜鸟</font>** 
     - [官网主页](https://www.runoob.com/)
 
