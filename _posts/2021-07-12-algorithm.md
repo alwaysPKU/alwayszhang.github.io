@@ -14,7 +14,7 @@ tags: 任意门
 - 五、大杂烩
 - 六、好用的python包
 - 七、深度学习
-- 八、实战
+- 八、实战/比赛
 
 
 ---
@@ -118,5 +118,5 @@ tags: 任意门
     - MxNet：[《动手学深度学习》](https://zh-v2.d2l.ai/)
     - Pytorch：[《动手学深度学习》](https://tangshusen.me/Dive-into-DL-PyTorch/#/)
 
-### 八、实战
+### 八、实战/比赛
 - [kaggle](https://link.zhihu.com/?target=https%3A//www.kaggle.com/)
