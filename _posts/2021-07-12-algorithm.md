@@ -49,10 +49,21 @@ tags: 任意门
 
 
 ### 四、论文
-  - **<font color=Blue>CV</font>**
-    - [snailtyan整理](https://github.com/SnailTyan/deep-learning-papers-translation) #网友整理 
-  - **<font color=Blue>NLP</font>**
-  - [arXiv](https://arxiv.org/)
+- Arxiv
+  - [Arxiv 机器学习最新论文检索主页地址](https://arxiv.org/list/stat.ML/recent?ref=bestofml.com)
+  - [Andrej Karpathy 开发了 Arxiv Sanity Preserver，帮助分类、搜索和过滤特征](http://www.arxiv-sanity.com/?ref=bestofml.com)
+- **<font color=blue>Papers with Code</font>**
+  - 这个网站叫做 Browse state-of-the-art。它将 ArXiv 上的最新深度学习论文与 GitHub 上的开源代码联系起来。该项目目前包含了 651 个排行榜，1016 个深度学习任务，795 个数据集，以及重磅的 10257 个含复现代码的优秀论文。简直就是一个寻找论文和代码的利器。它将 1016 个深度学习任务分成了 16 大类，涉及了深度学习的各个方面。
+  - [主页地址](https://paperswithcode.com/sota)
+- Papers with Code(Sorted by stars)
+  - 这份资源收集了 AI 领域从 2013 - 2018 年所有的论文，并按照在 GitHub 上的标星数量进行排序。
+  - [GitHub 项目地址](https://github.com/zziz/pwc)
+- Deep Learning Papers 阅读路线
+  - 如果你是深度学习领域的新手，你可能会遇到的第一个问题是“我应该从哪篇论文开始阅读？”下面是一个深入学习论文的阅读路线图！
+  - [GitHub 项目地址](https://github.com/floodsung/Deep-Learning-Papers-Reading-Roadmap)
+- Deep Learning Object Detection
+  - 目标检测（Object Detection）是深度学习 CV 领域的一个核心研究领域和重要分支。纵观 2013 年到 2019 年，从最早的 R-CNN、Fast R-CNN 到后来的 YOLO v2、YOLO v3 再到今年的 M2Det，新模型层出不穷，性能也越来越好！(今年是2019年，timeflies)
+  - [github](https://github.com/hoya012/deep_learning_object_detection)
 
 ### 五、大杂烩
   - **<font color=Blue>菜鸟</font>** 
