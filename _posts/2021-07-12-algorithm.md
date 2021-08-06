@@ -64,6 +64,7 @@ tags: 任意门
 - Deep Learning Object Detection
   - 目标检测（Object Detection）是深度学习 CV 领域的一个核心研究领域和重要分支。纵观 2013 年到 2019 年，从最早的 R-CNN、Fast R-CNN 到后来的 YOLO v2、YOLO v3 再到今年的 M2Det，新模型层出不穷，性能也越来越好！(今年是2019年，timeflies)
   - [github](https://github.com/hoya012/deep_learning_object_detection)
+- [snailtyan整理](https://github.com/SnailTyan/deep-learning-papers-translation) #网友整理
 
 ### 五、大杂烩
   - **<font color=Blue>菜鸟</font>** 
