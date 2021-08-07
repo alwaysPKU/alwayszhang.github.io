@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 是么是任意门
+title: 什么是任意门
 date: 2021-07-12
 categories: [任意门]
 tags: 任意门
@@ -12,7 +12,7 @@ tags: 任意门
 
 ---
 ## **<font color=Blue>打开百宝袋，开启任意门</font>**
-### AI门 [开启](https://zwpku.cn/2021/08/ml-book/)
+### AI门 [**<font color=Green>开启</font>**](https://zwpku.cn/2021/08/ml-book/)
 - 一、数学基础
 - 二、机器学习公开课
 - 三、机器学习书籍
@@ -24,7 +24,7 @@ tags: 任意门
 - 九、期刊
 - 十、其他
 
-### 学习使我快乐门 [开启](https://zwpku.cn/2021/07/algorithm/)
+### 学习使我快乐门 [**<font color=Green>开启</font>**](https://zwpku.cn/2021/07/algorithm/)
 - 一、面试/刷题
 - 二、标记语言
 - 三、语言
