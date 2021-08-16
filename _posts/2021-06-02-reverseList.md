@@ -6,7 +6,14 @@ categories: [leetcode]
 tags: leetcode
 ---
 
-### 反转链表
+
+- [206.反转链表](https://leetcode-cn.com/problems/reverse-linked-list/) **<font color=green>简单</font>**
+- [92.反转链表 II](https://leetcode-cn.com/problems/reverse-linked-list-ii/submissions/) **<font color=goldenord>中等</font>**
+- [25.K 个一组翻转链表](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/) **<font color=red>困难</font>**
+- [24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)   **<font color=goldenord>中等</font>**
+- [剑指 Offer II 022. 链表中环的入口节点](https://leetcode-cn.com/problems/c32eOV/)   **<font color=goldenord>中等</font>**
+
+### 反转链表 **<font color=green>简单</font>**
 [206.反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)
 ##### 1.基基础方法
 ```
@@ -27,7 +34,7 @@ class Solution:
         return pre
 
 ```
-### 反转链表II
+### 反转链表II  **<font color=goldenrod>中等</font>**
 [92.反转链表 II](https://leetcode-cn.com/problems/reverse-linked-list-ii/submissions/)
 #### 1. 基础方法
 ```
@@ -50,4 +57,132 @@ class Solution:
             next.next = pre.next
             pre.next = next
         return before_head.next
+```
+
+### [25.K 个一组翻转链表](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/) **<font color=red>困难</font>**
+```
+题目：
+    给你一个链表，每 k 个节点一组进行翻转，请你返回翻转后的链表。
+
+    k 是一个正整数，它的值小于或等于链表的长度。
+
+    如果节点总数不是 k 的整数倍，那么请将最后剩余的节点保持原有顺序。
+
+```
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseKGroup(self, head: ListNode, k: int) -> ListNode:
+        res = ListNode(-1)
+        res.next = head
+        pre = res
+        
+        while head:
+            tail = pre
+            for i in range(k):
+                tail = tail.next
+                if not tail:
+                    return res.next
+
+            next = tail.next
+            new_head, new_tail = self.reverse(head, tail)
+            pre.next = new_head
+            new_tail.next = next
+            pre = new_tail
+            head = new_tail.next
+        return res.next
+
+    def reverse(self, head: ListNode, tail: ListNode):  # 用到了反转链表，但是注意while的中止条件不同
+        pre = None
+        cur = head
+        while pre!=tail:
+            next = cur.next
+            cur.next = pre
+            pre = cur
+            cur = next
+        return tail, head
+
+        
+```
+
+### [24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)   **<font color=goldenord>中等</font>**
+```
+题目：
+    给定一个链表，两两交换其中相邻的节点，并返回交换后的链表。
+
+    你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+```
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def swapPairs(self, head: ListNode) -> ListNode:
+        pre = ListNode(-1)
+        pre.next = head
+        res = pre
+        cur = head 
+        while cur:
+            next = cur.next
+            cur.next = next.next
+            pre.next = next
+            next.next = cur
+            pre = cur
+            cur = cur.next
+        return res.next
+```
+
+### [剑指 Offer II 022. 链表中环的入口节点](https://leetcode-cn.com/problems/c32eOV/)   **<font color=goldenord>中等</font>**
+```
+题目：
+    给定一个链表，返回链表开始入环的第一个节点。 从链表的头节点开始沿着 next 指针进入环的第一个节点为环的入口节点。如果链表无环，则返回 ：null。
+
+    为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。注意，pos 仅仅是用于标识环的情况，并不会作为参数传递到函数中。
+
+    说明：不允许修改给定的链表。
+```
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+# 快慢指针，第一次相遇后，让其中一个回到head，然后同步往后走，再次相遇肯定在环入口
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        A = head
+        B = head
+        
+        if not A:
+            return None
+        if A.next:
+            A = A.next
+        else:
+            return None
+        
+        if A.next:
+            B = A.next
+        else:
+            return None
+        
+        while A != B:
+            if not B or not B.next or not B.next.next:
+                return None
+            else:
+                A = A.next
+                B = B.next.next
+        A = head
+        while A != B:
+            A = A.next
+            B = B.next
+        return A
 ```
