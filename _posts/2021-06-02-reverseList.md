@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 反转链表
-date: 2021-06-02
+title: 链表相关
+date: 2021-08-16
 categories: [leetcode]
 tags: leetcode
 ---
