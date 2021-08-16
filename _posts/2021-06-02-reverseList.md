@@ -12,6 +12,7 @@ tags: leetcode
 - [25.K 个一组翻转链表](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/) **<font color=red>困难</font>**
 - [24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)   **<font color=goldenord>中等</font>**
 - [剑指 Offer II 022. 链表中环的入口节点](https://leetcode-cn.com/problems/c32eOV/)   **<font color=goldenord>中等</font>**
+- [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)   **<font color=green>简单</font>**
 
 ### 反转链表 **<font color=green>简单</font>**
 [206.反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)
@@ -185,4 +186,27 @@ class Solution:
             A = A.next
             B = B.next
         return A
+```
+
+
+### [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)   **<font color=green>简单</font>**
+```
+判定链表是否相交
+```
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+# 双指针法，遍历完自己，遍历对方，知道两指针相遇。或者不相遇都是None
+class Solution:
+    def getIntersectionNode(self, headA: ListNode, headB: ListNode) -> ListNode:
+        P_a = headA
+        P_b = headB
+        while P_a != P_b:
+            P_a = P_a.next if P_a  else headB
+            P_b = P_b.next if P_b  else headA
+        return P_a
 ```
