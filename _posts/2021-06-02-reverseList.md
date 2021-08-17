@@ -6,14 +6,21 @@ categories: [leetcode]
 tags: leetcode
 ---
 
-
-- [206.反转链表](https://leetcode-cn.com/problems/reverse-linked-list/) **<font color=green>简单</font>**
-- [92.反转链表 II](https://leetcode-cn.com/problems/reverse-linked-list-ii/submissions/) **<font color=goldenord>中等</font>**
-- [25.K 个一组翻转链表](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/) **<font color=red>困难</font>**
-- [24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)   **<font color=goldenord>中等</font>**
-- [剑指 Offer II 022. 链表中环的入口节点](https://leetcode-cn.com/problems/c32eOV/)   **<font color=goldenord>中等</font>**
-- [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)   **<font color=green>简单</font>**
-
+- 反转类
+    - [206.反转链表](https://leetcode-cn.com/problems/reverse-linked-list/) **<font color=green>简单</font>**
+    - [92.反转链表 II](https://leetcode-cn.com/problems/reverse-linked-list-ii/submissions/) **<font color=goldenord>中等</font>**
+    - [25.K 个一组翻转链表](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/) **<font color=red>困难</font>**
+    - [24. 两两交换链表中的节点](https://leetcode-cn.com/problems/swap-nodes-in-pairs/)   **<font color=goldenord>中等</font>**
+- 相交类
+    - [剑指 Offer II 022. 链表中环的入口节点](https://leetcode-cn.com/problems/c32eOV/)   **<font color=goldenord>中等</font>**
+    - [160. 相交链表](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)   **<font color=green>简单</font>**
+- 删除类
+    - [剑指 Offer 18. 删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)   **<font color=green>简单</font>**  # 无重复
+    - [203. 移除链表元素](https://leetcode-cn.com/problems/remove-linked-list-elements/submissions/)  **<font color=green>简单</font>**  #有重复
+    - [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/) **<font color=goldenord>中等</font>**
+- 合并类
+    - [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)  **<font color=green>简单</font>**
+    - [23. 合并K个升序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists/)  **<font color=red>困难</font>**
 ### 反转链表 **<font color=green>简单</font>**
 [206.反转链表](https://leetcode-cn.com/problems/reverse-linked-list/)
 ##### 1.基基础方法
@@ -209,4 +216,157 @@ class Solution:
             P_a = P_a.next if P_a  else headB
             P_b = P_b.next if P_b  else headA
         return P_a
+```
+
+### [剑指 Offer 18. 删除链表的节点](https://leetcode-cn.com/problems/shan-chu-lian-biao-de-jie-dian-lcof/)  **<font color=green>简单</font>**  #无重复
+```
+题目：
+    给定单向链表的头指针和一个要删除的节点的值，定义一个函数删除该节点。
+
+    返回删除后的链表的头节点。
+    注意：此题对比原题有改动
+    题目保证链表中节点的值互不相同
+```
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+class Solution:
+    def deleteNode(self, head: ListNode, val: int) -> ListNode:
+        pre = ListNode(-1)
+        pre.next = head
+        res = pre
+        while pre.next.val != val:
+            pre = pre.next
+        pre.next = pre.next.next
+        return res.next
+```
+
+### [203. 移除链表元素](https://leetcode-cn.com/problems/remove-linked-list-elements/submissions/)  **<font color=green>简单</font>**  #有重复
+```
+题目：
+    给你一个链表的头节点 head 和一个整数 val ，请你删除链表中所有满足 Node.val == val 的节点，并返回 新的头节点 。
+```
+
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeElements(self, head: ListNode, val: int) -> ListNode:
+        pre = ListNode(-1)
+        pre.next = head
+        res = pre
+        while head:
+            if head.val == val:
+                pre.next = head.next
+                head = pre.next
+            else:
+                head = head.next
+                pre = pre.next
+        return res.next
+```
+
+### [19. 删除链表的倒数第 N 个结点](https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/) **<font color=goldenord>中等</font>**
+```
+题目：
+    给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+    进阶：你能尝试使用一趟扫描实现吗？
+```
+
+```
+# 双指针
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: ListNode, n: int) -> ListNode:
+        res = ListNode(-1)
+        res.next = head
+        left = res
+        right = res
+        while n > 0:
+            right = right.next
+            n -= 1
+        while right.next:
+            right = right.next
+            left = left.next
+        left.next = left.next.next
+        return res.next
+```
+
+
+### [21. 合并两个有序链表](https://leetcode-cn.com/problems/merge-two-sorted-lists/)  **<font color=green>简单</font>**
+```
+题目：
+    将两个升序链表合并为一个新的 升序 链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。 
+```
+```
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        head = ListNode(0)
+        res = head
+        while l1 and l2:
+            if l1.val <= l2.val:
+                head.next = l1
+                l1 = l1.next
+            else:
+                head.next = l2
+                l2 = l2.next
+            head = head.next
+        head.next = l2 if not l1 else l1
+        return res.next
+```
+
+### [23. 合并K个升序链表](https://leetcode-cn.com/problems/merge-k-sorted-lists/)
+```
+题目：
+    给你一个链表数组，每个链表都已经按升序排列。
+
+    请你将所有链表合并到一个升序链表中，返回合并后的链表。
+```
+
+```
+# 递归，二分法
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+class Solution:
+    def mergeKLists(self, lists: List[ListNode]) -> ListNode:
+        l = len(lists)
+        if l == 0:
+            return None
+        if l == 1:
+            return lists[0]
+        mid = l // 2
+        return self.mergeTwoLists(self.mergeKLists(lists[:mid]), self.mergeKLists(lists[mid:]))
+        
+    def mergeTwoLists(self, l1: ListNode, l2: ListNode) -> ListNode:
+        head = ListNode(0)
+        res = head
+        while l1 and l2:
+            if l1.val <= l2.val:
+                head.next = l1
+                l1 = l1.next
+            else:
+                head.next = l2
+                l2 = l2.next
+            head = head.next
+        head.next = l2 if not l1 else l1
+        return res.next
 ```
