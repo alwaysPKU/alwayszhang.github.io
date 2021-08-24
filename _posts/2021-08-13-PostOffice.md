@@ -6,7 +6,7 @@ categories: [leetcode]
 tags: leetcode
 ---
 
-momenta 笔试题目
+嬴彻 笔试题目
 POJ 1160 Post Office (区间dp，从n个村庄选m个点建邮局，使得每个村庄到邮局的距离和最小)
 ```
 题目：
