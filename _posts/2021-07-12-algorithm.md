@@ -69,6 +69,7 @@ tags: 任意门
 ### 五、大杂烩
   - **<font color=Blue>菜鸟</font>** 
     - [官网主页](https://www.runoob.com/)
+  - [**<font color=Blue>机器学习算法, 个人博客</font>**](https://feisky.xyz/machine-learning/)
 
 ### 六、好用的python包
   - **<font color=Blue>科学画图</font>** 
