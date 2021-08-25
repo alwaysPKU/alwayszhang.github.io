@@ -51,6 +51,7 @@ tags: 任意门
     - [**<font color=Blue>Python</font>**](https://c.runoob.com/compile/9)
     - [**<font color=Blue>Java</font>**](https://c.runoob.com/compile/10)
     - [**<font color=Blue>Bash</font>**](https://c.runoob.com/compile/18)
+    - [**<font color=Blue>更全更多的版本</font>**](https://wandbox.org/) 
 
 
 ### 四、论文
