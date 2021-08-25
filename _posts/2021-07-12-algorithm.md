@@ -46,6 +46,11 @@ tags: 任意门
     - [官网](https://isocpp.org/)
   - **<font color=Blue>JAVA</font>**
     - [官网](https://developer.oracle.com/java/)
+  - 在线工具：
+    - [**<font color=Blue>C++</font>**](https://c.runoob.com/compile/12)
+    - [**<font color=Blue>Python</font>**](https://c.runoob.com/compile/9)
+    - [**<font color=Blue>Java</font>**](https://c.runoob.com/compile/10)
+    - [**<font color=Blue>Bash</font>**](https://c.runoob.com/compile/18)
 
 
 ### 四、论文
