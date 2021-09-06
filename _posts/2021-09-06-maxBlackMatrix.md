@@ -36,6 +36,8 @@ tags: leetcode
 此时开始判定，如果len比记录到的最大矩阵边长size小，不用判定了继续下一步
 如果len>=size 则判定 matric[r+len-1][c][0] >= len and matric[r][c+len-1][1] >= len则能够组成更大的矩阵，或者rc更小，但是size一样的矩阵。记录之。如果不且len-- >= size。继续上一步判定。
 ```
+
+```
 class Solution:
     def findSquare(self, matrix: List[List[int]]) -> List[int]:
         m = len(matrix)
@@ -65,6 +67,4 @@ class Solution:
                         else:
                             len_min -= 1
         return ans
-```
-
 ```
