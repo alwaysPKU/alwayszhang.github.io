@@ -53,6 +53,8 @@ tags: 任意门
       - [Java](https://c.runoob.com/compile/10)
       - [Bash](https://c.runoob.com/compile/18)
     - [**<font color=Blue>Wandbox</font>**](https://wandbox.org/) 
+  - **<font color=blue>设计模式</font>**
+    - [c语言中文网](http://c.biancheng.net/view/1317.html)
 
 
 ### 四、论文
