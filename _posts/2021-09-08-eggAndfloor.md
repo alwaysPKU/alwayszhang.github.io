@@ -56,7 +56,7 @@ K个鸡蛋，N层楼
     - 鸡蛋不碎，状态变为(K,  N-x)
     - 鸡蛋碎了，状态变为(K-1, x-1)
 
-![1](/images/posts/math/20210908egg/1.gpeg)
+![1](/images/posts/math/20210908egg/1.png)
 
 ```
 class Solution:
