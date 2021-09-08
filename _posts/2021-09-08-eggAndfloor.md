@@ -41,7 +41,7 @@ x(1+x)/2 >= 100
 分段的楼层分别是 14, 27, 39, 50, 60, 69, 77, 84, 90, 95, 99, 100
 ```
 
-**<font color=blue> 4. 问题进阶: [887. 鸡蛋掉落](https://leetcode-cn.com/problems/super-egg-drop/)</font>**
+**<font color=blue> 4. 问题进阶: </font>** [887. 鸡蛋掉落](https://leetcode-cn.com/problems/super-egg-drop/)
 ```
 问题描述：
     给你 k 枚相同的鸡蛋，并可以使用一栋从第 1 层到第 n 层共有 n 层楼的建筑。
