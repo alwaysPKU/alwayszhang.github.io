@@ -322,6 +322,7 @@ class Solution:
 
 #二、 构造
 #### [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+**<font color=red>前序先确定根节点位置，中序确定根节点左右边</font>**
 ```
 给定一棵树的前序遍历 preorder 与中序遍历  inorder。请构造二叉树并返回其根节点。
 注意:
@@ -354,6 +355,7 @@ class Solution:
 ```
 
 ####  [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+**<font color=red>后续倒着遍历先确定根节点位置，中序确定根节点左右边</font>**
 ```
 根据一棵树的中序遍历与后序遍历构造二叉树。
 注意:
