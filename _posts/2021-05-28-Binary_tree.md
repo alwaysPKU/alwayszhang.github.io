@@ -24,6 +24,7 @@ tags: leetcode
       * [637.二叉树的层平均值](https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/)
 * 构造
    * [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+   * [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
 * 二叉搜索树
    * [98.验证二叉搜索树 ](https://leetcode-cn.com/problems/validate-binary-search-tree/)
    * [501.二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/)
@@ -319,10 +320,12 @@ class Solution:
 ```
 ---
 
-# 构造
+#二、 构造
 #### [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
 ```
 给定一棵树的前序遍历 preorder 与中序遍历  inorder。请构造二叉树并返回其根节点。
+注意:
+你可以假设树中没有重复的元素。
 ```
 ```
 # Definition for a binary tree node.
@@ -350,13 +353,84 @@ class Solution:
         return dfs(0, n-1, 0, n-1)
 ```
 
+####  [106. 从中序与后序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/)
+```
+根据一棵树的中序遍历与后序遍历构造二叉树。
+注意:
+你可以假设树中没有重复的元素。
+```
+**<font color=blue>python3</font>**
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, inorder: List[int], postorder: List[int]) -> TreeNode:
+        def dfs(in_left, in_right):
+            if in_left > in_right:
+                return
 
+            val = postorder.pop()
+            root = TreeNode(val)
 
+            idx = idx_inorder[val]
+
+            root.right = dfs(idx+1, in_right)
+            root.left = dfs(in_left, idx-1)
+            return root
+        idx_inorder = {val: idx for idx, val in enumerate(inorder)}
+        return dfs(0, len(postorder) - 1)
+```
+
+**<font color=blue>C++</font>**
+```
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    int post_idx;
+    unordered_map<int, int> idx_map;
+
+public:
+    TreeNode* dfs(int in_left, int in_right, vector<int>& inorder, vector<int>& postorder){
+        if (in_left > in_right) return nullptr;
+        int root_val = postorder[post_idx];
+        TreeNode* root = new TreeNode(root_val);
+
+        int index = idx_map[root_val];
+
+        post_idx--;
+        root->right = dfs(index+1, in_right, inorder, postorder);
+        root->left = dfs(in_left, index-1, inorder, postorder);
+        return root;
+    }
+    TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
+        post_idx = (int)postorder.size() - 1;
+
+        int idx = 0;
+        for (auto& val: inorder){
+            idx_map[val] = idx++; 
+        }
+        return dfs(0, (int)inorder.size()-1, inorder, postorder);
+    }
+};
+```
 
 
 
 ---
-# 二、二叉搜索树
+# 三、二叉搜索树
 
 >给定一个二叉树，判断其是否是一个有效的二叉搜索树。
 
