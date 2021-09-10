@@ -22,7 +22,9 @@ tags: leetcode
       * [102.二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
       * [102.二叉树的层序遍历II](https://leetcode-cn.com/problems/binary-tree-level-order-traversal-ii/)
       * [637.二叉树的层平均值](https://leetcode-cn.com/problems/average-of-levels-in-binary-tree/)
- * 二叉搜索树
+* 构造
+   * [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+* 二叉搜索树
    * [98.验证二叉搜索树 ](https://leetcode-cn.com/problems/validate-binary-search-tree/)
    * [501.二叉搜索树中的众数](https://leetcode-cn.com/problems/find-mode-in-binary-search-tree/)
    * [230.二叉搜索树中第K小的元素](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
@@ -315,6 +317,45 @@ class Solution:
             level_res = []
         return res
 ```
+---
+
+# 构造
+#### [105. 从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)
+```
+给定一棵树的前序遍历 preorder 与中序遍历  inorder。请构造二叉树并返回其根节点。
+```
+```
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def buildTree(self, preorder: List[int], inorder: List[int]) -> TreeNode:
+        index_inorder = {element: idx for idx, element in enumerate(inorder)}
+        n = len(preorder)
+
+        def dfs(p_left, p_right, i_left, i_right):
+            if p_left > p_right:
+                return
+            preorder_root = p_left
+            inorder_root = index_inorder[preorder[preorder_root]]
+
+            root = TreeNode(preorder[preorder_root])
+            left_num = inorder_root - i_left
+            root.left = dfs(p_left+1, p_left+left_num, i_left, inorder_root - 1)
+            root.right = dfs(p_left+left_num+1, p_right, inorder_root + 1, i_right)
+            return root
+        return dfs(0, n-1, 0, n-1)
+```
+
+
+
+
+
+
+---
 # 二、二叉搜索树
 
 >给定一个二叉树，判断其是否是一个有效的二叉搜索树。
