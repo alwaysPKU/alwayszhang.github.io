@@ -1,1 +1,1 @@
-# [welcome to my blog](https://zwpku.cn/)
+# [welcome to my blog](https://alwayszhang.cn/)
