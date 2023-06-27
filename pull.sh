@@ -7,6 +7,3 @@
 # description: 
 # ===========================================
 git pull github master
-git add .
-git commit -m $(date +%Y-%m-%d-%H-%M-%S)
-git push github master
