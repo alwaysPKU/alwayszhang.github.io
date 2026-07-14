@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五子棋</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#2d1b69,#11998e);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
+h1{font-size:2rem;margin-bottom:1rem}
+.info{margin-bottom:1rem;font-size:1.2rem;display:flex;gap:1rem;align-items:center}
+.turn{padding:0.5rem 1rem;border-radius:8px;background:rgba(255,255,255,0.1)}
+canvas{border-radius:8px;box-shadow:0 0 30px rgba(0,0,0,0.5);cursor:pointer}
+.controls{margin-top:1rem;display:flex;gap:1rem}
+button{padding:0.7rem 1.5rem;border:none;border-radius:8px;font-size:1rem;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;font-weight:bold;transition:all 0.2s}
+button:hover{transform:scale(1.05)}
+.mode{display:flex;gap:0.5rem;margin-bottom:1rem}
+.mode button{padding:0.5rem 1rem;font-size:0.9rem}
+.mode button.active{background:linear-gradient(135deg,#f093fb,#f5576c)}
+.win{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);padding:2rem;border-radius:16px;text-align:center;display:none;border:2px solid #feca57}
+.win h2{color:#feca57;margin-bottom:1rem}
+</style>
+</head>
+<body>
+<h1>⚫ 五子棋</h1>
+<div class="mode"><button class="active" onclick="setMode('pvp')">双人对战</button><button onclick="setMode('ai')">人机对战</button></div>
+<div class="info"><span class="turn" id="turn">黑棋回合</span></div>
+<div style="position:relative"><canvas id="board" width="540" height="540"></canvas>
+<div class="win" id="winMsg"><h2 id="winner">黑棋获胜!</h2><button onclick="init()" style="margin-top:1rem">再来一局</button></div>
+</div>
+<div class="controls"><button onclick="init()">重新开始</button></div>
+<script>
+const canvas=document.getElementById('board'),ctx=canvas.getContext('2d');
+const SIZE=15,CELL=36,PAD=18;
+let board,currentPlayer,gameOver,mode='pvp';
+function setMode(m){mode=m;document.querySelectorAll('.mode button').forEach(b=>b.classList.toggle('active',b.textContent.includes(m==='pvp'?'双人':'人机')));init()}
+function init(){board=Array(SIZE).fill(null).map(()=>Array(SIZE).fill(0));currentPlayer=1;gameOver=false;document.getElementById('winMsg').style.display='none';document.getElementById('turn').textContent='黑棋回合';draw()}
+function draw(){ctx.fillStyle='#dcb35c';ctx.fillRect(0,0,540,540);ctx.strokeStyle='#8b6914';ctx.lineWidth=1;for(let i=0;i<SIZE;i++){ctx.beginPath();ctx.moveTo(PAD+i*CELL,PAD);ctx.lineTo(PAD+i*CELL,PAD+(SIZE-1)*CELL);ctx.stroke();ctx.beginPath();ctx.moveTo(PAD,PAD+i*CELL);ctx.lineTo(PAD+(SIZE-1)*CELL,PAD+i*CELL);ctx.stroke()}for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++)if(board[r][c]){ctx.fillStyle=board[r][c]===1?'#000':'#fff';ctx.strokeStyle=board[r][c]===1?'#000':'#000';ctx.lineWidth=1;ctx.beginPath();ctx.arc(PAD+c*CELL,PAD+r*CELL,CELL/2-2,0,Math.PI*2);ctx.fill();ctx.stroke()}}
+function checkWin(r,c,p){const dirs=[[0,1],[1,0],[1,1],[1,-1]];for(const[dr,dc]of dirs){let count=1;for(let i=1;i<5;i++){const nr=r+dr*i,nc=c+dc*i;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE&&board[nr][nc]===p)count++;else break}for(let i=1;i<5;i++){const nr=r-dr*i,nc=c-dc*i;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE&&board[nr][nc]===p)count++;else break}if(count>=5)return true}return false}
+function aiMove(){let best=-Infinity,br=0,bc=0;for(let r=0;r<SIZE;r++)for(let c=0;c<SIZE;c++){if(board[r][c])continue;let s=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(!dr&&!dc)continue;for(let i=1;i<=4;i++){const nr=r+dr*i,nc=c+dc*i;if(nr>=0&&nr<SIZE&&nc>=0&&nc<SIZE){if(board[nr][nc]===2)s+=10/i;else if(board[nr][nc]===1)s+=8/i}}}if(board[r][c]===0&&r>0&&r<SIZE-1&&c>0&&c<SIZE-1)s+=2;if(s>best){best=s;br=r;bc=c}}board[br][bc]=2;if(checkWin(br,bc,2)){gameOver=true;document.getElementById('winner').textContent='白棋获胜!';document.getElementById('winMsg').style.display='block'}else{currentPlayer=1;document.getElementById('turn').textContent='黑棋回合'}}
+canvas.addEventListener('click',e=>{if(gameOver)return;const rect=canvas.getBoundingClientRect();const x=e.clientX-rect.left,y=e.clientY-rect.top;const c=Math.round((x-PAD)/CELL),r=Math.round((y-PAD)/CELL);if(r<0||r>=SIZE||c<0||c>=SIZE||board[r][c])return;board[r][c]=currentPlayer;if(checkWin(r,c,currentPlayer)){gameOver=true;document.getElementById('winner').textContent=(currentPlayer===1?'黑棋':'白棋')+'获胜!';document.getElementById('winMsg').style.display='block';draw();return}currentPlayer=3-currentPlayer;document.getElementById('turn').textContent=currentPlayer===1?'黑棋回合':'白棋回合';draw();if(mode==='ai'&&currentPlayer===2)setTimeout(aiMove,300)});
+init();
+</script>
+</body>
+</html>
