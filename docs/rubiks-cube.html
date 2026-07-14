@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D 魔方</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#1a1a2e;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1rem;color:#fff}
+h1{font-size:1.8rem;margin-bottom:0.5rem}
+canvas{border-radius:8px;cursor:grab}
+canvas:active{cursor:grabbing}
+.controls{display:flex;gap:0.5rem;margin:1rem 0;flex-wrap:wrap;justify-content:center}
+.controls button{padding:0.5rem 1rem;border:none;border-radius:6px;font-size:0.9rem;cursor:pointer;background:#333;color:#fff;transition:all 0.2s}
+.controls button:hover{background:#555;transform:scale(1.05)}
+.info{font-size:0.85rem;color:#888;margin-top:0.5rem}
+.move-count{font-size:1.2rem;margin:0.5rem 0;color:#00d4ff}
+</style>
+</head>
+<body>
+<h1>🎲 3D 魔方</h1>
+<div class="move-count">步数: <span id="moves">0</span></div>
+<canvas id="game" width="400" height="400"></canvas>
+<div class="controls">
+<button onclick="rotateFace('U')">U ↑</button>
+<button onclick="rotateFace('D')">D ↓</button>
+<button onclick="rotateFace('L')">L ←</button>
+<button onclick="rotateFace('R')">R →</button>
+<button onclick="rotateFace('F')">F</button>
+<button onclick="rotateFace('B')">B</button>
+<button onclick="rotateFace('U',true)">U'</button>
+<button onclick="rotateFace('D',true)">D'</button>
+<button onclick="rotateFace('L',true)">L'</button>
+<button onclick="rotateFace('R',true)">R'</button>
+<button onclick="rotateFace('F',true)">F'</button>
+<button onclick="rotateFace('B',true)">B'</button>
+<button onclick="shuffle()">🔀 打乱</button>
+<button onclick="resetCube()">🔄 重置</button>
+</div>
+<div class="info">拖拽旋转视角 | 点击按钮转动面</div>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const COLORS={R:'#ff0000',L:'#ff8c00',U:'#ffffff',D:'#ffff00',F:'#00cc00',B:'#0000ff',X:'#333333'};
+let cube=[];
+function initCube(){cube=[];for(let i=0;i<3;i++)for(let j=0;j<3;j++)for(let k=0;k<3;k++)cube.push({x:i,y:j,z:k,colors:{px:'R',nx:'L',py:'U',ny:'D',pz:'F',nz:'B'}})}
+initCube();
+let moves=0;
+let rotX=-0.5,rotY=0.6;
+let dragging=false,lastMX=0,lastMY=0;
+function project(x,y,z){const cx=200,cy=200,scale=60;const cosX=Math.cos(rotX),sinX=Math.sin(rotX);const cosY=Math.cos(rotY),sinY=Math.sin(rotY);let y1=y*cosX-z*sinX;let z1=y*sinX+z*cosX;let x1=x*cosY+z1*sinY;let z2=-x*sinY+z1*cosY;const perspective=5/(5+z2);return{x:cx+x1*scale*perspective,y:cy+y1*scale*perspective,z:z2}}
+function drawFace(vertices,color){ctx.beginPath();ctx.moveTo(vertices[0].x,vertices[0].y);for(let i=1;i<vertices.length;i++)ctx.lineTo(vertices[i].x,vertices[i].y);ctx.closePath();ctx.fillStyle=color;ctx.fill();ctx.strokeStyle='#000';ctx.lineWidth=1;ctx.stroke()}
+function render(){ctx.fillStyle='#1a1a2e';ctx.fillRect(0,0,400,400);const faces=[];for(const cubie of cube){const{x,y,z}=cubie;const cx=x-1,cy=y-1,cz=z-1;const corners=[{x:cx-0.5,y:cy-0.5,z:cz-0.5},{x:cx+0.5,y:cy-0.5,z:cz-0.5},{x:cx+0.5,y:cy+0.5,z:cz-0.5},{x:cx-0.5,y:cy+0.5,z:cz-0.5},{x:cx-0.5,y:cy-0.5,z:cz+0.5},{x:cx+0.5,y:cy-0.5,z:cz+0.5},{x:cx+0.5,y:cy+0.5,z:cz+0.5},{x:cx-0.5,y:cy+0.5,z:cz+0.5}];const proj=corners.map(c=>project(c.x,c.y,c.z));const avgZ=proj.reduce((s,p)=>s+p.z,0)/8;const faceData=[{idx:[0,1,2,3],color:cubie.colors.ny,z:avgZ},{idx:[4,5,6,7],color:cubie.colors.py,z:avgZ},{idx:[0,1,5,4],color:cubie.colors.nz,z:avgZ},{idx:[2,3,7,6],color:cubie.colors.pz,z:avgZ},{idx:[0,3,7,4],color:cubie.colors.nx,z:avgZ},{idx:[1,2,6,5],color:cubie.colors.px,z:avgZ}];faceData.forEach(f=>{const fz=f.idx.reduce((s,i)=>s+proj[i].z,0)/4;faces.push({verts:f.idx.map(i=>proj[i]),color:COLORS[f.color],z:fz})})}faces.sort((a,b)=>b.z-a.z);faces.forEach(f=>drawFace(f.verts,f.color))}
+function rotateFace(face,ccw=false){const axis=face.toLowerCase();const layer=face==='U'?0:face==='D'?2:face==='L'?0:face==='R'?2:face==='F'?2:0;const affected=cube.filter(c=>{if(face==='U'||face==='D')return c.y===layer;if(face==='L'||face==='R')return c.x===layer;return c.z===layer});const dir=ccw?-1:1;affected.forEach(c=>{const{x,y,z}=c;if(face==='U'){c.x=1-(y-1);c.y=1+(x-1)}else if(face==='D'){c.x=1+(y-1);c.y=1-(x-1)}else if(face==='L'){c.y=1-(z-1);c.z=1+(y-1)}else if(face==='R'){c.y=1+(z-1);c.z=1-(y-1)}else if(face==='F'){c.x=1+(y-1);c.y=1-(x-1)}else if(face==='B'){c.x=1-(y-1);c.y=1+(x-1)}const tmpColors={...c.colors};if(face==='U'){c.colors.px=tmpColors.pz;c.colors.pz=tmpColors.nx;c.colors.nx=tmpColors.nz;c.colors.nz=tmpColors.px}else if(face==='D'){c.colors.px=tmpColors.nz;c.colors.nz=tmpColors.nx;c.colors.nx=tmpColors.pz;c.colors.pz=tmpColors.px}else if(face==='L'){c.colors.py=tmpColors.pz;c.colors.pz=tmpColors.ny;c.colors.ny=tmpColors.nz;c.colors.nz=tmpColors.py}else if(face==='R'){c.colors.py=tmpColors.nz;c.colors.nz=tmpColors.ny;c.colors.ny=tmpColors.pz;c.colors.pz=tmpColors.py}else if(face==='F'){c.colors.py=tmpColors.px;c.colors.px=tmpColors.ny;c.colors.ny=tmpColors.nx;c.colors.nx=tmpColors.py}else if(face==='B'){c.colors.py=tmpColors.nx;c.colors.nx=tmpColors.ny;c.colors.ny=tmpColors.px;c.colors.px=tmpColors.py}});moves++;document.getElementById('moves').textContent=moves;render()}
+function shuffle(){for(let i=0;i<20;i++){const faces=['U','D','L','R','F','B'];rotateFace(faces[Math.floor(Math.random()*6)],Math.random()<0.5)}moves=0;document.getElementById('moves').textContent='0'}
+function resetCube(){initCube();moves=0;document.getElementById('moves').textContent='0';render()}
+canvas.addEventListener('mousedown',e=>{dragging=true;lastMX=e.clientX;lastMY=e.clientY});
+canvas.addEventListener('mousemove',e=>{if(!dragging)return;rotY+=(e.clientX-lastMX)*0.01;rotX+=(e.clientY-lastMY)*0.01;lastMX=e.clientX;lastMY=e.clientY;render()});
+canvas.addEventListener('mouseup',()=>dragging=false);
+canvas.addEventListener('mouseleave',()=>dragging=false);
+render();
+</script>
+</body>
+</html>
