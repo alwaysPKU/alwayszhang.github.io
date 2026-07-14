@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音乐钢琴</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1rem;color:#fff}
+h1{font-size:2rem;margin-bottom:0.5rem;background:linear-gradient(90deg,#fff,#888);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{color:#888;margin-bottom:1.5rem;font-size:0.9rem}
+.piano{display:flex;position:relative;margin:2rem 0}
+.key{position:relative;cursor:pointer;transition:all 0.1s;user-select:none}
+.white{width:50px;height:200px;background:linear-gradient(180deg,#fff,#f0f0f0);border:1px solid #ccc;border-radius:0 0 6px 6px;z-index:1}
+.white:active,.white.active{background:linear-gradient(180deg,#e0e0e0,#d0d0d0);transform:scaleY(0.98)}
+.black{width:32px;height:120px;background:linear-gradient(180deg,#333,#000);border-radius:0 0 4px 4px;position:absolute;z-index:2;margin-left:-16px}
+.black:active,.black.active{background:linear-gradient(180deg,#555,#222);height:115px}
+.key-label{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);font-size:0.7rem;color:#888;pointer-events:none}
+.black .key-label{color:#aaa}
+.visualizer{width:100%;max-width:800px;height:100px;background:rgba(0,0,0,0.3);border-radius:8px;margin-top:1rem}
+.controls{display:flex;gap:1rem;margin-top:1rem;align-items:center}
+.controls label{font-size:0.9rem;color:#aaa}
+.controls select{padding:0.3rem 0.8rem;border-radius:6px;border:none;background:#333;color:#fff}
+</style>
+</head>
+<body>
+<h1>🎹 音乐钢琴</h1>
+<p class="subtitle">键盘 A-L 和 W-P 弹奏 | 鼠标点击</p>
+<div class="controls">
+<label>音色: <select id="wave"><option value="sine">正弦波</option><option value="triangle">三角波</option><option value="square">方波</option><option value="sawtooth">锯齿波</option></select></label>
+</div>
+<div class="piano" id="piano"></div>
+<canvas class="visualizer" id="viz"></canvas>
+<script>
+const audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+const analyser=audioCtx.createAnalyser();
+analyser.connect(audioCtx.destination);
+analyser.fftSize=256;
+const notes=[{note:'C',freq:261.63,key:'a',type:'white'},{note:'C#',freq:277.18,key:'w',type:'black'},{note:'D',freq:293.66,key:'s',type:'white'},{note:'D#',freq:311.13,key:'e',type:'black'},{note:'E',freq:329.63,key:'d',type:'white'},{note:'F',freq:349.23,key:'f',type:'white'},{note:'F#',freq:369.99,key:'t',type:'black'},{note:'G',freq:392.00,key:'g',type:'white'},{note:'G#',freq:415.30,key:'y',type:'black'},{note:'A',freq:440.00,key:'h',type:'white'},{note:'A#',freq:466.16,key:'u',type:'black'},{note:'B',freq:493.88,key:'j',type:'white'},{note:'C2',freq:523.25,key:'k',type:'white'},{note:'C#2',freq:554.37,key:'i',type:'black'},{note:'D2',freq:587.33,key:'l',type:'white'},{note:'D#2',freq:622.25,key:'o',type:'black'},{note:'E2',freq:659.25,key:';',type:'white'},{note:'F2',freq:698.46,key:'p',type:'white'}];
+const piano=document.getElementById('piano');
+let whiteIdx=0;
+notes.forEach((n,i)=>{const key=document.createElement('div');key.className='key '+n.type;key.dataset.idx=i;if(n.type==='white'){key.style.order=whiteIdx*2;whiteIdx++}else{key.style.order=(whiteIdx-1)*2+1}key.innerHTML=`<span class="key-label">${n.key.toUpperCase()}</span>`;key.addEventListener('mousedown',()=>playNote(i));key.addEventListener('mouseup',()=>stopNote(i));key.addEventListener('mouseleave',()=>stopNote(i));piano.appendChild(key)});
+const oscillators={};
+function playNote(idx){if(oscillators[idx])return;const n=notes[idx];const osc=audioCtx.createOscillator();const gain=audioCtx.createGain();osc.type=document.getElementById('wave').value;osc.frequency.value=n.freq;gain.gain.value=0.3;osc.connect(gain);gain.connect(analyser);osc.start();oscillators[idx]={osc,gain};document.querySelector(`.key[data-idx="${idx}"]`).classList.add('active')}
+function stopNote(idx){if(!oscillators[idx])return;const{osc,gain}=oscillators[idx];gain.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.1);setTimeout(()=>{osc.stop();osc.disconnect();gain.disconnect()},100);delete oscillators[idx];document.querySelector(`.key[data-idx="${idx}"]`).classList.remove('active')}
+const keyMap={};notes.forEach((n,i)=>keyMap[n.key]=i);
+document.addEventListener('keydown',e=>{if(!e.repeat&&keyMap[e.key.toLowerCase()]!==undefined)playNote(keyMap[e.key.toLowerCase()])});
+document.addEventListener('keyup',e=>{if(keyMap[e.key.toLowerCase()]!==undefined)stopNote(keyMap[e.key.toLowerCase()])});
+const vizCanvas=document.getElementById('viz');const vizCtx=vizCanvas.getContext('2d');
+vizCanvas.width=800;vizCanvas.height=100;
+const bufferLength=analyser.frequencyBinCount;
+const dataArray=new Uint8Array(bufferLength);
+function drawViz(){requestAnimationFrame(drawViz);analyser.getByteFrequencyData(dataArray);vizCtx.fillStyle='rgba(0,0,0,0.2)';vizCtx.fillRect(0,0,800,100);const barW=800/bufferLength*2.5;let x=0;for(let i=0;i<bufferLength;i++){const h=dataArray[i]/255*100;const hue=i/bufferLength*360;vizCtx.fillStyle=`hsl(${hue},100%,50%)`;vizCtx.fillRect(x,100-h,barW-1,h);x+=barW}}
+drawViz();
+</script>
+</body>
+</html>
