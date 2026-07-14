@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>太空射击</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#000;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;overflow:hidden}
+canvas{border-radius:8px;box-shadow:0 0 30px rgba(0,100,255,0.3)}
+.info{position:absolute;top:10px;left:10px;right:10px;display:flex;justify-content:space-between;font-size:1.2rem}
+.overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;background:rgba(0,0,0,0.8);padding:2rem;border-radius:16px;border:2px solid #00d4ff}
+button{padding:0.8rem 2rem;border:none;border-radius:8px;font-size:1.2rem;cursor:pointer;background:linear-gradient(135deg,#00d4ff,#0066ff);color:#fff;font-weight:bold;margin-top:1rem}
+</style>
+</head>
+<body>
+<canvas id="game" width="480" height="640"></canvas>
+<div class="overlay" id="start"><h1>🚀 太空射击</h1><p>方向键/WASD 移动，空格射击</p><button onclick="start()">开始游戏</button></div>
+<div class="overlay" id="over" style="display:none"><h1>💥 游戏结束</h1><p>得分: <span id="finalScore">0</span></p><button onclick="start()">再来一局</button></div>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+let player,bullets,enemies,particles,score,gameRunning,keys={},stars=[];
+function start(){document.getElementById('start').style.display='none';document.getElementById('over').style.display='none';player={x:240,y:560,w:30,h:30,speed:5};bullets=[];enemies=[];particles=[];score=0;gameRunning=true;stars=Array(100).fill(null).map(()=>({x:Math.random()*480,y:Math.random()*640,s:Math.random()*2+0.5}));loop()}
+function spawnEnemy(){enemies.push({x:Math.random()*440+20,y:-30,w:30,h:30,speed:Math.random()*2+1,hp:1})}
+function shoot(){bullets.push({x:player.x,y:player.y-15,speed:8})}
+function update(){stars.forEach(s=>{s.y+=s.s;if(s.y>640)s.y=0});if(keys.left)player.x-=player.speed;if(keys.right)player.x+=player.speed;if(keys.up)player.y-=player.speed;if(keys.down)player.y+=player.speed;player.x=Math.max(15,Math.min(465,player.x));player.y=Math.max(15,Math.min(625,player.y));bullets.forEach(b=>b.y-=b.speed);bullets=bullets.filter(b=>b.y>-10);enemies.forEach(e=>e.y+=e.speed);enemies=enemies.filter(e=>e.y<660);for(let i=enemies.length-1;i>=0;i--){for(let j=bullets.length-1;j>=0;j--){if(Math.abs(enemies[i].x-bullets[j].x)<20&&Math.abs(enemies[i].y-bullets[j].y)<20){for(let k=0;k<8;k++)particles.push({x:enemies[i].x,y:enemies[i].y,vx:(Math.random()-0.5)*6,vy:(Math.random()-0.5)*6,life:30,color:`hsl(${Math.random()*60+10},100%,50%)`});enemies.splice(i,1);bullets.splice(j,1);score+=10;break}}}if(Math.random()<0.03)spawnEnemy();particles.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.life--});particles=particles.filter(p=>p.life>0);for(const e of enemies)if(Math.abs(e.x-player.x)<25&&Math.abs(e.y-player.y)<25){gameRunning=false;document.getElementById('finalScore').textContent=score;document.getElementById('over').style.display='block'}}
+function draw(){ctx.fillStyle='#0a0a2e';ctx.fillRect(0,0,480,640);stars.forEach(s=>{ctx.fillStyle=`rgba(255,255,255,${s.s/2.5})`;ctx.fillRect(s.x,s.y,2,2)});ctx.fillStyle='#00d4ff';ctx.fillRect(player.x-15,player.y-15,30,30);ctx.fillStyle='#fff';ctx.fillRect(player.x-3,player.y-20,6,10);bullets.forEach(b=>{ctx.fillStyle='#ff0';ctx.fillRect(b.x-2,b.y-8,4,16)});enemies.forEach(e=>{ctx.fillStyle='#f55';ctx.fillRect(e.x-15,e.y-15,30,30);ctx.fillStyle='#ff0';ctx.fillRect(e.x-8,e.y-5,6,6);ctx.fillRect(e.x+2,e.y-5,6,6)});particles.forEach(p=>{ctx.fillStyle=p.color;ctx.globalAlpha=p.life/30;ctx.fillRect(p.x-3,p.y-3,6,6);ctx.globalAlpha=1});ctx.fillStyle='#fff';ctx.font='bold 20px sans-serif';ctx.fillText('得分: '+score,10,30)}
+function loop(){if(!gameRunning)return;update();draw();requestAnimationFrame(loop)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft'||e.key==='a')keys.left=true;if(e.key==='ArrowRight'||e.key==='d')keys.right=true;if(e.key==='ArrowUp'||e.key==='w')keys.up=true;if(e.key==='ArrowDown'||e.key==='s')keys.down=true;if(e.key===' '){e.preventDefault();shoot()}});
+document.addEventListener('keyup',e=>{if(e.key==='ArrowLeft'||e.key==='a')keys.left=false;if(e.key==='ArrowRight'||e.key==='d')keys.right=false;if(e.key==='ArrowUp'||e.key==='w')keys.up=false;if(e.key==='ArrowDown'||e.key==='s')keys.down=false});
+</script>
+</body>
+</html>
