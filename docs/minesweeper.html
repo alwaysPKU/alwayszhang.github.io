@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>扫雷</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#2c3e50,#34495e);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1rem;color:#fff}
+h1{font-size:1.8rem;margin-bottom:1rem;color:#e74c3c}
+.controls{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap;justify-content:center}
+button{padding:0.5rem 1rem;border:none;border-radius:6px;cursor:pointer;font-size:0.9rem;transition:all 0.2s}
+.diff-btn{background:#3498db;color:#fff}.diff-btn:hover,.diff-btn.active{background:#2980b9}
+.reset-btn{background:#e74c3c;color:#fff}.reset-btn:hover{background:#c0392b}
+.status{display:flex;gap:2rem;margin-bottom:1rem;font-size:1.1rem}
+.status span{background:rgba(0,0,0,0.3);padding:0.5rem 1rem;border-radius:8px}
+#board{display:inline-grid;gap:1px;background:#7f8c8d;border:3px solid #7f8c8d;border-radius:4px}
+.cell{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:0.9rem;cursor:pointer;transition:all 0.1s;user-select:none}
+.cell.hidden{background:#95a5a6}.cell.hidden:hover{background:#bdc3c7}
+.cell.revealed{background:#ecf0f1;color:#2c3e50}
+.cell.mine{background:#e74c3c;color:#fff}
+.cell.flagged{background:#f39c12;color:#fff}
+.c1{color:#3498db}.c2{color:#27ae60}.c3{color:#e74c3c}.c4{color:#8e44ad}.c5{color:#c0392b}.c6{color:#16a085}.c7{color:#2c3e50}.c8{color:#7f8c8d}
+.win{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);padding:2rem;border-radius:16px;text-align:center;display:none;border:2px solid #27ae60}
+.win h2{color:#27ae60;margin-bottom:1rem}
+</style>
+</head>
+<body>
+<h1>💣 扫雷</h1>
+<div class="controls">
+<button class="diff-btn active" onclick="setDiff(9,9,10)">初级</button>
+<button class="diff-btn" onclick="setDiff(16,16,40)">中级</button>
+<button class="diff-btn" onclick="setDiff(30,16,99)">高级</button>
+<button class="reset-btn" onclick="init()">重新开始</button>
+</div>
+<div class="status"><span>💣 <b id="mines">10</b></span><span>⏱️ <b id="timer">0</b>s</span></div>
+<div id="board"></div>
+<div class="win" id="winMsg"><h2>🎉 胜利!</h2><p>用时: <span id="winTime">0</span>秒</p><button class="reset-btn" onclick="init()" style="margin-top:1rem">再来一局</button></div>
+<p style="margin-top:1rem;opacity:0.6;font-size:0.85rem">左键揭开 | 右键标旗</p>
+<script>
+let rows=9,cols=9,totalMines=10,board,mines,flags,revealed,gameOver,firstClick,timerInterval,time;
+function setDiff(c,r,m){cols=c;rows=r;totalMines=m;document.querySelectorAll('.diff-btn').forEach((b,i)=>b.classList.toggle('active',[9,16,30][i]===c));init()}
+function init(){clearInterval(timerInterval);time=0;document.getElementById('timer').textContent=0;document.getElementById('mines').textContent=totalMines;document.getElementById('winMsg').style.display='none';board=Array(rows).fill(null).map(()=>Array(cols).fill(0));mines=new Set();flags=new Set();revealed=new Set();gameOver=false;firstClick=true;render()}
+function placeMines(excludeR,excludeC){while(mines.size<totalMines){const r=Math.floor(Math.random()*rows),c=Math.floor(Math.random()*cols);if(r===excludeR&&c===excludeC)continue;const k=r+','+c;if(!mines.has(k)){mines.add(k);board[r][c]=-1}}}
+function calcNumbers(){mines.forEach(k=>{const[r,c]=k.split(',').map(Number);for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<rows&&nc>=0&&nc<cols&&board[nr][nc]!==-1)board[nr][nc]++}})}
+function render(){const b=document.getElementById('board');b.style.gridTemplateColumns=`repeat(${cols},30px)`;b.innerHTML='';for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const cell=document.createElement('div');cell.className='cell hidden';const k=r+','+c;if(revealed.has(k)){cell.classList.remove('hidden');cell.classList.add('revealed');if(board[r][c]===-1){cell.classList.add('mine');cell.textContent='💣'}else if(board[r][c]>0){cell.textContent=board[r][c];cell.classList.add('c'+board[r][c])}}else if(flags.has(k)){cell.classList.add('flagged');cell.textContent='🚩'}cell.addEventListener('click',()=>reveal(r,c));cell.addEventListener('contextmenu',e=>{e.preventDefault();flag(r,c)});b.appendChild(cell)}}
+function reveal(r,c){if(gameOver||flags.has(r+','+c)||revealed.has(r+','+c))return;if(firstClick){firstClick=false;placeMines(r,c);calcNumbers();timerInterval=setInterval(()=>{time++;document.getElementById('timer').textContent=time},1000)}revealed.add(r+','+c);if(board[r][c]===-1){gameOver=true;clearInterval(timerInterval);mines.forEach(k=>revealed.add(k));render();setTimeout(()=>alert('💥 踩雷了!'),100);return}if(board[r][c]===0){for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){const nr=r+dr,nc=c+dc;if(nr>=0&&nr<rows&&nc>=0&&nc<cols)reveal(nr,nc)}}render();checkWin()}
+function flag(r,c){if(gameOver||revealed.has(r+','+c))return;if(flags.has(r+','+c)){flags.delete(r+','+c)}else{flags.add(r+','+c);document.getElementById('mines').textContent=totalMines-flags.length}render()}
+function checkWin(){if(revealed.size===rows*cols-totalMines){gameOver=true;clearInterval(timerInterval);document.getElementById('winTime').textContent=time;document.getElementById('winMsg').style.display='block'}}
+init();
+</script>
+</body>
+</html>
