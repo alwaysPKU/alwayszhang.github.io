@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flappy Bird</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#70c5ce;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden}
+canvas{border-radius:8px;box-shadow:0 0 30px rgba(0,0,0,0.3);cursor:pointer}
+.overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:#fff;text-shadow:2px 2px 4px rgba(0,0,0,0.5)}
+.overlay h1{font-size:3rem;margin-bottom:1rem}
+.overlay p{font-size:1.2rem}
+</style>
+</head>
+<body>
+<canvas id="game" width="320" height="480"></canvas>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+let bird,pipes,score,bestScore=0,gameState='start',frame=0;
+function init(){bird={x:80,y:200,vy:0,r:15};pipes=[];score=0;frame=0;gameState='playing'}
+function jump(){if(gameState==='start'){init();gameState='playing'}else if(gameState==='over'){gameState='start'}else{bird.vy=-7}}
+function update(){if(gameState!=='playing')return;bird.vy+=0.4;bird.y+=bird.vy;frame++;if(frame%90===0){const gap=120,py=Math.random()*(300-100)+50;pipes.push({x:320,py,gap})}pipes.forEach(p=>p.x-=2.5);pipes=pipes.filter(p=>p.x>-60);for(const p of pipes){if(bird.x+bird.r>p.x&&bird.x-bird.r<p.x+50){if(bird.y-bird.r<p.py||bird.y+bird.r>p.py+p.gap){gameState='over';bestScore=Math.max(bestScore,score)}}if(p.x+50===bird.x)score++}if(bird.y>480||bird.y<0){gameState='over';bestScore=Math.max(bestScore,score)}}
+function draw(){ctx.fillStyle='#70c5ce';ctx.fillRect(0,0,320,480);ctx.fillStyle='#ded895';ctx.fillRect(0,440,320,40);if(gameState==='playing'||gameState==='over'){pipes.forEach(p=>{ctx.fillStyle='#5cb85c';ctx.fillRect(p.x,0,50,p.py);ctx.fillRect(p.x,p.py+p.gap,50,480-p.py-p.gap);ctx.fillStyle='#4cae4c';ctx.fillRect(p.x-3,p.py-20,56,20);ctx.fillRect(p.x-3,p.py+p.gap,56,20)});ctx.fillStyle='#f5c842';ctx.beginPath();ctx.arc(bird.x,bird.y,bird.r,0,Math.PI*2);ctx.fill();ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(bird.x+5,bird.y-3,5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#000';ctx.beginPath();ctx.arc(bird.x+6,bird.y-3,2.5,0,Math.PI*2);ctx.fill();ctx.fillStyle='#e74c3c';ctx.beginPath();ctx.moveTo(bird.x+bird.r,bird.y);ctx.lineTo(bird.x+bird.r+8,bird.y-3);ctx.lineTo(bird.x+bird.r+8,bird.y+3);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 36px sans-serif';ctx.textAlign='center';ctx.fillText(score,160,50)}if(gameState==='start'){ctx.fillStyle='#fff';ctx.font='bold 36px sans-serif';ctx.textAlign='center';ctx.fillText('Flappy Bird',160,150);ctx.font='20px sans-serif';ctx.fillText('点击/空格 开始',160,200);ctx.fillText('最高分: '+bestScore,160,240)}if(gameState==='over'){ctx.fillStyle='rgba(0,0,0,0.5)';ctx.fillRect(0,0,320,480);ctx.fillStyle='#fff';ctx.font='bold 36px sans-serif';ctx.textAlign='center';ctx.fillText('Game Over',160,180);ctx.font='24px sans-serif';ctx.fillText('得分: '+score,160,220);ctx.fillText('最高: '+bestScore,160,260);ctx.font='18px sans-serif';ctx.fillText('点击重新开始',160,310)}}
+function loop(){update();draw();requestAnimationFrame(loop)}
+canvas.addEventListener('click',jump);document.addEventListener('keydown',e=>{if(e.key===' '||e.key==='ArrowUp'){e.preventDefault();jump()}});
+loop();
+</script>
+</body>
+</html>
