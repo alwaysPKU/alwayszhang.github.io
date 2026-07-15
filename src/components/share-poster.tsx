@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toPng } from "html-to-image";
+import { QRCodeSVG } from "qrcode.react";
 
 interface SharePosterProps {
   title: string;
@@ -12,6 +13,10 @@ interface SharePosterProps {
 export default function SharePoster({ title, date, slug }: SharePosterProps) {
   const [showPoster, setShowPoster] = useState(false);
   const [generating, setGenerating] = useState(false);
+
+  const articleUrl = typeof window !== "undefined" 
+    ? `${window.location.origin}/posts/${slug}`
+    : `https://alwayszhang.cn/posts/${slug}`;
 
   const handleShare = async () => {
     setGenerating(true);
@@ -88,9 +93,21 @@ export default function SharePoster({ title, date, slug }: SharePosterProps) {
                   </h2>
                   <div className="w-20 h-1 bg-white/50 rounded"></div>
                 </div>
-                <div className="border-t border-white/20 pt-6">
-                  <div className="text-xl text-white font-medium mb-1">HalfSugar - 半甜不要腻</div>
-                  <div className="text-sm text-white/60">alwayszhang.cn</div>
+                <div className="border-t border-white/20 pt-6 flex items-end justify-between">
+                  <div>
+                    <div className="text-xl text-white font-medium mb-1">HalfSugar - 半甜不要腻</div>
+                    <div className="text-sm text-white/60 mb-2">alwayszhang.cn</div>
+                    <div className="text-xs text-white/50 break-all max-w-[400px]">
+                      {articleUrl}
+                    </div>
+                  </div>
+                  <div className="bg-white p-2 rounded-lg">
+                    <QRCodeSVG 
+                      value={articleUrl}
+                      size={100}
+                      level="H"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
