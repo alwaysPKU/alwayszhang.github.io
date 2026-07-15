@@ -73,18 +73,24 @@ export default function SharePoster({ title, date, slug }: SharePosterProps) {
 
             <div
               id="share-poster-content"
-              className="bg-gradient-to-br from-blue-500 to-purple-600 p-8 rounded-lg text-white"
-              style={{ width: "800px", height: "600px" }}
+              className="p-12 rounded-lg text-gray-900"
+              style={{ 
+                width: "800px", 
+                height: "600px",
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+              }}
             >
               <div className="h-full flex flex-col justify-between">
                 <div>
-                  <div className="text-sm opacity-80 mb-2">{date}</div>
-                  <h2 className="text-3xl font-bold mb-4">{title}</h2>
-                  <div className="w-16 h-1 bg-white opacity-50"></div>
+                  <div className="text-lg text-white/80 mb-4">{date}</div>
+                  <h2 className="text-4xl font-bold mb-6 text-white leading-tight">
+                    {title}
+                  </h2>
+                  <div className="w-20 h-1 bg-white/50 rounded"></div>
                 </div>
-                <div>
-                  <div className="text-sm opacity-80 mb-1">HalfSugar - 半甜不要腻</div>
-                  <div className="text-xs opacity-60">alwayszhang.cn</div>
+                <div className="border-t border-white/20 pt-6">
+                  <div className="text-xl text-white font-medium mb-1">HalfSugar - 半甜不要腻</div>
+                  <div className="text-sm text-white/60">alwayszhang.cn</div>
                 </div>
               </div>
             </div>
