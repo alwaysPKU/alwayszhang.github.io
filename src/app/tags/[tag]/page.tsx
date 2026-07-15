@@ -8,7 +8,7 @@ interface Props {
 
 export function generateStaticParams() {
   const tags = getAllTags();
-  return tags.map(({ tag }) => ({ tag: encodeURIComponent(tag) }));
+  return tags.map(({ tag }) => ({ tag }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
