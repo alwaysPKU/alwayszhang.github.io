@@ -1,5 +1,6 @@
 import { getPostsByTag, getAllTags } from '@/lib/posts';
 import PostCard from '@/components/post-card';
+import Link from 'next/link';
 import type { Metadata } from 'next';
 
 interface Props {
@@ -26,7 +27,7 @@ export default async function TagPage({ params }: Props) {
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">
       <div className="mb-6">
-        <a
+        <Link
           href="/tags"
           className="text-sm text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-1 mb-3"
         >
@@ -35,7 +36,7 @@ export default async function TagPage({ params }: Props) {
             <polyline points="12 19 5 12 12 5" />
           </svg>
           All Tags
-        </a>
+        </Link>
         <h1 className="text-2xl font-bold text-foreground">
           #{tag}
         </h1>

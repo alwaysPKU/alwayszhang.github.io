@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import SearchModal from './search-modal';
 
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/archive', label: 'Archive' },
   { href: '/tags', label: 'Tags' },
   { href: '/games', label: 'Games' },
+  { href: '/stats', label: 'Stats' },
   { href: '/about', label: 'About' },
 ];
 
@@ -18,6 +20,7 @@ export function Header() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -61,6 +64,18 @@ export function Header() {
 
         {/* Right side */}
         <div className="flex items-center gap-2">
+          {/* Search button */}
+          <button
+            onClick={() => setSearchOpen(true)}
+            className="h-8 w-8 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+            aria-label="Search"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+          </button>
+
           {/* Theme toggle */}
           {mounted && (
             <button
@@ -152,6 +167,9 @@ export function Header() {
           </nav>
         </div>
       )}
+
+      {/* Search modal */}
+      {searchOpen && <SearchModal onClose={() => setSearchOpen(false)} />}
     </header>
   );
 }

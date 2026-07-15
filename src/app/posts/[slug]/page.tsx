@@ -2,6 +2,10 @@ import { getPostBySlug, getAllSlugs } from '@/lib/posts';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import Comments from '@/components/comments';
+import LikeButton from '@/components/like-button';
+import { ArticleViews } from '@/components/article-views';
+import SharePoster from '@/components/share-poster';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -48,6 +52,8 @@ export default async function PostPage({ params }: Props) {
         </h1>
         <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground">
           <time dateTime={post.date}>{post.date}</time>
+          <span className="text-border">|</span>
+          <ArticleViews slug={slug} />
           {post.categories.length > 0 && (
             <>
               <span className="text-border">|</span>
@@ -87,6 +93,23 @@ export default async function PostPage({ params }: Props) {
         className="prose"
         dangerouslySetInnerHTML={{ __html: post.contentHtml }}
       />
+
+      {/* Article footer */}
+      <div className="mt-12 pt-8 border-t border-border">
+        <div className="flex items-center justify-between">
+          <LikeButton slug={slug} />
+          <SharePoster
+            title={post.title}
+            date={post.date}
+            slug={slug}
+          />
+        </div>
+      </div>
+
+      {/* Comments */}
+      <div className="mt-8">
+        <Comments slug={slug} title={post.title} />
+      </div>
     </div>
   );
 }
