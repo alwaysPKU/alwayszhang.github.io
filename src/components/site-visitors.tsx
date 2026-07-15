@@ -8,8 +8,20 @@ interface SiteVisitorsProps {
 
 export default function SiteVisitors({ type }: SiteVisitorsProps) {
   const [count, setCount] = useState(0);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
+    // 检查是否已初始化
+    const isInitialized = localStorage.getItem("stats-initialized");
+    
+    if (!isInitialized) {
+      // 首次访问，初始化数据
+      localStorage.setItem("total-visitors", "12397");
+      localStorage.setItem("total-pageviews", "23765");
+      localStorage.setItem("today-visits", "0");
+      localStorage.setItem("stats-initialized", "true");
+    }
+
     // 从 localStorage 读取访问统计
     const totalVisitors = parseInt(localStorage.getItem("total-visitors") || "0");
     const totalPageviews = parseInt(localStorage.getItem("total-pageviews") || "0");
@@ -39,7 +51,11 @@ export default function SiteVisitors({ type }: SiteVisitorsProps) {
           : newPageviews
       );
     }
+    
+    setInitialized(true);
   }, [type]);
 
+  if (!initialized) return null;
+  
   return <>{count}</>;
 }
