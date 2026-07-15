@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>打砖块</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#1a1a2e,#16213e);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;user-select:none}
+h1{font-size:2rem;margin-bottom:1rem;background:linear-gradient(90deg,#ff6b6b,#feca57);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.info{display:flex;gap:2rem;margin-bottom:1rem;font-size:1.1rem}
+.info span{background:rgba(255,255,255,0.1);padding:0.5rem 1rem;border-radius:8px}
+canvas{border:2px solid #ff6b6b;border-radius:8px;box-shadow:0 0 30px rgba(255,107,107,0.3);background:#0a0a1a;cursor:none}
+.controls{margin-top:1rem;display:flex;gap:1rem}
+button{padding:0.7rem 1.5rem;border:none;border-radius:8px;font-size:1rem;cursor:pointer;background:linear-gradient(135deg,#ff6b6b,#feca57);color:#1a1a2e;font-weight:bold;transition:all 0.2s}
+button:hover{transform:scale(1.05)}
+.game-over{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,0.9);padding:2rem;border-radius:16px;text-align:center;display:none;border:2px solid #ff6b6b}
+.game-over h2{color:#ff6b6b;margin-bottom:1rem}
+.win{border-color:#00ff88!important}.win h2{color:#00ff88!important}
+</style>
+</head>
+<body>
+<h1>🧱 打砖块</h1>
+<div class="info"><span>分数: <b id="score">0</b></span><span>生命: <b id="lives">3</b></span><span>关卡: <b id="level">1</b></span></div>
+<div style="position:relative"><canvas id="game" width="600" height="450"></canvas>
+<div class="game-over" id="gameOver"><h2>游戏结束</h2><p>得分: <span id="finalScore">0</span></p><button onclick="startGame()" style="margin-top:1rem">再来一局</button></div>
+<div class="game-over win" id="winMsg"><h2>🎉 通关!</h2><button onclick="nextLevel()" style="margin-top:1rem">下一关</button></div>
+</div>
+<div class="controls"><button onclick="startGame()">新游戏</button></div>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+let paddle,ball,bricks,score,lives,level,particles,running=false;
+const PADDLE_W=100,PADDLE_H=12,BALL_R=8,BRICK_ROWS=5,BRICK_COLS=10,BRICK_W=56,BRICK_H=20,BRICK_PAD=4,BRICK_TOP=50,BRICK_LEFT=12;
+const COLORS=['#ff6b6b','#feca57','#48dbfb','#ff9ff3','#00ff88'];
+function startGame(){score=0;lives=3;level=1;initLevel();running=true;document.getElementById('gameOver').style.display='none';document.getElementById('winMsg').style.display='none';loop()}
+function nextLevel(){level++;initLevel();running=true;document.getElementById('winMsg').style.display='none';loop()}
+function initLevel(){paddle={x:canvas.width/2-PADDLE_W/2,y:canvas.height-30};ball={x:canvas.width/2,y:canvas.height-50,dx:4*(Math.random()>0.5?1:-1),dy:-4};bricks=[];particles=[];for(let r=0;r<BRICK_ROWS;r++)for(let c=0;c<BRICK_COLS;c++)bricks.push({x:BRICK_LEFT+c*(BRICK_W+BRICK_PAD),y:BRICK_TOP+r*(BRICK_H+BRICK_PAD),w:BRICK_W,h:BRICK_H,color:COLORS[r],alive:true});updateUI()}
+function updateUI(){document.getElementById('score').textContent=score;document.getElementById('lives').textContent=lives;document.getElementById('level').textContent=level}
+function loop(){if(!running)return;update();draw();requestAnimationFrame(loop)}
+function update(){ball.x+=ball.dx;ball.y+=ball.dy;if(ball.x<BALL_R||ball.x>canvas.width-BALL_R)ball.dx*=-1;if(ball.y<BALL_R)ball.dy*=-1;if(ball.y>canvas.height){lives--;updateUI();if(lives<=0){running=false;document.getElementById('finalScore').textContent=score;document.getElementById('gameOver').style.display='block';return}ball.x=canvas.width/2;ball.y=canvas.height-50;ball.dx=4*(Math.random()>0.5?1:-1);ball.dy=-4}if(ball.y+BALL_R>paddle.y&&ball.y-BALL_R<paddle.y+PADDLE_H&&ball.x>paddle.x&&ball.x<paddle.x+PADDLE_W){ball.dy=-Math.abs(ball.dy);ball.dx+=(ball.x-(paddle.x+PADDLE_W/2))*0.1}bricks.forEach(b=>{if(b.alive&&ball.x+BALL_R>b.x&&ball.x-BALL_R<b.x+b.w&&ball.y+BALL_R>b.y&&ball.y-BALL_R<b.y+b.h){b.alive=false;ball.dy*=-1;score+=10;updateUI();for(let i=0;i<8;i++)particles.push({x:b.x+b.w/2,y:b.y+b.h/2,dx:(Math.random()-0.5)*6,dy:(Math.random()-0.5)*6,life:30,color:b.color})}});particles=particles.filter(p=>{p.x+=p.dx;p.y+=p.dy;p.life--;return p.life>0});if(bricks.every(b=>!b.alive)){running=false;document.getElementById('winMsg').style.display='block'}}
+function draw(){ctx.fillStyle='#0a0a1a';ctx.fillRect(0,0,canvas.width,canvas.height);bricks.forEach(b=>{if(b.alive){ctx.fillStyle=b.color;ctx.shadowColor=b.color;ctx.shadowBlur=5;ctx.fillRect(b.x,b.y,b.w,b.h);ctx.shadowBlur=0}});ctx.fillStyle='#fff';ctx.shadowColor='#fff';ctx.shadowBlur=10;ctx.beginPath();ctx.arc(ball.x,ball.y,BALL_R,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;const g=ctx.createLinearGradient(paddle.x,0,paddle.x+PADDLE_W,0);g.addColorStop(0,'#ff6b6b');g.addColorStop(1,'#feca57');ctx.fillStyle=g;ctx.fillRect(paddle.x,paddle.y,PADDLE_W,PADDLE_H);particles.forEach(p=>{ctx.globalAlpha=p.life/30;ctx.fillStyle=p.color;ctx.fillRect(p.x-2,p.y-2,4,4);ctx.globalAlpha=1})}
+canvas.addEventListener('mousemove',e=>{const r=canvas.getBoundingClientRect();paddle.x=e.clientX-r.left-PADDLE_W/2;paddle.x=Math.max(0,Math.min(canvas.width-PADDLE_W,paddle.x))});
+</script>
+</body>
+</html>

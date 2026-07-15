@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>粒子沙盒</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#0a0a1a;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:1rem;color:#fff}
+h1{font-size:1.8rem;margin-bottom:1rem;background:linear-gradient(90deg,#ff6b6b,#feca57,#48dbfb,#ff9ff3);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+canvas{border-radius:8px;box-shadow:0 0 30px rgba(100,100,255,0.3);cursor:crosshair}
+.controls{display:flex;gap:0.5rem;margin:1rem 0;flex-wrap:wrap;justify-content:center}
+.controls button{padding:0.5rem 1rem;border:none;border-radius:8px;font-size:0.9rem;cursor:pointer;background:#333;color:#fff;transition:all 0.2s}
+.controls button.active{background:linear-gradient(135deg,#667eea,#764ba2)}
+.controls button:hover{transform:scale(1.05)}
+.info{font-size:0.9rem;color:#888;margin-top:0.5rem}
+</style>
+</head>
+<body>
+<h1>🎨 粒子沙盒</h1>
+<canvas id="game" width="600" height="400"></canvas>
+<div class="controls">
+<button class="active" onclick="setMode('sand',this)">🏖️ 沙子</button>
+<button onclick="setMode('water',this)">💧 水</button>
+<button onclick="setMode('fire',this)">🔥 火</button>
+<button onclick="setMode('stone',this)">🪨 石头</button>
+<button onclick="setMode('plant',this)">🌱 植物</button>
+<button onclick="setMode('erase',this)">🧹 擦除</button>
+<button onclick="clearAll()">🗑️ 清空</button>
+</div>
+<div class="info">鼠标左键绘制 | 右键擦除</div>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+const W=600,H=400,CELL=4,COLS=W/CELL,ROWS=H/CELL;
+let grid=Array(ROWS).fill(null).map(()=>Array(COLS).fill(null));
+let mode='sand',mouseDown=false,mouseButton=0;
+const COLORS={sand:'#f4d03f',water:'#3498db',fire:'#e74c3c',stone:'#7f8c8d',plant:'#27ae60'};
+function setMode(m,btn){mode=m;document.querySelectorAll('.controls button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active')}
+function clearAll(){grid=Array(ROWS).fill(null).map(()=>Array(COLS).fill(null))}
+function place(cx,cy){if(cx<0||cx>=COLS||cy<0||cy>=ROWS)return;if(mode==='erase'){grid[cy][cx]=null;return}grid[cy][cx]={type:mode,life:mode==='fire'?60:mode==='plant'?200:Infinity}}
+function update(){for(let y=ROWS-2;y>=0;y--)for(let x=0;x<COLS;x++){const cell=grid[y][x];if(!cell)continue;if(cell.type==='sand'){if(y+1<ROWS&&!grid[y+1][x]){grid[y+1][x]=cell;grid[y][x]=null}else if(y+1<ROWS&&x>0&&x<COLS-1){const d=Math.random()<0.5?-1:1;if(!grid[y+1][x+d]){grid[y+1][x+d]=cell;grid[y][x]=null}}}else if(cell.type==='water'){if(y+1<ROWS&&!grid[y+1][x]){grid[y+1][x]=cell;grid[y][x]=null}else{const d=Math.random()<0.5?-1:1;if(x+d>=0&&x+d<COLS&&!grid[y][x+d]){grid[y][x+d]=cell;grid[y][x]=null}}}else if(cell.type==='fire'){cell.life--;if(cell.life<=0){grid[y][x]=null;continue}if(y>0&&!grid[y-1][x]&&Math.random()<0.3){grid[y-1][x]={type:'fire',life:30}}if(y>0&&x>0&&!grid[y-1][x-1]&&Math.random()<0.2){grid[y-1][x-1]={type:'fire',life:20}}if(y>0&&x<COLS-1&&!grid[y-1][x+1]&&Math.random()<0.2){grid[y-1][x+1]={type:'fire',life:20}}}else if(cell.type==='plant'){cell.life--;if(cell.life<=0){grid[y][x]={type:'plant',life:200};continue}if(y>0&&grid[y-1][x]&&grid[y-1][x].type==='water'){if(Math.random()<0.1){const dirs=[[0,-1],[-1,0],[1,0]];const d=dirs[Math.floor(Math.random()*3)];const nx=x+d[0],ny=y+d[1];if(nx>=0&&nx<COLS&&ny>=0&&ny<ROWS&&!grid[ny][nx])grid[ny][nx]={type:'plant',life:200}}}}}}
+function draw(){ctx.fillStyle='#1a1a2e';ctx.fillRect(0,0,W,H);for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){const cell=grid[y][x];if(!cell)continue;ctx.fillStyle=COLORS[cell.type];if(cell.type==='fire')ctx.fillStyle=`hsl(${Math.random()*30+10},100%,${50+Math.random()*20}%)`;ctx.fillRect(x*CELL,y*CELL,CELL,CELL)}}
+function loop(){if(mouseDown){const rect=canvas.getBoundingClientRect();const cx=Math.floor((lastX-rect.left)/CELL);const cy=Math.floor((lastY-rect.top)/CELL);for(let i=-1;i<=1;i++)for(let j=-1;j<=1;j++)if(mouseButton===0)place(cx+i,cy+j);else{grid[cy+j]&&(grid[cy+j][cx+i]=null)}}update();draw();requestAnimationFrame(loop)}
+let lastX=0,lastY=0;
+canvas.addEventListener('mousedown',e=>{mouseDown=true;mouseButton=e.button;lastX=e.clientX;lastY=e.clientY});
+canvas.addEventListener('mousemove',e=>{lastX=e.clientX;lastY=e.clientY});
+canvas.addEventListener('mouseup',()=>mouseDown=false);
+canvas.addEventListener('mouseleave',()=>mouseDown=false);
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+loop();
+</script>
+</body>
+</html>

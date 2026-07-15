@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>无尽跑酷</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#1a1a2e;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff}
+canvas{border-radius:8px;box-shadow:0 0 30px rgba(0,100,255,0.3);cursor:pointer}
+.overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;background:rgba(0,0,0,0.8);padding:2rem;border-radius:16px;border:2px solid #00d4ff}
+button{padding:0.8rem 2rem;border:none;border-radius:8px;font-size:1.2rem;cursor:pointer;background:linear-gradient(135deg,#00d4ff,#0066ff);color:#fff;font-weight:bold;margin-top:1rem}
+</style>
+</head>
+<body>
+<canvas id="game" width="600" height="300"></canvas>
+<div class="overlay" id="start"><h1>🏃 无尽跑酷</h1><p>空格/点击 跳跃</p><button onclick="startGame()">开始</button></div>
+<div class="overlay" id="over" style="display:none"><h1>💥 游戏结束</h1><p>距离: <span id="finalDist">0</span>m</p><button onclick="startGame()">再来一局</button></div>
+<script>
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d');
+let player,obstacles,score,speed,gameRunning,groundY=250,frame=0;
+function startGame(){document.getElementById('start').style.display='none';document.getElementById('over').style.display='none';player={x:80,y:groundY,vy:0,w:30,h:40,jumping:false};obstacles=[];score=0;speed=4;gameRunning=true;frame=0;loop()}
+function jump(){if(!player.jumping&&gameRunning){player.vy=-12;player.jumping=true}}
+function spawnObstacle(){const h=Math.random()*30+20;obstacles.push({x:620,y:groundY+40-h,w:20+Math.random()*15,h})}
+function update(){if(!gameRunning)return;frame++;score=Math.floor(frame/10);if(frame%Math.max(40,80-Math.floor(score/50))===0)spawnObstacle();player.vy+=0.6;player.y+=player.vy;if(player.y>=groundY){player.y=groundY;player.vy=0;player.jumping=false}obstacles.forEach(o=>o.x-=speed);obstacles=obstacles.filter(o=>o.x>-50);for(const o of obstacles)if(player.x+player.w>o.x&&player.x<o.x+o.w&&player.y+player.h>o.y){gameRunning=false;document.getElementById('finalDist').textContent=score;document.getElementById('over').style.display='block'}speed=4+score/100}
+function draw(){ctx.fillStyle='#87CEEB';ctx.fillRect(0,0,600,250);ctx.fillStyle='#8B4513';ctx.fillRect(0,250,600,50);ctx.fillStyle='#228B22';ctx.fillRect(0,245,600,8);ctx.fillStyle='#FFD700';ctx.font='bold 24px sans-serif';ctx.fillText(score+'m',520,35);ctx.fillStyle='#333';ctx.fillRect(player.x,player.y,player.w,player.h);ctx.fillStyle='#FF6B6B';ctx.fillRect(player.x+5,player.y+5,20,15);ctx.fillStyle='#555';obstacles.forEach(o=>{ctx.fillRect(o.x,o.y,o.w,o.h);ctx.fillStyle='#333';ctx.fillRect(o.x+2,o.y+2,o.w-4,o.h-4);ctx.fillStyle='#555'})}
+function loop(){if(!gameRunning)return;update();draw();requestAnimationFrame(loop)}
+canvas.addEventListener('click',jump);document.addEventListener('keydown',e=>{if(e.key===' '||e.key==='ArrowUp'){e.preventDefault();jump()}});
+draw();
+</script>
+</body>
+</html>

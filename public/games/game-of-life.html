@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>生命游戏 | Conway's Game of Life</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0a0a0f;
+  color: #e0e0e0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+  background: linear-gradient(135deg, #00d4aa, #7b61ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.subtitle {
+  color: #888;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00d4aa, #00a884);
+  color: #000;
+}
+
+.btn-primary:hover { transform: scale(1.05); }
+
+.btn-secondary {
+  background: #2a2a3a;
+  color: #e0e0e0;
+  border: 1px solid #3a3a4a;
+}
+
+.btn-secondary:hover { background: #3a3a4a; }
+
+.btn-danger {
+  background: #ff4757;
+  color: #fff;
+}
+
+.btn-danger:hover { background: #ff6b7a; }
+
+.btn:active { transform: scale(0.95); }
+
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+.speed-control input[type="range"] {
+  width: 80px;
+  accent-color: #00d4aa;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-label { color: #888; }
+.stat-value { color: #00d4aa; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.patterns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+  justify-content: center;
+}
+
+.pattern-btn {
+  padding: 5px 12px;
+  border: 1px solid #3a3a4a;
+  border-radius: 6px;
+  background: #1a1a2a;
+  color: #aaa;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pattern-btn:hover {
+  border-color: #00d4aa;
+  color: #00d4aa;
+}
+
+.pattern-btn.active {
+  background: #00d4aa22;
+  border-color: #00d4aa;
+  color: #00d4aa;
+}
+
+#canvas-container {
+  position: relative;
+  border: 2px solid #2a2a3a;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 212, 170, 0.1);
+}
+
+canvas {
+  display: block;
+  cursor: crosshair;
+}
+
+.rules {
+  margin-top: 20px;
+  padding: 15px 20px;
+  background: #1a1a2a;
+  border-radius: 10px;
+  border: 1px solid #2a2a3a;
+  max-width: 600px;
+  font-size: 0.85rem;
+  color: #888;
+  line-height: 1.6;
+}
+
+.rules h3 {
+  color: #e0e0e0;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.rules ul { padding-left: 20px; }
+.rules li { margin-bottom: 4px; }
+
+@media (max-width: 600px) {
+  h1 { font-size: 1.5rem; }
+  .controls { gap: 6px; }
+  .btn { padding: 6px 12px; font-size: 0.8rem; }
+  .stats { gap: 12px; font-size: 0.8rem; }
+}
+</style>
+</head>
+<body>
+
+<h1>🧬 生命游戏</h1>
+<p class="subtitle">Conway's Game of Life — 元胞自动机</p>
+
+<div class="controls">
+  <button class="btn btn-primary" id="playBtn" onclick="togglePlay()">▶ 开始</button>
+  <button class="btn btn-secondary" onclick="step()">⏭ 单步</button>
+  <button class="btn btn-secondary" onclick="randomize()">🎲 随机</button>
+  <button class="btn btn-danger" onclick="clearGrid()">✕ 清空</button>
+  <div class="speed-control">
+    <span>速度:</span>
+    <input type="range" id="speed" min="1" max="30" value="10" oninput="updateSpeed()">
+    <span id="speedVal">10</span> fps
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat">
+    <span class="stat-label">世代:</span>
+    <span class="stat-value" id="gen">0</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">存活:</span>
+    <span class="stat-value" id="alive">0</span>
+  </div>
+  <div class="stat">
+    <span class="stat-label">状态:</span>
+    <span class="stat-value" id="status">暂停</span>
+  </div>
+</div>
+
+<div class="patterns">
+  <button class="pattern-btn" onclick="loadPattern('glider')">🛩 滑翔机</button>
+  <button class="pattern-btn" onclick="loadPattern('blinker')">💫 闪烁器</button>
+  <button class="pattern-btn" onclick="loadPattern('pulsar')">🌟 脉冲星</button>
+  <button class="pattern-btn" onclick="loadPattern('gosper')">🔫 高斯帕枪</button>
+  <button class="pattern-btn" onclick="loadPattern('spaceship')">🚀 飞船</button>
+  <button class="pattern-btn" onclick="loadPattern('pentadecathlon')">🎯 十五连珠</button>
+</div>
+
+<div id="canvas-container">
+  <canvas id="canvas"></canvas>
+</div>
+
+<div class="rules">
+  <h3>📜 规则</h3>
+  <ul>
+    <li><strong>存活细胞</strong>：周围 2-3 个邻居 → 继续存活，否则死亡（孤独/拥挤）</li>
+    <li><strong>死亡细胞</strong>：周围恰好 3 个邻居 → 复活（繁殖）</li>
+    <li>点击网格可手动添加/移除细胞</li>
+  </ul>
+</div>
+
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// Grid settings
+const CELL_SIZE = 10;
+let COLS, ROWS;
+let grid, nextGrid;
+let generation = 0;
+let aliveCount = 0;
+let isPlaying = false;
+let fps = 10;
+let lastTime = 0;
+let animationId = null;
+
+// Colors
+const ALIVE_COLOR = '#00d4aa';
+const DEAD_COLOR = '#0a0a0f';
+const GRID_COLOR = '#1a1a2a';
+
+// Initialize
+function init() {
+  const maxWidth = Math.min(window.innerWidth - 40, 800);
+  const maxHeight = Math.min(window.innerHeight - 400, 600);
+  
+  COLS = Math.floor(maxWidth / CELL_SIZE);
+  ROWS = Math.floor(maxHeight / CELL_SIZE);
+  
+  canvas.width = COLS * CELL_SIZE;
+  canvas.height = ROWS * CELL_SIZE;
+  
+  grid = createGrid();
+  nextGrid = createGrid();
+  generation = 0;
+  aliveCount = 0;
+  updateStats();
+  draw();
+}
+
+function createGrid() {
+  return Array(ROWS).fill(null).map(() => Array(COLS).fill(0));
+}
+
+function draw() {
+  ctx.fillStyle = DEAD_COLOR;
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw grid lines
+  ctx.strokeStyle = GRID_COLOR;
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i <= COLS; i++) {
+    ctx.beginPath();
+    ctx.moveTo(i * CELL_SIZE, 0);
+    ctx.lineTo(i * CELL_SIZE, canvas.height);
+    ctx.stroke();
+  }
+  for (let i = 0; i <= ROWS; i++) {
+    ctx.beginPath();
+    ctx.moveTo(0, i * CELL_SIZE);
+    ctx.lineTo(canvas.width, i * CELL_SIZE);
+    ctx.stroke();
+  }
+  
+  // Draw cells
+  aliveCount = 0;
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      if (grid[r][c]) {
+        aliveCount++;
+        // Gradient based on neighbors
+        const neighbors = countNeighbors(r, c);
+        const alpha = 0.5 + (neighbors / 8) * 0.5;
+        ctx.fillStyle = `rgba(0, 212, 170, ${alpha})`;
+        ctx.fillRect(c * CELL_SIZE + 1, r * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2);
+      }
+    }
+  }
+  
+  updateStats();
+}
+
+function countNeighbors(r, c) {
+  let count = 0;
+  for (let dr = -1; dr <= 1; dr++) {
+    for (let dc = -1; dc <= 1; dc++) {
+      if (dr === 0 && dc === 0) continue;
+      const nr = (r + dr + ROWS) % ROWS;
+      const nc = (c + dc + COLS) % COLS;
+      count += grid[nr][nc];
+    }
+  }
+  return count;
+}
+
+function step() {
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const neighbors = countNeighbors(r, c);
+      const alive = grid[r][c];
+      
+      if (alive) {
+        nextGrid[r][c] = (neighbors === 2 || neighbors === 3) ? 1 : 0;
+      } else {
+        nextGrid[r][c] = (neighbors === 3) ? 1 : 0;
+      }
+    }
+  }
+  
+  // Swap grids
+  [grid, nextGrid] = [nextGrid, grid];
+  generation++;
+  draw();
+}
+
+function togglePlay() {
+  isPlaying = !isPlaying;
+  const btn = document.getElementById('playBtn');
+  const status = document.getElementById('status');
+  
+  if (isPlaying) {
+    btn.textContent = '⏸ 暂停';
+    status.textContent = '运行中';
+    lastTime = performance.now();
+    gameLoop();
+  } else {
+    btn.textContent = '▶ 开始';
+    status.textContent = '暂停';
+    if (animationId) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+  }
+}
+
+function gameLoop(currentTime) {
+  if (!isPlaying) return;
+  
+  const interval = 1000 / fps;
+  if (currentTime - lastTime >= interval) {
+    step();
+    lastTime = currentTime;
+  }
+  
+  animationId = requestAnimationFrame(gameLoop);
+}
+
+function updateSpeed() {
+  fps = parseInt(document.getElementById('speed').value);
+  document.getElementById('speedVal').textContent = fps;
+}
+
+function clearGrid() {
+  if (isPlaying) togglePlay();
+  grid = createGrid();
+  generation = 0;
+  draw();
+}
+
+function randomize() {
+  if (isPlaying) togglePlay();
+  grid = createGrid();
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      grid[r][c] = Math.random() < 0.3 ? 1 : 0;
+    }
+  }
+  generation = 0;
+  draw();
+}
+
+function updateStats() {
+  document.getElementById('gen').textContent = generation;
+  document.getElementById('alive').textContent = aliveCount;
+}
+
+// Mouse interaction
+let isDrawing = false;
+let drawValue = 1;
+
+canvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+  const rect = canvas.getBoundingClientRect();
+  const c = Math.floor((e.clientX - rect.left) / CELL_SIZE);
+  const r = Math.floor((e.clientY - rect.top) / CELL_SIZE);
+  if (r >= 0 && r < ROWS && c >= 0 && c < COLS) {
+    drawValue = grid[r][c] ? 0 : 1;
+    grid[r][c] = drawValue;
+    draw();
+  }
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  if (!isDrawing) return;
+  const rect = canvas.getBoundingClientRect();
+  const c = Math.floor((e.clientX - rect.left) / CELL_SIZE);
+  const r = Math.floor((e.clientY - rect.top) / CELL_SIZE);
+  if (r >= 0 && r < ROWS && c >= 0 && c < COLS) {
+    grid[r][c] = drawValue;
+    draw();
+  }
+});
+
+canvas.addEventListener('mouseup', () => { isDrawing = false; });
+canvas.addEventListener('mouseleave', () => { isDrawing = false; });
+
+// Touch support
+canvas.addEventListener('touchstart', (e) => {
+  e.preventDefault();
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const c = Math.floor((touch.clientX - rect.left) / CELL_SIZE);
+  const r = Math.floor((touch.clientY - rect.top) / CELL_SIZE);
+  if (r >= 0 && r < ROWS && c >= 0 && c < COLS) {
+    grid[r][c] = grid[r][c] ? 0 : 1;
+    draw();
+  }
+});
+
+// Patterns
+const patterns = {
+  glider: [[0,1],[1,2],[2,0],[2,1],[2,2]],
+  blinker: [[0,0],[0,1],[0,2]],
+  pulsar: (function() {
+    const p = [];
+    const offsets = [
+      [0,2],[0,3],[0,4],[2,0],[3,0],[4,0],
+      [0,8],[0,9],[0,10],[2,12],[3,12],[4,12],
+      [6,2],[6,3],[6,4],[8,0],[9,0],[10,0],
+      [6,8],[6,9],[6,10],[8,12],[9,12],[10,12],
+      [12,2],[12,3],[12,4],[14,0],[15,0],[16,0],
+      [12,8],[12,9],[12,10],[14,12],[15,12],[16,12]
+    ];
+    return offsets;
+  })(),
+  gosper: [
+    [0,24],[1,22],[1,24],[2,12],[2,13],[2,20],[2,21],[2,34],[2,35],
+    [3,11],[3,15],[3,20],[3,21],[3,34],[3,35],[4,0],[4,1],[4,10],
+    [4,16],[4,20],[4,21],[5,0],[5,1],[5,10],[5,16],[5,22],[5,24],
+    [6,10],[6,16],[6,24],[7,11],[7,15],[8,12],[8,13]
+  ],
+  spaceship: [[0,1],[0,4],[1,0],[2,0],[2,4],[3,0],[3,1],[3,2],[3,3]],
+  pentadecathlon: [[0,0],[1,0],[2,0],[3,0],[4,0],[5,0],[6,0],[7,0],[8,0],[9,0],[10,0],[11,0],[12,0],[13,0],[14,0]]
+};
+
+function loadPattern(name) {
+  if (isPlaying) togglePlay();
+  grid = createGrid();
+  const pattern = patterns[name];
+  
+  // Center the pattern
+  const centerR = Math.floor(ROWS / 2);
+  const centerC = Math.floor(COLS / 2);
+  
+  let minR = Infinity, maxR = -Infinity, minC = Infinity, maxC = -Infinity;
+  pattern.forEach(([r, c]) => {
+    minR = Math.min(minR, r);
+    maxR = Math.max(maxR, r);
+    minC = Math.min(minC, c);
+    maxC = Math.max(maxC, c);
+  });
+  
+  const offsetR = centerR - Math.floor((maxR - minR) / 2);
+  const offsetC = centerC - Math.floor((maxC - minC) / 2);
+  
+  pattern.forEach(([r, c]) => {
+    const nr = offsetR + r - minR;
+    const nc = offsetC + c - minC;
+    if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS) {
+      grid[nr][nc] = 1;
+    }
+  });
+  
+  generation = 0;
+  draw();
+}
+
+// Handle resize
+window.addEventListener('resize', () => {
+  const wasPlaying = isPlaying;
+  if (isPlaying) togglePlay();
+  
+  const oldGrid = grid;
+  const oldRows = ROWS;
+  const oldCols = COLS;
+  
+  init();
+  
+  // Restore old cells
+  for (let r = 0; r < Math.min(oldRows, ROWS); r++) {
+    for (let c = 0; c < Math.min(oldCols, COLS); c++) {
+      grid[r][c] = oldGrid[r][c];
+    }
+  }
+  draw();
+  
+  if (wasPlaying) togglePlay();
+});
+
+// Initialize
+init();
+</script>
+
+</body>
+</html>

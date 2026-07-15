@@ -1,35 +1,47 @@
-import type { Metadata } from 'next';
-import Image from 'next/image';
+import { getAllPosts } from '@/lib/posts';
+import { PostCard } from '@/components/post-card';
 
-export const metadata: Metadata = {
-  title: '扣子编程 - AI 开发伙伴',
-  description: '扣子编程，你的 AI 开发伙伴已就位',
-};
+export default function HomePage() {
+  const posts = getAllPosts();
 
-export default function Home() {
   return (
-    <div className="flex h-full items-center justify-center bg-background text-foreground transition-colors duration-300 dark:bg-background dark:text-foreground overflow-hidden min-h-screen">
-      {/* 主容器 */}
-      <main className="flex w-full h-full max-w-3xl flex-col items-center justify-center px-16 py-32 sm:items-center">
-        <div className="flex flex-col items-center justify-between gap-4">
-           <Image
-            src="https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze-coding/icon/coze-coding.gif"
-            alt="扣子编程 Logo"
-            width={156}
-            height={130}
-          />
+    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">
+      {/* Hero */}
+      <section className="mb-12">
+        <div className="flex items-center gap-4 mb-4">
+          <div className="h-16 w-16 rounded-full overflow-hidden border-2 border-primary/20 shadow-sm flex-shrink-0">
+            <img
+              src="/images/avatar.jpg"
+              alt="avatar"
+              className="h-full w-full object-cover"
+            />
+          </div>
           <div>
-            <div className="flex flex-col items-center gap-2 text-center sm:items-center sm:text-center">
-              <h1 className="max-w-xl text-base font-semibold leading-tight tracking-tight text-foreground dark:text-foreground">
-                应用开发中
-              </h1>
-              <p className="max-w-2xl text-sm leading-8 text-muted-foreground dark:text-muted-foreground">
-                请稍后，页面即将呈现
-              </p>
-            </div>
+            <h1 className="text-2xl font-bold text-foreground tracking-tight">
+              HalfSugar
+            </h1>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              半甜不要腻 / Come on!
+            </p>
           </div>
         </div>
-      </main>
+        <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
+          记录学习、算法、AI 前沿论文解读，偶尔分享小游戏和生活。
+        </p>
+      </section>
+
+      {/* Post list */}
+      <section>
+        <h2 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+          <span className="h-1 w-4 rounded-full bg-primary" />
+          Recent Posts
+        </h2>
+        <div>
+          {posts.map((post) => (
+            <PostCard key={post.slug} post={post} />
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

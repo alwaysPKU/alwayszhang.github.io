@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>21点</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:linear-gradient(135deg,#0f4c3a,#1a7a5a);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;user-select:none}
+h1{font-size:2rem;margin-bottom:1rem}
+.table{background:radial-gradient(ellipse,#1a7a5a,#0f4c3a);border:3px solid #8b6914;border-radius:20px;padding:2rem;width:500px;max-width:95vw}
+.hand{margin:1rem 0}
+.hand h3{opacity:0.8;margin-bottom:0.5rem}
+.cards{display:flex;gap:0.5rem;flex-wrap:wrap;min-height:100px}
+.card{width:70px;height:100px;background:#fff;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:1.5rem;font-weight:bold;box-shadow:0 4px 10px rgba(0,0,0,0.3);transition:transform 0.3s}
+.card.red{color:#e74c3c}
+.card.black{color:#2c3e50}
+.card.hidden{background:linear-gradient(135deg,#3498db,#2980b9);color:#fff}
+.score{background:rgba(0,0,0,0.3);padding:0.3rem 0.8rem;border-radius:20px;display:inline-block;margin-top:0.5rem;font-size:0.9rem}
+.controls{display:flex;gap:1rem;margin-top:1.5rem;justify-content:center}
+button{padding:0.8rem 1.5rem;border:none;border-radius:8px;font-size:1rem;cursor:pointer;font-weight:bold;transition:all 0.2s}
+.btn-hit{background:linear-gradient(135deg,#2ecc71,#27ae60);color:#fff}
+.btn-stand{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff}
+.btn-new{background:linear-gradient(135deg,#f39c12,#e67e22);color:#fff}
+button:hover{transform:scale(1.05)}
+button:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.chips{display:flex;gap:1rem;margin:1rem 0;justify-content:center;align-items:center}
+.chip{background:linear-gradient(135deg,#f1c40f,#f39c12);color:#2c3e50;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold;border:3px dashed #fff;cursor:pointer;transition:transform 0.2s}
+.chip:hover{transform:scale(1.1)}
+.result{text-align:center;font-size:1.3rem;margin-top:1rem;padding:0.8rem;border-radius:8px;background:rgba(0,0,0,0.3)}
+</style>
+</head>
+<body>
+<h1>🃏 21点</h1>
+<div class="table">
+<div class="chips"><span>筹码:</span><span class="chip" id="chips">100</span></div>
+<div class="hand"><h3>庄家 <span class="score" id="dealerScore">0</span></h3><div class="cards" id="dealerCards"></div></div>
+<div class="result" id="result" style="display:none"></div>
+<div class="hand"><h3>玩家 <span class="score" id="playerScore">0</span></h3><div class="cards" id="playerCards"></div></div>
+<div class="controls"><button class="btn-hit" id="hitBtn" onclick="hit()">要牌</button><button class="btn-stand" id="standBtn" onclick="stand()">停牌</button><button class="btn-new" onclick="newGame()">新局</button></div>
+</div>
+<script>
+let deck,playerHand,dealerHand,chips,gameOver;
+const suits=['♠','♥','♦','♣'];
+const ranks=['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+function createDeck(){deck=[];for(const s of suits)for(const r of ranks)deck.push({suit:s,rank:r,value:r==='A'?11:parseInt(r)||10})}
+function shuffle(){for(let i=deck.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}}
+function calcScore(hand){let score=hand.reduce((s,c)=>s+c.value,0);let aces=hand.filter(c=>c.rank==='A').length;while(score>21&&aces>0){score-=10;aces--}return score}
+function renderCard(card,hidden){if(hidden)return`<div class="card hidden">?</div>`;const isRed=card.suit==='♥'||card.suit==='♦';return`<div class="card ${isRed?'red':'black'}">${card.rank}${card.suit}</div>`}
+function render(showDealer=true){const dc=document.getElementById('dealerCards'),pc=document.getElementById('playerCards');dc.innerHTML=dealerHand.map((c,i)=>renderCard(c,!showDealer&&i===1)).join('');pc.innerHTML=playerHand.map(c=>renderCard(c)).join('');document.getElementById('playerScore').textContent=calcScore(playerHand);document.getElementById('dealerScore').textContent=showDealer?calcScore(dealerHand):dealerHand[0].value}
+function newGame(){if(chips===undefined)chips=100;if(chips<=0){alert('筹码用完了!');chips=100}createDeck();shuffle();playerHand=[deck.pop(),deck.pop()];dealerHand=[deck.pop(),deck.pop()];gameOver=false;document.getElementById('result').style.display='none';document.getElementById('hitBtn').disabled=false;document.getElementById('standBtn').disabled=false;render(false);if(calcScore(playerHand)===21){stand()}}
+function hit(){if(gameOver)return;playerHand.push(deck.pop());render(false);if(calcScore(playerHand)>21){gameOver=true;render();endGame(' Bust! 你输了!')}}
+function stand(){if(gameOver)return;while(calcScore(dealerHand)<17)dealerHand.push(deck.pop());render();const ps=calcScore(playerHand),ds=calcScore(dealerHand);if(ds>21)endGame(' 庄家爆牌! 你赢了! +10');else if(ps>ds)endGame(' 你赢了! +10');else if(ps<ds)endGame(' 你输了! -10');else endGame(' 平局!')}
+function endGame(msg){gameOver=true;document.getElementById('hitBtn').disabled=true;document.getElementById('standBtn').disabled=true;const r=document.getElementById('result');r.style.display='block';r.textContent=msg;if(msg.includes('赢'))chips+=10;else if(msg.includes('输'))chips-=10;document.getElementById('chips').textContent=chips}
+newGame();
+</script>
+</body>
+</html>
