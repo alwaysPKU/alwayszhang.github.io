@@ -1,7 +1,12 @@
 import { getAllPosts, getAllTags } from "@/lib/posts";
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 import StatsClient from "./stats-client";
 
 export const dynamic = "force-static";
+
+const postsDirectory = path.join(process.cwd(), "content/posts");
 
 export default function StatsPage() {
   const posts = getAllPosts();
@@ -33,14 +38,27 @@ export default function StatsPage() {
     });
   });
 
-  // 计算总字数（估算）
+  // 计算总字数（读取完整文章内容）
   let totalWords = 0;
-  posts.forEach((post) => {
-    // 简单估算：中文字符 + 英文单词
-    const content = post.excerpt || "";
-    const chineseChars = (content.match(/[\u4e00-\u9fa5]/g) || []).length;
-    const englishWords = (content.match(/[a-zA-Z]+/g) || []).length;
-    totalWords += chineseChars + englishWords;
+  const files = fs.readdirSync(postsDirectory).filter((f: string) => f.endsWith(".md"));
+  files.forEach((filename: string) => {
+    const fullPath = path.join(postsDirectory, filename);
+    const fileContents = fs.readFileSync(fullPath, "utf-8");
+    const { content } = matter(fileContents);
+    
+    // 移除 front matter、代码块、HTML 标签、Markdown 标记
+    const cleanContent = content
+      .replace(/```[\s\S]*?```/g, "") // 移除代码块
+      .replace(/<[^>]+>/g, "") // 移除 HTML 标签
+      .replace(/[#*_~`\[\]()>-]/g, "") // 移除 Markdown 标记
+      .replace(/\s+/g, ""); // 移除空白
+    
+    // 统计中文字符和英文单词
+    const chineseChars = (cleanContent.match(/[\u4e00-\u9fa5]/g) || []).length;
+    const englishWords = (cleanContent.match(/[a-zA-Z]+/g) || []).length;
+    const numbers = (cleanContent.match(/\d+/g) || []).length;
+    
+    totalWords += chineseChars + englishWords + numbers;
   });
 
   return (
