@@ -33,6 +33,16 @@ export default function StatsPage() {
     });
   });
 
+  // 计算总字数（估算）
+  let totalWords = 0;
+  posts.forEach((post) => {
+    // 简单估算：中文字符 + 英文单词
+    const content = post.excerpt || "";
+    const chineseChars = (content.match(/[\u4e00-\u9fa5]/g) || []).length;
+    const englishWords = (content.match(/[a-zA-Z]+/g) || []).length;
+    totalWords += chineseChars + englishWords;
+  });
+
   return (
     <StatsClient
       totalPosts={posts.length}
@@ -41,6 +51,7 @@ export default function StatsPage() {
       yearlyStats={yearlyStats}
       tagStats={tagStats}
       categoryStats={categoryStats}
+      totalWords={totalWords}
     />
   );
 }

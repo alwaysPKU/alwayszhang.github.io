@@ -13,6 +13,7 @@ import {
   LineElement,
 } from "chart.js";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
+import SiteVisitors from "@/components/site-visitors";
 
 ChartJS.register(
   CategoryScale,
@@ -33,6 +34,7 @@ interface StatsClientProps {
   yearlyStats: { [key: string]: number };
   tagStats: { tag: string; count: number }[];
   categoryStats: { [key: string]: number };
+  totalWords: number;
 }
 
 export default function StatsClient({
@@ -42,6 +44,7 @@ export default function StatsClient({
   yearlyStats,
   tagStats,
   categoryStats,
+  totalWords,
 }: StatsClientProps) {
   // 月度趋势图
   const monthlyData = {
@@ -143,7 +146,7 @@ export default function StatsClient({
         </h1>
 
         {/* 概览卡片 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
             <div className="text-gray-500 dark:text-gray-400 text-sm mb-1">总文章数</div>
             <div className="text-3xl font-bold text-gray-900 dark:text-white">{totalPosts}</div>
@@ -156,6 +159,39 @@ export default function StatsClient({
             <div className="text-gray-500 dark:text-gray-400 text-sm mb-1">分类数量</div>
             <div className="text-3xl font-bold text-gray-900 dark:text-white">
               {Object.keys(categoryStats).length}
+            </div>
+          </div>
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm">
+            <div className="text-gray-500 dark:text-gray-400 text-sm mb-1">总字数</div>
+            <div className="text-3xl font-bold text-gray-900 dark:text-white">
+              {totalWords > 10000 ? `${(totalWords / 10000).toFixed(1)}万` : totalWords}
+            </div>
+          </div>
+        </div>
+
+        {/* 站点访问统计 */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm mb-8">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            站点访问统计
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="text-center">
+              <div className="text-4xl font-bold text-blue-500 mb-2">
+                <SiteVisitors type="total" />
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">总访客数</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-green-500 mb-2">
+                <SiteVisitors type="pageviews" />
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">页面浏览量</div>
+            </div>
+            <div className="text-center">
+              <div className="text-4xl font-bold text-purple-500 mb-2">
+                <SiteVisitors type="today" />
+              </div>
+              <div className="text-sm text-gray-500 dark:text-gray-400">今日访问</div>
             </div>
           </div>
         </div>
