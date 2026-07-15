@@ -20,7 +20,7 @@ export default function TagsPage() {
         {tags.map(({ tag, count }) => (
           <a
             key={tag}
-            href={`/tags/${tag}`}
+            href={`/tags/${encodeURIComponent(tag)}`}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border border-border hover:border-primary/40 hover:bg-primary/5 transition-colors group"
           >
             <span className="text-foreground/80 group-hover:text-primary transition-colors">
