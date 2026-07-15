@@ -138,7 +138,8 @@ export function getAllCategories(): { category: string; count: number }[] {
 }
 
 export function getPostsByTag(tag: string): PostMeta[] {
-  return getAllPosts().filter((p) => p.tags.includes(tag));
+  const decodedTag = decodeURIComponent(tag);
+  return getAllPosts().filter((p) => p.tags.includes(decodedTag));
 }
 
 export function getPostsByCategory(category: string): PostMeta[] {
