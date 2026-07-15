@@ -20,6 +20,17 @@ export interface Post extends PostMeta {
   contentHtml: string;
 }
 
+function formatDate(val: unknown): string {
+  if (!val) return '';
+  if (val instanceof Date) {
+    const y = val.getFullYear();
+    const m = String(val.getMonth() + 1).padStart(2, '0');
+    const d = String(val.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+  return String(val);
+}
+
 function parseCategories(val: unknown): string[] {
   if (Array.isArray(val)) return val.map(String);
   if (typeof val === 'string') {
@@ -59,15 +70,15 @@ export function getAllPosts(): PostMeta[] {
     return {
       slug,
       title: String(data.title || slug),
-      date: String(data.date || ''),
+      date: formatDate(data.date),
       categories: parseCategories(data.categories),
       tags: parseTags(data.tags),
       excerpt,
     };
   });
 
-  // Sort by date descending
-  return posts.sort((a, b) => (a.date > b.date ? -1 : 1));
+  // Sort by date descending (newest first)
+  return posts.sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
@@ -90,7 +101,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   return {
     slug,
     title: String(data.title || slug),
-    date: String(data.date || ''),
+    date: formatDate(data.date),
     categories: parseCategories(data.categories),
     tags: parseTags(data.tags),
     excerpt,
