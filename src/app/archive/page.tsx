@@ -45,12 +45,12 @@ export default function ArchivePage() {
                 <time className="text-xs text-muted-foreground flex-shrink-0 tabular-nums w-20">
                   {post.date.slice(5)}
                 </time>
-                <Link
+                <a
                   href={`/posts/${post.slug}`}
                   className="text-sm text-foreground group-hover:text-primary transition-colors truncate"
                 >
                   {post.title}
-                </Link>
+                </a>
               </div>
             ))}
           </div>
