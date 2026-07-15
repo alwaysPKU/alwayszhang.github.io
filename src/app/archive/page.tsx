@@ -46,7 +46,7 @@ export default function ArchivePage() {
                   {post.date.slice(5)}
                 </time>
                 <Link
-                  href={`/posts/${encodeURIComponent(post.slug)}`}
+                  href={`/posts/${post.slug}`}
                   className="text-sm text-foreground group-hover:text-primary transition-colors truncate"
                 >
                   {post.title}

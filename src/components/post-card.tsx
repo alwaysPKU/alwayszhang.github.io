@@ -11,7 +11,7 @@ export function PostCard({ post }: PostCardProps) {
       <div className="flex flex-col gap-2">
         {/* Title */}
         <Link
-          href={`/posts/${encodeURIComponent(post.slug)}`}
+          href={`/posts/${post.slug}`}
           className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors leading-snug"
         >
           {post.title}
