@@ -1,10 +1,15 @@
-import { getPostsByTag } from '@/lib/posts';
+import { getPostsByTag, getAllTags } from '@/lib/posts';
 import { PostCard } from '@/components/post-card';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 
 interface Props {
   params: Promise<{ tag: string }>;
+}
+
+export function generateStaticParams() {
+  const tags = getAllTags();
+  return tags.map(({ tag }) => ({ tag: encodeURIComponent(tag) }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
