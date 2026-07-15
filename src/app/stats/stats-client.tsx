@@ -13,7 +13,7 @@ import {
   LineElement,
 } from "chart.js";
 import { Bar, Doughnut, Line } from "react-chartjs-2";
-import SiteVisitors from "@/components/site-visitors";
+import { SiteVisitors } from "@/components/site-visitors";
 
 ChartJS.register(
   CategoryScale,
@@ -174,26 +174,7 @@ export default function StatsClient({
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
             站点访问统计
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-blue-500 mb-2">
-                <SiteVisitors type="total" />
-              </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">总访客数</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-green-500 mb-2">
-                <SiteVisitors type="pageviews" />
-              </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">页面浏览量</div>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-purple-500 mb-2">
-                <SiteVisitors type="today" />
-              </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">今日访问</div>
-            </div>
-          </div>
+          <SiteVisitors />
         </div>
 
         {/* 图表区域 */}
