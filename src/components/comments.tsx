@@ -16,9 +16,9 @@ export default function Comments({ slug, title }: CommentsProps) {
       <Giscus
         id="comments"
         repo="alwaysPKU/alwayszhang.github.io"
-        repoId="R_kgDOMGxJXw"
+        repoId="MDEwOlJlcG9zaXRvcnkxNjM5NjU1MDg="
         category="Announcements"
-        categoryId="DIC_kwDOMGxJX84CjXxJ"
+        categoryId="DIC_kwDOCcXqRM4DBQKv"
         mapping="pathname"
         strict="0"
         reactionsEnabled="1"
