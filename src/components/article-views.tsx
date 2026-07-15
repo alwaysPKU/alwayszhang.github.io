@@ -6,17 +6,33 @@ export function ArticleViews({ slug }: { slug: string }) {
   const [views, setViews] = useState(0);
 
   useEffect(() => {
-    const key = `views-${slug}`;
-    const stored = localStorage.getItem(key);
-    const count = stored ? parseInt(stored) + 1 : 1;
-    localStorage.setItem(key, count.toString());
-    setViews(count);
+    // 检查是否已经阅读过这篇文章（使用 cookie）
+    const hasRead = document.cookie.includes(`read-${slug}=1`);
 
-    // 更新全局访客数
-    const totalKey = "total-visitors";
-    const totalStored = localStorage.getItem(totalKey);
-    const total = totalStored ? parseInt(totalStored) + 1 : 1;
-    localStorage.setItem(totalKey, total.toString());
+    if (!hasRead) {
+      // 第一次阅读，调用 API 增加阅读量
+      fetch(`/api/article-views/${slug}`, { method: "POST" })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            setViews(data.views);
+          }
+        })
+        .catch((err) => console.error("Failed to record view:", err));
+
+      // 设置 cookie 标记（有效期 1 年）
+      document.cookie = `read-${slug}=1; path=/; max-age=31536000; SameSite=Lax`;
+    } else {
+      // 已经阅读过，只获取当前阅读量
+      fetch(`/api/article-views/${slug}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.views) {
+            setViews(data.views);
+          }
+        })
+        .catch((err) => console.error("Failed to fetch views:", err));
+    }
   }, [slug]);
 
   return (
@@ -44,10 +60,14 @@ export function TotalVisitors() {
   const [total, setTotal] = useState(0);
 
   useEffect(() => {
-    const key = "total-visitors";
-    const stored = localStorage.getItem(key);
-    const count = stored ? parseInt(stored) : 0;
-    setTotal(count);
+    fetch("/api/visit")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.totalVisitors) {
+          setTotal(data.totalVisitors);
+        }
+      })
+      .catch((err) => console.error("Failed to fetch total visitors:", err));
   }, []);
 
   return (

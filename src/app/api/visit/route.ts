@@ -47,7 +47,7 @@ function saveStats(stats: VisitStats): void {
   fs.writeFileSync(STATS_FILE, JSON.stringify(stats, null, 2));
 }
 
-export async function POST() {
+export async function POST(request: Request) {
   try {
     const stats = getStatsFile();
 
@@ -57,17 +57,33 @@ export async function POST() {
     // 增加今日访问
     stats.todayVisits += 1;
 
-    // 检查是否是新访客（使用简单的 session 标记）
-    // 这里简化处理：每次 POST 都增加访客数
-    // 实际生产环境应该使用 cookie 或 IP 去重
-    stats.totalVisitors += 1;
+    // 检查 cookie 判断是否是新访客
+    const cookieHeader = request.headers.get("cookie") || "";
+    const hasVisited = cookieHeader.includes("visitor_id=");
+
+    if (!hasVisited) {
+      // 新访客，增加总访客数
+      stats.totalVisitors += 1;
+    }
 
     saveStats(stats);
 
-    return NextResponse.json({
-      success: true,
-      data: stats,
-    });
+    // 设置 visitor_id cookie（有效期 1 年）
+    const visitorId = Math.random().toString(36).substring(2, 15);
+    const headers = new Headers();
+    headers.set(
+      "Set-Cookie",
+      `visitor_id=${visitorId}; Path=/; Max-Age=31536000; SameSite=Lax`
+    );
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: stats,
+        isNewVisitor: !hasVisited,
+      },
+      { headers }
+    );
   } catch (error) {
     console.error("Failed to record visit:", error);
     return NextResponse.json({ error: "Failed to record visit" }, { status: 500 });
