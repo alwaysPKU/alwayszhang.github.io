@@ -1,5 +1,4 @@
 import { getAllTags } from '@/lib/posts';
-import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -19,9 +18,9 @@ export default function TagsPage() {
 
       <div className="flex flex-wrap gap-2">
         {tags.map(({ tag, count }) => (
-          <Link
+          <a
             key={tag}
-            href={`/tags/${encodeURIComponent(tag)}`}
+            href={`/tags/${tag}`}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm border border-border hover:border-primary/40 hover:bg-primary/5 transition-colors group"
           >
             <span className="text-foreground/80 group-hover:text-primary transition-colors">
@@ -30,7 +29,7 @@ export default function TagsPage() {
             <span className="text-xs text-muted-foreground bg-muted px-1.5 py-0.5 rounded-full">
               {count}
             </span>
-          </Link>
+          </a>
         ))}
       </div>
     </div>
