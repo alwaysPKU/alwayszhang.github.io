@@ -82,7 +82,9 @@ export function getAllPosts(): PostMeta[] {
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
-  const fullPath = path.join(postsDirectory, `${slug}.md`);
+  // Decode URL-encoded slug to match filename
+  const decodedSlug = decodeURIComponent(slug);
+  const fullPath = path.join(postsDirectory, `${decodedSlug}.md`);
   if (!fs.existsSync(fullPath)) return null;
 
   const fileContents = fs.readFileSync(fullPath, 'utf-8');
