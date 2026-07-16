@@ -27,22 +27,22 @@ export default function CodeBlock({ children, language = 'text', filename }: Cod
   return (
     <div className="relative group my-4 rounded-xl overflow-hidden border border-border bg-card">
       {/* Code header */}
-      <div className="flex items-center justify-between px-4 py-2 bg-muted/50 border-b border-border">
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1.5">
+      <div className="flex items-center justify-between px-3 py-2 sm:px-4 bg-muted/50 border-b border-border">
+        <div className="flex items-center gap-2 min-w-0 flex-1">
+          <div className="flex gap-1.5 shrink-0">
             <div className="w-3 h-3 rounded-full bg-red-500/80" />
             <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
             <div className="w-3 h-3 rounded-full bg-green-500/80" />
           </div>
           {filename && (
-            <span className="text-xs text-muted-foreground ml-2">{filename}</span>
+            <span className="text-xs text-muted-foreground ml-2 truncate hidden sm:inline">{filename}</span>
           )}
-          <span className="text-xs text-muted-foreground px-2 py-0.5 rounded bg-primary/10 text-primary">
+          <span className="text-xs text-muted-foreground px-2 py-0.5 rounded bg-primary/10 text-primary shrink-0">
             {language}
           </span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-muted-foreground">{lineCount} 行</span>
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-xs text-muted-foreground hidden sm:inline">{lineCount} 行</span>
           {lineCount > 20 && (
             <button
               onClick={() => setCollapsed(!collapsed)}

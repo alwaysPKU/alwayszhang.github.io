@@ -9,6 +9,7 @@ import SharePoster from '@/components/share-poster';
 import TableOfContents from '@/components/table-of-contents';
 import ReadingProgress from '@/components/reading-progress';
 import RelatedPosts from '@/components/related-posts';
+import MobileGestures from '@/components/mobile-gestures';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -36,6 +37,9 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">
+      {/* Mobile Gestures */}
+      <MobileGestures />
+
       {/* Reading Progress */}
       <ReadingProgress />
 
