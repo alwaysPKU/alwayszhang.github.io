@@ -30,35 +30,33 @@ function getOrCreateVisitorId(): string {
 }
 
 function getStats(): VisitorStats {
-  if (typeof window === "undefined") return INITIAL_STATS;
+  if (typeof window === "undefined") return { ...INITIAL_STATS };
   try {
     const stored = localStorage.getItem(STATS_KEY);
     if (stored) {
-      return JSON.parse(stored);
+      const parsed = JSON.parse(stored);
+      // 确保日期是今天的，否则重置今日访问
+      const today = new Date().toISOString().split("T")[0];
+      if (parsed.lastResetDate !== today) {
+        parsed.todayVisits = 0;
+        parsed.lastResetDate = today;
+      }
+      return parsed;
     }
   } catch (e) {
     console.error("Failed to parse visitor stats:", e);
   }
-  return INITIAL_STATS;
+  return { ...INITIAL_STATS };
 }
 
 function updateStats(): VisitorStats {
   const stats = getStats();
-  const today = new Date().toISOString().split("T")[0];
-
-  // 检查是否需要重置今日访问
-  if (stats.lastResetDate !== today) {
-    stats.todayVisits = 0;
-    stats.lastResetDate = today;
-  }
-
-  // 检查是否是新访客（使用 cookie 去重）
   const visitorId = getOrCreateVisitorId();
   const visitorKey = `visited_${visitorId}`;
   const hasVisited = localStorage.getItem(visitorKey);
 
   if (!hasVisited) {
-    // 新访客
+    // 新访客：增加总访客数
     stats.totalVisitors += 1;
     localStorage.setItem(visitorKey, "true");
   }
