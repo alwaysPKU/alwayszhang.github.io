@@ -36,15 +36,21 @@ export default async function PostPage({ params }: Props) {
   if (!post) notFound();
 
   return (
-    <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">
-      {/* Mobile Gestures */}
-      <MobileGestures />
-
+    <>
       {/* Reading Progress */}
       <ReadingProgress />
 
-      {/* Table of Contents */}
-      <TableOfContents />
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
+        <div className="flex gap-8">
+          {/* Main content */}
+          <div className="flex-1 max-w-3xl">
+            {/* Mobile Gestures */}
+            <MobileGestures />
+
+            {/* Table of Contents - Desktop */}
+            <div className="hidden lg:block fixed right-8 top-20 w-64">
+              <TableOfContents />
+            </div>
 
       {/* Back link */}
       <Link
@@ -130,6 +136,9 @@ export default async function PostPage({ params }: Props) {
       <div className="mt-8">
         <Comments slug={slug} title={post.title} />
       </div>
-    </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
