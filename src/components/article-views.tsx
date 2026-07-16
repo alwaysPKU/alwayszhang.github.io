@@ -9,11 +9,24 @@ interface ArticleViewsProps {
 const VIEWS_KEY_PREFIX = "article_views_";
 const READ_PREFIX = "read_";
 
+// 根据 slug 生成伪随机数（确保同一篇文章始终返回相同的初始值）
+function getInitialViews(slug: string): number {
+  let hash = 0;
+  for (let i = 0; i < slug.length; i++) {
+    const char = slug.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  // 映射到 100-999 范围，让阅读量看起来更真实
+  return Math.abs(hash % 900) + 100;
+}
+
 function getViews(slug: string): number {
-  if (typeof window === "undefined") return 0;
+  if (typeof window === "undefined") return getInitialViews(slug);
   const key = `${VIEWS_KEY_PREFIX}${slug}`;
   const stored = localStorage.getItem(key);
-  return stored ? parseInt(stored, 10) : 0;
+  // 如果没有存储数据，返回初始值而不是 0
+  return stored ? parseInt(stored, 10) : getInitialViews(slug);
 }
 
 function incrementViews(slug: string): number {
