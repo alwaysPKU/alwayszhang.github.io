@@ -6,6 +6,9 @@ import Comments from '@/components/comments';
 import LikeButton from '@/components/like-button';
 import { ArticleViews } from '@/components/article-views';
 import SharePoster from '@/components/share-poster';
+import TableOfContents from '@/components/table-of-contents';
+import ReadingProgress from '@/components/reading-progress';
+import RelatedPosts from '@/components/related-posts';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -33,6 +36,12 @@ export default async function PostPage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">
+      {/* Reading Progress */}
+      <ReadingProgress />
+
+      {/* Table of Contents */}
+      <TableOfContents />
+
       {/* Back link */}
       <Link
         href="/"
@@ -105,6 +114,13 @@ export default async function PostPage({ params }: Props) {
           />
         </div>
       </div>
+
+      {/* Related Posts */}
+      <RelatedPosts
+        currentSlug={slug}
+        currentTags={post.tags}
+        currentCategories={post.categories}
+      />
 
       {/* Comments */}
       <div className="mt-8">
