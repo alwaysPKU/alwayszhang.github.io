@@ -60,7 +60,6 @@ function updateStats(): VisitorStats {
   if (!hasVisited) {
     // 新访客
     stats.totalVisitors += 1;
-    stats.todayVisits += 1;
     localStorage.setItem(visitorKey, "true");
   }
 
