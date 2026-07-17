@@ -14,8 +14,10 @@ const fs = require('fs');
 const path = require('path');
 const matter = require('gray-matter');
 const { remark } = require('remark');
-const html = require('remark-html');
-const gfm = require('remark-gfm');
+const htmlModule = require('remark-html');
+const html = htmlModule.default || htmlModule;
+const gfmModule = require('remark-gfm');
+const gfm = gfmModule.default || gfmModule;
 
 // ============ 配置 ============
 const SITE_URL = 'https://alwayszhang.cn';
@@ -244,7 +246,40 @@ async function publishArticle(options) {
   const digest = frontMatter.excerpt ||
     markdownContent.slice(0, 120).replace(/[#*_\[\]()]/g, '').trim() + '...';
 
-  // 5. 创建草稿
+  // 5. 上传封面图
+  console.log('\n🖼️ 上传封面图...');
+  const coverPath = frontMatter.cover || path.join(__dirname, '..', 'public', 'images', 'og-default.png');
+  let thumbMediaId = '';
+  try {
+    if (fs.existsSync(coverPath)) {
+      const coverResult = await uploadImage(accessToken, coverPath);
+      thumbMediaId = coverResult.media_id;
+    } else {
+      console.log('⚠️ 封面图不存在，跳过上传（需在公众号后台手动设置封面）');
+    }
+  } catch (err) {
+    console.log(`⚠️ 封面上传失败: ${err.message}（需在公众号后台手动设置封面）`);
+  }
+
+  // 如果没有封面图，用一个默认的 media_id（微信要求必须有）
+  if (!thumbMediaId) {
+    // 尝试用文章内容中的第一张图片
+    const imgMatch = markdownContent.match(/!\[.*?\]\((.*?)\)/);
+    if (imgMatch) {
+      console.log('📷 尝试使用文章内第一张图片作为封面...');
+    }
+    // 微信要求 thumb_media_id 不能为空，生成一个占位图
+    const placeholderPath = path.join('/tmp', 'wechat-placeholder.png');
+    const sharp = require('sharp');
+    await sharp({
+      create: { width: 900, height: 383, channels: 3, background: { r: 49, g: 58, b: 70 } }
+    }).png().toFile(placeholderPath);
+    const placeholderResult = await uploadImage(accessToken, placeholderPath);
+    thumbMediaId = placeholderResult.media_id;
+    console.log('✅ 使用默认占位封面');
+  }
+
+  // 6. 创建草稿
   console.log('\n📤 推送到草稿箱...');
   const mediaId = await createDraft(accessToken, [
     {
@@ -253,7 +288,7 @@ async function publishArticle(options) {
       digest: digest,
       content: fullContent,
       content_source_url: `${SITE_URL}/posts/${encodeURIComponent(path.basename(filePath, '.md'))}/`,
-      thumb_media_id: '', // 暂时不设置封面，需要在公众号后台手动设置
+      thumb_media_id: thumbMediaId,
       need_open_comment: 0,
       only_fans_can_comment: 0,
     },
