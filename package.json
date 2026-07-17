@@ -10,7 +10,9 @@
     "lint:build": "eslint . --quiet",
     "start": "bash ./scripts/start.sh",
     "ts-check": "tsc -p tsconfig.json",
-    "validate": "pnpm run --parallel '/^(ts-check|lint:build)$/'"
+    "validate": "pnpm run --parallel '/^(ts-check|lint:build)$/'",
+    "wechat:test": "node scripts/wechat-test.js",
+    "wechat:publish": "node scripts/wechat-publish.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.958.0",
