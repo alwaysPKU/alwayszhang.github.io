@@ -133,7 +133,7 @@ function applyWechatStyles(htmlContent) {
     h2: 'font-size: 20px; font-weight: bold; margin: 28px 0 16px; padding-left: 12px; border-left: 4px solid #4a5568; color: #2d3748;',
     h3: 'font-size: 18px; font-weight: bold; margin: 24px 0 14px; color: #2d3748;',
     h4: 'font-size: 16px; font-weight: bold; margin: 20px 0 12px; color: #4a5568;',
-    p: 'margin: 16px 0; line-height: 1.8;',
+    p: 'margin: 12px 0; line-height: 1.8;',
     // 代码块
     pre: 'background: #f7f8fa; border-radius: 8px; padding: 16px; overflow-x: auto; margin: 16px 0; border: 1px solid #e2e8f0;',
     code: 'font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 14px;',
@@ -141,9 +141,9 @@ function applyWechatStyles(htmlContent) {
     // 引用
     blockquote: 'margin: 16px 0; padding: 12px 20px; background: #f7f8fa; border-left: 4px solid #4a5568; color: #4a5568;',
     // 列表
-    ul: 'margin: 12px 0; padding-left: 24px;',
-    ol: 'margin: 12px 0; padding-left: 24px;',
-    li: 'margin: 8px 0; line-height: 1.8;',
+    ul: 'margin: 12px 0; padding-left: 28px; list-style-type: disc;',
+    ol: 'margin: 12px 0; padding-left: 28px; list-style-type: decimal;',
+    li: 'margin: 4px 0; line-height: 1.8;',
     // 表格
     table: 'width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 14px;',
     th: 'background: #f7f8fa; border: 1px solid #e2e8f0; padding: 10px 14px; text-align: left; font-weight: 600;',
@@ -187,6 +187,12 @@ function applyWechatStyles(htmlContent) {
   result = result.replace(/<pre><code>/g, `<pre style="${styles.pre}"><code style="${styles.code}">`);
   // 行内代码（不在 pre 内的 code）
   result = result.replace(/(?<!<pre>.*)<code>(?!.*<\/pre>)/g, `<code style="${styles.inlineCode}">`);
+
+  // 移除列表项内的 <p> 标签（避免多余空行）
+  result = result.replace(/<li><p>/g, '<li>');
+  result = result.replace(/<\/p><\/li>/g, '</li>');
+  result = result.replace(/<li>\s*<p[^>]*>/g, '<li>');
+  result = result.replace(/<\/p>\s*<\/li>/g, '</li>');
 
   return result;
 }
