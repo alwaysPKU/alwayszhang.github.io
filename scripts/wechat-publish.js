@@ -265,14 +265,20 @@ async function publishArticle(options) {
 </section>
 `;
 
-  // 添加文章尾部
+  // 生成文章链接（用于"阅读原文"）
+  const articleUrl = `${SITE_URL}/posts/${encodeURIComponent(path.basename(filePath, '.md'))}/`;
+
+  // 添加文章尾部（个人订阅号不支持正文外链，改为提示文字）
   const footerHtml = `
 <section style="margin-top: 40px; padding: 20px; background: #f7f8fa; border-radius: 12px; text-align: center;">
   <p style="margin: 0 0 8px; font-size: 14px; color: #718096;">
-    原文发布于 <a style="color: #2563eb; text-decoration: underline; font-weight: 500;" href="${SITE_URL}">HalfSugar 博客</a>
+    原文发布于 <strong style="color: #2563eb;">HalfSugar 博客</strong>
   </p>
-  <p style="margin: 0; font-size: 13px; color: #a0aec0;">
-    半甜不要腻 · 记录学习与生活
+  <p style="margin: 0 0 8px; font-size: 13px; color: #a0aec0;">
+    点击左下角「阅读原文」查看完整内容及代码
+  </p>
+  <p style="margin: 0; font-size: 12px; color: #a0aec0;">
+    ${articleUrl}
   </p>
 </section>
 `;
@@ -324,7 +330,7 @@ async function publishArticle(options) {
       author: 'CuteJ',
       digest: digest,
       content: fullContent,
-      content_source_url: `${SITE_URL}/posts/${encodeURIComponent(path.basename(filePath, '.md'))}/`,
+      content_source_url: articleUrl,
       thumb_media_id: thumbMediaId,
       need_open_comment: 0,
       only_fans_can_comment: 0,
