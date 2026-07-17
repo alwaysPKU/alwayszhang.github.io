@@ -269,7 +269,7 @@ async function publishArticle(options) {
   const footerHtml = `
 <section style="margin-top: 40px; padding: 20px; background: #f7f8fa; border-radius: 12px; text-align: center;">
   <p style="margin: 0 0 8px; font-size: 14px; color: #718096;">
-    原文发布于 <a style="color: #4a5568;" href="${SITE_URL}">HalfSugar 博客</a>
+    原文发布于 <a style="color: #2563eb; text-decoration: underline; font-weight: 500;" href="${SITE_URL}">HalfSugar 博客</a>
   </p>
   <p style="margin: 0; font-size: 13px; color: #a0aec0;">
     半甜不要腻 · 记录学习与生活
