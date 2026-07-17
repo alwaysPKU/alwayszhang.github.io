@@ -123,6 +123,34 @@ async function markdownToWechatHtml(markdownContent) {
 }
 
 /**
+ * 将有序列表转换为微信兼容格式
+ */
+function convertOrderedList(html) {
+  return html.replace(/<ol[^>]*>([\s\S]*?)<\/ol>/g, (match, content) => {
+    let counter = 0;
+    const items = content.replace(/<li[^>]*>([\s\S]*?)<\/li>/g, (liMatch, liContent) => {
+      counter++;
+      const cleanContent = liContent.replace(/<\/?p[^>]*>/g, '').trim();
+      return `<section style="margin: 6px 0; padding-left: 8px; line-height: 1.8; color: #374151; font-size: 15px;"><span style="color: #6366f1; font-weight: 600; margin-right: 8px;">${counter}.</span>${cleanContent}</section>`;
+    });
+    return `<section style="margin: 12px 0;">${items}</section>`;
+  });
+}
+
+/**
+ * 将无序列表转换为微信兼容格式
+ */
+function convertUnorderedList(html) {
+  return html.replace(/<ul[^>]*>([\s\S]*?)<\/ul>/g, (match, content) => {
+    const items = content.replace(/<li[^>]*>([\s\S]*?)<\/li>/g, (liMatch, liContent) => {
+      const cleanContent = liContent.replace(/<\/?p[^>]*>/g, '').trim();
+      return `<section style="margin: 6px 0; padding-left: 8px; line-height: 1.8; color: #374151; font-size: 15px;"><span style="color: #6366f1; margin-right: 8px;">•</span>${cleanContent}</section>`;
+    });
+    return `<section style="margin: 12px 0;">${items}</section>`;
+  });
+}
+
+/**
  * 应用微信公众号内联样式
  */
 function applyWechatStyles(htmlContent) {
@@ -170,9 +198,6 @@ function applyWechatStyles(htmlContent) {
   result = result.replace(/<p>/g, `<p style="${styles.p}">`);
   result = result.replace(/<pre>/g, `<pre style="${styles.pre}">`);
   result = result.replace(/<blockquote>/g, `<blockquote style="${styles.blockquote}">`);
-  result = result.replace(/<ul>/g, `<ul style="${styles.ul}">`);
-  result = result.replace(/<ol>/g, `<ol style="${styles.ol}">`);
-  result = result.replace(/<li>/g, `<li style="${styles.li}">`);
   result = result.replace(/<table>/g, `<table style="${styles.table}">`);
   result = result.replace(/<th>/g, `<th style="${styles.th}">`);
   result = result.replace(/<td>/g, `<td style="${styles.td}">`);
@@ -181,6 +206,12 @@ function applyWechatStyles(htmlContent) {
   result = result.replace(/<hr>/g, `<hr style="${styles.hr}">`);
   result = result.replace(/<strong>/g, `<strong style="${styles.strong}">`);
   result = result.replace(/<em>/g, `<em style="${styles.em}">`);
+
+  // 处理列表：将 ul/ol/li 转换为微信兼容的 section 格式
+  // 先处理有序列表
+  result = convertOrderedList(result);
+  // 再处理无序列表
+  result = convertUnorderedList(result);
 
   // 处理 code 标签（区分行内代码和代码块内的代码）
   result = result.replace(/<pre><code class="language-([^"]*)">/g, `<pre style="${styles.pre}"><code style="${styles.code}" class="language-$1">`);
