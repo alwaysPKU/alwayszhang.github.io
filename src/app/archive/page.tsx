@@ -3,8 +3,12 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Archive',
-  description: '所有文章归档',
+  title: '归档',
+  description: 'HalfSugar 博客所有文章按时间归档，涵盖深度学习、AI论文解读、算法分析等内容',
+  openGraph: {
+    title: '文章归档 | HalfSugar',
+    description: '所有文章按时间归档，涵盖深度学习、AI论文解读、算法分析等内容',
+  },
 };
 
 export default function ArchivePage() {

@@ -1,5 +1,6 @@
 import { getAllPosts } from '@/lib/posts';
 import PostCard from '@/components/post-card';
+import Link from 'next/link';
 
 export default function HomePage() {
   const posts = getAllPosts();
@@ -59,7 +60,7 @@ export default function HomePage() {
 
         {/* 快捷入口 */}
         <div className="flex flex-wrap gap-3 mt-6">
-          <a
+          <Link
             href="/archive"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all hover:shadow-md hover:-translate-y-0.5"
           >
@@ -67,8 +68,8 @@ export default function HomePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             归档
-          </a>
-          <a
+          </Link>
+          <Link
             href="/tags"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-all hover:shadow-md hover:-translate-y-0.5"
           >
@@ -76,8 +77,8 @@ export default function HomePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
             </svg>
             标签
-          </a>
-          <a
+          </Link>
+          <Link
             href="/games"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-all hover:shadow-md hover:-translate-y-0.5"
           >
@@ -86,8 +87,8 @@ export default function HomePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             游戏
-          </a>
-          <a
+          </Link>
+          <Link
             href="/stats"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-all hover:shadow-md hover:-translate-y-0.5"
           >
@@ -95,7 +96,7 @@ export default function HomePage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
             </svg>
             统计
-          </a>
+          </Link>
         </div>
       </section>
 

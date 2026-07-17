@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Games',
-  description: '在线小游戏合集',
+  title: '小游戏',
+  description: '在线小游戏合集，包括 2048、贪吃蛇、俄罗斯方块、扫雷等经典游戏',
+  openGraph: {
+    title: '在线小游戏 | HalfSugar',
+    description: '在线小游戏合集，包括 2048、贪吃蛇、俄罗斯方块、扫雷等经典游戏',
+  },
 };
 
 interface Game {

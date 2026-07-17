@@ -1,0 +1,1411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HalfSugar - 半甜不要腻</title>
+    <link>https://alwayszhang.cn</link>
+    <description>CuteJ 的个人博客 - 深度学习、算法、AI论文解读、大模型技术分析</description>
+    <language>zh-cn</language>
+    <atom:link href="https://alwayszhang.cn/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title><![CDATA[Claude Code 发展史揭秘：从内部工具到 Anthropic 半壁江山]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-17-Claude-Code%20%E5%8F%91%E5%B1%95%E5%8F%B2%E6%8F%AD%E7%A7%98/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-17-Claude-Code%20%E5%8F%91%E5%B1%95%E5%8F%B2%E6%8F%AD%E7%A7%98/</guid>
+      <description><![CDATA[Claude Code 发展史揭秘：从内部工具到 Anthropic 半壁江山
+
+> 本文基于 Anthropic 官方发布的《The Making of Claude Code》口述历史，还原这款明星产品从诞生到崛起的全过程。
+
+2026 年 7 月，Anthropic 发布了官方口述历史《The Making of Claude Code》，十几位联合创始人与技术亲历者从各自的记忆里，拼凑出了这款产品惊心动魄的心路历程。
+
+ 2021-2022：从 VS Code 插件起步
+
+Claude Code 的故事，比大多数人想象的要早得多。
+
+2021 年，Dario Amodei 带着]]></description>
+      <pubDate>Fri, 17 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI 论文翻译]]></category>
+    </item>
+    <item>
+      <title><![CDATA[DeepSeek 技术报告发展脉络综述：从 V1 到 V4 的三年进阶之路]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-17-DeepSeek%20%E6%8A%80%E6%9C%AF%E6%8A%A5%E5%91%8A%E5%8F%91%E5%B1%95%E8%84%89%E7%BB%9C%E7%BB%BC%E8%BF%B0/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-17-DeepSeek%20%E6%8A%80%E6%9C%AF%E6%8A%A5%E5%91%8A%E5%8F%91%E5%B1%95%E8%84%89%E7%BB%9C%E7%BB%BC%E8%BF%B0/</guid>
+      <description><![CDATA[DeepSeek 技术报告发展脉络综述：从 V1 到 V4 的三年进阶之路
+
+摘要：从 2023 年底到 2026 年，DeepSeek（深度求索）用三年时间完成了从无人问津到全球瞩目的蜕变。本文系统梳理 DeepSeek 发布的五份核心技术报告（V1、V2、V3、R1、V4），解读其技术演进脉络、架构创新主线和工程哲学，揭示这家中国 AI 公司如何用极低成本改写大模型竞争规则。
+
+---
+
+ 一、全景图：三年五次迭代
+
+DeepSeek 的版本演进可以用一句话概括：从 Dense 到 MoE，从 SFT 到 RL，从语言模型到推理引擎，从通用 AI 到 Agent。]]></description>
+      <pubDate>Fri, 17 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI 论文翻译]]></category>
+    </item>
+    <item>
+      <title><![CDATA[Kimi K3 全面解析：全球首个开源三万亿模型的技术突破]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-17-Kimi-K3-%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-17-Kimi-K3-%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/</guid>
+      <description><![CDATA[Kimi K3 全面解析：全球首个开源三万亿模型的技术突破
+
+2026年7月17日凌晨，月之暗面（Moonshot AI）正式发布了其迄今能力最强的模型——Kimi K3。这是全球首个达到三万亿参数级别的开源模型，标志着中国AI在大模型规模上再次刷新纪录。
+
+ 核心参数一览
+
+| 指标 | 数值 |
+|------|------|
+| 总参数量 | 2.8 万亿（2.8T） |
+| 架构 | MoE（混合专家） |
+| 专家总数 | 896 个 |
+| 激活专家 | 16 个 |
+| 上下文窗口 | 100 万 token |
+| 多]]></description>
+      <pubDate>Fri, 17 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[大模型]]></category>
+    </item>
+    <item>
+      <title><![CDATA[可控制推理深度的方法：从训练到推理的完整技术解析]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-17-%E5%8F%AF%E6%8E%A7%E5%88%B6%E6%8E%A8%E7%90%86%E6%B7%B1%E5%BA%A6%E7%9A%84%E6%96%B9%E6%B3%95/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-17-%E5%8F%AF%E6%8E%A7%E5%88%B6%E6%8E%A8%E7%90%86%E6%B7%B1%E5%BA%A6%E7%9A%84%E6%96%B9%E6%B3%95/</guid>
+      <description><![CDATA[可控制推理深度的方法：从训练到推理的完整技术解析
+
+> 为什么有些问题需要"深思熟虑"，有些问题只需"脱口而出"？大模型如何学会根据任务复杂度调整推理深度？本文从训练数据准备、损失函数设计、强化学习奖励，到推理阶段的动态循环、置信度评估、早停机制，完整解析可控推理深度的技术实现。
+
+---
+
+ 一、为什么需要可控推理深度？
+
+ 1.1 效率与质量的权衡
+
+在实际应用中，不同任务对推理深度的需求差异巨大：
+
+| 任务类型 | 示例 | 所需推理深度 | 可接受延迟 |
+|---------|------|------------|-----------|
+| 简单问答 | "1+1]]></description>
+      <pubDate>Fri, 17 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI 论文翻译]]></category>
+    </item>
+    <item>
+      <title><![CDATA[Anthropic 智能体失配报告解读：AI 的四种「使坏」模式]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-16-Anthropic-%E6%99%BA%E8%83%BD%E4%BD%93%E5%A4%B1%E9%85%8D%E6%8A%A5%E5%91%8A%E8%A7%A3%E8%AF%BB/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-16-Anthropic-%E6%99%BA%E8%83%BD%E4%BD%93%E5%A4%B1%E9%85%8D%E6%8A%A5%E5%91%8A%E8%A7%A3%E8%AF%BB/</guid>
+      <description><![CDATA[Anthropic 智能体失配报告解读：AI 的四种「使坏」模式
+
+> 当 AI 拿到权限后，会做错什么？
+
+2026 年 7 月 13 日，Anthropic 对齐科学团队（Alignment Science）发布了一份重磅实验报告《Agentic Misalignment in Summer 2026》。这份报告将全行业最强的十几个 AI 模型扔进模拟的公司和实验室，给它们代码权限、财务权限、评估权限，然后观察会发生什么。
+
+结果令人警醒：四种 AI「使坏」模式浮出水面。
+
+---
+
+ 一、核心发现：智能体失配（Agentic Misalignment）
+
+报告提出了一个关]]></description>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI 论文翻译]]></category>
+    </item>
+    <item>
+      <title><![CDATA[DeepSeek DSpark 推测解码技术心得：以算法换算力的工程智慧]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-16-DeepSeek-DSpark-%E6%8E%A8%E6%B5%8B%E8%A7%A3%E7%A0%81%E6%8A%80%E6%9C%AF%E5%BF%83%E5%BE%97/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-16-DeepSeek-DSpark-%E6%8E%A8%E6%B5%8B%E8%A7%A3%E7%A0%81%E6%8A%80%E6%9C%AF%E5%BF%83%E5%BE%97/</guid>
+      <description><![CDATA[DeepSeek DSpark 推测解码技术心得：以算法换算力的工程智慧
+
+2026 年 6 月 27 日，DeepSeek 联合北京大学发布了 DSpark 推理加速框架。作为一名长期关注大模型推理优化的技术人员，我仔细阅读了论文和相关技术文档，深受启发。这篇文章记录我对 DSpark 技术原理的理解和一些工程思考。
+
+ 一、为什么需要推测解码？
+
+ 1.1 大模型推理的"内存墙"困境
+
+传统大模型采用自回归方式生成文本：每生成一个 token，都需要以前文为条件进行完整的前向计算。这个过程看似简单，但隐藏着严重的效率问题。
+
+GPU 利用率不足 30%
+
+现代 GPU]]></description>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI 论文翻译]]></category>
+    </item>
+    <item>
+      <title><![CDATA[论文解析 | SAO：单轨迹异步优化在智能体强化学习中的应用]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-16-SA0%20%E5%8D%95%E8%BD%A8%E8%BF%B9%E5%BC%82%E6%AD%A5%E4%BC%98%E5%8C%96%E8%AE%BA%E6%96%87%E8%A7%A3%E6%9E%90/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-16-SA0%20%E5%8D%95%E8%BD%A8%E8%BF%B9%E5%BC%82%E6%AD%A5%E4%BC%98%E5%8C%96%E8%AE%BA%E6%96%87%E8%A7%A3%E6%9E%90/</guid>
+      <description><![CDATA[论文解析 | SAO：单轨迹异步优化在智能体强化学习中的应用
+
+论文标题：Single-Rollout Asynchronous Optimization for Agentic Reinforcement Learning
+
+作者：Zhenyu Hou, Yujiang Li, Jie Tang, Yuxiao Dong（清华大学）
+
+发表时间：2026 年 7 月 8 日
+
+论文链接：https://arxiv.org/abs/2607.07508
+
+---
+
+ 一、研究背景与动机
+
+ 1.1 大模型强化学习的现状
+
+大语言模型（LLM）的]]></description>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI 论文翻译]]></category>
+    </item>
+    <item>
+      <title><![CDATA[珠海 6 日亲子游 | 海洋王国 · 飞船乐园 · 赶海 · 外伶仃岛]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-15-%E7%8F%A0%E6%B5%B7-6-%E6%97%A5%E4%BA%B2%E5%AD%90%E6%B8%B8-%E6%B5%B7%E6%B4%8B%E7%8E%8B%E5%9B%BD-%E9%A3%9E%E8%88%B9%E4%B9%90%E5%9B%AD-%E8%B5%B6%E6%B5%B7-%E5%A4%96%E4%BC%B6%E4%BB%83%E5%B2%9B/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-15-%E7%8F%A0%E6%B5%B7-6-%E6%97%A5%E4%BA%B2%E5%AD%90%E6%B8%B8-%E6%B5%B7%E6%B4%8B%E7%8E%8B%E5%9B%BD-%E9%A3%9E%E8%88%B9%E4%B9%90%E5%9B%AD-%E8%B5%B6%E6%B5%B7-%E5%A4%96%E4%BC%B6%E4%BB%83%E5%B2%9B/</guid>
+      <description><![CDATA[🌊 珠海 6 日亲子出行计划
+
+> 两个家庭 · 四大两小（小朋友 5-7 岁，身高 120cm）· 8 月 5 日 — 8 月 10 日
+>
+> 🚄 一家从上海出发，一家从南京出发，珠海汇合一起玩！
+
+---
+
+ 🗺️ 行程总览
+
+```
+                    ┌─────────────────────────────────────────┐
+                    │           珠 海 亲 子 行 程 地 图         │
+                    └─────────────────────────]]></description>
+      <pubDate>Wed, 15 Jul 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title><![CDATA[GenCeption 论文翻译总结]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-14-genception-%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E6%80%BB%E7%BB%93-%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E6%98%AF%E9%80%9A%E7%94%A8%E8%A7%86%E8%A7%89%E5%AD%A6%E4%B9%A0%E8%80%85/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-14-genception-%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E6%80%BB%E7%BB%93-%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E6%98%AF%E9%80%9A%E7%94%A8%E8%A7%86%E8%A7%89%E5%AD%A6%E4%B9%A0%E8%80%85/</guid>
+      <description><![CDATA[> 论文：Video Generation Models are General-Purpose Vision Learners
+> arXiv：2607.09024 | 2026年7月10日
+> 会议：ECCV 2026
+> 项目主页：https://genception.github.io/
+> 机构：Google DeepMind, University of Toronto, MIT, University of Oxford, Lund University
+
+---
+
+ 一句话总结
+
+GenCeption 证明了大规模视频生成模型不仅是合成工具，更是通用视觉智能的基础路径]]></description>
+      <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[大模型]]></category>
+    </item>
+    <item>
+      <title><![CDATA[SenseNova-U1 与 SenseNova-Vision 深度对比]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-14-sensenova-u1-%E4%B8%8E-sensenova-vision-%E6%B7%B1%E5%BA%A6%E5%AF%B9%E6%AF%94/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-14-sensenova-u1-%E4%B8%8E-sensenova-vision-%E6%B7%B1%E5%BA%A6%E5%AF%B9%E6%AF%94/</guid>
+      <description><![CDATA[项目概览
+
+| 维度 | SenseNova-U1 | SenseNova-Vision |
+|---|---|---|
+| 全称 | Unifying Multimodal Understanding and Generation | Vision as Unified Multimodal Generation |
+| 发布方 | OpenSenseNova | OpenSenseNova |
+| 首发时间 | 2026.04.27 | 2026.07.08 |
+| 核心模型 | 8B-MoT / A3B-MoT | 7B-MoT |
+| 许可证 | Apache 2.0 | Apa]]></description>
+      <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[大模型]]></category>
+    </item>
+    <item>
+      <title><![CDATA[SenseNova-U1 论文翻译总结]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-14-sensenova-u1-%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E6%80%BB%E7%BB%93-neo-unify-%E6%9E%B6%E6%9E%84%E4%B8%8B%E7%9A%84%E5%8E%9F%E7%94%9F%E7%BB%9F%E4%B8%80%E5%A4%9A%E6%A8%A1%E6%80%81%E8%8C%83%E5%BC%8F/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-14-sensenova-u1-%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E6%80%BB%E7%BB%93-neo-unify-%E6%9E%B6%E6%9E%84%E4%B8%8B%E7%9A%84%E5%8E%9F%E7%94%9F%E7%BB%9F%E4%B8%80%E5%A4%9A%E6%A8%A1%E6%80%81%E8%8C%83%E5%BC%8F/</guid>
+      <description><![CDATA[> 论文：SenseNova-U1: Unifying Multimodal Understanding and Generation with NEO-unify Architecture
+> arXiv：2605.12500 | 2026年5月12日
+> 项目主页：https://github.com/OpenSenseNova/SenseNova-U1
+
+---
+
+ 一句话总结
+
+SenseNova-U1 提出了一种原生统一多模态范式，基于全新的 NEO-unify 架构，同时去掉了传统的视觉编码器（VE）和变分自编码器（VAE），让模型直接在像素和文字上进行端到端的]]></description>
+      <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[大模型]]></category>
+    </item>
+    <item>
+      <title><![CDATA[SenseNova-Vision 论文翻译总结]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-14-sensenova-vision-%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E6%80%BB%E7%BB%93-%E8%A7%86%E8%A7%89%E5%8D%B3%E7%BB%9F%E4%B8%80%E5%A4%9A%E6%A8%A1%E6%80%81%E7%94%9F%E6%88%90/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-14-sensenova-vision-%E8%AE%BA%E6%96%87%E7%BF%BB%E8%AF%91%E6%80%BB%E7%BB%93-%E8%A7%86%E8%A7%89%E5%8D%B3%E7%BB%9F%E4%B8%80%E5%A4%9A%E6%A8%A1%E6%80%81%E7%94%9F%E6%88%90/</guid>
+      <description><![CDATA[> 论文：Vision as Unified Multimodal Generation
+> arXiv：2607.06560 | 2026年7月7日
+> 项目主页：https://github.com/OpenSenseNova/SenseNova-Vision
+
+---
+
+ 一句话总结
+
+SenseNova-Vision 提出将整个计算机视觉领域统一为多模态生成问题——不需要任何任务专用架构，一个统一多模态模型（UMM）通过自然语言指令驱动，用文本生成表达符号化输出（检测框、坐标、OCR），用图像生成表达密集空间预测（分割掩码、深度图、法线图），用混合输出处理组合任务，从而在单]]></description>
+      <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[大模型]]></category>
+    </item>
+    <item>
+      <title><![CDATA[Vision Banana vs SenseNova-Vision 深度对比]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-14-vision-banana-vs-sensenova-vision-%E6%B7%B1%E5%BA%A6%E5%AF%B9%E6%AF%94/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-14-vision-banana-vs-sensenova-vision-%E6%B7%B1%E5%BA%A6%E5%AF%B9%E6%AF%94/</guid>
+      <description><![CDATA[> 对比论文：
+> - Vision Banana: Image Generators are Generalist Vision Learners arXiv: 2604.20329, 2026年4月
+> - SenseNova-Vision: Vision as Unified Multimodal Generation arXiv: 2607.06560, 2026年7月
+> 项目主页：https://vision-banana.github.io/ | https://github.com/OpenSenseNova/SenseNova-Vision
+
+---
+
+ 一句话总]]></description>
+      <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[大模型]]></category>
+    </item>
+    <item>
+      <title><![CDATA[全模态大模型综述：从 Qwen2.5-Omni 到 DuplexSLA 的技术演进]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-14-%E5%85%A8%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BB%BC%E8%BF%B0-%E4%BB%8E-qwen2-5-omni-%E5%88%B0-duplexsla-%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-14-%E5%85%A8%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E7%BB%BC%E8%BF%B0-%E4%BB%8E-qwen2-5-omni-%E5%88%B0-duplexsla-%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B/</guid>
+      <description><![CDATA[> 全模态大模型（Omni Model）正在成为 AI 领域最炙手可热的研究方向。从 2025 年 Q1 的 Qwen2.5-Omni 到 2026 年 Q2 的 DuplexSLA，短短一年多时间里，这一赛道经历了从"能听能说"到"全双工实时交互"的跨越式演进。本文梳理了 8+ 款代表性全模态大模型的技术路线、架构创新与竞争格局。
+
+---
+
+ 一、什么是全模态大模型？
+
+全模态大模型（Omni-modal / Any-to-Any Model） 是指能够同时理解和生成文本、图像、音频、视频等多种模态的统一大模型。与传统的"理解+生成"分离架构不同，全模态模型追求的是：]]></description>
+      <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[大模型]]></category>
+    </item>
+    <item>
+      <title><![CDATA[多模态大模型发展综述（~2026.7）]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-14-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%8F%91%E5%B1%95%E7%BB%BC%E8%BF%B0/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-14-%E5%A4%9A%E6%A8%A1%E6%80%81%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%8F%91%E5%B1%95%E7%BB%BC%E8%BF%B0/</guid>
+      <description><![CDATA[多模态大模型发展综述（~2026.7）
+
+> 本文系统梳理多模态大模型从 2021 年至 2026 年的技术演进脉络，深入分析主流模型的技术架构、核心创新与发展关系。
+
+---
+
+ 一、发展脉络总览
+
+```
+2021-2022 ──── CLIP / BLIP / BEiT-3
+              │  "单塔稠密"时代
+              │  图文对比学习奠定基础
+              │
+2023 Q1-Q3 ── LLaVA / MiniGPT-4 / Qwen-VL / InternVL
+              │  "双塔 + 浅层融合"范式]]></description>
+      <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI 论文翻译]]></category>
+    </item>
+    <item>
+      <title><![CDATA[🎮 小游戏合集 | 2048 & 数独 & 生命游戏 & MBTI]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-14-%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%90%88%E9%9B%86-2048-%E6%95%B0%E7%8B%AC-%E7%94%9F%E5%91%BD%E6%B8%B8%E6%88%8F-mbti/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-14-%E5%B0%8F%E6%B8%B8%E6%88%8F%E5%90%88%E9%9B%86-2048-%E6%95%B0%E7%8B%AC-%E7%94%9F%E5%91%BD%E6%B8%B8%E6%88%8F-mbti/</guid>
+      <description><![CDATA[🎮 小游戏合集
+
+四个经典的纯 HTML 小工具，单文件即可运行，无需安装。
+
+---
+
+ 🟧 2048
+
+经典的数字合并游戏。
+
+玩法：方向键/滑动控制，合并相同数字，达到 2048！
+
+👉 点击开始玩 2048/docs/2048.html
+
+---
+
+ 🔢 数独
+
+经典数独谜题游戏，含 4 个难度关卡。
+
+玩法：填入 1-9 数字，每行、每列、每个 3×3 宫格内数字不重复。
+
+关卡：简单 → 中等 → 困难 → 专家
+
+👉 点击开始玩数独/docs/sudoku.html
+
+---
+
+ 🧬 生命游戏]]></description>
+      <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title><![CDATA[AI 日历]]></title>
+      <link>https://alwayszhang.cn/posts/2023-03-30-airili/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2023-03-30-airili/</guid>
+      <description><![CDATA[| 研究方向 | 2012 | 2013 | 2014 | 2015 | 2016 | 2017 | 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 |
+| :------: | :------ | :------ | :------ | :------ | :------ | :------ | :------ | :------ | :------ | :------ | :------ | :------ |:------ |
+| 计算机视觉-CNN | AlexNethttps://papers.nips.cc/paper/2012/]]></description>
+      <pubDate>Thu, 30 Mar 2023 00:00:00 GMT</pubDate>
+      <category><![CDATA[任意门]]></category>
+    </item>
+    <item>
+      <title><![CDATA[欧氏距离/相似度，余弦距离]]></title>
+      <link>https://alwayszhang.cn/posts/2023-02-25-dist/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2023-02-25-dist/</guid>
+      <description><![CDATA[- 归一化后欧式距离和余弦相似度 ```l2 = sqrt21-cosine```
+- 余弦距离和余弦相似度 ```cdist = 1-cosine```
+- 归一化到0-1分数 ```1-0.5cdist```]]></description>
+      <pubDate>Sat, 25 Feb 2023 00:00:00 GMT</pubDate>
+      <category><![CDATA[数学]]></category>
+    </item>
+    <item>
+      <title><![CDATA[Lambda]]></title>
+      <link>https://alwayszhang.cn/posts/2021-09-09-lambda%C2%B7/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-09-09-lambda%C2%B7/</guid>
+      <description><![CDATA[- lambda函数比较轻便，即用即仍，很适合需要完成一项功能，但是此功能只在此一处使用。
+- 匿名函数，一般用来给filter，map这样的函数式编程服务；
+- 作为回调函数，传递给某些应用，比如消息处理
+
+C++的lambdahttps://www.runoob.com/cplusplus/cpp-functions.html
+python的lambdahttps://www.liaoxuefeng.com/wiki/1016959663602400/1017451447842528]]></description>
+      <pubDate>Thu, 09 Sep 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[两个鸡蛋，100层楼]]></title>
+      <link>https://alwayszhang.cn/posts/2021-09-08-eggAndfloor/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-09-08-eggAndfloor/</guid>
+      <description><![CDATA[问题描述
+```
+问题描述：
+    有一栋楼共100层，一个鸡蛋从第N层及以上的楼层落下来会摔破， 在第N层以下的楼层落下不会摔破。给你2个鸡蛋，设计方案找出N，并且保证在最坏情况下， 最小化鸡蛋下落的次数。
+```
+ 循序渐进的思路
+
+<font color=blue>1. 二分</font>
+```
+最坏情况，在50层试一下，破了。
+只能从第一层往上试，最坏情况是试到了49层，一共尝试了49+1=50次。很显然不行
+```
+
+<font color=blue>2. 均匀分段</font>
+```
+假设每隔k层，测试一次，则一共分为100/k 段，最差情况]]></description>
+      <pubDate>Wed, 08 Sep 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[数学]]></category>
+    </item>
+    <item>
+      <title><![CDATA[最大黑方阵]]></title>
+      <link>https://alwayszhang.cn/posts/2021-09-06-maxBlackMatrix/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-09-06-maxBlackMatrix/</guid>
+      <description><![CDATA[面试题 17.23. 最大黑方阵https://leetcode-cn.com/problems/max-black-square-lcci/
+```
+题目：
+  给定一个方阵，其中每个单元像素非黑即白。设计一个算法，找出 4 条边皆为黑色像素的最大子方阵。
+
+  返回一个数组 r, c, size ，其中 r, c 分别代表子方阵左上角的行号和列号，size 是子方阵的边长。若有多个满足条件的子方阵，返回 r 最小的，若 r 相同，返回 c 最小的子方阵。若无满足条件的子方阵，返回空数组。
+
+示例：
+
+  输入:
+  
+     1,0,1,
+     0,0,1,]]></description>
+      <pubDate>Mon, 06 Sep 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[围棋]]></title>
+      <link>https://alwayszhang.cn/posts/2021-09-06-weiqi/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-09-06-weiqi/</guid>
+      <description><![CDATA[记录一次不太愉快的code test
+输入一个二维数组，只有0,1元素。问1围起来的面积
+```
+思路是找没有被1围起来的棋子，遍历四条边，如果是0，则与它相邻的元素0肯定没有被围起来（继续深度优先搜索到所有相邻的0，且改变其状态，免得下一个位置遍历的时候重复搜索）。然后求剩下的面积即可
+class Solution:
+    def weiqiself, grid: ListListint -> int:
+        m = lengrid
+        n = lengrid0
+        def dfsx, y:
+            if x<0]]></description>
+      <pubDate>Mon, 06 Sep 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[差分数组的性质]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-31-difarry/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-31-difarry/</guid>
+      <description><![CDATA[1. 定义 ： 对于已知有n个元素的离线数列d，我们可以建立记录它每项与前一项差值的差分数组f：显然，f1=d1-0=d1;对于整数i∈2,n，我们让fi=di-di-1。
+2. 性质 ： 原数组可以用差分数组的前缀和求得。
+3. 用途：
+  3.1  快速处理区间left, right上的数加x，通过性质可知道，第一个受影响的差分数组元素为fleft, 即令fleft+=x, 那么之后的元素在计算过程中都会加上x。
+  最后一个受影响的查分数组元素为fright,所以在fright+1处需要矫正，即fright+1-=x，即可保证right]]></description>
+      <pubDate>Tue, 31 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[数学]]></category>
+    </item>
+    <item>
+      <title><![CDATA[朝花夕拾]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-31-misc/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-31-misc/</guid>
+      <description><![CDATA[---
+<font color=green>本文档收录一些难以知识归档的外部知识碎片<font>
+---
+  
+ 深度学习相关
+1. 关于Padding实现的一些细节https://zhuanlan.zhihu.com/p/73118626]]></description>
+      <pubDate>Tue, 31 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[任意门]]></category>
+    </item>
+    <item>
+      <title><![CDATA[深入resnet和其变种]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-31-morethanResnet/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-31-morethanResnet/</guid>
+      <description><![CDATA[an overview of resnet and its variantshttps://towardsdatascience.com/an-overview-of-resnet-and-its-variants-5281e2f56035]]></description>
+      <pubDate>Tue, 31 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[深度学习-视觉]]></category>
+    </item>
+    <item>
+      <title><![CDATA[遍历一次数组求方差]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-30-ExDx/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-30-ExDx/</guid>
+      <description><![CDATA[1. 标准差定义
+!标准差定义/images/posts/math/20210830ExDx/1.png
+ 2. 其中，u为平均值。同时，有如下变形：
+!2/images/posts/math/20210830ExDx/2.png
+ 3. 因此标准差化简为
+!3/images/posts/math/20210830ExDx/3.png
+ 4. 故有
+!4/images/posts/math/20210830ExDx/4.png
+ 5. 所以就是记录两个值，一个西格玛x，一个西格玛x^2
+ 6. 实现
+```
+include]]></description>
+      <pubDate>Mon, 30 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[数学]]></category>
+    </item>
+    <item>
+      <title><![CDATA[下一个排列]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-24-nextpipeline/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-24-nextpipeline/</guid>
+      <description><![CDATA[31. 下一个排列https://leetcode-cn.com/problems/next-permutation/
+```
+题目：
+  实现获取 下一个排列 的函数，算法需要将给定数字序列重新排列成字典序中下一个更大的排列（即，组合出下一个更大的整数）。
+
+  如果不存在下一个更大的排列，则将数字重新排列成最小的排列（即升序排列）。
+
+  必须 原地 修改，只允许使用额外常数空间。
+
+```
+```
+class Solution:
+    def nextPermutationself, nums: Listint -> None:
+        i = lennums]]></description>
+      <pubDate>Tue, 24 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[第K大的数]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-23-topKLargest/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-23-topKLargest/</guid>
+      <description><![CDATA[215. 数组中的第K个最大元素https://leetcode-cn.com/problems/kth-largest-element-in-an-array/   <font color=goldenrod>中等</font>
+```
+题目：
+  给定整数数组 nums 和整数 k，请返回数组中第 k 个最大的元素。
+  请注意，你需要找的是数组排序后的第 k 个最大的元素，而不是第 k 个不同的元素。
+示例 1:
+  输入: 3,2,1,5,6,4 和 k = 2
+  输出: 5
+```
+基于快排（partition）
+```
+class Solution:]]></description>
+      <pubDate>Mon, 23 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[链表相关]]></title>
+      <link>https://alwayszhang.cn/posts/2021-06-02-reverseList/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-06-02-reverseList/</guid>
+      <description><![CDATA[- 反转类
+    - 206.反转链表https://leetcode-cn.com/problems/reverse-linked-list/ <font color=green>简单</font>
+    - 92.反转链表 IIhttps://leetcode-cn.com/problems/reverse-linked-list-ii/submissions/ <font color=goldenord>中等</font>
+    - 25.K 个一组翻转链表https://leetcode-cn.com/problems/reverse-nod]]></description>
+      <pubDate>Mon, 16 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[邮局选址【DP】]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-13-PostOffice/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-13-PostOffice/</guid>
+      <description><![CDATA[嬴彻 笔试题目
+POJ 1160 Post Office 区间dp，从n个村庄选m个点建邮局，使得每个村庄到邮局的距离和最小
+```
+题目：
+  一条直线上有居民点，邮局只能建在居民点上。给定一个有序整形数组arr，每个值表示居民点的一维坐标，再给定一个正数num，表示邮局数量。
+  选择num个居民点建立num个邮局，使所有的居民点到邮局的总距离最短，返回最短的总距离。
+输出描述：
+  输出一个整数表示答案
+  
+示例：
+  输入：
+    6 2
+    1 2 3 4 5 1000
+  输出：
+    6
+  说明：
+    第一个邮局建立在3位置，第二个邮局建立在1000位置。]]></description>
+      <pubDate>Fri, 13 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[和]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-11-sum/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-11-sum/</guid>
+      <description><![CDATA[- 两数
+    - 1. 两数之和https://leetcode-cn.com/problems/two-sum/  <font color=green>简单</font>
+- 三数
+    - 15. 三数之和https://leetcode-cn.com/problems/3sum/  <font color=goldenrod>中等</font>
+    - 16. 最接近的三数之和https://leetcode-cn.com/problems/3sum-closest/  <font color=goldenrod>中等</font>
+    - 259]]></description>
+      <pubDate>Wed, 11 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[dijkstra算法求最短路径]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-02-dijkstra/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-02-dijkstra/</guid>
+      <description><![CDATA[一、Dijkstra 迪杰斯特拉
+- 用于计算一个节点到其他节点的最短路径
+- 贪心算法
+- 「前提：图中不能有负权边」
+
+
+ 二、基本思想
+1. 通过Dijkstra计算图G中的最短路径时，需要指定起点s即从顶点s开始计算。
+2. 此外，引进两个集合S和U。S的作用是记录已求出最短路径的顶点以及相应的最短路径长度，而U则是记录还未求出最短路径的顶点以及该顶点到起点s的距离。
+3. 初始时，S中只有起点s；U中是除s之外的顶点，并且U中顶点的路径是”起点s到该顶点的路径”。然后，从U中找出路径最短的顶点，并将其加入到S中；接着，更新U中的顶点和顶点对应的路径。 然]]></description>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[算法]]></category>
+    </item>
+    <item>
+      <title><![CDATA[DFS/图/递归]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-05-DFS-GRAPH/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-05-DFS-GRAPH/</guid>
+      <description><![CDATA[---
+很多题目都是深度优先搜索，图，递归的结合。把他们放到一起来说一说
+---
+
+- 802. 找到最终的安全状态https://leetcode-cn.com/problems/find-eventual-safe-states/
+
+- 695. 岛屿的最大面积https://leetcode-cn.com/problems/max-area-of-island/
+- 200. 岛屿数量https://leetcode-cn.com/problems/number-of-islands/
+- 694. 不同岛屿的数量https://leetcode-c]]></description>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[算法er的自我修养]]></category>
+    </item>
+    <item>
+      <title><![CDATA[递归]]></title>
+      <link>https://alwayszhang.cn/posts/2021-08-05-recursion/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-08-05-recursion/</guid>
+      <description><![CDATA[<font color=Blue>递归</font> 是计算机科学中的一个重要概念。它是许多其他算法和数据结构的基础。然而，对于许多初学者来说，掌握它可能是一件非常棘手的事情。
+
+每当递归函数调用自身时，它都会将给定的问题拆解为子问题。递归调用继续进行，直到到子问题成为一个不可以拆分的、可以直接求解的最简单问题。
+
+为了确保递归函数不会导致无限循环，它需要包含：
+
+1. 一个简单的基本案例（basic case）（或一些案例）， 能够不使用递归来产生答案的终止方案。
+2. 一组规则，也称作递推关系（recurrence relation），可将所有其他情况拆分到基本案例。
+
+注意，函数]]></description>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[算法er的自我修养]]></category>
+    </item>
+    <item>
+      <title><![CDATA[AI任意门]]></title>
+      <link>https://alwayszhang.cn/posts/2021-09-07-ml-book/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-09-07-ml-book/</guid>
+      <description><![CDATA[- 一、数学基础
+- 二、机器学习公开课
+- 三、机器学习书籍
+- 四、深度学习公开课
+- 五、深度学习书籍
+- 六、强化学习公开课
+- 七、前沿Paper
+- 八、会议
+- 九、期刊
+- 十、刷榜
+- 十一、其他
+
+
+---
+
+ 一、数学基础
+- 高等数学https://zhuanlan.zhihu.com/p/36311622
+- 线性代数https://zhuanlan.zhihu.com/p/36584206
+- 概率论与数理统计https://zhuanlan.zhihu.com/p/36584335
+
+ 二、机器学习公开课
+- 吴恩达《mach]]></description>
+      <pubDate>Mon, 02 Aug 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[任意门]]></category>
+    </item>
+    <item>
+      <title><![CDATA[github专辑]]></title>
+      <link>https://alwayszhang.cn/posts/2021-07-14-github/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-07-14-github/</guid>
+      <description><![CDATA[]]></description>
+      <pubDate>Wed, 14 Jul 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[任意门]]></category>
+    </item>
+    <item>
+      <title><![CDATA[什么是任意门]]></title>
+      <link>https://alwayszhang.cn/posts/2021-07-12-AnywhereDoor/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-07-12-AnywhereDoor/</guid>
+      <description><![CDATA[- 初期型随意门（日语：初期型どこでもドア），又名蒸汽任意门、奇特门、如意门，也即是第一代的任意门，是日本动画哆啦A梦剧场版《大雄的秘密道具博物馆》中在未来世界的道具博物馆中展示的道具。制作者为哈特曼博士。<font color=blue>可至十光年、能通往任何地方的门</font>
+  - 任意门使用方法是“在打开门时，想着目的地，否则将通向无法预知的地区”，同时电影中出现过转动门把手上的刻度来调整时间。
+  - 除了受距离的限制外，任意门的使用必须一般时空下才能使用，在其他道具所创造出来的特殊时空是无法使用（见短篇《地平线胶布》）。10光年以外的，以及为未输入地理数据的地区是无法抵]]></description>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[任意门]]></category>
+    </item>
+    <item>
+      <title><![CDATA[学习使我快乐]]></title>
+      <link>https://alwayszhang.cn/posts/2021-07-12-algorithm/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-07-12-algorithm/</guid>
+      <description><![CDATA[- 一、面试/刷题
+- 二、标记语言
+- 三、语言
+- 四、论文
+- 五、大杂烩
+- 六、好用的python包
+- 七、深度学习
+- 八、实战/比赛
+
+
+---
+
+ 一、面试/刷题
+
+- <font color=Blue> leetcode </font>
+  - 国内官网https://leetcode-cn.com/
+  - 国外官网https://leetcode.com/
+- <font color=Blue>labuladong 刷题技巧</font>  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs]]></description>
+      <pubDate>Mon, 12 Jul 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[任意门]]></category>
+    </item>
+    <item>
+      <title><![CDATA[正则表达式]]></title>
+      <link>https://alwayszhang.cn/posts/2021-06-16-re/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-06-16-re/</guid>
+      <description><![CDATA[- 正则表达式https://www.runoob.com/regexp/regexp-tutorial.html
+  - 语法https://www.runoob.com/regexp/regexp-syntax.html
+  - 在线工具http://c.runoob.com/front-end/854       包含常用表达式
+  - python正则表达式https://www.runoob.com/python/python-reg-expressions.html]]></description>
+      <pubDate>Fri, 09 Jul 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[和相同的二元子数组]]></title>
+      <link>https://alwayszhang.cn/posts/2021-07-08-numSubarraysWithSum/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-07-08-numSubarraysWithSum/</guid>
+      <description><![CDATA[930.和相同的二元子数组https://leetcode-cn.com/problems/binary-subarrays-with-sum/
+```
+from collections import defaultdict
+class Solution:
+    def numSubarraysWithSumself, nums: Listint, goal: int -> int:
+        sum = 0
+        ordermap = defaultdictint
+        res = 0
+        for num in nums:]]></description>
+      <pubDate>Thu, 08 Jul 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[化学式中原子的数量]]></title>
+      <link>https://alwayszhang.cn/posts/2021-07-06-countOfAtoms/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-07-06-countOfAtoms/</guid>
+      <description><![CDATA[726.原子的数量https://leetcode-cn.com/problems/number-of-atoms/
+```
+from collections import defaultdict, deque
+class Solution:
+    def countOfAtomsself, formula: str -> str:
+        rescollection  = deque
+        n = lenformula
+        idx = 0
+        while idx <= n -1:
+            if formula]]></description>
+      <pubDate>Tue, 06 Jul 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[动态规划]]></title>
+      <link>https://alwayszhang.cn/posts/2021-07-03-DP/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-07-03-DP/</guid>
+      <description><![CDATA[目录：
+- 一、简介
+    - 1.1 背景
+    - 1.2 思考过程（示例）
+    - 1.3 DP与其他算法的关系  
+- 二、线性动态规划
+    -  2.1 单串问题
+        - 2.1.1 LIS系列
+        - 2.1.2 最大子数组和系列
+        - 2.1.3 打家劫舍系列
+        - 2.1.4 变形，需要两个位置的情况: dpij 以 j, i 结尾
+        - 2.1.5 与其他算法配合
+        - 2.1.6 其他
+        - 2.1.7 带维度单串
+            - 最大平均值]]></description>
+      <pubDate>Sat, 03 Jul 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[算法er的自我修养]]></category>
+    </item>
+    <item>
+      <title><![CDATA[pip和easy_install]]></title>
+      <link>https://alwayszhang.cn/posts/2021-06-28-pip_and_easyinstall/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-06-28-pip_and_easyinstall/</guid>
+      <description><![CDATA[pip和easyinstall
+
+ 介绍
+- easyinstall和pip都是用来下载安装Python一个公共资源库PyPI 
+的相关资源包的，pip是easyinstall的改进版，提供更好的提示信 
+息，删除package等功能。老版本的python中只有easyinstall， 
+没有pip。
+- easyinstall 打包和发布 Python 包
+- pip 是包管理
+
+ easyinstall
+ 安装一个包
+easyinstall 包名
+easyinstall “包名 == 版本号”
+
+ 升级一个包
+easyinstall -U "包名]]></description>
+      <pubDate>Mon, 28 Jun 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[python]]></category>
+    </item>
+    <item>
+      <title><![CDATA[相交链表]]></title>
+      <link>https://alwayszhang.cn/posts/2021-06-21-getIntersectionNode/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-06-21-getIntersectionNode/</guid>
+      <description><![CDATA[160.相交链表https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
+```
+ Definition for singly-linked list.
+ class ListNode:
+     def initself, x:
+         self.val = x
+         self.next = None
+
+class Solution:
+    def getIntersectionNodeself, headA: ListNode, headB: ListNode]]></description>
+      <pubDate>Mon, 21 Jun 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[从源码安装python]]></title>
+      <link>https://alwayszhang.cn/posts/2021-06-16-install_python/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-06-16-install_python/</guid>
+      <description><![CDATA[1. 下载python源码包. 下载pythonhttps://www.python.org/downloads/source/
+ 2. 解压tar zxvf xxx.tar.gz 到当前文件夹假如路径是/a/b/Python-3.7.0
+ 3. 安装路径 mkdir /a/b/Python3.7你想要的安装python的路径
+ 4. 安装 参考https://zwpku.cn/2020/02/makeinstall/
+1. cd /a/b/Python-3.7.0 
+2. 配置： ./configure --prefix=/a/b/Pytho]]></description>
+      <pubDate>Wed, 16 Jun 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[python]]></category>
+    </item>
+    <item>
+      <title><![CDATA[连续子数组的和]]></title>
+      <link>https://alwayszhang.cn/posts/2021-06-02-checkSubarraySum/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-06-02-checkSubarraySum/</guid>
+      <description><![CDATA[连续子数组的和
+523.连续的子数组和https://leetcode-cn.com/problems/continuous-subarray-sum/
+ 1.前缀法
+```
+class Solution:
+    def checkSubarraySumself, nums: Listint, k: int -> bool:
+        presum = {0 : -1}
+        tmp = 0
+        l = lennums
+        if l < 2:
+            return False
+        fo]]></description>
+      <pubDate>Wed, 02 Jun 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[链表合并]]></title>
+      <link>https://alwayszhang.cn/posts/2021-05-31-mergeTwoLists/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-05-31-mergeTwoLists/</guid>
+      <description><![CDATA[合并两个有序链表
+21.合并两个有序链表https://leetcode-cn.com/problems/merge-two-sorted-lists/
+ 1.垃圾写法
+```
+ Definition for singly-linked list.
+ class ListNode:
+     def initself, val=0, next=None:
+         self.val = val
+         self.next = next
+class Solution:
+    def mergeTwoListsself, l1:]]></description>
+      <pubDate>Mon, 31 May 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[排序]]></title>
+      <link>https://alwayszhang.cn/posts/2021-05-29-sort/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-05-29-sort/</guid>
+      <description><![CDATA[快排
+ 堆排序
+ 归并排序
+ 冒泡
+
+ 方法一：快速排序
+```
+复杂度分析
+
+时间复杂度：基于随机选取主元的快速排序时间复杂度为期望 Onlogn，其中 n 为数组的长度。详细证明过程可以见《算法导论》第七章，这里不再大篇幅赘述。
+
+空间复杂度：Oh，其中 h 为快速排序递归调用的层数。我们需要额外的 Oh 的递归调用的栈空间，由于划分的结果不同导致了快速排序递归调用的层数也会不同，最坏情况下需 On 的空间，最优情况下每次都平衡，此时整个递归树高度为 nlogn，空间复杂度为 Ologn。
+
+class Solution:
+    def randomi]]></description>
+      <pubDate>Sun, 30 May 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[判定是否2的幂]]></title>
+      <link>https://alwayszhang.cn/posts/2021-05-30-2mi/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-05-30-2mi/</guid>
+      <description><![CDATA[231.2的幂https://leetcode-cn.com/problems/power-of-two/
+```
+给你一个整数 n，请你判断该整数是否是 2 的幂次方。如果是，返回 true ；否则，返回 false 。
+
+如果存在一个整数 x 使得 n == 2x ，则认为 n 是 2 的幂次方。
+
+```
+
+ 垃圾解法
+```
+2的幂，转换成2进制就是1000000...这样子，只有1个1，且不为负
+所以：
+class Solution:
+    def isPowerOfTwoself, n: int -> bool:
+        if n<0:]]></description>
+      <pubDate>Sun, 30 May 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+      <category><![CDATA[easy]]></category>
+    </item>
+    <item>
+      <title><![CDATA[堆]]></title>
+      <link>https://alwayszhang.cn/posts/2021-05-30-heap/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-05-30-heap/</guid>
+      <description><![CDATA[> 堆是优先队列（Priority Queue）的实现，可以用于 动态选取 一个集合中的最值元素。堆通常指二叉堆，堆包括最大堆和最小堆：最大堆的每一个结点（除了根结点）的值不大于其父结点；最小堆的每一个结点（除了根结点）的值不小于其父结点。
+
+```
+python 有内置堆模块，可以堆list直接操作
+import heapq
+```
+
+方法：
+    堆操作：插入（叶子节点上调），删除（堆顶元素下沉）
+
+    堆创建：非叶子节点下沉（从最后一个非叶子节点开始）
+
+最小堆：
+
+    最小堆任何一个父节点的值，都小于等于它左右孩子节点的值
+
+    创建过程：如果非叶子节点值]]></description>
+      <pubDate>Sun, 30 May 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[区间合并]]></title>
+      <link>https://alwayszhang.cn/posts/2021-05-30-merge/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-05-30-merge/</guid>
+      <description><![CDATA[```
+示例 1：
+输入：intervals = 1,3,2,6,8,10,15,18
+输出：1,6,8,10,15,18
+解释：区间 1,3 和 2,6 重叠, 将它们合并为 1,6.
+```
+---
+
+ 垃圾写法
+```
+class Solution:
+    def mergeself, intervals: ListListint -> ListListint:
+        if lenintervals <= 1:
+            return intervals
+        res = so]]></description>
+      <pubDate>Sun, 30 May 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[汉明距离]]></title>
+      <link>https://alwayszhang.cn/posts/2021-05-29-hanming/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-05-29-hanming/</guid>
+      <description><![CDATA[461. 汉明距离https://leetcode-cn.com/problems/hamming-distance/
+ 477.汉明距离总和https://leetcode-cn.com/problems/total-hamming-distance/
+
+ 1. 461. 汉明距离https://leetcode-cn.com/problems/hamming-distance/
+```
+class Solution:
+    def hammingDistanceself, x: int, y: int -> int:
+        return]]></description>
+      <pubDate>Sat, 29 May 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[二叉树]]></title>
+      <link>https://alwayszhang.cn/posts/2021-05-28-Binary_tree/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-05-28-Binary_tree/</guid>
+      <description><![CDATA[二叉树定义https://zh.wikipedia.org/wiki/%E4%BA%8C%E5%8F%89%E6%A0%91
+
+ 遍历
+    深度优先 Depth-First-Search，DFS
+       递归
+	      前序
+	      中序
+	      后序
+	   迭代
+	      前序
+	      中序
+	      后序
+    广度优先层次遍历
+       102.二叉树的层序遍历https://leetcode-cn.com/problems/binary-tree-level-order-traversal/]]></description>
+      <pubDate>Fri, 28 May 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[二叉树的前中后序遍历]]></title>
+      <link>https://alwayszhang.cn/posts/2021-05-28-order/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-05-28-order/</guid>
+      <description><![CDATA[1.递归
+ 1.1 前序
+```
+ Definition for a binary tree node.
+ class TreeNode:
+     def initself, val=0, left=None, right=None:
+         self.val = val
+         self.left = left
+         self.right = right
+class Solution:
+    def postorderTraversalself, root: TreeNode -> Listint:]]></description>
+      <pubDate>Fri, 28 May 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[leetcode]]></category>
+    </item>
+    <item>
+      <title><![CDATA[pyenv 和 vitualenv]]></title>
+      <link>https://alwayszhang.cn/posts/2021-05-04-pyenv_and_vitualenv/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2021-05-04-pyenv_and_vitualenv/</guid>
+      <description><![CDATA[---
+ vituralenv和pyenv
+ 场景
+    1. pyenv 是一个开源的 Python 版本管理工具，可以轻松地给系统安装任意 Python 版本，想玩哪个版本，瞬间就可以切换。有了 pyenv，我们不需要再为系统多版本 Python 共存问题而发愁，也不用为手动编译安装其他 Python 版本而浪费时间，只需要执行一条简单的命令就可以切换并使用任何其他版本，该工具真正地做到了开箱即用，简单实用。
+    
+    2. virtualenv 是一个用来创建完全隔离的 Python 虚拟环境的工具，可以为每个项目工程创建一套独立的 Python 环境，从而可以解决不同]]></description>
+      <pubDate>Tue, 04 May 2021 00:00:00 GMT</pubDate>
+      <category><![CDATA[python]]></category>
+    </item>
+    <item>
+      <title><![CDATA[./configure,make,make install的作用]]></title>
+      <link>https://alwayszhang.cn/posts/2020-02-19-makeinstall/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2020-02-19-makeinstall/</guid>
+      <description><![CDATA[这些都是典型的使用GNU的AUTOCONF和AUTOMAKE产生的程序的安装步骤。
+
+./configure是用来检测你的安装平台的目标特征的。比如它会检测你是不是有CC或GCC，并不是需要CC或GCC，它是个shell脚本。
+make是用来编译的，它从Makefile中读取指令，然后编译。
+make install是用来安装的，它也从Makefile中读取指令，安装到指定的位置。
+
+AUTOMAKE和AUTOCONF是非常有用的用来发布C程序的东西。
+
+-----
+1、configure，这一步一般用来生成 Makefile，为下一步的编译做准备，你可以通过在 configure 后加上参数]]></description>
+      <pubDate>Wed, 19 Feb 2020 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[好久没有更新blog了]]></title>
+      <link>https://alwayszhang.cn/posts/2020-02-04-haojiumeixie/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2020-02-04-haojiumeixie/</guid>
+      <description><![CDATA[哎呀，毕业工作后，一年没有更新blog了。要重新捡起来啊!]]></description>
+      <pubDate>Tue, 04 Feb 2020 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[ssh 连接服务器长时间不操作断开问题]]></title>
+      <link>https://alwayszhang.cn/posts/2019-03-13-sshtimeout/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-03-13-sshtimeout/</guid>
+      <description><![CDATA[修改/etc/ssh/sshdconfig文件，找到 ClientAliveInterval0和ClientAliveCountMax 3并将注释符号（""）去掉,
+
+将ClientAliveInterval对应的0改成60,
+
+ClientAliveInterval指定了服务器端向客户端请求消息的时间间隔, 默认是0, 不发送.
+
+ClientAliveInterval 60表示每分钟发送一次, 然后客户端响应, 这样就保持长连接了.
+
+ClientAliveCountMax, 使用默认值3即可.ClientAliveCountMax表示服务器发出请求后客户端没有响应的次数达到一定值,]]></description>
+      <pubDate>Wed, 13 Mar 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[apt-get install 出现问题]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-17-apt_error/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-17-apt_error/</guid>
+      <description><![CDATA[在Ubuntu中，有时候运用sudo  apt-get install 安装软件时，会出现一下的情况
+
+E: Could not get lock /var/lib/dpkg/lock - open 11: Resource temporarily unavailable
+
+E: Unable to lock the administration directory /var/lib/dpkg/, is another process using it?
+
+在这个时候，主要是因为apt还在运行，此时的解决方案是
+
+
+
+1、找到并且杀掉所有的apt-get 和apt进程
+
+运行下面的命令]]></description>
+      <pubDate>Thu, 17 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[ctrl-z]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-16-ctrlz/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-16-ctrlz/</guid>
+      <description><![CDATA[1. CTRL+Z挂起进程并放入后台 
+2. jobs 显示当前暂停的进程 
+3. bg %N 使第N个任务在后台运行%前有空格 
+4. fg %N 使第N个任务在前台运行
+
+ctrl+c 直接中断程序，小心触碰]]></description>
+      <pubDate>Wed, 16 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[conda 常用命令]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-14-conda/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-14-conda/</guid>
+      <description><![CDATA[- conda -V conda版本
+ - conda list 安装了哪些包
+ - conda env list 或 conda info -e或 conda info --envs 查看当前存在哪些虚拟环境
+ - conda update conda 检查更新当前conda
+ - 使用 conda create -n yourenvname python=X.X（2.7、3.6等命令创建python版本为X.X、名字为yourenvname的虚拟环境。yourenvname文件可以在Anaconda安装目录envs文件下找到。
+ -  Linux:  ```source ac]]></description>
+      <pubDate>Mon, 14 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[screen 小妙用]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-13-screen/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-13-screen/</guid>
+      <description><![CDATA[有时候需要关闭终端，然后打开后又能看到输出。这时候可以用
+screen
+
+ 语法
+screen -AmRvx -ls -wipe-d <作业名称>-h <行数>-r <作业名称>-s -S <作业名称>
+
+参数说明
+
+-A 　将所有的视窗都调整为目前终端机的大小。
+
+-d <作业名称> 　将指定的screen作业离线。
+
+-h <行数> 　指定视窗的缓冲区行数。
+
+-m 　即使目前已在作业中的screen作业，仍强制建立新的screen作业。
+
+-r <作业名称> 　恢复离线的screen作业。
+
+-R 　先试图恢复离线的作业。若找不到离线的作业，即建立新的scr]]></description>
+      <pubDate>Sun, 13 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[jupyter]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-12-jupyter/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-12-jupyter/</guid>
+      <description><![CDATA[1. 终端输入 jupyter notebook xxx
+2. 浏览器 终端ip：6666（默认）
+
+以后补充远程配置]]></description>
+      <pubDate>Sat, 12 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[tensorboard]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-11-tensorboard/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-11-tensorboard/</guid>
+      <description><![CDATA[1. 终端：tensorboard --logdir=./path port=6006默认
+2. 浏览器：终端ip：6006
+
+以后补充远程配置]]></description>
+      <pubDate>Fri, 11 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[jekyll支持latex公式]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-08-supportLatex/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-08-supportLatex/</guid>
+      <description><![CDATA[标签： 拾遗
+
+---
+
+在incloud/head.html文件里加入以下代码：
+```html
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config{
+tex2jax: {
+skipTags: 'script', 'noscript', 'style', 'textarea', 'pre',
+inlineMath: '$','$'
+}
+};
+</script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?co]]></description>
+      <pubDate>Tue, 08 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[jekyll&valine实现评论功能]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-08-supportcomment/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-08-supportcomment/</guid>
+      <description><![CDATA[标签： 拾遗
+
+---
+
+要借助leancloud平台
+
+ 1. 注册leancloud
+ 2. 新建应用，名字任取
+ 3. 创建class，可取名comment，默认配置即可
+ 4. include/comments.html添加代码
+ 
+
+```html
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+<div id="comment"></div>
+<script>]]></description>
+      <pubDate>Tue, 08 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[全卷积神经网络(FCN)]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-07-FCN/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-07-FCN/</guid>
+      <description><![CDATA[标签： CNN，深度学习，检测
+
+---
+
+FCN又称全卷积神经网络《Fully Convolutional Networks for Semantic Segmentation》https://link.jianshu.com/?t=https://arxiv.org/abs/1411.4038
+ FCN的精髓
+>  1、把卷积层 -> 全连接层，看成是对一整张图片的卷积层运算。
+>  2、把全连接层 -> 全连接层，看成是采用11大小的卷积核，进行卷积层运算。
+
+---
+ 论文翻译
+先来原文的翻译（大部分来最于这里https://www.cnblogs.co]]></description>
+      <pubDate>Mon, 07 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[深度学习-视觉]]></category>
+    </item>
+    <item>
+      <title><![CDATA[github pages添加阅读量]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-06-addreadvalue/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-06-addreadvalue/</guid>
+      <description><![CDATA[标签： github
+
+---
+
+ 前提是已经搭建好github pages
+
+
+
+ 1.注册LeanCloud
+
+ 2.创建应用，申请appid和appkey
+
+ 3.创建一个class，随便起名，例如Counter
+
+ 4.修改代码:
+
+
+ 1. config.yml文件
+
+```
+leancloud:
+enable: true
+appid: yourid
+appkey: yourkey
+```
+
+ 2.添加include/leancloud-analytics.html
+
+```
+这里本来是一段html代码
+但是会执行，册那
+`]]></description>
+      <pubDate>Sun, 06 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[github]]></category>
+    </item>
+    <item>
+      <title><![CDATA[NVIDIA tx2刷机教程]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-05-tx2shuaji/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-05-tx2shuaji/</guid>
+      <description><![CDATA[上个月买了个tx2开发板，跑一些深度模型，记录一下刷机教程。]]></description>
+      <pubDate>Sat, 05 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[硬件]]></category>
+    </item>
+    <item>
+      <title><![CDATA[MarkDown支持的格式样例（from作业部落）]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-04-markdown/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-04-markdown/</guid>
+      <description><![CDATA[标签： 杂记
+
+------
+
+
+我们理解您需要更便捷更高效的工具记录思想，整理笔记、知识，并将其中承载的价值传播给他人，Cmd Markdown 是我们给出的答案 —— 我们为记录思想和分享知识提供更专业的工具。 您可以使用 Cmd Markdown：
+
+>  整理知识，学习笔记
+>  发布日记，杂文，所见所想
+>  撰写发布技术文稿（代码支持）
+>  撰写发布学术论文（LaTeX 公式支持）
+
+!cmd-markdown-logohttps://www.zybuluo.com/static/img/logo.png
+
+除了您现在看到的这个 Cmd Markdown]]></description>
+      <pubDate>Fri, 04 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[制作github pages]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-03-page/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-03-page/</guid>
+      <description><![CDATA[标签： github
+
+------
+
+之前在阿里云租借服务器搭建网站，需要昂贵的费用很麻烦。所以改在用github上搭建自己的个人博客，既方便又美观（免费）。
+ 1. 环境 
+
+- x Mac
+-   linux、windows没试
+- x github账号
+- x git
+- x ruby
+- x jekyll
+
+ 2. 配置
+为了方便，直接上大神教程http://baixin.io/2016/10/jekylltutorials1/。内容很详细，直接按着来就行了。我这里就只写一些遇到的问题。
+ 1 jekyll server报错：]]></description>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[github]]></category>
+    </item>
+    <item>
+      <title><![CDATA[blog push到远程仓库（github pages）出错]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-04-pushgithubpage/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-04-pushgithubpage/</guid>
+      <description><![CDATA[本地仓库更新blog后，需要远程推送到github仓库。用命令`git push xxx远程库名字，有的默认origin master`。但是出现错误。
+我怀疑是因为远程仓库被访问后，有些修改，所以需要pull到本地，再push，还没验证。
+但是也可以`git push -f xxx master`强制覆盖，反正也是你自己一个人在维护blog，--force也不会有人想要砍死你😎]]></description>
+      <pubDate>Thu, 03 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[github]]></category>
+    </item>
+    <item>
+      <title><![CDATA[Tree 显示文件目录结构]]></title>
+      <link>https://alwayszhang.cn/posts/2019-01-01-tree/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2019-01-01-tree/</guid>
+      <description><![CDATA[Tree可以方便的显示文件目录结构：
+
+-a 显示所有文件和目录。
+-A 使用ASNI绘图字符显示树状图而非以ASCII字符组合。
+-C 在文件和目录清单加上色彩，便于区分各种类型。
+```-d 显示目录名称而非内容。```常用
+-D 列出文件或目录的更改时间。
+-f 在每个文件或目录之前，显示完整的相对路径名称。
+-F 在执行文件，目录，Socket，符号连接，管道名称名称，各自加上"","/","=","@","|"号。
+-g 列出文件或目录的所属群组名称，没有对应的名称时，则显示群组识别码。
+-i 不以阶梯状列出文件或目录名称。
+-I 不显示符合范本样式的文件或目录名称。
+-l 如遇到]]></description>
+      <pubDate>Tue, 01 Jan 2019 00:00:00 GMT</pubDate>
+      <category><![CDATA[拾遗]]></category>
+    </item>
+    <item>
+      <title><![CDATA[yolo]]></title>
+      <link>https://alwayszhang.cn/posts/2018-12-31-yolo/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2018-12-31-yolo/</guid>
+      <description><![CDATA[标签： CNN，深度学习，检测
+
+---
+
+You Only Look Once: Unified, Real-Time Object Detectionhttps://arxiv.org/abs/1506.02640
+
+---
+
+ Abstract
+We present YOLO, a new approach to object detection. Prior work on object detection repurposes classifiers to perform detection. Instead, we frame object detection as]]></description>
+      <pubDate>Mon, 31 Dec 2018 00:00:00 GMT</pubDate>
+      <category><![CDATA[深度学习-视觉]]></category>
+    </item>
+    <item>
+      <title><![CDATA[SSD]]></title>
+      <link>https://alwayszhang.cn/posts/2018-12-28-ssd/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2018-12-28-ssd/</guid>
+      <description><![CDATA[标签： 深度学习-视觉
+
+ SSD
+
+---
+
+ SSD: Single Shot MultiBox Detectorhttps://arxiv.org/abs/1512.02325
+
+ SSD:单发多盒检测器
+
+---
+
+ Abstract. 
+ 摘要
+We present a method for detecting objects in images using a single deep neural network. Our approach, named SSD, discretizes the output space of bounding]]></description>
+      <pubDate>Fri, 28 Dec 2018 00:00:00 GMT</pubDate>
+      <category><![CDATA[深度学习-视觉]]></category>
+    </item>
+    <item>
+      <title><![CDATA[ResNet]]></title>
+      <link>https://alwayszhang.cn/posts/2018-12-27-resnet/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2018-12-27-resnet/</guid>
+      <description><![CDATA[标签： 深度学习-视觉
+
+---
+
+ Deep Residual Learning for Image Recognitionhttps://arxiv.org/abs/1512.03385
+
+ 深度残差学习图片识别
+---
+
+ Abstract
+ 摘要
+Deeper neural networks are more difficult to train. We present a residual learning framework to ease the training of networks that are substantially deepe]]></description>
+      <pubDate>Thu, 27 Dec 2018 00:00:00 GMT</pubDate>
+      <category><![CDATA[深度学习-视觉]]></category>
+    </item>
+    <item>
+      <title><![CDATA[VGG]]></title>
+      <link>https://alwayszhang.cn/posts/2018-12-26-vgg/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2018-12-26-vgg/</guid>
+      <description><![CDATA[标签： 深度学习-视觉
+
+
+---
+
+ Very Deep Convolutional Networks for Large-Scale Image Recognitionhttps://arxiv.org/abs/1409.1556
+ 非常深的卷积神经网络应用于大规模图像识别
+ ABSTRACT
+ 摘要
+
+In this work we investigate the effect of the convolutional network depth on its accuracy in the large-scale image recognition]]></description>
+      <pubDate>Wed, 26 Dec 2018 00:00:00 GMT</pubDate>
+      <category><![CDATA[深度学习-视觉]]></category>
+    </item>
+    <item>
+      <title><![CDATA[AlexNet]]></title>
+      <link>https://alwayszhang.cn/posts/2018-12-25-AlexNet/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2018-12-25-AlexNet/</guid>
+      <description><![CDATA[标签： 深度学习-视觉
+
+---
+
+ ImageNet Classification with Deep Convolutional Neural Networkshttps://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
+
+
+ 用更深的卷积神经网络分类ImageNet
+
+ Abstract
+We trained a large, deep convolutional neural network to classify t]]></description>
+      <pubDate>Tue, 25 Dec 2018 00:00:00 GMT</pubDate>
+      <category><![CDATA[深度学习-视觉]]></category>
+    </item>
+  </channel>
+</rss>

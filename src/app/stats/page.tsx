@@ -3,8 +3,18 @@ import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
 import StatsClient from "./stats-client";
+import type { Metadata } from 'next';
 
 export const dynamic = "force-static";
+
+export const metadata: Metadata = {
+  title: '写作统计',
+  description: 'HalfSugar 博客写作数据统计，包括文章数量、分类分布、月度趋势等',
+  openGraph: {
+    title: '写作统计 | HalfSugar',
+    description: '博客写作数据统计，包括文章数量、分类分布、月度趋势等',
+  },
+};
 
 const postsDirectory = path.join(process.cwd(), "content/posts");
 

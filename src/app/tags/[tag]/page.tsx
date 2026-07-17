@@ -14,9 +14,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag } = await params;
+  const decodedTag = decodeURIComponent(tag);
   return {
-    title: `Tag: ${tag}`,
-    description: `标签 "${tag}" 下的所有文章`,
+    title: `${decodedTag} 标签文章`,
+    description: `HalfSugar 博客中关于 "${decodedTag}" 的所有文章`,
+    openGraph: {
+      title: `${decodedTag} | HalfSugar`,
+      description: `关于 "${decodedTag}" 的所有技术文章`,
+    },
   };
 }
 

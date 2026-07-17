@@ -3,3 +3,5 @@ Allow: /
 Disallow: /api/
 Disallow: /_next/
 Disallow: /static/
+
+Sitemap: https://alwayszhang.cn/sitemap.xml

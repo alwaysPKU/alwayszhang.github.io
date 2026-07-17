@@ -1,8 +1,12 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About',
-  description: '关于我',
+  title: '关于我',
+  description: '了解 HalfSugar 博客作者 CuteJ，关注深度学习、AI论文解读与技术分享',
+  openGraph: {
+    title: '关于我 | HalfSugar',
+    description: '了解博客作者 CuteJ，关注深度学习、AI论文解读与技术分享',
+  },
 };
 
 export default function AboutPage() {

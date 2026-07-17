@@ -2,8 +2,12 @@ import { getAllTags } from '@/lib/posts';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Tags',
-  description: '文章标签',
+  title: '标签',
+  description: '按标签浏览 HalfSugar 博客文章，涵盖 AI、大模型、深度学习、算法等主题',
+  openGraph: {
+    title: '标签分类 | HalfSugar',
+    description: '按标签浏览博客文章，涵盖 AI、大模型、深度学习、算法等主题',
+  },
 };
 
 export default function TagsPage() {

@@ -15,13 +15,50 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+const siteUrl = 'https://alwayszhang.cn';
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPostBySlug(slug);
   if (!post) return { title: 'Not Found' };
+
+  const postUrl = `${siteUrl}/posts/${encodeURIComponent(slug)}/`;
+  const ogImageUrl = `${siteUrl}/images/og-${encodeURIComponent(slug)}.png`;
+
   return {
     title: post.title,
     description: post.excerpt,
+    authors: [{ name: 'CuteJ', url: siteUrl }],
+    keywords: [...post.tags, ...post.categories].join(', '),
+    alternates: {
+      canonical: postUrl,
+    },
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description: post.excerpt,
+      url: postUrl,
+      siteName: 'HalfSugar',
+      locale: 'zh_CN',
+      publishedTime: post.date,
+      authors: ['CuteJ'],
+      tags: post.tags,
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [ogImageUrl],
+      creator: '@CuteJ',
+    },
   };
 }
 
@@ -35,8 +72,38 @@ export default async function PostPage({ params }: Props) {
   const post = await getPostBySlug(slug);
   if (!post) notFound();
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    datePublished: post.date,
+    author: {
+      '@type': 'Person',
+      name: 'CuteJ',
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'HalfSugar',
+      url: siteUrl,
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${siteUrl}/posts/${encodeURIComponent(slug)}/`,
+    },
+    keywords: [...post.tags, ...post.categories].join(', '),
+    image: `${siteUrl}/images/og-${encodeURIComponent(slug)}.png`,
+  };
+
   return (
     <>
+      {/* JSON-LD Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Reading Progress */}
       <ReadingProgress />
 
