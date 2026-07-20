@@ -22,7 +22,7 @@ export default function HomePage() {
           {/* 头像 */}
           <div className="h-20 w-20 rounded-full overflow-hidden border-4 border-primary/10 shadow-lg flex-shrink-0 group hover:scale-105 transition-transform duration-300">
             <img
-              src="/images/avatar.jpg"
+              src="/images/avatar.png"
               alt="avatar"
               className="h-full w-full object-cover"
             />

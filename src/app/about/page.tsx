@@ -17,7 +17,7 @@ export default function AboutPage() {
       <div className="prose">
         <div className="flex items-center gap-4 mb-6 p-4 rounded-lg bg-muted/50 border border-border/50">
           <img
-            src="/images/avatar.jpg"
+            src="/images/avatar.png"
             alt="avatar"
             className="h-20 w-20 rounded-full object-cover border-2 border-primary/20 shadow-sm"
           />
