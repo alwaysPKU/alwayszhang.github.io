@@ -143,6 +143,19 @@ body {
   max-width: 72ch;
 }
 
+/* KaTeX math styles */
+.prose .katex-display {
+  @apply my-6 overflow-x-auto;
+}
+
+.prose .katex {
+  @apply text-foreground;
+}
+
+.dark .katex {
+  color: var(--foreground);
+}
+
 .prose h1 {
   @apply text-2xl font-bold mt-8 mb-4 text-foreground;
 }
