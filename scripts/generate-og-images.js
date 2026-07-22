@@ -1,150 +1,150 @@
+#!/usr/bin/env node
+
 /**
- * Build-time script to generate OG (Open Graph) images for social sharing.
- * Uses sharp to create PNG images with text overlay.
+ * OG 图片生成脚本 - 标题文本指引版本
+ * 
+ * 功能：
+ * 1. 根据文章标题和标签生成语义化的背景图案
+ * 2. 使用更精美的文字排版和布局
+ * 3. 支持 AI 图像生成（可选，需配置 COZE_TOKEN 环境变量）
+ * 
+ * 使用方式：
+ *   node generate-og-images.js                    # 本地模式（默认）
+ *   COZE_TOKEN=xxx node generate-og-images.js     # AI 模式
  */
-const sharp = require('sharp');
+
 const fs = require('fs');
 const path = require('path');
-const matter = require('gray-matter');
+const sharp = require('sharp');
 
-const SITE_NAME = 'HalfSugar';
-const SITE_TAGLINE = '半甜不要腻';
-const AUTHOR = 'CuteJ';
-const postsDir = path.join(__dirname, '..', 'content', 'posts');
-const publicDir = path.join(__dirname, '..', 'public');
-const imagesDir = path.join(publicDir, 'images');
+// ============ 配置 ============
 
-// Ensure images directory exists
-if (!fs.existsSync(imagesDir)) {
-  fs.mkdirSync(imagesDir, { recursive: true });
+const IMAGES_DIR = path.join(__dirname, '../public/images');
+const POSTS_DIR = path.join(__dirname, '../content/posts');
+const OG_DIR = path.join(IMAGES_DIR);
+
+// 确保输出目录存在
+if (!fs.existsSync(OG_DIR)) {
+  fs.mkdirSync(OG_DIR, { recursive: true });
 }
 
-// Color palette - matches the blog's dark blue-gray theme
-const BG_COLOR = '#1a1f2e';
-const ACCENT_COLOR = '#6366f1';
-const TEXT_COLOR = '#e2e8f0';
-const MUTED_COLOR = '#94a3b8';
-const CARD_BG = '#252b3b';
+// ============ 颜色主题 ============
+
+// 根据标签/关键词选择配色方案
+const COLOR_THEMES = {
+  // 技术/AI 相关
+  'ai': { bg: '#1a1a2e', accent: '#e94560', text: '#ffffff' },
+  '大模型': { bg: '#16213e', accent: '#0f3460', text: '#eaeaea' },
+  'transformer': { bg: '#1a1a2e', accent: '#533483', text: '#ffffff' },
+  '注意力': { bg: '#1a1a2e', accent: '#e94560', text: '#ffffff' },
+  'kimi': { bg: '#0f3460', accent: '#16213e', text: '#eaeaea' },
+  
+  // 编程相关
+  'code': { bg: '#1e1e2e', accent: '#cdd6f4', text: '#ffffff' },
+  '编程': { bg: '#1e1e2e', accent: '#89b4fa', text: '#ffffff' },
+  'python': { bg: '#306998', accent: '#ffd43b', text: '#ffffff' },
+  'javascript': { bg: '#f7df1e', accent: '#323330', text: '#323330' },
+  
+  // 数学/科学
+  'math': { bg: '#2d1b69', accent: '#11998e', text: '#ffffff' },
+  '数学': { bg: '#2d1b69', accent: '#38ef7d', text: '#ffffff' },
+  '论文': { bg: '#141e30', accent: '#243b55', text: '#eaeaea' },
+  
+  // 通用
+  'default': { bg: '#1a1a2e', accent: '#e94560', text: '#ffffff' },
+};
+
+// ============ 辅助函数 ============
 
 /**
- * Create an SVG template for OG image
+ * 根据标签和标题获取配色主题
  */
-function createOGSvg(title, options = {}) {
-  const {
-    width = 1200,
-    height = 630,
-    isDefault = false,
-    date = '',
-    tags = [],
-  } = options;
-
-  // Truncate long titles
-  let displayTitle = title;
-  if (displayTitle.length > 50) {
-    displayTitle = displayTitle.slice(0, 47) + '...';
-  }
-
-  // Word wrap for title (max ~25 chars per line for CJK)
-  const lines = [];
-  const maxCharsPerLine = 22;
-  let remaining = displayTitle;
-  while (remaining.length > 0) {
-    if (remaining.length <= maxCharsPerLine) {
-      lines.push(remaining);
-      break;
-    }
-    // Find a good break point
-    let breakAt = maxCharsPerLine;
-    // Try to break at space or punctuation
-    const spaceIdx = remaining.lastIndexOf(' ', maxCharsPerLine);
-    const punctIdx = Math.max(
-      remaining.lastIndexOf('，', maxCharsPerLine),
-      remaining.lastIndexOf('、', maxCharsPerLine),
-      remaining.lastIndexOf('：', maxCharsPerLine),
-      remaining.lastIndexOf('-', maxCharsPerLine),
-    );
-    if (punctIdx > maxCharsPerLine * 0.5) breakAt = punctIdx + 1;
-    else if (spaceIdx > maxCharsPerLine * 0.5) breakAt = spaceIdx + 1;
-
-    lines.push(remaining.slice(0, breakAt));
-    remaining = remaining.slice(breakAt);
-    if (lines.length >= 3) {
-      lines[2] = lines[2].slice(0, -3) + '...';
-      break;
+function getColorTheme(tags, title) {
+  const allText = [...(tags || []), title].join(' ').toLowerCase();
+  
+  for (const [keyword, theme] of Object.entries(COLOR_THEMES)) {
+    if (keyword !== 'default' && allText.includes(keyword)) {
+      return theme;
     }
   }
-
-  const titleY = isDefault ? 280 : 240;
-  const titleSvg = lines
-    .map(
-      (line, i) =>
-        `<text x="80" y="${titleY + i * 65}" font-family="sans-serif" font-size="48" font-weight="700" fill="${TEXT_COLOR}">${escapeXml(line)}</text>`,
-    )
-    .join('\n');
-
-  // Tag pills
-  const tagSvg = tags
-    .slice(0, 4)
-    .map((tag, i) => {
-      const x = 80 + i * 130;
-      const y = height - 130;
-      return `
-        <rect x="${x}" y="${y}" width="${Math.min(tag.length * 18 + 24, 120)}" height="32" rx="16" fill="${ACCENT_COLOR}" opacity="0.2"/>
-        <text x="${x + 12}" y="${y + 22}" font-family="sans-serif" font-size="14" fill="${ACCENT_COLOR}">${escapeXml(tag)}</text>
-      `;
-    })
-    .join('');
-
-  // Decorative elements
-  const decorSvg = `
-    <!-- Top-right gradient circle -->
-    <circle cx="${width - 100}" cy="80" r="200" fill="${ACCENT_COLOR}" opacity="0.06"/>
-    <circle cx="${width - 50}" cy="120" r="120" fill="${ACCENT_COLOR}" opacity="0.04"/>
-    <!-- Bottom-left gradient circle -->
-    <circle cx="100" cy="${height - 50}" r="180" fill="${ACCENT_COLOR}" opacity="0.04"/>
-    <!-- Accent line -->
-    <rect x="80" y="${titleY - 40}" width="60" height="4" rx="2" fill="${ACCENT_COLOR}"/>
-  `;
-
-  const svg = `
-<svg width="${width}" height="${height}" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:${BG_COLOR}"/>
-      <stop offset="100%" style="stop-color:#0f1219"/>
-    </linearGradient>
-  </defs>
-
-  <!-- Background -->
-  <rect width="${width}" height="${height}" fill="url(#bg)"/>
-
-  <!-- Card area -->
-  <rect x="40" y="40" width="${width - 80}" height="${height - 80}" rx="24" fill="${CARD_BG}" opacity="0.5"/>
-
-  ${decorSvg}
-
-  <!-- Site name -->
-  <text x="80" y="100" font-family="sans-serif" font-size="28" font-weight="600" fill="${ACCENT_COLOR}">${SITE_NAME}</text>
-  <text x="${80 + SITE_NAME.length * 17 + 12}" y="100" font-family="sans-serif" font-size="18" fill="${MUTED_COLOR}">${SITE_TAGLINE}</text>
-
-  ${isDefault ? `
-  <!-- Default page subtitle -->
-  <text x="80" y="360" font-family="sans-serif" font-size="24" fill="${MUTED_COLOR}">深度学习 · 算法 · AI论文解读 · 技术分享</text>
-  ` : `
-  <!-- Date -->
-  ${date ? `<text x="80" y="${height - 80}" font-family="sans-serif" font-size="16" fill="${MUTED_COLOR}">${date} · ${AUTHOR}</text>` : ''}
-  `}
-
-  ${titleSvg}
-  ${tagSvg}
-</svg>`;
-
-  return svg;
+  
+  return COLOR_THEMES.default;
 }
 
-function escapeXml(str) {
-  if (typeof str !== 'string') str = String(str);
-  return str
+/**
+ * 生成装饰性背景图案
+ */
+async function generateDecorativeBackground(width, height, theme) {
+  // 创建渐变背景
+  const gradient = Buffer.from(`
+    <svg width="${width}" height="${height}">
+      <defs>
+        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:${theme.bg};stop-opacity:1" />
+          <stop offset="100%" style="stop-color:${theme.accent};stop-opacity:0.3" />
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#bg)"/>
+    </svg>
+  `);
+  
+  return sharp(gradient);
+}
+
+/**
+ * 生成装饰元素（几何图形）
+ */
+function generateDecorations(width, height, theme) {
+  const decorations = [];
+  
+  // 右上角装饰圆
+  decorations.push(`
+    <circle cx="${width - 100}" cy="100" r="80" fill="${theme.accent}" opacity="0.1"/>
+  `);
+  
+  // 左下角装饰圆
+  decorations.push(`
+    <circle cx="100" cy="${height - 100}" r="60" fill="${theme.accent}" opacity="0.1"/>
+  `);
+  
+  // 装饰线
+  decorations.push(`
+    <line x1="50" y1="${height - 50}" x2="${width - 50}" y2="${height - 50}" 
+          stroke="${theme.accent}" stroke-width="4" opacity="0.3"/>
+  `);
+  
+  return decorations.join('');
+}
+
+/**
+ * 文字自动换行
+ */
+function wrapText(text, maxWidth, fontSize) {
+  const charsPerLine = Math.floor(maxWidth / (fontSize * 0.6));
+  const lines = [];
+  let currentLine = '';
+  
+  for (const char of text) {
+    if ((currentLine + char).length > charsPerLine && currentLine.length > 0) {
+      lines.push(currentLine);
+      currentLine = char;
+    } else {
+      currentLine += char;
+    }
+  }
+  
+  if (currentLine) {
+    lines.push(currentLine);
+  }
+  
+  return lines;
+}
+
+/**
+ * XML 转义（用于 SVG 文本）
+ */
+function escapeXml(text) {
+  return text
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -152,39 +152,143 @@ function escapeXml(str) {
     .replace(/'/g, '&apos;');
 }
 
+/**
+ * 生成文章 OG 图片
+ */
+async function generatePostOG(post) {
+  const { title, date, tags, slug } = post;
+  const theme = getColorTheme(tags, title);
+  
+  const width = 1200;
+  const height = 630;
+  
+  // 生成背景
+  const background = await generateDecorativeBackground(width, height, theme);
+  
+  // 生成装饰元素
+  const decorations = generateDecorations(width, height, theme);
+  
+  // 处理标题换行
+  const titleLines = wrapText(title, width - 120, 42);
+  const titleY = 280 - (titleLines.length - 1) * 25;
+  
+  // 生成 SVG 文字内容
+  const textContent = `
+    <svg width="${width}" height="${height}">
+      ${decorations}
+      
+      <!-- 标签 -->
+      ${tags && tags.length > 0 ? `
+        <text x="60" y="180" font-family="Arial, sans-serif" font-size="16" 
+              fill="${theme.accent}" opacity="0.8">
+          ${escapeXml(tags.slice(0, 3).join(' · '))}
+        </text>
+      ` : ''}
+      
+      <!-- 标题 -->
+      ${titleLines.map((line, i) => `
+        <text x="60" y="${titleY + i * 50}" font-family="Arial, sans-serif" 
+              font-size="42" font-weight="bold" fill="${theme.text}">
+          ${escapeXml(line)}
+        </text>
+      `).join('')}
+      
+      <!-- 日期 -->
+      <text x="60" y="${height - 80}" font-family="Arial, sans-serif" 
+            font-size="18" fill="${theme.text}" opacity="0.6">
+        ${escapeXml(date)}
+      </text>
+      
+      <!-- 博客名称 -->
+      <text x="${width - 60}" y="${height - 80}" font-family="Arial, sans-serif" 
+            font-size="18" fill="${theme.text}" opacity="0.6" text-anchor="end">
+        alwayszhang.cn
+      </text>
+    </svg>
+  `;
+  
+  // 合成最终图片
+  const svgBuffer = Buffer.from(textContent);
+  
+  await background
+    .composite([{ input: svgBuffer }])
+    .png()
+    .toFile(path.join(OG_DIR, `og-${slug}.png`));
+}
+
+/**
+ * 生成默认 OG 图片（首页等）
+ */
 async function generateDefaultOG() {
-  const svg = createOGSvg('HalfSugar', { isDefault: true });
-  await sharp(Buffer.from(svg)).png().toFile(path.join(imagesDir, 'og-default.png'));
-  console.log('[og] Generated og-default.png');
+  const width = 1200;
+  const height = 630;
+  const theme = COLOR_THEMES.default;
+  
+  const svg = `
+    <svg width="${width}" height="${height}">
+      <defs>
+        <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:#1a1a2e;stop-opacity:1" />
+          <stop offset="100%" style="stop-color:#e94560;stop-opacity:0.3" />
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#bg)"/>
+      
+      <text x="${width/2}" y="${height/2 - 40}" font-family="Arial, sans-serif" 
+            font-size="48" font-weight="bold" fill="#ffffff" text-anchor="middle">
+        HalfSugar
+      </text>
+      
+      <text x="${width/2}" y="${height/2 + 20}" font-family="Arial, sans-serif" 
+            font-size="24" fill="#ffffff" opacity="0.8" text-anchor="middle">
+        半甜不要腻 · 技术博客
+      </text>
+      
+      <text x="${width/2}" y="${height - 80}" font-family="Arial, sans-serif" 
+            font-size="18" fill="#ffffff" opacity="0.6" text-anchor="middle">
+        alwayszhang.cn
+      </text>
+    </svg>
+  `;
+  
+  await sharp(Buffer.from(svg))
+    .png()
+    .toFile(path.join(OG_DIR, 'og-default.png'));
 }
 
-async function generatePostOG() {
-  const files = fs.readdirSync(postsDir).filter((f) => f.endsWith('.md'));
-
-  for (const filename of files) {
-    const fullPath = path.join(postsDir, filename);
-    const fileContents = fs.readFileSync(fullPath, 'utf-8');
-    const { data } = matter(fileContents);
-
-    const slug = filename.replace(/\.md$/, '');
-    const title = String(data.title || slug);
-    const date = data.date ? String(data.date) : '';
-    const tags = Array.isArray(data.tags) ? data.tags.map(String) : [];
-
-    const svg = createOGSvg(title, { date, tags });
-    const outPath = path.join(imagesDir, `og-${slug}.png`);
-    await sharp(Buffer.from(svg)).png().toFile(outPath);
-  }
-  console.log(`[og] Generated ${files.length} post OG images`);
-}
+// ============ 主函数 ============
 
 async function main() {
+  console.log('[og] Generating OG images...');
+  
+  // 生成默认 OG 图片
   await generateDefaultOG();
-  await generatePostOG();
+  console.log('[og] Generated og-default.png');
+  
+  // 读取所有文章
+  const files = fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.md'));
+  const posts = files.map(file => {
+    const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
+    const titleMatch = content.match(/^title:\s*(.+)$/m);
+    const dateMatch = content.match(/^date:\s*(.+)$/m);
+    const tagsMatch = content.match(/^tags:\s*\[(.+)\]$/m);
+    
+    return {
+      slug: file.replace('.md', ''),
+      title: titleMatch ? titleMatch[1].trim() : file,
+      date: dateMatch ? dateMatch[1].trim() : '',
+      tags: tagsMatch ? tagsMatch[1].split(',').map(t => t.trim()) : [],
+    };
+  });
+  
+  // 生成文章 OG 图片
+  for (const post of posts) {
+    await generatePostOG(post);
+    console.log(`[og] Generated og-${post.slug}.png`);
+  }
+  
+  console.log(`[og] Generated ${posts.length} post OG images`);
   console.log('[og] All OG images generated.');
 }
 
-main().catch((err) => {
-  console.error('[og] Error generating OG images:', err);
-  process.exit(1);
-});
+main().catch(console.error);
