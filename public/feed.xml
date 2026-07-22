@@ -7,6 +7,28 @@
     <language>zh-cn</language>
     <atom:link href="https://alwayszhang.cn/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
+      <title><![CDATA[Arena 榜单深度解析：众包盲测如何成为 AI 评测的黄金标准]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-22-Arena%E6%A6%9C%E5%8D%95%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E4%BC%97%E5%8C%85%E7%9B%B2%E6%B5%8B%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BAAI%E8%AF%84%E6%B5%8B%E7%9A%84%E9%BB%84%E9%87%91%E6%A0%87%E5%87%86/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-22-Arena%E6%A6%9C%E5%8D%95%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E4%BC%97%E5%8C%85%E7%9B%B2%E6%B5%8B%E5%A6%82%E4%BD%95%E6%88%90%E4%B8%BAAI%E8%AF%84%E6%B5%8B%E7%9A%84%E9%BB%84%E9%87%91%E6%A0%87%E5%87%86/</guid>
+      <description><![CDATA[Arena 榜单深度解析：众包盲测如何成为 AI 评测的黄金标准
+
+> 当传统基准测试面临"刷榜"困境，Arena 用真实人类投票重新定义了 AI 能力评估。
+
+ 一、为什么需要 Arena？
+
+ 传统基准测试的困境
+
+在大型语言模型（LLM）飞速发展的今天，传统自动化基准测试（如 MMLU、GSM8K、HumanEval 等）正面临严峻挑战：
+
+| 问题 | 说明 |
+|------|------|
+| 数据污染 | 测试集题目公开，模型训练时可能"见过"答案 |
+| 指标单一 | 准确率无法反映回答质量、风格、安全性 |
+| 场景有限 | 无法覆盖真实]]></description>
+      <pubDate>Wed, 22 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[技术]]></category>
+    </item>
+    <item>
       <title><![CDATA[Attention Residuals 论文深度解读：Kimi K3 的核心架构创新]]></title>
       <link>https://alwayszhang.cn/posts/2026-07-21-Attention-Residuals%E8%AE%BA%E6%96%87%E6%B7%B1%E5%BA%A6%E8%A7%A3%E8%AF%BB-Kimi-K3%E7%9A%84%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E5%88%9B%E6%96%B0/</link>
       <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-21-Attention-Residuals%E8%AE%BA%E6%96%87%E6%B7%B1%E5%BA%A6%E8%A7%A3%E8%AF%BB-Kimi-K3%E7%9A%84%E6%A0%B8%E5%BF%83%E6%9E%B6%E6%9E%84%E5%88%9B%E6%96%B0/</guid>
