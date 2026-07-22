@@ -57,6 +57,17 @@
 - Markdown 渲染（remark + remark-gfm）
 - 代码高亮样式
 
+## Git 推送规范
+
+**每次推送必须使用以下身份**（已在 AGENTS.md 中记录，每次会话开始时必须检查）：
+
+```bash
+git config user.name "alwaysPKU"
+git config user.email "alwaysPKU@users.noreply.github.com"
+```
+
+**禁止**使用沙箱默认身份（`用户 3031733109593`）推送。
+
 ## 构建与运行
 
 ```bash
