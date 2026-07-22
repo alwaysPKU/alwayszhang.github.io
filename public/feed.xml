@@ -48,6 +48,32 @@
       <category><![CDATA[技术]]></category>
     </item>
     <item>
+      <title><![CDATA[大模型训练数据深度解析 - 预训练、SFT、RL 都需要什么数据]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-22-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E6%95%B0%E6%8D%AE%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90%20-%20%E9%A2%84%E8%AE%AD%E7%BB%83%20SFT-RL%20%E9%83%BD%E9%9C%80%E8%A6%81%E4%BB%80%E4%B9%88%E6%95%B0%E6%8D%AE/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-22-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%AE%AD%E7%BB%83%E6%95%B0%E6%8D%AE%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90%20-%20%E9%A2%84%E8%AE%AD%E7%BB%83%20SFT-RL%20%E9%83%BD%E9%9C%80%E8%A6%81%E4%BB%80%E4%B9%88%E6%95%B0%E6%8D%AE/</guid>
+      <description><![CDATA[大模型训练数据深度解析：预训练、SFT、RL 都需要什么数据
+
+> 数据是 AI 的燃料，但不同阶段需要不同"标号"的燃料。
+
+2026 年，大模型训练已经从"大力出奇迹"进入"精细调数据"阶段。GPT-4o、Kimi K3、Qwen3.8 等旗舰模型的训练数据规模达到 TB 级，但数据质量比数量更重要。
+
+本文将深度解析大模型训练三个阶段（预训练、SFT、RL）的数据需求，揭示数据工程的核心秘密。
+
+---
+
+ 一、大模型训练三阶段概览
+
+```
+预训练（Pre-training）
+    ↓ 学语言、学知识
+监督微调（SFT）
+    ↓ 学指令、学对话
+强化学习（RL/R]]></description>
+      <pubDate>Wed, 22 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[大模型]]></category>
+    </item>
+    <item>
       <title><![CDATA[注意力机制深度技术解析：从数学原理到Transformer架构演进]]></title>
       <link>https://alwayszhang.cn/posts/2026-07-22-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%BA%A6%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90-%E4%BB%8E%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%88%B0Transformer%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B/</link>
       <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-22-%E6%B3%A8%E6%84%8F%E5%8A%9B%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%BA%A6%E6%8A%80%E6%9C%AF%E8%A7%A3%E6%9E%90-%E4%BB%8E%E6%95%B0%E5%AD%A6%E5%8E%9F%E7%90%86%E5%88%B0Transformer%E6%9E%B6%E6%9E%84%E6%BC%94%E8%BF%9B/</guid>
