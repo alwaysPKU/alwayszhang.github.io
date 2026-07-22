@@ -33,7 +33,7 @@ export function TipButton() {
               </p>
               <div className="aspect-square max-w-[240px] mx-auto bg-muted rounded-lg flex items-center justify-center mb-4">
                 <img
-                  src="/images/wechat-tip-qr.svg"
+                  src="/images/wechat-tip-qr.png"
                   alt="微信收款码"
                   className="w-full h-full object-contain rounded-lg"
                 />
