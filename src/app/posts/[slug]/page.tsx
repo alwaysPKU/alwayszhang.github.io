@@ -10,6 +10,7 @@ import TableOfContents from '@/components/table-of-contents';
 import ReadingProgress from '@/components/reading-progress';
 import RelatedPosts from '@/components/related-posts';
 import MobileGestures from '@/components/mobile-gestures';
+import { TipButton } from '@/components/tip-button';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -183,7 +184,10 @@ export default async function PostPage({ params }: Props) {
       {/* Article footer */}
       <div className="mt-12 pt-8 border-t border-border">
         <div className="flex items-center justify-between">
-          <LikeButton slug={slug} />
+          <div className="flex items-center gap-4">
+            <LikeButton slug={slug} />
+            <TipButton />
+          </div>
           <SharePoster
             title={post.title}
             date={post.date}

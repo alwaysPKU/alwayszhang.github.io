@@ -23,6 +23,25 @@
       <category><![CDATA[论文解读]]></category>
     </item>
     <item>
+      <title><![CDATA[Causal vs Streaming DiT：视频生成与交互的两大技术路线深度对比]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-21-Causal-vs-Streaming-DiT-%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E4%B8%8E%E4%BA%A4%E4%BA%92%E7%9A%84%E4%B8%A4%E5%A4%A7%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E6%B7%B1%E5%BA%A6%E5%AF%B9%E6%AF%94/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-21-Causal-vs-Streaming-DiT-%E8%A7%86%E9%A2%91%E7%94%9F%E6%88%90%E4%B8%8E%E4%BA%A4%E4%BA%92%E7%9A%84%E4%B8%A4%E5%A4%A7%E6%8A%80%E6%9C%AF%E8%B7%AF%E7%BA%BF%E6%B7%B1%E5%BA%A6%E5%AF%B9%E6%AF%94/</guid>
+      <description><![CDATA[> 当 AI 视频生成从"离线创作"走向"实时交互"，两条技术路线正在激烈碰撞：严格因果的 Causal 方案 vs 缓冲区机制的 Streaming DiT 方案。本文深度解析两者的架构差异、训练范式与适用场景。
+
+---
+
+ 一、为什么需要流式视频生成？
+
+传统视频扩散模型（如 CogVideoX、OpenSORA）采用双向注意力架构，存在三个致命瓶颈：
+
+1. 生成慢 — 128帧视频需要219秒，必须等全部内容生成完毕才能观看
+2. 无法交互 — 生成过程中无法修改提示词，改了就从头开始
+3. 计算爆炸 — 计算成本随帧数平方级增长，256帧耗时是1]]></description>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[视频生成]]></category>
+    </item>
+    <item>
       <title><![CDATA[Kimi K3 官方博客深度解读：开源3T旗舰的技术突破与产品哲学]]></title>
       <link>https://alwayszhang.cn/posts/2026-07-21-Kimi-K3%E5%AE%98%E6%96%B9%E5%8D%9A%E5%AE%A2%E6%B7%B1%E5%BA%A6%E8%A7%A3%E8%AF%BB-%E5%BC%80%E6%BA%903T%E6%97%97%E8%88%B0%E7%9A%84%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E4%B8%8E%E4%BA%A7%E5%93%81%E5%93%B2%E5%AD%A6/</link>
       <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-21-Kimi-K3%E5%AE%98%E6%96%B9%E5%8D%9A%E5%AE%A2%E6%B7%B1%E5%BA%A6%E8%A7%A3%E8%AF%BB-%E5%BC%80%E6%BA%903T%E6%97%97%E8%88%B0%E7%9A%84%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E4%B8%8E%E4%BA%A7%E5%93%81%E5%93%B2%E5%AD%A6/</guid>
@@ -74,6 +93,30 @@
       <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
       <category><![CDATA[AI]]></category>
       <category><![CDATA[论文解读]]></category>
+    </item>
+    <item>
+      <title><![CDATA[全球AI算力格局深度解析：六大阵营与中美博弈]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-21-%E5%85%A8%E7%90%83AI%E7%AE%97%E5%8A%9B%E6%A0%BC%E5%B1%80%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E5%85%AD%E5%A4%A7%E9%98%B5%E8%90%A5%E4%B8%8E%E4%B8%AD%E7%BE%8E%E5%8D%9A%E5%BC%88/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-21-%E5%85%A8%E7%90%83AI%E7%AE%97%E5%8A%9B%E6%A0%BC%E5%B1%80%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E5%85%AD%E5%A4%A7%E9%98%B5%E8%90%A5%E4%B8%8E%E4%B8%AD%E7%BE%8E%E5%8D%9A%E5%BC%88/</guid>
+      <description><![CDATA[全球AI算力格局深度解析：六大阵营与中美博弈
+
+> 算力，是AI时代的石油。2026年，这场围绕算力的军备竞赛已进入白热化阶段。
+
+---
+
+ 一、全球算力总览：万亿美元级的军备竞赛
+
+2026年，全球AI算力市场呈现几个关键数据：
+
+| 指标 | 数值 |
+|------|------|
+| 全球AI算力市场规模 | 预计1.2万亿美元，年复合增长率超35% |
+| 美国四巨头Capex合计 | 6300-7250亿美元，同比增71-77% |
+| 全球AI智能算力 | 约1200 EFLOPS |
+| 推理算力占比 | 超60%（从训练转向推理+应用]]></description>
+      <pubDate>Tue, 21 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[产业分析]]></category>
     </item>
     <item>
       <title><![CDATA[WAIC 2026 深度洞察：AI正式进入'交付元年']]></title>
