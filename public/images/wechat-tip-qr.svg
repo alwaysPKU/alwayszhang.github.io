@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240">
-  <rect width="240" height="240" fill="#f5f5f5"/>
-  <text x="120" y="100" font-family="Arial, sans-serif" font-size="14" fill="#666" text-anchor="middle">请将此文件替换为</text>
-  <text x="120" y="125" font-family="Arial, sans-serif" font-size="14" fill="#666" text-anchor="middle">您的微信收款码</text>
-  <text x="120" y="150" font-family="Arial, sans-serif" font-size="12" fill="#999" text-anchor="middle">(240x240 PNG/JPG)</text>
-  <rect x="60" y="160" width="120" height="60" rx="4" fill="#e0e0e0"/>
-  <text x="120" y="195" font-family="Arial, sans-serif" font-size="12" fill="#666" text-anchor="middle">wechat-tip-qr.png</text>
-</svg>
