@@ -36,7 +36,7 @@ const games: Game[] = [
   { name: 'MBTI', file: 'mbti.html', emoji: '🧠', desc: 'MBTI 性格测试' },
   { name: 'Interleaved Simulator', file: 'interleaved-simulator.html', emoji: '📚', desc: '交错学习模拟器' },
   { name: '遇事不决', file: 'decision-maker.html', emoji: '🎲', desc: '选择困难症救星' },
-  { name: '命运转盘 PRO', file: 'decision-maker-pro.html', emoji: '🎯', desc: '赛博朋克版' },
+  { name: '遇事不决 PRO', file: 'decision-maker-pro.html', emoji: '🌐', desc: '3D 命运之球' },
 ];
 
 export default function GamesPage() {
