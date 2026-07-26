@@ -23,6 +23,7 @@
       width: 100%;
       height: 100%;
       background: radial-gradient(ellipse at center, #0a0a2e 0%, #000 100%);
+      z-index: 0;
     }
 
     .stars::before,
@@ -65,6 +66,7 @@
       background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
       animation: meteor 3s linear infinite;
       opacity: 0;
+      z-index: 1;
     }
 
     .meteor:nth-child(1) { left: 20%; animation-delay: 0s; }
@@ -78,10 +80,37 @@
       100% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
     }
 
+    /* 光粒子 */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 50%;
+      animation: particleFloat 8s linear infinite;
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    }
+
     .container {
       position: relative;
       z-index: 10;
-      max-width: 500px;
+      max-width: 600px;
       margin: 0 auto;
       padding: 24px 16px;
     }
@@ -186,42 +215,84 @@
       border-color: rgba(255,255,255,0.3);
     }
 
-    .options-list {
+    /* 网状选项展示 */
+    .options-network {
+      position: relative;
+      min-height: 200px;
+      margin: 20px 0;
+      padding: 20px;
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-      min-height: 44px;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
     }
 
-    .option-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 18px;
+    .options-network::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+      50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0.2; }
+    }
+
+    .option-node {
+      position: relative;
+      padding: 12px 20px;
       background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
       font-size: 14px;
       color: rgba(255,255,255,0.85);
-      animation: fadeIn 0.4s ease;
+      animation: nodeIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      transition: all 0.3s;
+      cursor: default;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    .option-node:hover {
+      background: rgba(255,255,255,0.1);
+      border-color: rgba(255,255,255,0.3);
+      transform: scale(1.05);
     }
 
-    .option-tag .remove {
+    @keyframes nodeIn {
+      from { opacity: 0; transform: scale(0) rotate(180deg); }
+      to { opacity: 1; transform: scale(1) rotate(0); }
+    }
+
+    .option-node .remove {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 20px;
+      height: 20px;
+      background: rgba(255,100,100,0.8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
       cursor: pointer;
-      font-size: 16px;
-      opacity: 0.4;
+      opacity: 0;
       transition: opacity 0.2s;
     }
 
-    .option-tag .remove:hover { opacity: 1; }
+    .option-node:hover .remove {
+      opacity: 1;
+    }
 
     .count-hint {
+      text-align: center;
       font-size: 12px;
       color: rgba(255,255,255,0.35);
       margin-bottom: 8px;
@@ -268,139 +339,6 @@
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
-    }
-
-    /* 3D 命运之轮 */
-    .wheel-section {
-      display: none;
-      perspective: 1000px;
-    }
-
-    .wheel-section.show {
-      display: block;
-    }
-
-    .wheel-3d {
-      width: 300px;
-      height: 300px;
-      margin: 40px auto;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: float 3s ease-in-out infinite;
-    }
-
-    @keyframes float {
-      0%, 100% { transform: translateY(0) rotateX(10deg); }
-      50% { transform: translateY(-10px) rotateX(10deg); }
-    }
-
-    .wheel-3d.spinning {
-      animation: spin3d 4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-    }
-
-    @keyframes spin3d {
-      0% { transform: rotateY(0) rotateX(10deg); }
-      100% { transform: rotateY(var(--final-rotation)) rotateX(10deg); }
-    }
-
-    .cube-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 18px;
-      font-weight: 300;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px);
-    }
-
-    /* 结果区域 */
-    .result-section {
-      display: none;
-      text-align: center;
-    }
-
-    .result-section.show {
-      display: block;
-      animation: revealResult 1s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    @keyframes revealResult {
-      from { opacity: 0; transform: scale(0.8) rotateY(180deg); }
-      to { opacity: 1; transform: scale(1) rotateY(0); }
-    }
-
-    .result-glow {
-      width: 200px;
-      height: 200px;
-      margin: 0 auto 30px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: glow 2s ease-in-out infinite;
-    }
-
-    @keyframes glow {
-      0%, 100% { box-shadow: 0 0 60px rgba(255,255,255,0.2); }
-      50% { box-shadow: 0 0 100px rgba(255,255,255,0.4); }
-    }
-
-    .result-emoji {
-      font-size: 80px;
-    }
-
-    .result-text {
-      font-size: 36px;
-      font-weight: 200;
-      letter-spacing: 4px;
-      margin-bottom: 30px;
-      background: linear-gradient(135deg, #fff, #aaa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .wisdom-card {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 28px;
-      margin-top: 20px;
-    }
-
-    .wisdom-text {
-      font-size: 15px;
-      line-height: 2;
-      color: rgba(255,255,255,0.7);
-      font-weight: 300;
-      font-style: italic;
-      letter-spacing: 1px;
-    }
-
-    .wisdom-author {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      margin-top: 16px;
-      text-align: right;
-      letter-spacing: 2px;
-    }
-
-    .btn-again {
-      margin-top: 30px;
-      background: transparent;
-      color: rgba(255,255,255,0.6);
-      border: 1px solid rgba(255,255,255,0.2);
-      padding: 14px 40px;
-    }
-
-    .btn-again:hover {
-      color: #fff;
-      border-color: rgba(255,255,255,0.5);
     }
 
     /* 批量输入 */
@@ -452,31 +390,176 @@
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
     }
 
-    /* 光粒子效果 */
-    .particles {
+    /* 全屏动画遮罩 - 固定在屏幕中央 */
+    .wheel-overlay {
+      display: none;
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
-      z-index: 5;
+      background: rgba(0,0,0,0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
     }
 
-    .particle {
+    .wheel-overlay.show {
+      display: flex;
+    }
+
+    /* 3D 命运之轮 */
+    .wheel-3d {
+      width: 280px;
+      height: 280px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotateX(15deg); }
+      50% { transform: translateY(-15px) rotateX(15deg); }
+    }
+
+    .wheel-3d.spinning {
+      animation: spin3d 4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    }
+
+    @keyframes spin3d {
+      0% { transform: rotateY(0) rotateX(15deg); }
+      100% { transform: rotateY(var(--final-rotation)) rotateX(15deg); }
+    }
+
+    .cube-face {
       position: absolute;
-      width: 4px;
-      height: 4px;
-      background: rgba(255,255,255,0.6);
-      border-radius: 50%;
-      animation: particleFloat 8s linear infinite;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 300;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
     }
 
-    @keyframes particleFloat {
-      0% { transform: translateY(100vh) scale(0); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-100px) scale(1); opacity: 0; }
+    /* 结果区域 */
+    .result-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      z-index: 1001;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 20px;
+    }
+
+    .result-overlay.show {
+      display: flex;
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .result-content {
+      text-align: center;
+      animation: revealResult 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes revealResult {
+      from { opacity: 0; transform: scale(0.5) rotateY(180deg); }
+      to { opacity: 1; transform: scale(1) rotateY(0); }
+    }
+
+    .result-glow {
+      width: 180px;
+      height: 180px;
+      margin: 0 auto 30px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: glow 2s ease-in-out infinite;
+    }
+
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 60px rgba(255,255,255,0.2); }
+      50% { box-shadow: 0 0 100px rgba(255,255,255,0.4); }
+    }
+
+    .result-emoji {
+      font-size: 72px;
+    }
+
+    .result-text {
+      font-size: 32px;
+      font-weight: 200;
+      letter-spacing: 4px;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #fff, #aaa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .wisdom-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 24px;
+      margin-top: 20px;
+      max-width: 400px;
+    }
+
+    .wisdom-text {
+      font-size: 15px;
+      line-height: 2;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 1px;
+    }
+
+    .wisdom-author {
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 16px;
+      text-align: right;
+      letter-spacing: 2px;
+    }
+
+    .btn-again {
+      margin-top: 30px;
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 14px 40px;
+    }
+
+    .btn-again:hover {
+      color: #fff;
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    /* 响应式 */
+    @media (max-width: 480px) {
+      .wheel-3d { width: 240px; height: 240px; }
+      .result-text { font-size: 28px; }
+      .result-glow { width: 150px; height: 150px; }
+      .result-emoji { font-size: 60px; }
     }
   </style>
 </head>
@@ -499,7 +582,7 @@
         <label>写下你的选择</label>
 
         <div class="batch-input">
-          <textarea id="batchInput" placeholder="每行一个选项&#10;例如：&#10;去旅行&#10;换工作&#10;学新技能"></textarea>
+          <textarea id="batchInput" placeholder="每行一个选项&#10;例如：&#10;去旅行&#10;换工作&#10;学新技能&#10;读一本书&#10;开始运动"></textarea>
           <div class="quick-hint">每行一个选项，点击批量添加</div>
           <button class="btn btn-add" style="width: 100%;" onclick="batchAdd()">批量添加</button>
         </div>
@@ -511,7 +594,8 @@
           <button class="btn btn-add" onclick="addOption()">添加</button>
         </div>
 
-        <div class="options-list" id="optionsList"></div>
+        <!-- 网状选项展示 -->
+        <div class="options-network" id="optionsNetwork"></div>
         <div class="count-hint" id="countHint">已添加 0 个选项（至少需要 2 个）</div>
 
         <button class="btn btn-go" id="goBtn" disabled onclick="startWheel()">
@@ -519,14 +603,16 @@
         </button>
       </div>
     </div>
+  </div>
 
-    <!-- 命运之轮 -->
-    <div class="card wheel-section" id="wheelSection">
-      <div class="wheel-3d" id="wheel3d"></div>
-    </div>
+  <!-- 全屏转盘动画 -->
+  <div class="wheel-overlay" id="wheelOverlay">
+    <div class="wheel-3d" id="wheel3d"></div>
+  </div>
 
-    <!-- 结果 -->
-    <div class="result-section" id="resultSection">
+  <!-- 全屏结果展示 -->
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-content">
       <div class="result-glow">
         <div class="result-emoji" id="resultEmoji"></div>
       </div>
@@ -625,12 +711,12 @@
     }
 
     function renderOptions() {
-      const list = document.getElementById('optionsList');
-      list.innerHTML = options.map((opt, i) =>
-        `<span class="option-tag">
+      const network = document.getElementById('optionsNetwork');
+      network.innerHTML = options.map((opt, i) =>
+        `<div class="option-node">
           ${escapeHtml(opt)}
           <span class="remove" onclick="removeOption(${i})">&times;</span>
-        </span>`
+        </div>`
       ).join('');
 
       const count = options.length;
@@ -649,7 +735,6 @@
     // 3D 命运之轮
     function createWheel() {
       const wheel = document.getElementById('wheel3d');
-      const size = 300;
       const colors = ['rgba(255,255,255,0.08)', 'rgba(255,255,255,0.04)'];
       
       let html = '';
@@ -661,9 +746,9 @@
         html += `
           <div class="cube-face" style="
             background: ${color};
-            transform: rotateY(${rotation}deg) translateZ(150px);
+            transform: rotateY(${rotation}deg) translateZ(140px);
           ">
-            ${escapeHtml(opt.slice(0, 8))}
+            ${escapeHtml(opt.slice(0, 6))}
           </div>
         `;
       });
@@ -674,13 +759,11 @@
     function startWheel() {
       if (options.length < 2) return;
 
-      const wheelSection = document.getElementById('wheelSection');
+      const wheelOverlay = document.getElementById('wheelOverlay');
       const wheel = document.getElementById('wheel3d');
-      const resultSection = document.getElementById('resultSection');
       const goBtn = document.getElementById('goBtn');
 
-      wheelSection.classList.add('show');
-      resultSection.classList.remove('show');
+      wheelOverlay.classList.add('show');
       goBtn.disabled = true;
 
       createWheel();
@@ -696,13 +779,14 @@
       wheel.classList.add('spinning');
 
       setTimeout(() => {
+        wheelOverlay.classList.remove('show');
         showResult(options[finalIndex]);
       }, 4000);
     }
 
     function showResult(choice) {
-      const resultSection = document.getElementById('resultSection');
-      resultSection.classList.add('show');
+      const resultOverlay = document.getElementById('resultOverlay');
+      resultOverlay.classList.add('show');
 
       document.getElementById('resultEmoji').textContent = emojis[Math.floor(Math.random() * emojis.length)];
       document.getElementById('resultText').textContent = choice;
@@ -715,8 +799,7 @@
     }
 
     function reset() {
-      document.getElementById('wheelSection').classList.remove('show');
-      document.getElementById('resultSection').classList.remove('show');
+      document.getElementById('resultOverlay').classList.remove('show');
       const wheel = document.getElementById('wheel3d');
       wheel.classList.remove('spinning');
       wheel.style.transform = '';
