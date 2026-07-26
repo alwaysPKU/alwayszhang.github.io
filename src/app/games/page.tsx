@@ -35,6 +35,7 @@ const games: Game[] = [
   { name: "Rubik's Cube", file: 'rubiks-cube.html', emoji: '🎲', desc: '魔方' },
   { name: 'MBTI', file: 'mbti.html', emoji: '🧠', desc: 'MBTI 性格测试' },
   { name: 'Interleaved Simulator', file: 'interleaved-simulator.html', emoji: '📚', desc: '交错学习模拟器' },
+  { name: '遇事不决', file: 'decision-maker.html', emoji: '🎲', desc: '选择困难症救星' },
 ];
 
 export default function GamesPage() {

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>遇事不决，快来找我</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #faf9f7;
+      --card: #ffffff;
+      --text: #1a1a2e;
+      --text-secondary: #6b7280;
+      --accent: #4f46e5;
+      --accent-light: #eef2ff;
+      --border: #e5e7eb;
+      --shadow: 0 4px 24px rgba(0,0,0,0.06);
+      --radius: 16px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0f172a;
+        --card: #1e293b;
+        --text: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --accent: #818cf8;
+        --accent-light: #1e1b4b;
+        --border: #334155;
+        --shadow: 0 4px 24px rgba(0,0,0,0.3);
+      }
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 560px;
+      width: 100%;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 32px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .input-section label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .input-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .input-row input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 15px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-row input:focus {
+      border-color: var(--accent);
+    }
+
+    .input-row input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+
+    .btn {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-add {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .btn-add:hover {
+      opacity: 0.85;
+    }
+
+    .btn-go {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent);
+      color: #fff;
+      font-size: 17px;
+      border-radius: 12px;
+      margin-top: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-go:hover {
+      opacity: 0.92;
+      transform: translateY(-1px);
+    }
+
+    .btn-go:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .options-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+      min-height: 36px;
+    }
+
+    .option-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--accent-light);
+      color: var(--accent);
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 500;
+      animation: tagIn 0.3s ease;
+    }
+
+    @keyframes tagIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .option-tag .remove {
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .option-tag .remove:hover {
+      opacity: 1;
+    }
+
+    .count-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+    }
+
+    /* 结果区域 */
+    .result-section {
+      display: none;
+      text-align: center;
+    }
+
+    .result-section.show {
+      display: block;
+    }
+
+    /* 滚动动画区 */
+    .slot-machine {
+      height: 80px;
+      overflow: hidden;
+      position: relative;
+      margin: 20px 0;
+      border-radius: 12px;
+      background: var(--accent-light);
+    }
+
+    .slot-machine::before,
+    .slot-machine::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 20px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .slot-machine::before {
+      top: 0;
+      background: linear-gradient(to bottom, var(--accent-light), transparent);
+    }
+
+    .slot-machine::after {
+      bottom: 0;
+      background: linear-gradient(to top, var(--accent-light), transparent);
+    }
+
+    .slot-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      transition: none;
+    }
+
+    .slot-item {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* 最终结果 */
+    .final-result {
+      display: none;
+      animation: resultIn 0.6s ease;
+    }
+
+    .final-result.show {
+      display: block;
+    }
+
+    @keyframes resultIn {
+      from { opacity: 0; transform: scale(0.8) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .result-emoji {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .result-text {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 20px;
+      word-break: break-all;
+    }
+
+    .wisdom-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+
+    .wisdom-text {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text);
+      font-style: italic;
+    }
+
+    .wisdom-author {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-top: 10px;
+      text-align: right;
+    }
+
+    .btn-again {
+      margin-top: 20px;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 12px 32px;
+    }
+
+    .btn-again:hover {
+      opacity: 0.85;
+    }
+
+    /* 撒花动画 */
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 999;
+      overflow: hidden;
+    }
+
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      animation: confettiFall 2.5s ease-in forwards;
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: var(--accent);
+    }
+
+    /* 快捷输入 */
+    .quick-input {
+      margin-bottom: 16px;
+    }
+
+    .quick-input textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      font-size: 14px;
+      background: var(--bg);
+      color: var(--text);
+      outline: none;
+      resize: vertical;
+      min-height: 60px;
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+
+    .quick-input textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .quick-input textarea::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.6;
+    }
+
+    .quick-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 16px 0;
+      color: var(--text-secondary);
+      font-size: 12px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+  </style>
+</head>
+<body>
+  <a href="/games" class="back-link">&larr; 返回游戏中心</a>
+
+  <div class="container">
+    <h1>遇事不决，快来找我</h1>
+    <p class="subtitle">把选择交给命运，把时间留给生活</p>
+
+    <!-- 输入区 -->
+    <div class="card" id="inputCard">
+      <div class="input-section">
+        <label>输入你的选项</label>
+
+        <!-- 快捷批量输入 -->
+        <div class="quick-input">
+          <textarea id="batchInput" placeholder="批量添加：每行一个选项&#10;例如：&#10;火锅&#10;烧烤&#10;日料&#10;麻辣烫"></textarea>
+          <div class="quick-hint">每行一个选项，点击下方按钮批量添加</div>
+          <button class="btn btn-add" style="margin-top: 8px; width: 100%;" onclick="batchAdd()">批量添加</button>
+        </div>
+
+        <div class="divider">或逐个添加</div>
+
+        <!-- 逐个输入 -->
+        <div class="input-row">
+          <input type="text" id="optionInput" placeholder="输入一个选项，回车添加" maxlength="50">
+          <button class="btn btn-add" onclick="addOption()">添加</button>
+        </div>
+
+        <!-- 已添加的选项 -->
+        <div class="options-list" id="optionsList"></div>
+        <div class="count-hint" id="countHint">已添加 0 个选项（至少需要 2 个）</div>
+
+        <!-- 开始按钮 -->
+        <button class="btn btn-go" id="goBtn" disabled onclick="startDecision()">开始命运抉择</button>
+      </div>
+    </div>
+
+    <!-- 结果区 -->
+    <div class="card result-section" id="resultSection">
+      <!-- 老虎机动画 -->
+      <div class="slot-machine" id="slotMachine">
+        <div class="slot-track" id="slotTrack"></div>
+      </div>
+
+      <!-- 最终结果 -->
+      <div class="final-result" id="finalResult">
+        <div class="result-emoji" id="resultEmoji"></div>
+        <div class="result-text" id="resultText"></div>
+        <div class="wisdom-card">
+          <div class="wisdom-text" id="wisdomText"></div>
+          <div class="wisdom-author" id="wisdomAuthor"></div>
+        </div>
+        <button class="btn btn-again" onclick="reset()">再来一次</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="confetti-container" id="confettiContainer"></div>
+
+  <script>
+    const options = [];
+
+    const emojis = ['🎯', '✨', '🎲', '🌟', '🎪', '🎭', '🔮', '🏆', '💫', '🎆'];
+
+    const wisdoms = [
+      { text: '所谓选择，不过是给已经决定的事，一个正式的名义。', author: '' },
+      { text: '人生没有正确的选择，我们只是在努力让选择变得正确。', author: '' },
+      { text: '犹豫不决的背后，是两个同样好的选择。', author: '' },
+      { text: '命运给你关上一扇门，往往会为你打开一扇窗。别急，先等空调修好。', author: '' },
+      { text: '世上本没有路，走的人多了，也便成了路。但选哪条路，还得自己走。', author: '鲁迅（改编）' },
+      { text: '当你面临选择却不知如何选时，选那个让你更害怕的。因为成长总在舒适区之外。', author: '' },
+      { text: '每一个你犹豫的当下，都是未来你怀念的曾经。', author: '' },
+      { text: '选择困难，说明你还有选择。这本身就是一种幸运。', author: '' },
+      { text: '人生就像一盒巧克力，你永远不知道下一颗是什么味道。但至少这次，我帮你选了一颗。', author: '阿甘正传（改编）' },
+      { text: '最好的选择，往往不是在选项中挑出来的，而是选完之后努力出来的。', author: '' },
+      { text: '不要把时间浪费在选择上，要把时间花在行动上。', author: '' },
+      { text: '人生最大的遗憾，不是选错了，而是从未选过。', author: '' },
+      { text: '当你不知道该往哪走时，任何方向都是前方。', author: '' },
+      { text: '选择本身没有意义，是你的行动赋予了选择意义。', author: '' },
+      { text: '与其纠结选A还是选B，不如想想怎么让选了的变成最好的。', author: '' },
+      { text: '所有的选择都有遗憾，但不选择才有最大的遗憾。', author: '' },
+      { text: '命运负责发牌，我们负责出牌。', author: '' },
+      { text: '生活不是等暴风雨过去，而是学会在雨中跳舞。', author: '' },
+      { text: '你以为你在做选择，其实选择也在塑造你。', author: '' },
+      { text: '世界上只有一种英雄主义，就是认清生活的真相后依然热爱它。', author: '罗曼·罗兰' },
+    ];
+
+    // 回车添加
+    document.getElementById('optionInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addOption();
+      }
+    });
+
+    function addOption() {
+      const input = document.getElementById('optionInput');
+      const value = input.value.trim();
+      if (!value) return;
+      if (options.includes(value)) {
+        shakeInput(input);
+        return;
+      }
+      options.push(value);
+      input.value = '';
+      input.focus();
+      renderOptions();
+    }
+
+    function batchAdd() {
+      const textarea = document.getElementById('batchInput');
+      const lines = textarea.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+      let added = 0;
+      lines.forEach(line => {
+        if (!options.includes(line)) {
+          options.push(line);
+          added++;
+        }
+      });
+      textarea.value = '';
+      renderOptions();
+      if (added > 0) {
+        // 短暂高亮提示
+        const hint = document.getElementById('countHint');
+        hint.style.color = 'var(--accent)';
+        setTimeout(() => hint.style.color = '', 800);
+      }
+    }
+
+    function removeOption(index) {
+      options.splice(index, 1);
+      renderOptions();
+    }
+
+    function renderOptions() {
+      const list = document.getElementById('optionsList');
+      list.innerHTML = options.map((opt, i) =>
+        `<span class="option-tag">
+          ${escapeHtml(opt)}
+          <span class="remove" onclick="removeOption(${i})">&times;</span>
+        </span>`
+      ).join('');
+
+      const count = options.length;
+      const hint = document.getElementById('countHint');
+      const btn = document.getElementById('goBtn');
+
+      if (count < 2) {
+        hint.textContent = `已添加 ${count} 个选项（至少需要 2 个）`;
+        btn.disabled = true;
+      } else {
+        hint.textContent = `已添加 ${count} 个选项`;
+        btn.disabled = false;
+      }
+    }
+
+    function shakeInput(el) {
+      el.style.animation = 'none';
+      el.offsetHeight; // reflow
+      el.style.animation = 'shake 0.4s ease';
+      setTimeout(() => el.style.animation = '', 400);
+    }
+
+    function startDecision() {
+      if (options.length < 2) return;
+
+      const resultSection = document.getElementById('resultSection');
+      const slotMachine = document.getElementById('slotMachine');
+      const finalResult = document.getElementById('finalResult');
+      const goBtn = document.getElementById('goBtn');
+
+      // 显示结果区
+      resultSection.classList.add('show');
+      finalResult.classList.remove('show');
+      slotMachine.style.display = 'block';
+      goBtn.disabled = true;
+
+      // 滚动动画
+      const track = document.getElementById('slotTrack');
+      const totalRounds = 20 + Math.floor(Math.random() * 10);
+      const finalIndex = Math.floor(Math.random() * options.length);
+
+      // 构建滚动序列
+      let items = [];
+      for (let i = 0; i < totalRounds; i++) {
+        items.push(options[i % options.length]);
+      }
+      items.push(options[finalIndex]); // 最终结果
+
+      track.innerHTML = items.map(item =>
+        `<div class="slot-item">${escapeHtml(item)}</div>`
+      ).join('');
+
+      // 开始滚动
+      let currentIndex = 0;
+      const totalItems = items.length;
+      let speed = 50;
+
+      function scroll() {
+        currentIndex++;
+        track.style.transform = `translateY(-${currentIndex * 80}px)`;
+
+        if (currentIndex >= totalItems - 1) {
+          // 滚动结束
+          setTimeout(() => showResult(options[finalIndex]), 300);
+          return;
+        }
+
+        // 逐渐减速
+        if (currentIndex > totalItems * 0.6) {
+          speed += 30;
+        }
+        if (currentIndex > totalItems * 0.8) {
+          speed += 50;
+        }
+
+        setTimeout(scroll, speed);
+      }
+
+      setTimeout(scroll, speed);
+    }
+
+    function showResult(choice) {
+      const slotMachine = document.getElementById('slotMachine');
+      const finalResult = document.getElementById('finalResult');
+
+      slotMachine.style.display = 'none';
+      finalResult.classList.add('show');
+
+      document.getElementById('resultEmoji').textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      document.getElementById('resultText').textContent = choice;
+
+      const wisdom = wisdoms[Math.floor(Math.random() * wisdoms.length)];
+      document.getElementById('wisdomText').textContent = `"${wisdom.text}"`;
+      document.getElementById('wisdomAuthor').textContent = wisdom.author ? `— ${wisdom.author}` : '';
+
+      // 撒花
+      launchConfetti();
+
+      document.getElementById('goBtn').disabled = false;
+    }
+
+    function reset() {
+      const resultSection = document.getElementById('resultSection');
+      resultSection.classList.remove('show');
+      document.getElementById('finalResult').classList.remove('show');
+      document.getElementById('slotMachine').style.display = 'block';
+      document.getElementById('slotTrack').style.transform = 'translateY(0)';
+      document.getElementById('slotTrack').innerHTML = '';
+    }
+
+    function launchConfetti() {
+      const container = document.getElementById('confettiContainer');
+      const colors = ['#4f46e5', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4'];
+      const count = 60;
+
+      for (let i = 0; i < count; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 0.8 + 's';
+        confetti.style.animationDuration = (2 + Math.random() * 1.5) + 's';
+        confetti.style.width = (6 + Math.random() * 8) + 'px';
+        confetti.style.height = (6 + Math.random() * 8) + 'px';
+        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        container.appendChild(confetti);
+      }
+
+      setTimeout(() => {
+        container.innerHTML = '';
+      }, 3500);
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+
+  <style>
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+  </style>
+</body>
+</html>
