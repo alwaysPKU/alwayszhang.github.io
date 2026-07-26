@@ -671,29 +671,36 @@
       return points;
     }
 
-    // 创建3D球体
+    // 创建3D球体 - 每个选项复制多份
     function createSphere() {
       const sphere = document.getElementById('sphere');
-      const radius = 120;
-      const points = fibonacciSphere(options.length, radius);
+      const radius = 140;
+      
+      // 每个选项复制的份数（根据选项数量动态调整）
+      const copiesPerOption = Math.max(3, Math.ceil(30 / options.length));
+      const totalNodes = options.length * copiesPerOption;
+      const points = fibonacciSphere(totalNodes, radius);
 
       let html = '';
 
-      // 创建节点
+      // 创建节点 - 每个选项复制多份
       options.forEach((opt, i) => {
-        const p = points[i];
-        // 计算旋转角度
-        const rotateY = Math.atan2(p.x, p.z) * 180 / Math.PI;
-        const rotateX = -Math.asin(p.y / radius) * 180 / Math.PI;
-        const translateZ = Math.sqrt(p.x * p.x + p.y * p.y + p.z * p.z);
+        for (let copy = 0; copy < copiesPerOption; copy++) {
+          const nodeIndex = i * copiesPerOption + copy;
+          const p = points[nodeIndex];
+          // 计算旋转角度
+          const rotateY = Math.atan2(p.x, p.z) * 180 / Math.PI;
+          const rotateX = -Math.asin(p.y / radius) * 180 / Math.PI;
+          const translateZ = Math.sqrt(p.x * p.x + p.y * p.y + p.z * p.z);
 
-        html += `
-          <div class="sphere-node" 
-               data-index="${i}"
-               style="transform: rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(${translateZ}px);">
-            ${escapeHtml(opt.slice(0, 4))}
-          </div>
-        `;
+          html += `
+            <div class="sphere-node" 
+                 data-option-index="${i}"
+                 style="transform: rotateY(${rotateY}deg) rotateX(${rotateX}deg) translateZ(${translateZ}px);">
+              ${escapeHtml(opt.slice(0, 4))}
+            </div>
+          `;
+        }
       });
 
       sphere.innerHTML = html;
@@ -722,12 +729,12 @@
       sphere.style.setProperty('--final-tilt', finalTilt + 'deg');
       sphere.classList.add('spinning');
 
-      // 旋转结束后高亮选中节点
+      // 旋转结束后高亮选中节点（高亮所有复制的节点）
       setTimeout(() => {
-        const nodes = document.querySelectorAll('.sphere-node');
-        if (nodes[finalIndex]) {
-          nodes[finalIndex].classList.add('highlighted');
-        }
+        const nodes = document.querySelectorAll(`.sphere-node[data-option-index="${finalIndex}"]`);
+        nodes.forEach(node => {
+          node.classList.add('highlighted');
+        });
       }, 4500);
 
       // 显示结果
