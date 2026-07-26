@@ -676,8 +676,8 @@
       const sphere = document.getElementById('sphere');
       const radius = 140;
       
-      // 每个选项复制的份数（根据选项数量动态调整）
-      const copiesPerOption = Math.max(3, Math.ceil(30 / options.length));
+      // 每个选项复制的份数（确保总节点数不少于100个）
+      const copiesPerOption = Math.max(5, Math.ceil(100 / options.length));
       const totalNodes = options.length * copiesPerOption;
       const points = fibonacciSphere(totalNodes, radius);
 
