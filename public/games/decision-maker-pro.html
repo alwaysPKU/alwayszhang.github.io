@@ -3,223 +3,242 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>命运转盘 PRO - 遇事不决</title>
+  <title>命运之轮 - 遇事不决</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    :root {
-      --neon-pink: #ff00ff;
-      --neon-cyan: #00ffff;
-      --neon-purple: #bf00ff;
-      --neon-yellow: #ffff00;
-      --dark-bg: #0a0a0f;
-      --card-bg: rgba(20, 20, 35, 0.8);
-      --glass: rgba(255, 255, 255, 0.05);
-    }
-
     body {
       font-family: 'SF Pro Display', -apple-system, 'PingFang SC', sans-serif;
-      background: var(--dark-bg);
+      background: #000;
       color: #fff;
       min-height: 100vh;
       overflow-x: hidden;
-      position: relative;
     }
 
-    /* 粒子背景 */
-    #particles-canvas {
+    /* 星空背景 */
+    .stars {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      background: radial-gradient(ellipse at center, #0a0a2e 0%, #000 100%);
     }
 
-    /* 网格背景 */
-    .grid-bg {
-      position: fixed;
+    .stars::before,
+    .stars::after {
+      content: '';
+      position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
-      background-size: 50px 50px;
-      z-index: 1;
-      animation: gridMove 20s linear infinite;
+        radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+        radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+        radial-gradient(2px 2px at 130px 80px, rgba(255,255,255,0.6), transparent),
+        radial-gradient(1px 1px at 160px 120px, #fff, transparent);
+      background-size: 200px 200px;
+      animation: twinkle 5s ease-in-out infinite;
     }
 
-    @keyframes gridMove {
-      0% { transform: perspective(500px) rotateX(60deg) translateY(0); }
-      100% { transform: perspective(500px) rotateX(60deg) translateY(50px); }
+    .stars::after {
+      background-image: 
+        radial-gradient(1px 1px at 50px 100px, rgba(255,255,255,0.5), transparent),
+        radial-gradient(2px 2px at 100px 50px, #fff, transparent),
+        radial-gradient(1px 1px at 150px 150px, rgba(255,255,255,0.7), transparent);
+      background-size: 250px 250px;
+      animation-delay: 2s;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    /* 流星 */
+    .meteor {
+      position: fixed;
+      width: 2px;
+      height: 100px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.8), transparent);
+      animation: meteor 3s linear infinite;
+      opacity: 0;
+    }
+
+    .meteor:nth-child(1) { left: 20%; animation-delay: 0s; }
+    .meteor:nth-child(2) { left: 50%; animation-delay: 1.5s; }
+    .meteor:nth-child(3) { left: 80%; animation-delay: 3s; }
+
+    @keyframes meteor {
+      0% { transform: translateY(-100px) rotate(45deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
     }
 
     .container {
       position: relative;
       z-index: 10;
-      max-width: 600px;
+      max-width: 500px;
       margin: 0 auto;
       padding: 24px 16px;
     }
 
     .back-link {
       display: inline-block;
-      color: var(--neon-cyan);
+      color: rgba(255,255,255,0.6);
       text-decoration: none;
       font-size: 14px;
       margin-bottom: 20px;
-      text-shadow: 0 0 10px var(--neon-cyan);
-      transition: all 0.3s;
+      transition: color 0.3s;
     }
 
-    .back-link:hover {
-      text-shadow: 0 0 20px var(--neon-cyan), 0 0 40px var(--neon-cyan);
-    }
+    .back-link:hover { color: #fff; }
 
-    /* 标题 */
     .title {
       text-align: center;
-      font-size: 36px;
-      font-weight: 900;
+      font-size: 32px;
+      font-weight: 300;
       margin-bottom: 8px;
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple));
+      letter-spacing: 8px;
+      background: linear-gradient(135deg, #fff 0%, #888 50%, #fff 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-      animation: titleGlow 3s ease-in-out infinite;
-    }
-
-    @keyframes titleGlow {
-      0%, 100% { filter: brightness(1); }
-      50% { filter: brightness(1.3); }
     }
 
     .subtitle {
       text-align: center;
-      color: rgba(255, 255, 255, 0.6);
-      font-size: 14px;
-      margin-bottom: 32px;
-      letter-spacing: 2px;
+      color: rgba(255,255,255,0.4);
+      font-size: 12px;
+      letter-spacing: 4px;
+      margin-bottom: 40px;
     }
 
     /* 卡片 */
     .card {
-      background: var(--card-bg);
-      border: 1px solid rgba(0, 255, 255, 0.2);
-      border-radius: 20px;
-      padding: 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 28px;
       backdrop-filter: blur(20px);
-      box-shadow: 
-        0 0 30px rgba(0, 255, 255, 0.1),
-        inset 0 0 30px rgba(0, 255, 255, 0.05);
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
+      margin-bottom: 24px;
     }
 
-    .card::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: conic-gradient(from 0deg, transparent, rgba(0, 255, 255, 0.1), transparent);
-      animation: rotate 10s linear infinite;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .card:hover::before {
-      opacity: 1;
-    }
-
-    @keyframes rotate {
-      100% { transform: rotate(360deg); }
-    }
-
-    .card > * {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* 输入区 */
     .input-section label {
       display: block;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: var(--neon-cyan);
-      text-shadow: 0 0 10px var(--neon-cyan);
-      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 400;
+      margin-bottom: 16px;
+      color: rgba(255,255,255,0.6);
       letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     .input-row {
       display: flex;
-      gap: 10px;
-      margin-bottom: 16px;
+      gap: 12px;
+      margin-bottom: 20px;
     }
 
     .input-row input {
       flex: 1;
-      padding: 14px 18px;
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      border-radius: 12px;
+      padding: 16px 20px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
       font-size: 15px;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0,0,0,0.3);
       color: #fff;
       outline: none;
       transition: all 0.3s;
     }
 
     .input-row input:focus {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(0,0,0,0.5);
     }
 
     .input-row input::placeholder {
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(255,255,255,0.25);
     }
 
     .btn {
-      padding: 14px 24px;
+      padding: 16px 24px;
       border: none;
-      border-radius: 12px;
+      border-radius: 16px;
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.3s;
-      text-transform: uppercase;
       letter-spacing: 1px;
     }
 
     .btn-add {
-      background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(191, 0, 255, 0.2));
-      color: var(--neon-cyan);
-      border: 1px solid var(--neon-cyan);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.15);
     }
 
     .btn-add:hover {
-      background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(191, 0, 255, 0.3));
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
-      transform: translateY(-2px);
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .options-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      min-height: 44px;
+    }
+
+    .option-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 18px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 24px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.85);
+      animation: fadeIn 0.4s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .option-tag .remove {
+      cursor: pointer;
+      font-size: 16px;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+    }
+
+    .option-tag .remove:hover { opacity: 1; }
+
+    .count-hint {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 8px;
     }
 
     .btn-go {
       width: 100%;
-      padding: 18px;
-      background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
       color: #fff;
-      font-size: 18px;
-      border-radius: 14px;
-      margin-top: 12px;
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: 4px;
+      border: 1px solid rgba(255,255,255,0.2);
+      margin-top: 8px;
       position: relative;
       overflow: hidden;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }
 
     .btn-go::before {
@@ -229,8 +248,8 @@
       left: -100%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      animation: shimmer 2s infinite;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      animation: shimmer 3s infinite;
     }
 
     @keyframes shimmer {
@@ -238,311 +257,191 @@
     }
 
     .btn-go:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 40px rgba(255, 0, 255, 0.4);
+      background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08));
+      border-color: rgba(255,255,255,0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(255,255,255,0.1);
     }
 
     .btn-go:disabled {
-      opacity: 0.4;
+      opacity: 0.3;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
     }
 
-    /* 选项标签 */
-    .options-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 16px;
-      min-height: 40px;
-    }
-
-    .option-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(191, 0, 255, 0.1));
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      border-radius: 20px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--neon-cyan);
-      animation: tagIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-    }
-
-    @keyframes tagIn {
-      from { opacity: 0; transform: scale(0) rotate(180deg); }
-      to { opacity: 1; transform: scale(1) rotate(0); }
-    }
-
-    .option-tag .remove {
-      cursor: pointer;
-      font-size: 18px;
-      opacity: 0.6;
-      transition: all 0.2s;
-    }
-
-    .option-tag .remove:hover {
-      opacity: 1;
-      color: var(--neon-pink);
-      transform: scale(1.2);
-    }
-
-    .count-hint {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    /* 转盘区域 */
+    /* 3D 命运之轮 */
     .wheel-section {
       display: none;
-      text-align: center;
+      perspective: 1000px;
     }
 
     .wheel-section.show {
       display: block;
     }
 
-    .wheel-container {
+    .wheel-3d {
+      width: 300px;
+      height: 300px;
+      margin: 40px auto;
       position: relative;
-      width: 320px;
-      height: 320px;
-      margin: 30px auto;
+      transform-style: preserve-3d;
+      animation: float 3s ease-in-out infinite;
     }
 
-    .wheel {
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotateX(10deg); }
+      50% { transform: translateY(-10px) rotateX(10deg); }
+    }
+
+    .wheel-3d.spinning {
+      animation: spin3d 4s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+    }
+
+    @keyframes spin3d {
+      0% { transform: rotateY(0) rotateX(10deg); }
+      100% { transform: rotateY(var(--final-rotation)) rotateX(10deg); }
+    }
+
+    .cube-face {
+      position: absolute;
       width: 100%;
       height: 100%;
-      border-radius: 50%;
-      position: relative;
-      transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
-      box-shadow: 
-        0 0 50px rgba(0, 255, 255, 0.3),
-        0 0 100px rgba(255, 0, 255, 0.2),
-        inset 0 0 50px rgba(0, 0, 0, 0.5);
-    }
-
-    .wheel.spinning {
-      transition-duration: 5s;
-    }
-
-    .wheel-segment {
-      position: absolute;
-      width: 50%;
-      height: 50%;
-      transform-origin: 100% 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      clip-path: polygon(0 0, 100% 0, 100% 100%);
-    }
-
-    .wheel-segment span {
-      position: absolute;
-      top: 20%;
-      left: 20%;
-      font-size: 12px;
-      font-weight: 700;
-      color: #fff;
-      text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-      transform: rotate(45deg);
-      white-space: nowrap;
-      max-width: 80px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .wheel-center {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60px;
-      height: 60px;
-      background: radial-gradient(circle, var(--neon-cyan), var(--neon-purple));
-      border-radius: 50%;
-      z-index: 10;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      box-shadow: 0 0 30px var(--neon-cyan);
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: translate(-50%, -50%) scale(1); }
-      50% { transform: translate(-50%, -50%) scale(1.1); }
-    }
-
-    .wheel-pointer {
-      position: absolute;
-      top: -20px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 15px solid transparent;
-      border-right: 15px solid transparent;
-      border-top: 30px solid var(--neon-pink);
-      filter: drop-shadow(0 0 10px var(--neon-pink));
-      z-index: 20;
+      font-size: 18px;
+      font-weight: 300;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(10px);
     }
 
     /* 结果区域 */
     .result-section {
       display: none;
       text-align: center;
-      margin-top: 30px;
     }
 
     .result-section.show {
       display: block;
-      animation: resultIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      animation: revealResult 1s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
-    @keyframes resultIn {
-      from { opacity: 0; transform: scale(0.5) rotateY(180deg); }
+    @keyframes revealResult {
+      from { opacity: 0; transform: scale(0.8) rotateY(180deg); }
       to { opacity: 1; transform: scale(1) rotateY(0); }
     }
 
-    .result-emoji {
-      font-size: 64px;
-      margin-bottom: 16px;
-      animation: bounce 1s ease infinite;
+    .result-glow {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto 30px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: glow 2s ease-in-out infinite;
     }
 
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    @keyframes glow {
+      0%, 100% { box-shadow: 0 0 60px rgba(255,255,255,0.2); }
+      50% { box-shadow: 0 0 100px rgba(255,255,255,0.4); }
+    }
+
+    .result-emoji {
+      font-size: 80px;
     }
 
     .result-text {
-      font-size: 42px;
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink));
+      font-size: 36px;
+      font-weight: 200;
+      letter-spacing: 4px;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #fff, #aaa);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 24px;
-      text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
-      word-break: break-all;
     }
 
     .wisdom-card {
-      background: rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(0, 255, 255, 0.2);
-      border-radius: 16px;
-      padding: 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 28px;
       margin-top: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .wisdom-card::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink), var(--neon-purple));
-      animation: borderGlow 3s linear infinite;
-    }
-
-    @keyframes borderGlow {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
     }
 
     .wisdom-text {
-      font-size: 16px;
-      line-height: 1.8;
-      color: rgba(255, 255, 255, 0.9);
+      font-size: 15px;
+      line-height: 2;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
       font-style: italic;
+      letter-spacing: 1px;
     }
 
     .wisdom-author {
-      font-size: 13px;
-      color: var(--neon-cyan);
-      margin-top: 12px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 16px;
       text-align: right;
+      letter-spacing: 2px;
     }
 
     .btn-again {
-      margin-top: 24px;
-      background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(191, 0, 255, 0.2));
-      color: var(--neon-cyan);
-      border: 1px solid var(--neon-cyan);
+      margin-top: 30px;
+      background: transparent;
+      color: rgba(255,255,255,0.6);
+      border: 1px solid rgba(255,255,255,0.2);
       padding: 14px 40px;
     }
 
     .btn-again:hover {
-      background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(191, 0, 255, 0.3));
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.4);
-    }
-
-    /* 烟花效果 */
-    .firework {
-      position: fixed;
-      pointer-events: none;
-      z-index: 1000;
-    }
-
-    .firework-particle {
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      animation: explode 1.5s ease-out forwards;
-    }
-
-    @keyframes explode {
-      0% { transform: translate(0, 0) scale(1); opacity: 1; }
-      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+      color: #fff;
+      border-color: rgba(255,255,255,0.5);
     }
 
     /* 批量输入 */
     .batch-input textarea {
       width: 100%;
-      padding: 14px 18px;
-      border: 1px solid rgba(0, 255, 255, 0.3);
-      border-radius: 12px;
+      padding: 16px 20px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
       font-size: 14px;
-      background: rgba(0, 0, 0, 0.3);
+      background: rgba(0,0,0,0.3);
       color: #fff;
       outline: none;
       resize: vertical;
       min-height: 80px;
       font-family: inherit;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       transition: all 0.3s;
     }
 
     .batch-input textarea:focus {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+      border-color: rgba(255,255,255,0.4);
     }
 
     .batch-input textarea::placeholder {
-      color: rgba(255, 255, 255, 0.3);
+      color: rgba(255,255,255,0.25);
     }
 
     .quick-hint {
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.4);
-      margin-bottom: 10px;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 12px;
     }
 
     .divider {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin: 20px 0;
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 12px;
+      gap: 16px;
+      margin: 24px 0;
+      color: rgba(255,255,255,0.25);
+      font-size: 11px;
+      letter-spacing: 2px;
     }
 
     .divider::before,
@@ -550,34 +449,57 @@
       content: '';
       flex: 1;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
     }
 
-    /* 响应式 */
-    @media (max-width: 480px) {
-      .title { font-size: 28px; }
-      .wheel-container { width: 280px; height: 280px; }
-      .result-text { font-size: 32px; }
+    /* 光粒子效果 */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 50%;
+      animation: particleFloat 8s linear infinite;
+    }
+
+    @keyframes particleFloat {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) scale(1); opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <canvas id="particles-canvas"></canvas>
-  <div class="grid-bg"></div>
+  <div class="stars"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+  <div class="meteor"></div>
+  <div class="particles" id="particles"></div>
 
   <div class="container">
     <a href="/games" class="back-link">&larr; 返回游戏中心</a>
 
-    <h1 class="title">命运转盘 PRO</h1>
-    <p class="subtitle">DESTINY ROULETTE</p>
+    <h1 class="title">命运之轮</h1>
+    <p class="subtitle">WHEEL OF DESTINY</p>
 
     <!-- 输入区 -->
     <div class="card" id="inputCard">
       <div class="input-section">
-        <label>输入你的选项</label>
+        <label>写下你的选择</label>
 
         <div class="batch-input">
-          <textarea id="batchInput" placeholder="批量添加：每行一个选项&#10;火锅&#10;烧烤&#10;日料&#10;麻辣烫"></textarea>
+          <textarea id="batchInput" placeholder="每行一个选项&#10;例如：&#10;去旅行&#10;换工作&#10;学新技能"></textarea>
           <div class="quick-hint">每行一个选项，点击批量添加</div>
           <button class="btn btn-add" style="width: 100%;" onclick="batchAdd()">批量添加</button>
         </div>
@@ -592,171 +514,82 @@
         <div class="options-list" id="optionsList"></div>
         <div class="count-hint" id="countHint">已添加 0 个选项（至少需要 2 个）</div>
 
-        <button class="btn btn-go" id="goBtn" disabled onclick="startSpin()">
-          启动命运转盘
+        <button class="btn btn-go" id="goBtn" disabled onclick="startWheel()">
+          转动命运
         </button>
       </div>
     </div>
 
-    <!-- 转盘区 -->
+    <!-- 命运之轮 -->
     <div class="card wheel-section" id="wheelSection">
-      <div class="wheel-container">
-        <div class="wheel-pointer"></div>
-        <div class="wheel" id="wheel"></div>
-        <div class="wheel-center">🎯</div>
-      </div>
+      <div class="wheel-3d" id="wheel3d"></div>
     </div>
 
-    <!-- 结果区 -->
+    <!-- 结果 -->
     <div class="result-section" id="resultSection">
-      <div class="result-emoji" id="resultEmoji"></div>
+      <div class="result-glow">
+        <div class="result-emoji" id="resultEmoji"></div>
+      </div>
       <div class="result-text" id="resultText"></div>
       <div class="wisdom-card">
         <div class="wisdom-text" id="wisdomText"></div>
         <div class="wisdom-author" id="wisdomAuthor"></div>
       </div>
-      <button class="btn btn-again" onclick="reset()">再来一次</button>
+      <button class="btn btn-again" onclick="reset()">再次转动</button>
     </div>
   </div>
 
   <script>
     const options = [];
-    const colors = ['#ff00ff', '#00ffff', '#bf00ff', '#ffff00', '#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8', '#f7dc6f'];
 
-    const emojis = ['🎯', '✨', '🎲', '🌟', '🎪', '🎭', '🔮', '🏆', '💫', '🎆', '⚡', '🌈'];
+    const emojis = ['✨', '🌟', '💫', '⭐', '🌙', '☀️', '🔮', '🎯', '🌈', '🦋'];
 
     const wisdoms = [
       { text: '所谓选择，不过是给已经决定的事，一个正式的名义。', author: '' },
       { text: '人生没有正确的选择，我们只是在努力让选择变得正确。', author: '' },
       { text: '犹豫不决的背后，是两个同样好的选择。', author: '' },
-      { text: '命运给你关上一扇门，往往会为你打开一扇窗。别急，先等空调修好。', author: '' },
       { text: '当你面临选择却不知如何选时，选那个让你更害怕的。', author: '' },
       { text: '每一个你犹豫的当下，都是未来你怀念的曾经。', author: '' },
       { text: '选择困难，说明你还有选择。这本身就是一种幸运。', author: '' },
       { text: '最好的选择，往往不是在选项中挑出来的，而是选完之后努力出来的。', author: '' },
-      { text: '不要把时间浪费在选择上，要把时间花在行动上。', author: '' },
       { text: '人生最大的遗憾，不是选错了，而是从未选过。', author: '' },
       { text: '当你不知道该往哪走时，任何方向都是前方。', author: '' },
-      { text: '选择本身没有意义，是你的行动赋予了选择意义。', author: '' },
       { text: '所有的选择都有遗憾，但不选择才有最大的遗憾。', author: '' },
       { text: '命运负责发牌，我们负责出牌。', author: '' },
       { text: '生活不是等暴风雨过去，而是学会在雨中跳舞。', author: '' },
       { text: '你以为你在做选择，其实选择也在塑造你。', author: '' },
       { text: '两条路分叉在树林里，我选择了人迹更少的那一条。', author: '弗罗斯特' },
       { text: '人生就像骑自行车，要保持平衡就得不断前行。', author: '爱因斯坦' },
-      { text: '你不需要很厉害才能开始，但你需要开始才能变得很厉害。', author: '' },
-      { text: '所有的伟大，都源于一个勇敢的开始。', author: '' },
       { text: '不要等到万事俱备才出发，因为那一天永远不会来。', author: '' },
       { text: '有时候，错误的选择带来的收获，比正确的选择更多。', author: '' },
-      { text: '完美是优秀的敌人。先做完，再做好。', author: '' },
       { text: '做决定的那一刻，才是你真正活着的时刻。', author: '' },
-      { text: '选择就像抛硬币，不是因为硬币能给你答案，而是抛出去的那一刻，你知道了自己期待什么。', author: '' },
+      { text: '选择就像抛硬币，抛出去的那一刻，你知道了自己期待什么。', author: '' },
       { text: '别怕选错，怕的是你连选的勇气都没有。', author: '' },
-      { text: '今天的选择，是明天的回忆。选一个让你老了能笑着讲出来的。', author: '' },
       { text: '路是走出来的，不是选出来的。但总得先选一条，才能走。', author: '' },
       { text: '人生没有标准答案，你的选择就是你的答案。', author: '' },
       { text: '当你犹豫要不要做一件事的时候，答案是肯定的。', author: '' },
+      { text: '选择没有对错，只有适不适合当下的你。', author: '' },
+      { text: '与其在选择中消耗精力，不如在行动中证明自己。', author: '' },
+      { text: '人生就像导航，走错了可以重新规划路线，但别停在原地。', author: '' },
+      { text: '做选择之前问自己：八十岁的我会怎么看这个选择？', author: '' },
+      { text: '真正的智慧不是做出正确的选择，而是让选择变得正确。', author: '' },
+      { text: '做决定的时候，想想这件事十年后还重要吗？', author: '' },
+      { text: '选择就像开门，开哪扇都能进去，关键是进去之后做什么。', author: '' },
     ];
 
-    // 粒子背景
-    const canvas = document.getElementById('particles-canvas');
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
+    // 创建光粒子
     function createParticles() {
-      particles = [];
-      const count = Math.floor((canvas.width * canvas.height) / 15000);
-      for (let i = 0; i < count; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: (Math.random() - 0.5) * 0.5,
-          size: Math.random() * 2 + 1,
-          color: colors[Math.floor(Math.random() * colors.length)]
-        });
+      const container = document.getElementById('particles');
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (6 + Math.random() * 4) + 's';
+        container.appendChild(particle);
       }
     }
-
-    function animateParticles() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      particles.forEach((p, i) => {
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-        if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = p.color;
-        ctx.globalAlpha = 0.6;
-        ctx.fill();
-
-        // 连线
-        particles.slice(i + 1).forEach(p2 => {
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 100) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = p.color;
-            ctx.globalAlpha = (1 - dist / 100) * 0.3;
-            ctx.stroke();
-          }
-        });
-      });
-
-      ctx.globalAlpha = 1;
-      requestAnimationFrame(animateParticles);
-    }
-
-    resizeCanvas();
     createParticles();
-    animateParticles();
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-      createParticles();
-    });
-
-    // 音效
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-
-    function playTick() {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.frequency.value = 800 + Math.random() * 400;
-      gain.gain.value = 0.1;
-      osc.start();
-      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-      osc.stop(audioCtx.currentTime + 0.1);
-    }
-
-    function playWin() {
-      [0, 100, 200, 300].forEach((delay, i) => {
-        setTimeout(() => {
-          const osc = audioCtx.createOscillator();
-          const gain = audioCtx.createGain();
-          osc.connect(gain);
-          gain.connect(audioCtx.destination);
-          osc.frequency.value = 400 + i * 100;
-          gain.gain.value = 0.2;
-          osc.start();
-          gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
-          osc.stop(audioCtx.currentTime + 0.3);
-        }, delay);
-      });
-    }
 
     // 输入处理
     document.getElementById('optionInput').addEventListener('keydown', function(e) {
@@ -774,22 +607,16 @@
       input.value = '';
       input.focus();
       renderOptions();
-      playTick();
     }
 
     function batchAdd() {
       const textarea = document.getElementById('batchInput');
       const lines = textarea.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-      let added = 0;
       lines.forEach(line => {
-        if (!options.includes(line)) {
-          options.push(line);
-          added++;
-        }
+        if (!options.includes(line)) options.push(line);
       });
       textarea.value = '';
       renderOptions();
-      if (added > 0) playTick();
     }
 
     function removeOption(index) {
@@ -819,21 +646,24 @@
       }
     }
 
-    // 转盘逻辑
+    // 3D 命运之轮
     function createWheel() {
-      const wheel = document.getElementById('wheel');
-      const segmentAngle = 360 / options.length;
+      const wheel = document.getElementById('wheel3d');
+      const size = 300;
+      const colors = ['rgba(255,255,255,0.08)', 'rgba(255,255,255,0.04)'];
       
       let html = '';
+      const segmentAngle = 360 / options.length;
+      
       options.forEach((opt, i) => {
         const rotation = i * segmentAngle;
-        const color = colors[i % colors.length];
+        const color = colors[i % 2];
         html += `
-          <div class="wheel-segment" style="
-            transform: rotate(${rotation}deg) skewY(-${90 - segmentAngle}deg);
+          <div class="cube-face" style="
             background: ${color};
+            transform: rotateY(${rotation}deg) translateZ(150px);
           ">
-            <span style="transform: rotate(${segmentAngle/2}deg) skewY(${90 - segmentAngle}deg);">${escapeHtml(opt.slice(0, 6))}</span>
+            ${escapeHtml(opt.slice(0, 8))}
           </div>
         `;
       });
@@ -841,11 +671,11 @@
       wheel.innerHTML = html;
     }
 
-    function startSpin() {
+    function startWheel() {
       if (options.length < 2) return;
 
       const wheelSection = document.getElementById('wheelSection');
-      const wheel = document.getElementById('wheel');
+      const wheel = document.getElementById('wheel3d');
       const resultSection = document.getElementById('resultSection');
       const goBtn = document.getElementById('goBtn');
 
@@ -858,21 +688,16 @@
       // 随机结果
       const finalIndex = Math.floor(Math.random() * options.length);
       const segmentAngle = 360 / options.length;
-      const extraSpins = 5 + Math.floor(Math.random() * 5);
-      const finalRotation = extraSpins * 360 + (360 - finalIndex * segmentAngle - segmentAngle / 2);
+      const extraSpins = 5 + Math.floor(Math.random() * 3);
+      const finalRotation = extraSpins * 360 + (360 - finalIndex * segmentAngle);
 
       // 开始旋转
+      wheel.style.setProperty('--final-rotation', finalRotation + 'deg');
       wheel.classList.add('spinning');
-      wheel.style.transform = `rotate(${finalRotation}deg)`;
-
-      // 音效
-      let tickInterval = setInterval(playTick, 100);
 
       setTimeout(() => {
-        clearInterval(tickInterval);
-        playWin();
         showResult(options[finalIndex]);
-      }, 5000);
+      }, 4000);
     }
 
     function showResult(choice) {
@@ -886,44 +711,15 @@
       document.getElementById('wisdomText').textContent = `"${wisdom.text}"`;
       document.getElementById('wisdomAuthor').textContent = wisdom.author ? `— ${wisdom.author}` : '';
 
-      // 烟花效果
-      launchFireworks();
-
       document.getElementById('goBtn').disabled = false;
-    }
-
-    function launchFireworks() {
-      const colors = ['#ff00ff', '#00ffff', '#bf00ff', '#ffff00', '#ff6b6b'];
-      
-      for (let f = 0; f < 5; f++) {
-        setTimeout(() => {
-          const firework = document.createElement('div');
-          firework.className = 'firework';
-          firework.style.left = Math.random() * window.innerWidth + 'px';
-          firework.style.top = Math.random() * window.innerHeight * 0.5 + 'px';
-          
-          for (let i = 0; i < 20; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'firework-particle';
-            const angle = (i / 20) * Math.PI * 2;
-            const distance = 50 + Math.random() * 50;
-            particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
-            particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
-            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-            firework.appendChild(particle);
-          }
-          
-          document.body.appendChild(firework);
-          setTimeout(() => firework.remove(), 1500);
-        }, f * 300);
-      }
     }
 
     function reset() {
       document.getElementById('wheelSection').classList.remove('show');
       document.getElementById('resultSection').classList.remove('show');
-      document.getElementById('wheel').style.transform = 'rotate(0deg)';
-      document.getElementById('wheel').classList.remove('spinning');
+      const wheel = document.getElementById('wheel3d');
+      wheel.classList.remove('spinning');
+      wheel.style.transform = '';
     }
 
     function escapeHtml(text) {
