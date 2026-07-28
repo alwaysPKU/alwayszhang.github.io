@@ -291,14 +291,26 @@ async function publishArticle(options) {
 
   // 5. 上传封面图
   console.log('\n🖼️ 上传封面图...');
-  const coverPath = frontMatter.cover || path.join(__dirname, '..', 'public', 'images', 'og-default.png');
+  // 支持 cover 或 ogImage 字段，支持相对路径（如 /images/xxx.jpg）
+  const coverField = frontMatter.cover || frontMatter.ogImage;
+  let coverPath;
+  if (coverField) {
+    if (coverField.startsWith('/')) {
+      // 相对路径，转换为绝对路径
+      coverPath = path.join(__dirname, '..', 'public', coverField);
+    } else {
+      coverPath = path.resolve(path.dirname(filePath), coverField);
+    }
+  } else {
+    coverPath = path.join(__dirname, '..', 'public', 'images', 'og-default.png');
+  }
   let thumbMediaId = '';
   try {
     if (fs.existsSync(coverPath)) {
       const coverResult = await uploadImage(accessToken, coverPath);
       thumbMediaId = coverResult.media_id;
     } else {
-      console.log('⚠️ 封面图不存在，跳过上传（需在公众号后台手动设置封面）');
+      console.log(`⚠️ 封面图不存在: ${coverPath}，跳过上传（需在公众号后台手动设置封面）`);
     }
   } catch (err) {
     console.log(`⚠️ 封面上传失败: ${err.message}（需在公众号后台手动设置封面）`);
