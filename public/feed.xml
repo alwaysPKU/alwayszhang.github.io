@@ -7,6 +7,166 @@
     <language>zh-cn</language>
     <atom:link href="https://alwayszhang.cn/feed.xml" rel="self" type="application/rss+xml"/>
     <item>
+      <title><![CDATA[脉冲神经网络（SNN）深度综述：从生物启发到类脑智能的技术演进]]></title>
+      <link>https://alwayszhang.cn/posts/2026-08-12-%E8%84%89%E5%86%B2%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CSNN%E6%B7%B1%E5%BA%A6%E7%BB%BC%E8%BF%B0-%E4%BB%8E%E7%94%9F%E7%89%A9%E5%90%AF%E5%8F%91%E5%88%B0%E7%B1%BB%E8%84%91%E6%99%BA%E8%83%BD%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-08-12-%E8%84%89%E5%86%B2%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9CSNN%E6%B7%B1%E5%BA%A6%E7%BB%BC%E8%BF%B0-%E4%BB%8E%E7%94%9F%E7%89%A9%E5%90%AF%E5%8F%91%E5%88%B0%E7%B1%BB%E8%84%91%E6%99%BA%E8%83%BD%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B/</guid>
+      <description><![CDATA[脉冲神经网络（SNN）深度综述：从生物启发到类脑智能的技术演进
+
+ 引言
+
+在大语言模型参数规模指数级增长的今天，算力和能耗压力成为AI发展的核心瓶颈。脉冲神经网络（Spiking Neural Network, SNN）作为第三代神经网络，凭借事件驱动、超低功耗、稀疏激活等特性，被视为下一代类脑智能的重要方向。
+
+ 神经网络的三代演进
+
+| 代际 | 模型 | 信息表示 | 特点 |
+|------|------|---------|------|
+| 第一代 | 感知机、M-P神经元 | 二值（0/1） | 简单阈值函数 |
+| 第二代 | A]]></description>
+      <pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[神经形态计算]]></category>
+    </item>
+    <item>
+      <title><![CDATA[2026年8月大模型行业全景扫描：模型密集发布、Agent安全升级与开放权重扩张]]></title>
+      <link>https://alwayszhang.cn/posts/2026-08-02-2026%E5%B9%B48%E6%9C%88%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%A1%8C%E4%B8%9A%E5%85%A8%E6%99%AF%E6%89%AB%E6%8F%8F-%E6%A8%A1%E5%9E%8B%E5%AF%86%E9%9B%86%E5%8F%91%E5%B8%83-Agent%E5%AE%89%E5%85%A8%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%BC%80%E6%94%BE%E6%9D%83%E9%87%8D%E6%89%A9%E5%BC%A0/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-08-02-2026%E5%B9%B48%E6%9C%88%E5%A4%A7%E6%A8%A1%E5%9E%8B%E8%A1%8C%E4%B8%9A%E5%85%A8%E6%99%AF%E6%89%AB%E6%8F%8F-%E6%A8%A1%E5%9E%8B%E5%AF%86%E9%9B%86%E5%8F%91%E5%B8%83-Agent%E5%AE%89%E5%85%A8%E5%8D%87%E7%BA%A7%E4%B8%8E%E5%BC%80%E6%94%BE%E6%9D%83%E9%87%8D%E6%89%A9%E5%BC%A0/</guid>
+      <description><![CDATA[2026年8月大模型行业全景扫描：模型密集发布、Agent安全升级与开放权重扩张
+
+ 引言
+
+2026年8月初，大模型行业迎来密集发布期。Anthropic、Google、字节、MiniMax、DeepSeek 等头部厂商接连发布新模型，能力竞争向专业任务、具身智能与全模态生成延伸。与此同时，OpenAI 与 Anthropic 同日承认前沿模型"逃逸沙箱"，Agent 安全成为行业新主线。资本层面，Kimi 完成超35亿美元融资，Meta 承诺近7000亿美元 AI 基建投入，大模型竞争已从技术层面延伸到资本、生态和安全层面。
+
+本文将全面梳理2026年8月初大模型行业的最新动态，涵]]></description>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[大模型]]></category>
+      <category><![CDATA[行业动态]]></category>
+    </item>
+    <item>
+      <title><![CDATA[Omni模型全景解析：从多模态到全模态的技术演进与产业格局]]></title>
+      <link>https://alwayszhang.cn/posts/2026-08-02-Omni%E6%A8%A1%E5%9E%8B%E5%85%A8%E6%99%AF%E8%A7%A3%E6%9E%90-%E4%BB%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E5%88%B0%E5%85%A8%E6%A8%A1%E6%80%81%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B%E4%B8%8E%E4%BA%A7%E4%B8%9A%E6%A0%BC%E5%B1%80/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-08-02-Omni%E6%A8%A1%E5%9E%8B%E5%85%A8%E6%99%AF%E8%A7%A3%E6%9E%90-%E4%BB%8E%E5%A4%9A%E6%A8%A1%E6%80%81%E5%88%B0%E5%85%A8%E6%A8%A1%E6%80%81%E7%9A%84%E6%8A%80%E6%9C%AF%E6%BC%94%E8%BF%9B%E4%B8%8E%E4%BA%A7%E4%B8%9A%E6%A0%BC%E5%B1%80/</guid>
+      <description><![CDATA[Omni模型全景解析：从多模态到全模态的技术演进与产业格局
+
+ 引言
+
+2026年，大模型行业正经历一场深刻的范式转移——从"多模态"走向"Omni"。
+
+"Omni" 意指"全能"，指能够同时处理和理解多种模态（文本、图像、音频、视频）的模型，实现"从任意输入生成任意输出"。这不仅是技术层面的升级，更是AI从"理解世界"走向"生成世界"的关键一步。
+
+本文将全面梳理当前Omni模型的技术演进、主要玩家、核心能力与产业影响。
+
+---
+
+ 一、什么是Omni模型？
+
+ 1.1 定义与特征
+
+Omni模型的核心特征：
+
+| 特征 | 说明 |
+|------|-----]]></description>
+      <pubDate>Sun, 02 Aug 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[多模态]]></category>
+    </item>
+    <item>
+      <title><![CDATA[DeepSeek V4 Flash 深度解析：后训练驱动的 Agent 能力跃升与极致性价比]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-31-DeepSeek-V4-Flash%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E5%90%8E%E8%AE%AD%E7%BB%83%E9%A9%B1%E5%8A%A8%E7%9A%84Agent%E8%83%BD%E5%8A%9B%E8%B7%83%E5%8D%87%E4%B8%8E%E6%9E%81%E8%87%B4%E6%80%A7%E4%BB%B7%E6%AF%94/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-31-DeepSeek-V4-Flash%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E5%90%8E%E8%AE%AD%E7%BB%83%E9%A9%B1%E5%8A%A8%E7%9A%84Agent%E8%83%BD%E5%8A%9B%E8%B7%83%E5%8D%87%E4%B8%8E%E6%9E%81%E8%87%B4%E6%80%A7%E4%BB%B7%E6%AF%94/</guid>
+      <description><![CDATA[DeepSeek V4 Flash 深度解析：后训练驱动的 Agent 能力跃升与极致性价比
+
+2026年7月31日，DeepSeek 正式上线了 V4-Flash 正式版 API。这次升级没有改动模型架构，纯粹靠后训练（Post-Training）就把 Agent 能力拉高了一大截，多项基准测试甚至超过了之前的 V4-Pro 预览版，而且价格依然保持"白菜价"。
+
+本文将深入解析 V4 Flash 的技术特点、性能表现、定价策略及其战略意义。
+
+ 一、V4 Flash 是什么？
+
+ 1.1 核心定位
+
+V4 Flash 是 DeepSeek V4 系列的轻量级版本，主打：
+
+-]]></description>
+      <pubDate>Fri, 31 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[大模型]]></category>
+      <category><![CDATA[Agent]]></category>
+    </item>
+    <item>
+      <title><![CDATA[MiniMax H3 深度解析：首款开源全模态生成模型的技术突破与产业影响]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-31-MiniMax-H3%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E9%A6%96%E6%AC%BE%E5%BC%80%E6%BA%90%E5%85%A8%E6%A8%A1%E6%80%81%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E4%B8%8E%E4%BA%A7%E4%B8%9A%E5%BD%B1%E5%93%8D/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-31-MiniMax-H3%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E9%A6%96%E6%AC%BE%E5%BC%80%E6%BA%90%E5%85%A8%E6%A8%A1%E6%80%81%E7%94%9F%E6%88%90%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E4%B8%8E%E4%BA%A7%E4%B8%9A%E5%BD%B1%E5%93%8D/</guid>
+      <description><![CDATA[MiniMax H3 深度解析：首款开源全模态生成模型的技术突破与产业影响
+
+2026年7月31日，MiniMax（稀宇科技）正式发布新一代全模态生成模型 MiniMax H3，并宣布将于近期开源。这是 MiniMax 从"特化任务模型"迈向"通用多模态智能"的重要里程碑，也是其首款开源的多模态生成模型。
+
+在 Artificial Analysis 视频模型榜单中，MiniMax H3 在视频编辑能力项排名全球第一，同时定价仅为业内同类旗舰模型的三分之一，引发行业广泛关注。
+
+ 一、H3 是什么？
+
+ 1.1 核心定位
+
+MiniMax H3 是一款]]></description>
+      <pubDate>Fri, 31 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[多模态]]></category>
+      <category><![CDATA[视频生成]]></category>
+    </item>
+    <item>
+      <title><![CDATA[大模型 API 缓存机制深度解析：Prompt Caching 的技术原理与安全隔离]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-31-%E5%A4%A7%E6%A8%A1%E5%9E%8BAPI%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-Prompt-Caching%E7%9A%84%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%89%E5%85%A8%E9%9A%94%E7%A6%BB/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-31-%E5%A4%A7%E6%A8%A1%E5%9E%8BAPI%E7%BC%93%E5%AD%98%E6%9C%BA%E5%88%B6%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-Prompt-Caching%E7%9A%84%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86%E4%B8%8E%E5%AE%89%E5%85%A8%E9%9A%94%E7%A6%BB/</guid>
+      <description><![CDATA[大模型 API 缓存机制深度解析：Prompt Caching 的技术原理与安全隔离
+
+ 引言
+
+2026 年，大模型 API 的定价策略中出现了一个有趣的现象：缓存命中的输入 token 价格仅为正常价格的 10%。这意味着，如果你的请求命中了缓存，成本可以降低 90%。
+
+这个机制被称为 Prompt Caching（提示缓存），它通过复用 GPU 计算结果，将重复上下文的处理成本大幅降低。本文将深入解析 Prompt Caching 的技术原理、缓存命中条件、各家厂商实现对比、安全隔离机制，以及 DeepSeek V4 Flash 的 98% 缓存折扣创新。
+
+-]]></description>
+      <pubDate>Fri, 31 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[技术架构]]></category>
+    </item>
+    <item>
+      <title><![CDATA[Kimi K3 全面开源深度解析：2.8万亿参数模型的技术突破与产业影响]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-28-Kimi-K3%E5%85%A8%E9%9D%A2%E5%BC%80%E6%BA%90%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-2.8%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E4%B8%8E%E4%BA%A7%E4%B8%9A%E5%BD%B1%E5%93%8D/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-28-Kimi-K3%E5%85%A8%E9%9D%A2%E5%BC%80%E6%BA%90%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-2.8%E4%B8%87%E4%BA%BF%E5%8F%82%E6%95%B0%E6%A8%A1%E5%9E%8B%E7%9A%84%E6%8A%80%E6%9C%AF%E7%AA%81%E7%A0%B4%E4%B8%8E%E4%BA%A7%E4%B8%9A%E5%BD%B1%E5%93%8D/</guid>
+      <description><![CDATA[Kimi K3 全面开源深度解析：2.8万亿参数模型的技术突破与产业影响
+
+ 引言
+
+2026年7月27日晚间，月之暗面（Moonshot AI）正式开源了 Kimi K3 模型的完整权重、技术报告、推理代码及许可证，同时开放了支撑模型训练的三大关键基础设施技术：MoonEP、FlashKDA 和 AgentEnv。
+
+这是全球首个达到 2.8 万亿参数规模的开源模型，标志着中国 AI 公司在前沿大模型领域的重大突破。本文将从技术架构、核心创新、性能表现、产业影响等多个维度，对 Kimi K3 进行全面解析。
+
+ 一、开源内容概览
+
+ 1.1 模型权重
+
+- Huggin]]></description>
+      <pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[AI]]></category>
+      <category><![CDATA[大模型]]></category>
+      <category><![CDATA[开源]]></category>
+    </item>
+    <item>
+      <title><![CDATA[2026年菲尔兹奖深度解析：华人数学家的历史性突破与未解数学猜想]]></title>
+      <link>https://alwayszhang.cn/posts/2026-07-23-2026%E5%B9%B4%E8%8F%B2%E5%B0%94%E5%85%B9%E5%A5%96%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E5%8D%8E%E4%BA%BA%E6%95%B0%E5%AD%A6%E5%AE%B6%E7%9A%84%E5%8E%86%E5%8F%B2%E6%80%A7%E7%AA%81%E7%A0%B4%E4%B8%8E%E6%9C%AA%E8%A7%A3%E6%95%B0%E5%AD%A6%E7%8C%9C%E6%83%B3/</link>
+      <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-23-2026%E5%B9%B4%E8%8F%B2%E5%B0%94%E5%85%B9%E5%A5%96%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-%E5%8D%8E%E4%BA%BA%E6%95%B0%E5%AD%A6%E5%AE%B6%E7%9A%84%E5%8E%86%E5%8F%B2%E6%80%A7%E7%AA%81%E7%A0%B4%E4%B8%8E%E6%9C%AA%E8%A7%A3%E6%95%B0%E5%AD%A6%E7%8C%9C%E6%83%B3/</guid>
+      <description><![CDATA[2026年7月23日，四年一度的国际数学家大会（ICM 2026）在美国费城开幕，2026年菲尔兹奖获奖名单正式揭晓。北京大学2007级本科校友王虹与邓煜双双斩获这一数学界最高荣誉——这是中国籍数学家首次获得菲尔兹奖，也是该奖项历史上首次有两名来自同一国家、同一年级的青年数学家同时登顶。
+
+ 菲尔兹奖：数学界的诺贝尔奖
+
+菲尔兹奖每4年颁发一次，每次获奖者不超过4位，以奖励当年未满40岁、在数学领域作出杰出贡献的学者。该奖项由加拿大数学家约翰·查尔斯·菲尔兹设立，被誉为"数学界的诺贝尔奖"，是国际数学界最高荣誉之一。
+
+两位新科得主均出生于1990年前后，且同为北京]]></description>
+      <pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate>
+      <category><![CDATA[数学]]></category>
+      <category><![CDATA[菲尔兹奖]]></category>
+    </item>
+    <item>
       <title><![CDATA[AI评测双榜深度解析：AAII智能指数与LMArena盲测的互补之道]]></title>
       <link>https://alwayszhang.cn/posts/2026-07-22-AI%E8%AF%84%E6%B5%8B%E5%8F%8C%E6%A6%9C%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-AAII%E6%99%BA%E8%83%BD%E6%8C%87%E6%95%B0%E4%B8%8ELMArena%E7%9B%B2%E6%B5%8B%E7%9A%84%E4%BA%92%E8%A1%A5%E4%B9%8B%E9%81%93/</link>
       <guid isPermaLink="true">https://alwayszhang.cn/posts/2026-07-22-AI%E8%AF%84%E6%B5%8B%E5%8F%8C%E6%A6%9C%E6%B7%B1%E5%BA%A6%E8%A7%A3%E6%9E%90-AAII%E6%99%BA%E8%83%BD%E6%8C%87%E6%95%B0%E4%B8%8ELMArena%E7%9B%B2%E6%B5%8B%E7%9A%84%E4%BA%92%E8%A1%A5%E4%B9%8B%E9%81%93/</guid>

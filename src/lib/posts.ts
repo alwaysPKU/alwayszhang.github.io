@@ -98,7 +98,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     .use(gfm)
     .use(math)
     .use(remarkRehype, { allowDangerousHtml: true })
-    .use(rehypeKatex)
+    .use(rehypeKatex, { throwOnError: false })
     .use(rehypeStringify, { allowDangerousHtml: true })
     .process(content);
   const contentHtml = processedContent.toString();
