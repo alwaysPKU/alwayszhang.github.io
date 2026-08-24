@@ -1,5 +1,5 @@
 ---
-title: "大模型记忆算法深度综述：从KV Cache到持久化记忆，AI如何从"过目即忘"到"长期进化""
+title: '大模型记忆算法深度综述：从KV Cache到持久化记忆，AI如何从"过目即忘"到"长期进化"'
 date: 2026-08-24
 categories: ["AI"]
 tags: ["大模型", "记忆机制", "KV Cache", "Agent Memory", "MemGPT", "Mem0", "Titans", "TTT", "RAG", "Mamba"]
