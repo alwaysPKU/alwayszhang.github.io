@@ -145,7 +145,15 @@ body {
 
 /* KaTeX math styles */
 .prose .katex-display {
-  @apply my-6 overflow-x-auto;
+  @apply my-5 overflow-x-auto overflow-y-hidden py-4 px-5 rounded-lg;
+  background: linear-gradient(135deg, hsl(var(--muted) / 0.5), hsl(var(--muted) / 0.25));
+  border: 1px solid hsl(var(--border) / 0.6);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.03);
+  text-align: center;
+}
+
+.prose .katex-display > .katex {
+  font-size: 1.15em;
 }
 
 .prose .katex {
@@ -176,6 +184,18 @@ body {
   @apply mb-4 leading-7 text-foreground/90;
 }
 
+.prose p + .katex-display,
+.prose p:has(+ .katex-display) {
+  margin-bottom: 0.25rem;
+}
+
+/* Callout-style intuitive explanations (paragraphs starting with key phrases) */
+.prose strong:first-child:where(
+  :has(+ .katex-display)
+) {
+  /* No extra styling needed, parent p handles it */
+}
+
 .prose a {
   @apply text-primary underline underline-offset-2 decoration-primary/40 hover:decoration-primary transition-colors;
 }
@@ -201,11 +221,29 @@ body {
 }
 
 .prose pre {
-  @apply bg-muted border border-border rounded-lg p-4 my-5 overflow-x-auto;
+  @apply rounded-lg p-5 my-5 overflow-x-auto border;
+  background: hsl(var(--card));
+  border-color: hsl(var(--border) / 0.7);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  font-size: 0.8125rem;
+  line-height: 1.7;
+}
+
+/* ASCII architecture diagrams: use a distinguished style */
+.prose pre:has(code) {
+  @apply rounded-lg p-5 my-5 overflow-x-auto;
+  background: hsl(var(--muted) / 0.35);
+  border: 1px dashed hsl(var(--primary) / 0.25);
+  position: relative;
 }
 
 .prose pre code {
-  @apply bg-transparent p-0 text-sm leading-6;
+  @apply bg-transparent p-0;
+  font-size: 0.8125rem;
+  line-height: 1.7;
+  font-family: "JetBrains Mono", "Fira Code", "SF Mono", Consolas, Menlo, Monaco, monospace;
+  color: hsl(var(--foreground) / 0.85);
+  white-space: pre;
 }
 
 .prose img {

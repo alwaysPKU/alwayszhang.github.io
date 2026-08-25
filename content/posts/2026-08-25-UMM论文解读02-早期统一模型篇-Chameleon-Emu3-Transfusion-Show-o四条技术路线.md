@@ -143,21 +143,35 @@ Chameleon 和 Emu3 都把图像离散化成 token，但 Meta 的另一支团队�
 
 ### 技术架构
 
-1. **文本路径（AR）**：文本 token 走标准的 next-token prediction，和普通 LLM 完全一样，用 cross-entropy loss。
+```
+  ┌──────────────────────────────────────────────────────────┐
+  │              同一个 Transformer（共享自注意力）             │
+  │  文本 token 与 图像 token 在同一序列中 early-fusion         │
+  └───────────────┬──────────────────────┬───────────────────┘
+                  │                      │
+          文本位置输出             图像位置输出
+                  │                      │
+                  ▼                      ▼
+          ┌──────────────┐      ┌──────────────────┐
+          │ Softmax 分类头│      │ Diffusion Head   │
+          │ 预测下一个token│      │ 预测噪声 ε_θ      │
+          └──────┬───────┘      └────────┬─────────┘
+                 │                       │
+                 ▼                       ▼
+          Cross-Entropy Loss       Diffusion MSE Loss
+              (文本 AR)              (图像连续扩散)
+```
 
-2. **图像路径（Diffusion）**：图像不做离散化，而是在 latent space 中加噪。Transformer 对图像 token 位置输出连续预测（不是 softmax 分类，而是回归噪声），用 diffusion loss 训练。
+| 路径 | 输入形式 | 输出头 | 损失函数 | 推理方式 |
+|------|----------|--------|----------|----------|
+| **文本路径** | 离散 token | Softmax 分类 | 交叉熵 CE | 自回归采样 |
+| **图像路径** | 连续 latent | 回归（预测噪声） | 扩散 MSE | 迭代去噪 |
 
-3. **关键设计——同一套注意力，不同的输出头**：
-   - 文本和图像 token 在同一个序列中，共享自注意力机制（类似 early-fusion）。
-   - 但在输出层，文本位置接 softmax 分类头预测下一个 token，图像位置接 diffusion head 预测噪声。
-   - Loss 是两部分的加和：
+两种路径的总损失：
 
 $$\mathcal{L}_{\text{Transfusion}}=\underbrace{\sum_{i\in\text{text}}\text{CE}(x_i,\hat{x}_i)}_{\text{文本：自回归交叉熵}}+\underbrace{\sum_{j\in\text{image}}\mathbb{E}_{t,\epsilon}\|\epsilon-\epsilon_\theta(x_t,t)\|^2}_{\text{图像：扩散MSE}}$$
 
-4. **推理**：
-   - 文本：标准自回归采样。
-   - 图像：在文本 token 的上下文条件下，对图像 latent 做迭代去噪（扩散采样）。
-   - 两者可以交错进行：先生成一段文字描述，再在文字条件下扩散生成图像。
+推理时两条路径可以交错进行：先生成一段文字描述，再在文字条件下扩散生成图像。
 
 ### 关键洞察
 

@@ -76,10 +76,13 @@ Transformer 是一个纯注意力的 encoder-decoder 架构，数据流向如下
 
 $$\text{Attention}(Q,K,V)=\text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V$$
 
-  把公式拆成三个动作来理解：
-  - `QK^T`：Query 和 Key 做点积，计算"谁和谁相关"
-  - `/sqrt(d_k)`：缩放，防止点积过大让 softmax 饱和、梯度消失
-  - `softmax(...)V`：把相关性归一化成权重，对 Value 加权求和
+公式拆成三步理解：
+
+| 步骤 | 数学操作 | 含义 |
+|------|----------|------|
+| ① 计算相关性 | $QK^\top$ | Query 和 Key 做点积，衡量"谁和谁相关" |
+| ② 缩放 | $/\sqrt{d_k}$ | 防止点积过大导致 softmax 饱和、梯度消失 |
+| ③ 加权求和 | $\text{softmax}(\cdot)V$ | 相关性归一化为权重，对 Value 加权聚合 |
 
 - **Multi-Head Attention**：把 Q/K/V 投影到 h 个子空间并行计算注意力，再拼接。每个头可以关注不同位置的不同表征子空间（比如一个头看语法、另一个头看指代）。
 - **Positional Encoding**：因为没有循环/卷积，模型本身对位置无感。论文用正弦/余弦位置编码注入位置信息，后续工作大多改成可学习位置编码或 RoPE。
@@ -231,34 +234,39 @@ LLaVA 定义了"拼接架构"的标准形态：CLIP 编码器 + 投影层 + LLM�
 整个过程分两步：**前向加噪**（把图像一步步破坏成噪声）和**反向去噪**（学会从噪声恢复图像）。
 
 ```
-  清晰图像 x₀                噪声 x_T
-     │                         ▲
-     │  前向：逐步加高斯噪声     │
-     ▼                         │  反向：学一个网络
-   x₁ → x₂ → x₃ → ... → x_{T-1} │  逐步去噪
-     └─────────────────────────┘
-              训练阶段
+  清晰图像 x₀                                    噪声 x_T
+     │                                               ▲
+     │  ① 前向：逐步加高斯噪声                        │
+     ▼                                               │  ② 反向：学一个网络
+   x₁ → x₂ → x₃ → ... → x_{T-1} → x_T               │  逐步去噪
+     └───────────────────────────────────────────────┘
+                        训练阶段
 ```
 
-**前向过程（加噪）**：每一步给数据加一点高斯噪声：
+#### ① 前向过程：加噪
+
+每一步给数据加一点高斯噪声，让图像逐渐"融化"：
 
 $$q(x_t\mid x_{t-1})=\mathcal{N}\!\left(x_t;\ \sqrt{1-\beta_t}\,x_{t-1},\ \beta_t\,I\right)$$
 
-通俗说：新图像 = 上一张图像缩小一点 + 加一点噪声。经过 T 步后，$x_T$ 变成纯高斯噪声。
+> 💡 **直觉理解**：新图像 = 上一张图像缩小一点 + 加一点噪声。经过 T 步后，$x_T$ 变成纯高斯噪声。
 
 关键性质：不需要一步步加噪，可以**一步直接算出任意时刻 $x_t$**（重参数化技巧）：
 
 $$x_t=\sqrt{\bar{\alpha}_t}\,x_0+\sqrt{1-\bar{\alpha}_t}\,\varepsilon,\qquad \varepsilon\sim\mathcal{N}(0,I)$$
 
-其中 $\bar{\alpha}_t=\prod_{s=1}^{t}(1-\beta_s)$，可以理解为"保留了多少原始信号"。
+其中 $\bar{\alpha}_t=\prod_{s=1}^{t}(1-\beta_s)$，表示"保留了多少原始信号"——随 t 增大，$\bar{\alpha}_t$ 趋近 0，信号被噪声淹没。
 
-**反向过程（去噪）**：训练一个神经网络 $\varepsilon_\theta$ 预测每一步加入的噪声，损失函数就是一个简单的 MSE：
+#### ② 反向过程：去噪
+
+训练一个神经网络 $\varepsilon_\theta$ 预测每一步加入的噪声，损失函数就是一个简单的 MSE：
 
 $$\mathcal{L}=\mathbb{E}_{x_0,t,\varepsilon}\left[\left\|\varepsilon-\varepsilon_\theta(x_t,t)\right\|^2\right]$$
 
-训练时：随机给图像加噪 → 让网络猜加了什么噪声 → 最小化猜测误差。
-
-推理时：从纯噪声 $x_T$ 开始，每一步用预测的噪声估计 $x_0$，再采样 $x_{t-1}$，逐步去噪。
+| 阶段 | 做什么 |
+|------|--------|
+| **训练** | 随机给图像加噪 → 让网络猜加了什么噪声 → 最小化猜测误差 |
+| **推理** | 从纯噪声 $x_T$ 开始，每一步用预测的噪声估计 $x_0$，再采样 $x_{t-1}$，逐步去噪 → 最终生成清晰图像 |
 
 ### 关键结果
 
@@ -371,19 +379,31 @@ VQ-VAE 做的事情可以用一张图概括：
                      [e₁, e₂, ..., e_K]
 ```
 
-1. **Encoder**：把输入 $x$ 编码成连续特征 $z_e(x)$。
-2. **Vector Quantization**：维护一个 codebook（嵌入表）$e \in \mathbb{R}^{K\times D}$，共 $K$ 个码字。把每个连续特征分配给距离最近的码字：
+整个流程分三步：
+
+| 步骤 | 组件 | 做什么 |
+|------|------|--------|
+| ① | **Encoder** | 把输入 $x$ 编码成连续特征 $z_e(x)$ |
+| ② | **Codebook 量化** | 在 $K$ 个码字中找最近邻，把连续特征" snapping"到离散码字 |
+| ③ | **Decoder** | 从离散表征 $z_q$ 重建输入 $\hat{x}$ |
+
+量化操作的数学表达：
 
 $$z_q(x)=e_k,\qquad k=\arg\min_j \left\|z_e(x)-e_j\right\|$$
 
-   这一步是不可微的（argmin 不能求导），用 **straight-through estimator**：前向传播用量化结果，反向传播直接把梯度"抄"给 encoder（假装量化不存在）。
-3. **Decoder**：从离散表征 $z_q$ 重建输入。
+> ⚠️ **不可微怎么办？** argmin 无法求导。VQ-VAE 使用 **straight-through estimator**：前向传播用量化结果，反向传播直接把梯度"抄"给 encoder（假装量化不存在）。
 
 损失函数有三项，各自有明确分工：
 
-$$\mathcal{L}=\underbrace{\|x-\hat{x}\|^2}_{\text{重建损失}}+\underbrace{\|sg[z_e]-e\|^2}_{\text{Codebook损失：码字靠近encoder输出}}+\beta\underbrace{\|z_e-sg[e]\|^2}_{\text{Commitment损失：encoder输出别跳来跳去}}$$
+$$\mathcal{L}=\underbrace{\|x-\hat{x}\|^2}_{\text{重建损失}}+\underbrace{\|sg[z_e]-e\|^2}_{\text{Codebook损失}}+\beta\underbrace{\|z_e-sg[e]\|^2}_{\text{Commitment损失}}$$
 
-其中 $sg[\cdot]$ 表示 stop-gradient（截断梯度）。简单记：重建损失管"画得像"，codebook 损失管"码字要跟上"，commitment 损失管"encoder 别乱晃"。
+| 损失项 | 作用 | 通俗理解 |
+|--------|------|----------|
+| 重建损失 | 让解码结果接近原图 | "画得要像" |
+| Codebook 损失 | 码字向 encoder 输出靠拢 | "码字要跟上" |
+| Commitment 损失 | encoder 输出别在码字间乱跳 | "encoder 别晃" |
+
+其中 $sg[\cdot]$ 表示 stop-gradient（截断梯度）。
 
 生成时，VQ-VAE 本身只有编码器/解码器，需要再训练一个自回归先验（PixelCNN）在离散 latent 上生成新的 code 序列。
 
