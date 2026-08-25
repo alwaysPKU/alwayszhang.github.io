@@ -17,6 +17,7 @@ ogImage: /images/umm-p5-video-cover.jpeg
 - 03 主流模型篇：Janus-Pro、BAGEL、SenseNova U1
 - 04 VCoT 篇：CoVT、Gen-VCoT、Visual Sketchpad、Visual-Aware CoT、CoT-VLA
 - **05 视频与世界模型篇**（本文）：UniVideo、Emu3.5
+- 06 终章：从统一表征到 AGI 终局之战
 
 ## 为什么视频统一更难
 
