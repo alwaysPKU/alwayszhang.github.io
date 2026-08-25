@@ -6,7 +6,7 @@ tags: [UMM, Janus-Pro, BAGEL, SenseNova, NEO-unify, MoT, 统一模型, 论文解
 ogImage: /images/umm-p3-mainstream-cover.jpeg
 ---
 
-> 如果说 2024 年夏天的四篇论文回答了"统一是否可行"，那么 2025 年的三篇代表作——DeepSeek Janus-Pro、字节 BAGEL、商汤 SenseNova U1——回答的是"统一能否匹敌甚至超越专用模型"。三条路线分别选择了解耦编码、MoT 双塔、去 VE/VAE 原生统一，它们的分歧不是工程细节，而是对"统一"这个词的不同哲学理解。
+> 如果说 2024 年夏天的四篇论文回答了"统一是否可行"，那么 2025 至 2026 年的三篇代表作——DeepSeek Janus-Pro、字节 BAGEL、商汤 SenseNova U1——回答的是"统一能否匹敌甚至超越专用模型"。三条路线分别选择了解耦编码、MoT 双塔、去 VE/VAE 原生统一，它们的分歧不是工程细节，而是对"统一"这个词的不同哲学理解。
 
 ![UMM论文解读系列-主流模型篇](/images/umm-p3-mainstream-cover.jpeg)
 
@@ -26,7 +26,7 @@ ogImage: /images/umm-p3-mainstream-cover.jpeg
 |------|------|------|---------|------|--------|
 | Janus-Pro | DeepSeek | 2025.01 | 解耦编码（理解走连续，生成走离散） | 1B/7B | MIT |
 | BAGEL | 字节 Seed | 2025.05 | MoT 双塔（GEN+UND 专家共享自注意力） | 7B 激活/14B 总 | Apache 2.0 |
-| SenseNova U1 | 商汤 | 2025.05 | NEO-unify 原生统一（去 VE/VAE） | 8B-MoT/A3B-MoT | Apache 2.0 |
+| SenseNova U1 | 商汤 | 2026.04 | NEO-unify 原生统一（去 VE/VAE） | 8B-MoT/A3B-MoT | Apache 2.0 |
 
 三者的共同点是：都在标准 benchmark 上证明了"统一模型可以同时做好理解和生成"，而且都完全开源（代码+权重+技术报告）。这标志着 UMM 从学术探索进入工程可用阶段。
 
@@ -176,6 +176,7 @@ BAGEL 是三种路线中"中间道路"的代表：它不像 Janus-Pro 那样简�
 
 **论文**：*SenseNova-U1: Unifying Multimodal Understanding and Generation with NEO-unify Architecture*
 **作者**：商汤科技
+**发布**：2026 年 4 月 28 日（产品发布+开源）；arXiv 技术报告 2026 年 5 月 12 日
 **链接**：https://arxiv.org/abs/2605.12500
 **代码**：https://github.com/OpenSenseNova/SenseNova-U1
 
