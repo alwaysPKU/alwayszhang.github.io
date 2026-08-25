@@ -216,6 +216,23 @@ LLaVA 定义了"拼接架构"的标准形态：CLIP 编码器 + 投影层 + LLM�
 - 两阶段训练（对齐预训练 → 指令微调）。
 - 用纯文本 GPT-4 生成多模态指令数据的技巧。
 
+> **🧭 关键辨析：理解编码器（ViT） vs 生成编码器（VAE）**
+>
+> 前文 LLaVA 用的是 **ViT Encoder（CLIP ViT）**，后文 DDPM/DiT/VQ-VAE/VQGAN 用的是 **VAE/VQ 编码器**。它们都把图像压成 latent，但设计目标几乎相反——这正是理解与生成"难统一"的一半原因。
+>
+> | 维度 | ViT Encoder（理解侧） | VAE Encoder（生成侧） |
+> |---|---|---|
+> | 架构 | 纯 Transformer：Patchify → 位置编码 → Self-Attention | CNN 残差卷积块逐级下采样（可选 attention） |
+> | 训练目标 | 监督分类（ViT）或对比学习（CLIP），追求**语义判别** | 重建损失 + KL 正则化，追求**压缩后能解码回像素** |
+> | 输出 | 每 patch 一个语义 token（如 224 图 → 196 token） | 连续 latent 分布的 (μ, logσ²)，采样成 feature map（如 512 图 → 64×64×4） |
+> | latent 性质 | **语义强、不可解码**：为"看懂"服务，无配对 decoder 还原像素 | **可解码、正则化**：latent 落在平滑连续空间，配对 decoder 可重建/生成，扩散模型在其上做去噪 |
+> | 关注点 | 高层语义：物体、关系、OCR、VQA | 低中层细节：纹理、颜色、空间结构，要能"画回去" |
+> | UMM 中的角色 | 理解路径：LLaVA 的 CLIP ViT、Janus 的 understanding encoder | 生成路径：DiT/SD 的 VAE、Transfusion 的 diffusion head 前端 |
+>
+> **为什么会冲突？** 理解想要"语义抽象"——丢掉无关细节、保留"是什么"；生成想要"细节完备"——保留纹理布局、保证"画得像"。同一个视觉编码器很难同时做好两者。这正是 Janus-Pro 要**解耦**理解 ViT 与生成 VQ tokenizer（VAE 的离散变种）、而 BAGEL/Show-o 等也各自处理表征差异的根本原因。
+>
+> 一句话：**ViT 为"看懂"而压缩，VAE 为"画回去"而压缩**。后文从 DDPM 开始，全部站在生成编码器这一侧。
+
 ---
 
 ## 4. DDPM：Denoising Diffusion Probabilistic Models（2020）
