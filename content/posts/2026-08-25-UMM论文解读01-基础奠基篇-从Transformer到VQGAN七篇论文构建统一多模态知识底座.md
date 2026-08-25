@@ -45,13 +45,45 @@ ogImage: /images/umm-p1-foundation-cover.jpeg
 
 ### 核心方法
 
-Transformer 是一个纯注意力的 encoder-decoder 架构，关键设计包括：
+Transformer 是一个纯注意力的 encoder-decoder 架构，数据流向如下：
 
-- **Scaled Dot-Product Attention**：`Attention(Q,K,V) = softmax(QK^T / sqrt(d_k)) V`。缩放因子 `sqrt(d_k)` 防止点积过大导致 softmax 梯度消失。
-- **Multi-Head Attention**：把 Q/K/V 投影到 h 个子空间并行计算注意力，再拼接。每个头可以关注不同位置的不同表征子空间。
+```
+输入 Token 序列
+      │
+      ▼
+┌──────────────────────────────────┐
+│  Positional Encoding（注入位置）  │
+└──────────────┬───────────────────┘
+               │
+               ▼
+┌──────────────────────────────────┐
+│  Multi-Head Self-Attention       │  ← Q/K/V 投影到 h 个子空间
+│  ┌────┬────┬────┬────┐           │     并行计算注意力后拼接
+│  │Head│Head│Head│... │ 各看各的   │
+│  └────┴────┴────┴────┘           │
+└──────────────┬───────────────────┘
+               │ + Residual + LayerNorm
+               ▼
+┌──────────────────────────────────┐
+│  Feed-Forward Network (FFN)      │
+└──────────────┬───────────────────┘
+               │ + Residual + LayerNorm
+               ▼
+          输出概率
+```
+
+- **Scaled Dot-Product Attention**：核心公式只有一行——
+
+$$\text{Attention}(Q,K,V)=\text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right)V$$
+
+  把公式拆成三个动作来理解：
+  - `QK^T`：Query 和 Key 做点积，计算"谁和谁相关"
+  - `/sqrt(d_k)`：缩放，防止点积过大让 softmax 饱和、梯度消失
+  - `softmax(...)V`：把相关性归一化成权重，对 Value 加权求和
+
+- **Multi-Head Attention**：把 Q/K/V 投影到 h 个子空间并行计算注意力，再拼接。每个头可以关注不同位置的不同表征子空间（比如一个头看语法、另一个头看指代）。
 - **Positional Encoding**：因为没有循环/卷积，模型本身对位置无感。论文用正弦/余弦位置编码注入位置信息，后续工作大多改成可学习位置编码或 RoPE。
 - **Encoder-Decoder 结构**：Encoder 用自注意力加前馈网络；Decoder 多一层 cross-attention 关注 Encoder 输出，并带因果掩码防止偷看未来。
-- **残差连接 + LayerNorm**：每个子层外面包残差和 LayerNorm，支撑深层训练。
 
 ### 关键结果
 
@@ -87,11 +119,24 @@ Transformer 是一个纯注意力的 encoder-decoder 架构，关键设计包括
 
 ### 核心方法
 
-CLIP（Contrastive Language-Image Pre-training）的方法异常简洁：
+CLIP（Contrastive Language-Image Pre-training）的方法异常简洁，核心就是"图文配对"游戏：
+
+```
+一个 Batch 中有 N 对图文：
+
+  图像 I₁ ──→ Image Encoder ──→ v₁ ─┐
+  图像 I₂ ──→ Image Encoder ──→ v₂ ─┤
+  图像 I₃ ──→ Image Encoder ──→ v₃ ─┤    相似度矩阵
+   ...                              ├──→ (v_i · t_j)
+  文本 T₁ ──→ Text Encoder ──→ t₁ ─┤    对角线✅ 配对成功
+  文本 T₂ ──→ Text Encoder ──→ t₂ ─┤    非对角线❌ 拉开距离
+  文本 T₃ ──→ Text Encoder ──→ t₃ ─┘
+   ...
+```
 
 1. **数据**：从互联网收集 4 亿个（图像，文本）对。
 2. **模型**：图像编码器（ResNet 或 ViT）+ 文本编码器（Transformer），各自把输入映射到同一维度的嵌入空间。
-3. **训练目标**：对比学习。一个 batch 中有 N 个图文对，N×N 个相似度矩阵中，对角线是正样本，其余是负样本。最大化正样本余弦相似度，最小化负样本相似度（对称的 image-to-text 和 text-to-image 两个 CE loss）。
+3. **训练目标**：对比学习。一个 batch 中有 N 个图文对，计算 N×N 个余弦相似度，对角线（图 i 配文 i）是正样本，其余是负样本。让正样本相似度高、负样本相似度低（对称的 image→text 和 text→image 两个方向）。
 4. **零样本迁移**：推理时，把任务类别名拼成文本提示（如 "a photo of a {dog}"），用图像嵌入与所有文本嵌入做相似度匹配，无需任何任务特定训练。
 
 ### 关键结果
@@ -129,10 +174,16 @@ GPT-4 的指令微调在纯文本领域已经证明有效，但多模态领域�
 
 ### 核心方法
 
-LLaVA 的架构是后来几乎所有 MLLM 的模板：
+LLaVA 的架构是后来几乎所有 MLLM 的模板——"CLIP 编码器 + 投影层 + LLM"三件套：
+
+```
+  图像 ──→ CLIP ViT ──→ 视觉特征 ──→ 投影层(MLP) ──┐
+                                                    ├──→ LLM (LLaMA) ──→ 文本回答
+  文本 ─────────────────────────────────Tokenize─────┘
+```
 
 1. **视觉编码器**：CLIP ViT-L/14，把图像编码成一串 patch token。
-2. **投影层**：一个简单的线性层（或 MLP），把 CLIP 的视觉特征投影到 LLM 的词嵌入空间。
+2. **投影层**：一个简单的线性层（或 MLP），把 CLIP 的视觉特征投影到 LLM 的词嵌入空间——这是"翻译官"，把视觉语言翻译成 LLM 听得懂的语言。
 3. **LLM**：LLaMA/Vicuna，接收文本 token 和投影后的视觉 token，自回归生成回答。
 
 训练分两阶段：
@@ -177,27 +228,37 @@ LLaVA 定义了"拼接架构"的标准形态：CLIP 编码器 + 投影层 + LLM�
 
 ### 核心方法
 
-**前向过程（加噪）**：定义一个马尔可夫链，每一步给数据加一点高斯噪声：
+整个过程分两步：**前向加噪**（把图像一步步破坏成噪声）和**反向去噪**（学会从噪声恢复图像）。
 
 ```
-q(x_t | x_{t-1}) = N(x_t; sqrt(1-β_t) x_{t-1}, β_t I)
+  清晰图像 x₀                噪声 x_T
+     │                         ▲
+     │  前向：逐步加高斯噪声     │
+     ▼                         │  反向：学一个网络
+   x₁ → x₂ → x₃ → ... → x_{T-1} │  逐步去噪
+     └─────────────────────────┘
+              训练阶段
 ```
 
-经过 T 步后，x_T 近似标准高斯。关键性质：可以直接采样任意时刻的 x_t，不需要逐步加噪：
+**前向过程（加噪）**：每一步给数据加一点高斯噪声：
 
-```
-x_t = sqrt(ᾱ_t) x_0 + sqrt(1-ᾱ_t) ε,  ε ~ N(0, I)
-```
+$$q(x_t\mid x_{t-1})=\mathcal{N}\!\left(x_t;\ \sqrt{1-\beta_t}\,x_{t-1},\ \beta_t\,I\right)$$
 
-其中 `ᾱ_t = ∏(1-β_s)`。
+通俗说：新图像 = 上一张图像缩小一点 + 加一点噪声。经过 T 步后，$x_T$ 变成纯高斯噪声。
 
-**反向过程（去噪）**：训练一个神经网络 ε_θ 预测每一步加入的噪声，损失函数极其简单：
+关键性质：不需要一步步加噪，可以**一步直接算出任意时刻 $x_t$**（重参数化技巧）：
 
-```
-L = E_{x_0, t, ε} [ || ε - ε_θ(x_t, t) ||² ]
-```
+$$x_t=\sqrt{\bar{\alpha}_t}\,x_0+\sqrt{1-\bar{\alpha}_t}\,\varepsilon,\qquad \varepsilon\sim\mathcal{N}(0,I)$$
 
-推理时，从纯噪声 x_T 开始，每一步用预测的噪声估计 x_0，再采样 x_{t-1}，逐步去噪。
+其中 $\bar{\alpha}_t=\prod_{s=1}^{t}(1-\beta_s)$，可以理解为"保留了多少原始信号"。
+
+**反向过程（去噪）**：训练一个神经网络 $\varepsilon_\theta$ 预测每一步加入的噪声，损失函数就是一个简单的 MSE：
+
+$$\mathcal{L}=\mathbb{E}_{x_0,t,\varepsilon}\left[\left\|\varepsilon-\varepsilon_\theta(x_t,t)\right\|^2\right]$$
+
+训练时：随机给图像加噪 → 让网络猜加了什么噪声 → 最小化猜测误差。
+
+推理时：从纯噪声 $x_T$ 开始，每一步用预测的噪声估计 $x_0$，再采样 $x_{t-1}$，逐步去噪。
 
 ### 关键结果
 
@@ -235,15 +296,26 @@ DDPM 及其后续工作（包括 Stable Diffusion）的骨干网络都是 U-Net�
 
 ### 核心方法
 
-DiT 的设计非常直接：
+DiT 的设计非常直接——把扩散模型的骨干网络从 U-Net 换成 Transformer：
+
+```
+  图像 ──→ VAE Encoder ──→ Latent Map ──→ Patchify ──→ Token序列
+                                                          │
+                                                          ▼
+              ┌──── DiT Block × N ────────────────────────┐
+              │  ┌──────────┐    ┌──────────────────┐     │
+              │  │AdaLN-Zero│    │  AdaLN-Zero      │     │
+  时间步 t ──→│  │调制γ,β,α│→MSA→│调制γ,β,α       │→FFN│→ 输出(预测噪声)
+  类别 c  ──→│  └──────────┘    └──────────────────┘     │
+              └──────────────────────────────────────────┘
+                                                          │
+                                                          ▼
+  生成图像 ←── VAE Decoder ←── 去噪Latent ←── 迭代去噪 ←──┘
+```
 
 1. **Latent Space**：先用 VAE 把图像压缩到 latent space（和 Stable Diffusion 一样），降低 token 数量。
 2. **Patchify**：把 2D latent feature map 切成 patch，每个 patch 线性投影成 token，类似 ViT。
-3. **DiT Block**：标准 Transformer block 加四个变体，主要区别在于条件注入方式（时间步 t、类别 c 等条件如何注入）：
-   - In-context：把条件当 token 拼进去。
-   - Cross-attention：用 cross-attention 注入条件。
-   - Adaptive Layer Norm（adaLN）：用条件调制 LayerNorm 的 scale/shift（最终效果最好）。
-   - adaLN-Zero：额外把残差连接初始化为零，训练更稳。
+3. **DiT Block**：标准 Transformer block 加条件注入，核心创新是 **adaLN-Zero**——用时间步 t 和类别 c 通过 MLP 生成 LayerNorm 的缩放（γ）、偏移（β）和残差缩放（α）参数，且 α 初始化为零使训练更稳。
 4. **Scaling**：通过调整深度（layers）、宽度（hidden size）、输入 token 数（patch size）来控制 Gflops。
 
 ### 关键结果
@@ -283,21 +355,35 @@ VAE 的连续 latent space 有个臭名昭著的问题叫"后验崩塌"（poster
 
 ### 核心方法
 
-VQ-VAE（Vector Quantised VAE）由三部分组成：
+VQ-VAE 做的事情可以用一张图概括：
 
-1. **Encoder**：把输入 x 编码成连续特征 z_e(x)。
-2. **Vector Quantization**：维护一个 codebook（嵌入表）e ∈ R^{K×D}，K 个码字。把每个连续特征最近邻分配到一个码字：
-   ```
-   z_q(x) = e_k,  k = argmin_j || z_e(x) - e_j ||
-   ```
-   这一步是不可微的，用 straight-through estimator 把梯度直接从 z_q 传给 encoder。
-3. **Decoder**：从离散表征 z_q 重建输入。
+```
+  图像 x
+    │
+    ▼
+┌────────┐   连续特征    ┌──────────────┐   离散 token   ┌────────┐
+│ Encoder│ ──────────→  │ Codebook 查表 │ ────────────→ │ Decoder│ → 重建 x̂
+└────────┘   z_e(x)     │ 找最近的码字  │   z_q(x)=e_k  └────────┘
+                        └──────────────┘
+                              ▲
+                              │
+                     Codebook: K 个码字
+                     [e₁, e₂, ..., e_K]
+```
 
-损失函数有三项：
+1. **Encoder**：把输入 $x$ 编码成连续特征 $z_e(x)$。
+2. **Vector Quantization**：维护一个 codebook（嵌入表）$e \in \mathbb{R}^{K\times D}$，共 $K$ 个码字。把每个连续特征分配给距离最近的码字：
 
-- **重建损失**：解码器输出与输入的 MSE 或 CE。
-- **Codebook loss**：把码字往 encoder 输出方向拉（`||e_k - sg(z_e)||²`）。
-- **Commitment loss**：把 encoder 输出往选中的码字方向拉（`β||sg(e_k) - z_e||²`），防止 encoder 输出在码字间跳来跳去。
+$$z_q(x)=e_k,\qquad k=\arg\min_j \left\|z_e(x)-e_j\right\|$$
+
+   这一步是不可微的（argmin 不能求导），用 **straight-through estimator**：前向传播用量化结果，反向传播直接把梯度"抄"给 encoder（假装量化不存在）。
+3. **Decoder**：从离散表征 $z_q$ 重建输入。
+
+损失函数有三项，各自有明确分工：
+
+$$\mathcal{L}=\underbrace{\|x-\hat{x}\|^2}_{\text{重建损失}}+\underbrace{\|sg[z_e]-e\|^2}_{\text{Codebook损失：码字靠近encoder输出}}+\beta\underbrace{\|z_e-sg[e]\|^2}_{\text{Commitment损失：encoder输出别跳来跳去}}$$
+
+其中 $sg[\cdot]$ 表示 stop-gradient（截断梯度）。简单记：重建损失管"画得像"，codebook 损失管"码字要跟上"，commitment 损失管"encoder 别乱晃"。
 
 生成时，VQ-VAE 本身只有编码器/解码器，需要再训练一个自回归先验（PixelCNN）在离散 latent 上生成新的 code 序列。
 
@@ -337,7 +423,25 @@ VQ-VAE 能学离散视觉 token，但重建质量和感知质量不够好，尤�
 
 ### 核心方法
 
-VQGAN = VQ-VAE 的感知增强版 + Transformer 自回归先验：
+VQGAN = VQ-VAE 的感知增强版 + Transformer 自回归先验。架构分两阶段：
+
+```
+  ═══════════════ 第一阶段：Tokenizer（训练） ═══════════════
+
+  图像 ──→ CNN Encoder ──→ z_e ──→ Codebook量化 ──→ z_q ──→ CNN Decoder ──→ 重建图像
+                                ↑                            │
+                          最近邻查找                    ┌───┴───┐
+                                                       │       │
+                                                  VGG感知损失  PatchGAN
+                                                  (特征空间)  判别器(对抗)
+
+  ═══════════════ 第二阶段：Transformer Prior（生成） ═══════════════
+
+  条件token ──→ Transformer (GPT架构) ──→ 自回归预测code序列
+                                              │
+                                              ▼
+                                         CNN Decoder ──→ 生成图像
+```
 
 1. **CNN Encoder/Decoder**：和 VQ-VAE 类似，但用了带注意力的 CNN，保留局部归纳偏置。
 2. **Codebook**：同样的向量量化，但加了两个关键改进：

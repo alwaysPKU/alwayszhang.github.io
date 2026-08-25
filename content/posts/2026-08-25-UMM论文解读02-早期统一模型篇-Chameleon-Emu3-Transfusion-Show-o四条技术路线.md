@@ -150,7 +150,9 @@ Chameleon 和 Emu3 都把图像离散化成 token，但 Meta 的另一支团队�
 3. **关键设计——同一套注意力，不同的输出头**：
    - 文本和图像 token 在同一个序列中，共享自注意力机制（类似 early-fusion）。
    - 但在输出层，文本位置接 softmax 分类头预测下一个 token，图像位置接 diffusion head 预测噪声。
-   - Loss 是两部分的加和：`L = L_AR(text) + L_diffusion(image)`。
+   - Loss 是两部分的加和：
+
+$$\mathcal{L}_{\text{Transfusion}}=\underbrace{\sum_{i\in\text{text}}\text{CE}(x_i,\hat{x}_i)}_{\text{文本：自回归交叉熵}}+\underbrace{\sum_{j\in\text{image}}\mathbb{E}_{t,\epsilon}\|\epsilon-\epsilon_\theta(x_t,t)\|^2}_{\text{图像：扩散MSE}}$$
 
 4. **推理**：
    - 文本：标准自回归采样。
