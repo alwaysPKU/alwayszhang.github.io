@@ -16,7 +16,7 @@ ogImage: /images/umm-p2-early-cover.jpeg
 - **02 早期统一模型篇**（本文）：Chameleon、Emu3、Transfusion、Show-o
 - 03 主流模型篇：Janus-Pro、BAGEL、SenseNova U1
 - 04 VCoT 篇：CoVT、Gen-VCoT、Visual Sketchpad、Visual-Aware CoT、CoT-VLA
-- 05 视频与世界模型篇：UniVideo、Emu3.5
+- 05 视频与世界模型篇：UniVideo、Emu3.5、Lance
 - 06 终章：从统一表征到 AGI 终局之战
 
 ## 2024 年夏天：四条路线同时爆发
