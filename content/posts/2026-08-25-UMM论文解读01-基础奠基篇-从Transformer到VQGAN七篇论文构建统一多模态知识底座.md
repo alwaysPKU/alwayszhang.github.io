@@ -86,7 +86,13 @@ $$\text{Attention}(Q,K,V)=\text{softmax}\!\left(\frac{QK^\top}{\sqrt{d_k}}\right
 | ③ 加权求和 | $\text{softmax}(\cdot)V$ | 相关性归一化为权重，对 Value 加权聚合 |
 
 - **Multi-Head Attention**：把 Q/K/V 投影到 h 个子空间并行计算注意力，再拼接。每个头可以关注不同位置的不同表征子空间（比如一个头看语法、另一个头看指代）。
-- **Positional Encoding**：因为没有循环/卷积，模型本身对位置无感。论文用正弦/余弦位置编码注入位置信息，后续工作大多改成可学习位置编码或 RoPE。
+- **Positional Encoding**：因为没有循环/卷积，模型本身对位置无感。论文用正弦/余弦位置编码注入位置信息，后续工作大多改成可学习位置编码或 **RoPE（旋转位置编码）**。
+
+> 🧭 **RoPE 与 3D-RoPE：多模态位置编码的事实标准**
+>
+> 原论文的正弦位置编码是"加"在 token 嵌入上的，而现代 LLM/MM 模型几乎都改用 **RoPE（Rotary Position Embedding）**：它不"加"位置，而是通过旋转矩阵把相对位置信息"乘"进 Q/K，天然携带**相对位置**且能外推到更长序列。公式上，RoPE 把位置 m、n 的注意力写成 $\langle R_m q,\ R_n k\rangle$，内积只依赖相对位置 $m-n$。
+>
+> 到了视觉/视频领域，一维 RoPE 不够用了：图像有 (h, w) 两个空间维，视频还有时间维 t。于是发展出 **3D-RoPE**（也叫 Pos3D），分别在时间、高度、宽度三个轴上施加旋转，让注意力同时感知"第几帧、第几行、第几列"。后文 Part 5 的 **Lance** 正是在 3D-RoPE 基础上提出 **MaPE（Modality-Aware RoPE）**——只在时间维给 ViT/clean VAE/noisy VAE 等不同视觉 token 组加不同常量偏移，用位置显式区分"这组 token 是干什么的"，同时不破坏空间布局。读到 MaPE 时回到这里：它的底座就是 3D-RoPE。
 - **Encoder-Decoder 结构**：Encoder 用自注意力加前馈网络；Decoder 多一层 cross-attention 关注 Encoder 输出，并带因果掩码防止偷看未来。
 
 ### 关键结果
@@ -294,7 +300,7 @@ $$\mathcal{L}=\mathbb{E}_{x_0,t,\varepsilon}\left[\left\|\varepsilon-\varepsilon
 
 ### 为什么是 UMM 的基石
 
-DDPM 是今天所有主流图像生成模型的底层数学框架。Transfusion 把扩散 loss 直接和 AR loss 加在同一个 Transformer 上；Show-o 用离散扩散生成图像 token；SenseNova U1 虽然去掉了 VAE，但生成侧仍用 Flow Matching（DDPM 的连续版本）。
+DDPM 是今天图像生成模型的重要数学基础之一。Transfusion 把扩散 loss 直接和 AR loss 加在同一个 Transformer 上；Show-o 用离散扩散生成图像 token。需要注意的是，SenseNova U1、BAGEL、Lance 等更晚近的模型生成侧更多采用 **Flow Matching**（学习速度场的 ODE 框架，与扩散有联系但数学形式不同），详见后文 DiT 章节后的"从扩散到 Flow Matching"专题。
 
 理解 DDPM 的关键不是记住公式，而是理解两个直觉：
 
@@ -365,6 +371,32 @@ DiT 是把"Transformer 统治扩散模型"这件事坐实的论文。它的影�
 - Patchify + Transformer 替代 U-Net。
 - adaLN-Zero 条件注入。
 - Gflops 与 FID 的 scaling 关系。
+
+> **🧭 从扩散到 Flow Matching：BAGEL/U1/Lance 用的生成范式**
+>
+> 本系列后文三篇主流模型（BAGEL、SenseNova U1、Lance）以及 SD3、Flux、MiniMax H3 等现代生成模型，生成侧大多已从 DDPM 的**噪声预测**转向 **Flow Matching（流匹配）**。它不是"DDPM 的一个版本"，而是与扩散模型有深刻联系但数学形式不同的独立框架，值得单独建立直觉。
+>
+> **核心思想**：不再学"每一步加了多少噪声"（score/ε），而是直接学从噪声 $x_0$ 到数据 $x_1$ 的**速度场** $v_\theta(x_t,t)$，让它逼近真实速度 $x_1-x_0$：
+>
+> $$\mathcal{L}_{\text{FM}}=\mathbb{E}_{t,x_0,x_1}\big[\|v_\theta(x_t,t)-(x_1-x_0)\|^2\big]$$
+>
+> 其中插值路径常取直线 $x_t=(1-t)x_0+t\,x_1$。推理时从噪声出发，沿学到的速度场解一个 ODE（欧拉积分即可），一步步"流"向数据：
+>
+> ```
+>   噪声 x₀ ──v(x,t)──→ ──v(x,t)──→ ──v(x,t)──→ 数据 x₁
+>   (t=0)              (t=0.5)              (t=1)
+> ```
+>
+> | 维度 | DDPM / 扩散 | Flow Matching |
+> |---|---|---|
+> | 学什么 | 噪声 ε 或 score | 速度场 v = 数据方向 |
+> | 路径 | 弯曲的随机/SDE 路径 | 可设计成**近似直线**的 ODE 路径 |
+> | 推理 | 几十~上百步去噪 | 路径更直，**少步（1~8 步）即可生成** |
+> | 数学 | 分数匹配/SDE | 回归 + ODE 积分 |
+>
+> **为什么 UMM 偏爱它？** ① 少步采样显著降低生成延迟，对统一模型里"理解完还要画图"的体验很关键；② 回归速度场的 loss 形式和 Transformer 主干天然契合，Lance 的生成专家就是在 VAE latent 上预测速度场；③ 直线路径让训练更稳定。后文看到"flow matching 预测速度 $v_\theta$"时，回到这里理解即可。
+>
+> 奠基论文：Lipman et al., *Flow Matching for Generative Modeling*（ICLR 2023, https://arxiv.org/abs/2210.02747）；Rectified Flow（Liu et al., 2022）是其 closely related 的直线路径版本。
 
 ---
 
@@ -439,6 +471,15 @@ VQ-VAE 是"把图像变成离散 token"这条路线的源头。Emu3、Chameleon�
 
 - **它让图像可以和文本共用同一个 softmax**。一旦图像被量化成 K 个码字中的一个索引，它就和文字 token 在数学上完全等价——都可以用 cross-entropy 预测下一个。
 - **它的局限也很明显**：离散化有信息损失，codebook 可能坍缩（部分码字从不被使用），这些问题后来由 VQGAN、FSQ、LFQ 等改进。
+
+> 🧭 **FSQ：更简单稳定的有限标量量化**
+>
+> VQ-VAE/VQGAN 依赖一个可学习的 codebook 做最近邻查找，工程上容易码本坍塌、死码字、EMA 更新不稳。**FSQ（Finite Scalar Quantization，MAGVIT-v2 提出）**换了个思路：不再学码本，而是让 encoder 输出 D 个标量，每个标量用 `round()` 量化到固定的小整数集合（如 $\{-2,-1,0,1,2\}$），隐式定义出 $L^D$ 个码字。
+>
+> - 没有显式码本、没有 EMA、没有 commitment loss——量化只是 `round + tanh`，训练更稳。
+> - 码字天然均匀利用，几乎不存在坍塌。
+>
+> FSQ 及后续 LFQ（Lookup-Free Quantization）被 Emu3 等新一代统一/生成模型采用。理解了 VQ-VAE 的码本机制，就能理解 FSQ 为什么是工程上的改进：**用固定的标量网格替代可学习的向量码本，换取稳定和简单。**
 
 ### 你应该记住的
 

@@ -6,7 +6,7 @@ tags: [VCoT, 视觉思维链, CoVT, Gen-VCoT, Visual-Sketchpad, CoT-VLA, Visual-
 ogImage: /images/umm-p4-vcot-cover.jpeg
 ---
 
-> Chain-of-Thought 让 LLM 能用文字"想一遍再答"，但人类在解决空间、几何、导航等问题时，不只在脑中推理——我们会画辅助线、做标记、在纸上打草稿。Visual Chain-of-Thought（VCoT）研究的就是：能不能让多模态模型也用视觉信息做推理中间产物，而不仅限于文字？本文解读五篇代表性论文，它们从连续 token、RGB 图像、外部画板、视觉检查清单、未来帧预测五个方向探索了这个问题。
+> Chain-of-Thought 让 LLM 能用文字"想一遍再答"，但人类在解决空间、几何、导航等问题时，不只在脑中推理——我们会画辅助线、做标记、在纸上打草稿。Visual Chain-of-Thought（VCoT）研究的就是：能不能让多模态模型也用视觉信息做推理中间产物，而不仅限于文字？本文解读六篇代表性论文，它们从连续 token、RGB 图像、外部画板、视觉检查清单、未来帧预测、统一模型内生视觉推理六个方向探索了这个问题。
 
 ![UMM论文解读系列-VCoT篇](/images/umm-p4-vcot-cover.jpeg)
 
@@ -15,7 +15,7 @@ ogImage: /images/umm-p4-vcot-cover.jpeg
 - 01 基础奠基篇：Transformer、CLIP、LLaVA、DDPM、DiT、VQ-VAE、VQGAN
 - 02 早期统一模型篇：Chameleon、Emu3、Transfusion、Show-o
 - 03 主流模型篇：Janus-Pro、BAGEL、SenseNova U1
-- **04 VCoT 篇**（本文）：CoVT、Gen-VCoT、Visual Sketchpad、Visual-Aware CoT、CoT-VLA
+- **04 VCoT 篇**（本文）：CoVT、Gen-VCoT、Visual Sketchpad、Visual-Aware CoT、CoT-VLA、LatentUM
 - 05 视频与世界模型篇：UniVideo、Emu3.5、Lance
 - 06 终章：从统一表征到 AGI 终局之战
 
@@ -268,9 +268,82 @@ CoT-VLA 虽然是一个 VLA 模型，但它的架构本质上就是一个统一�
 
 ---
 
-## 五篇论文的技术光谱
+## 6. LatentUM：统一模型内生的视觉思维链（2026.04）
 
-把五篇论文放在一起，VCoT 的设计空间变得清晰：
+**论文**：*LatentUM: Latent Unification of Vision and Language Models for Visual Chain-of-Thought Reasoning*
+**作者**：上海交通大学团队
+**发布**：2026 年 4 月
+
+### 核心思路
+
+前五篇 VCoT 工作有一个共同特点：它们大多在**传统 VLM 或外部工具**上实现视觉推理——Visual Sketchpad 调外部模型，CoVT 蒸馏视觉专家，Gen-VCoT 跑 SAM/Marigold 流水线，CoT-VLA 基于预训练 VLM。LatentUM 问了一个更根本的问题：**能不能让一个理解-生成统一模型（UMM）在自己的 latent 空间里"画图思考"，不依赖任何外部视觉模型？**
+
+这正是本系列一直强调的"UMM 独特机会"的直接实现：BAGEL、U1 这类模型本身就能生成视觉 token，为什么还要外挂 SAM？
+
+### 技术架构：双分支架构中的内生推理
+
+LatentUM 的核心是一个双分支架构，两个分支**共享语义空间**：
+
+```
+         输入（图像 + 问题）
+               │
+               ▼
+    ┌──────────────────────┐
+    │   共享 Transformer 主干 │
+    │   （统一语义空间）       │
+    └──────┬───────┬───────┘
+           │       │
+           ▼       ▼
+    ┌──────────┐ ┌──────────┐
+    │ 理解分支  │ │ 生成分支  │
+    │ (UND)    │ │ (GEN)    │
+    │ 读 token │ │ 产视觉token│
+    └────┬─────┘ └────┬─────┘
+         │             │
+         └─────┬───────┘
+               ▼
+    生成分支产出的视觉 token 直接被
+    理解分支读取，作为下一步推理输入
+               │
+               ▼
+         最终文本答案
+```
+
+关键设计：
+
+1. **理解与生成共享语义空间**：不像 Janus-Pro 那样用两套编码器各管各的，LatentUM 的两个分支在同一个 latent 空间里交换信息。生成分支产出的视觉 token 不需要重新编码，就能被理解分支直接读取。
+2. **视觉思维链在 latent 空间内生**：模型推理时，先生成一段"视觉思维 token"（可以解码成深度图、分割图、辅助标记等供人类检视），再基于这些 token 继续推理。整个过程不需要调用 SAM、Marigold 等外部模型。
+3. **闭环自举**：理解分支读取自己生成的视觉 token 后，推理能力提升；更好的理解又能引导生成分支产出更精准的视觉中间产物——形成正反馈。
+
+### 为什么它和 UMM 主线最契合
+
+LatentUM 的意义在于它验证了一个关键假设：
+
+> **统一模型的理解能力和生成能力不是简单共存，而是能互相构成推理闭环——生成为理解提供视觉载体，理解为生成提供语义引导。**
+
+这和 CoVT 用外部视觉专家蒸馏、Gen-VCoT 跑多模型流水线有本质区别：LatentUM 的视觉思维链是**模型内生的**，是同一个 Transformer 在自己的语义空间里"边想边画"。这正是 UMM 相比拼接式 VLM 的根本优势在推理场景的兑现。
+
+### 关键结果
+
+- 在视觉导航、空间推理等任务上，自生成视觉 token 带来显著提升。
+- 迷宫导航任务达到 **97% 准确率**，验证了"内生视觉推理链"在需要空间推演的任务上的有效性。
+- 相比外挂视觉工具的方案，推理延迟和工程复杂度大幅降低。
+
+### 局限
+
+- LatentUM 的视觉思维 token 目前主要在**结构化空间任务**（导航、几何）上验证，对开放域常识推理的增益还需更多验证。
+-  latent 空间的视觉 token 可解释性不如 RGB 图像（虽然可以解码，但解码质量受限）。
+- 作为较新的工作，开源生态和社区复现尚在早期。
+
+### 在 VCoT 谱系中的位置
+
+LatentUM 把 VCoT 光谱推到了一个逻辑终点：从"调外部工具"（Visual Sketchpad、Gen-VCoT）→"在 VLM token 空间自生成"（CoVT）→"在 UMM 内部让理解和生成闭环"（LatentUM）。它最直接地回答了本系列反复追问的问题——**统一模型的"理解+生成"到底能带来什么拼接模型做不到的能力？答案之一就是内生的视觉推理链。**
+
+---
+
+## 六篇论文的技术光谱
+
+把六篇论文放在一起，VCoT 的设计空间变得清晰：
 
 | 论文 | 视觉中间产物形态 | 生成方式 | 应用场景 | 是否端到端 |
 |------|----------------|---------|---------|-----------|
@@ -279,17 +352,18 @@ CoT-VLA 虽然是一个 VLA 模型，但它的架构本质上就是一个统一�
 | Gen-VCoT | RGB 图像（分割/深度图） | 外部专家模型 | 深度/空间推理 | 否 |
 | Visual-Aware CoT | 视觉检查清单（文本） | 模型生成 + RL | 生成一致性 | 是 |
 | CoT-VLA | 未来帧图像 | 模型自回归 | 机器人规划 | 是 |
+| LatentUM | 内生 latent 视觉 token | UMM 双分支共享空间 | 导航/空间推理（内生闭环） | 是 |
 
 ### 两个维度的分类
 
 **维度一：视觉中间产物是"模型自己生成"还是"外部工具提供"？**
-- 模型自生成：CoVT、VA-CoT、CoT-VLA
+- 模型自生成：CoVT、VA-CoT、CoT-VLA、LatentUM
 - 外部工具：Visual Sketchpad、Gen-VCoT
 
-趋势很明显：研究正在从"调工具"走向"模型自己生成视觉内容"。这和 UMM 的大方向一致——当模型本身就能生成图像时，为什么还要调外部 SAM？BAGEL/U1 自生成 VCoT 是最自然的路径。
+趋势很明显：研究正在从"调工具"走向"模型自己生成视觉内容"。这和 UMM 的大方向一致——当模型本身就能生成图像时，为什么还要调外部 SAM？LatentUM 是这条趋势的逻辑终点：视觉思维链完全在统一模型内部闭环，不依赖任何外部视觉模型。BAGEL/U1 自生成 VCoT 是最自然的路径。
 
 **维度二：视觉中间产物的"显式程度"？**
-- 最隐式：CoVT 的连续 token（人类不可直接读）
+- 最隐式：CoVT、LatentUM 的连续/latent token（人类不可直接读，需解码）
 - 中间态：VA-CoT 的视觉检查清单（文本但描述视觉）
 - 最显式：Gen-VCoT 的 RGB 图像、CoT-VLA 的未来帧、Sketchpad 的绘画
 
@@ -305,9 +379,9 @@ CoT-VLA 虽然是一个 VLA 模型，但它的架构本质上就是一个统一�
 
 2. **理解和生成共享注意力**：模型生成视觉中间产物后，这些 token 就在同一个上下文中，理解分支可以直接读取——不需要重新编码。LatentUM 的双分支共享语义空间已经验证了这一点（迷宫导航 97% 准确率）。
 
-3. **自生成 VCoT 的飞轮效应**：模型用自己的生成能力辅助理解，理解能力提升后又能生成更好的视觉中间产物——形成正反馈循环。
+3. **自生成 VCoT 的飞轮效应**：模型用自己的生成能力辅助理解，理解能力提升后又能生成更好的视觉中间产物——形成正反馈循环。LatentUM 把这个飞轮完全关进了一个模型内部，是目前最彻底的实现。
 
-本系列前一篇提到的 SenseNova U1 借鉴 VCoT 的三个方向（外挂方案、自生成深度图、自生成完整视觉推理链），正是基于这些论文的分析。VCoT 不是独立于 UMM 的研究方向，而是 UMM 能力涌现的关键机制之一。
+本系列前一篇提到的 SenseNova U1 借鉴 VCoT 的三个方向（外挂方案、自生成深度图、自生成完整视觉推理链），正是基于这些论文的分析。VCoT 不是独立于 UMM 的研究方向，而是 UMM 能力涌现的关键机制之一——LatentUM 则给出了"UMM 内生 VCoT"最直接的范本。
 
 ---
 
@@ -318,7 +392,8 @@ CoT-VLA 虽然是一个 VLA 模型，但它的架构本质上就是一个统一�
 3. Gen-VCoT: https://arxiv.org/abs/2606.16783
 4. Visual-Aware CoT: https://arxiv.org/abs/2512.19686
 5. CoT-VLA: https://arxiv.org/abs/2503.22020
-6. 项目主页：
+6. LatentUM（上海交大，2026.04，关注开源进展）
+7. 项目主页：
    - Visual Sketchpad: https://visualsketchpad.github.io/
    - CoVT: https://wakalsprojectpage.github.io/covt-website/
    - CoT-VLA: https://cot-vla.github.io/
