@@ -285,9 +285,20 @@ async function publishArticle(options) {
 
   const fullContent = headerHtml + wechatHtml + footerHtml;
 
-  // 4. 生成摘要
-  const digest = frontMatter.excerpt ||
-    markdownContent.slice(0, 120).replace(/[#*_\[\]()]/g, '').trim() + '...';
+  // 4. 生成摘要（微信 digest 限制 120 字节，超出截断并补省略号）
+  let digest = frontMatter.excerpt ||
+    markdownContent.slice(0, 200).replace(/[#*_`\[\]()]/g, '').trim();
+  digest = digest.replace(/\s+/g, ' ').trim();
+  const DIGEST_LIMIT = 120;
+  if (Buffer.byteLength(digest, 'utf8') > DIGEST_LIMIT) {
+    let buf = '';
+    for (const ch of digest) {
+      const next = buf + ch;
+      if (Buffer.byteLength(next, 'utf8') > DIGEST_LIMIT - 3) break;
+      buf = next;
+    }
+    digest = buf.replace(/[，。、；：\s]+$/, '') + '...';
+  }
 
   // 5. 上传封面图
   console.log('\n🖼️ 上传封面图...');
