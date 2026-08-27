@@ -1,12 +1,7 @@
 import { NextRequest } from 'next/server';
-import {
-  LLMClient,
-  Config,
-  HeaderUtils,
-  APIError,
-  type Message,
-} from 'coze-coding-dev-sdk';
+import { APIError, type LLMClient, type Message } from 'coze-coding-dev-sdk';
 import { fetchDocument, chunkText } from '@/lib/papers';
+import { createLLMClient, type CustomLLMConfig } from '@/lib/llm';
 
 export const runtime = 'nodejs';
 export const maxDuration = 300;
@@ -17,9 +12,9 @@ interface Body {
   url?: string;
   mode?: Mode;
   targetLang?: string;
+  llm?: CustomLLMConfig;
 }
 
-const TRANSLATION_MODEL = 'doubao-seed-2-0-pro-260215';
 const MAX_CHARS_PER_CHUNK = 6000;
 
 function sseEvent(event: string, data: unknown): string {
@@ -31,6 +26,7 @@ export async function POST(request: NextRequest) {
   const rawUrl = (body.url || '').trim();
   const mode: Mode = body.mode || 'both';
   const targetLang = body.targetLang || '简体中文';
+  const customLLM = sanitizeLLMConfig(body.llm);
 
   if (!rawUrl) {
     return new Response(
@@ -50,7 +46,6 @@ export async function POST(request: NextRequest) {
   }
 
   const encoder = new TextEncoder();
-  const customHeaders = HeaderUtils.extractForwardHeaders(request.headers);
 
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
@@ -58,26 +53,32 @@ export async function POST(request: NextRequest) {
         controller.enqueue(encoder.encode(sseEvent(event, data)));
 
       try {
+        // 判断是否使用自定义模型（自有环境）：抓取方式也相应切换
+        const useCustom = Boolean(customLLM?.baseUrl && customLLM?.apiKey && customLLM?.model);
+
         // 1. 抓取并解析文档
         send('status', { stage: 'fetch', message: '正在抓取并解析论文…' });
-        const doc = await fetchDocument(url.toString(), request);
+        const doc = await fetchDocument(url.toString(), request, useCustom);
+
+        // 2. 初始化 LLM（自定义配置优先，否则回退内置托管服务）
+        const { client: llm, model, source } = createLLMClient(customLLM, request);
         send('meta', {
           title: doc.title,
           url: doc.url,
           filetype: doc.filetype,
           charCount: doc.charCount,
+          model,
+          modelSource: source,
         });
 
-        const llm = new LLMClient(new Config({ timeout: 120000 }), customHeaders);
-
-        // 2. 摘要 / 元信息解读
+        // 3. 摘要 / 元信息解读
         if (mode === 'summary' || mode === 'both') {
           send('status', { stage: 'summary', message: '正在生成摘要与要点…' });
-          const summary = await streamSummary(llm, doc, targetLang, send);
+          const summary = await streamSummary(llm, model, doc, targetLang, send);
           send('summaryDone', { summary });
         }
 
-        // 3. 分块翻译
+        // 4. 分块翻译
         if (mode === 'translate' || mode === 'both') {
           const chunks = chunkText(doc.text, MAX_CHARS_PER_CHUNK, 300);
           send('status', {
@@ -90,6 +91,7 @@ export async function POST(request: NextRequest) {
             send('progress', { current: i + 1, total: chunks.length });
             const translated = await translateChunk(
               llm,
+              model,
               chunks[i],
               targetLang,
               i === 0,
@@ -128,6 +130,7 @@ function sseHeaders(): Record<string, string> {
 
 async function streamSummary(
   llm: LLMClient,
+  model: string,
   doc: { title: string; text: string },
   targetLang: string,
   send: (event: string, data: unknown) => void,
@@ -152,7 +155,7 @@ async function streamSummary(
 
   let acc = '';
   const stream = llm.stream(messages, {
-    model: TRANSLATION_MODEL,
+    model,
     temperature: 0.3,
     thinking: 'disabled',
   });
@@ -168,6 +171,7 @@ async function streamSummary(
 
 async function translateChunk(
   llm: LLMClient,
+  model: string,
   chunk: string,
   targetLang: string,
   isFirst: boolean,
@@ -198,9 +202,30 @@ async function translateChunk(
 
   // 翻译用非流式 invoke，在后端聚合后作为整块发送，避免前端拼接碎片
   const response = await llm.invoke(messages, {
-    model: TRANSLATION_MODEL,
+    model,
     temperature: 0.2,
     thinking: 'disabled',
   });
   return response.content.trim();
+}
+
+/**
+ * 清洗来自请求体的自定义 LLM 配置：
+ * - 仅接受字符串字段，去除首尾空白
+ * - 不记录 apiKey 到日志
+ */
+function sanitizeLLMConfig(raw: unknown): CustomLLMConfig | undefined {
+  if (!raw || typeof raw !== 'object') return undefined;
+  const obj = raw as Record<string, unknown>;
+  const pick = (k: string): string | undefined =>
+    typeof obj[k] === 'string' && (obj[k] as string).trim()
+      ? (obj[k] as string).trim()
+      : undefined;
+  const cfg: CustomLLMConfig = {
+    baseUrl: pick('baseUrl'),
+    apiKey: pick('apiKey'),
+    model: pick('model'),
+  };
+  if (!cfg.baseUrl && !cfg.apiKey && !cfg.model) return undefined;
+  return cfg;
 }

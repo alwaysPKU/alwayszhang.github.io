@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import {
   BookOpen,
   Link2,
@@ -12,6 +12,11 @@ import {
   Check,
   AlertCircle,
   StopCircle,
+  Settings2,
+  KeyRound,
+  Eye,
+  EyeOff,
+  ShieldCheck,
 } from 'lucide-react';
 
 type Mode = 'translate' | 'summary' | 'both';
@@ -19,6 +24,67 @@ type Mode = 'translate' | 'summary' | 'both';
 interface Chunk {
   index: number;
   text: string;
+}
+
+interface LLMSetting {
+  baseUrl: string;
+  apiKey: string;
+  model: string;
+}
+
+/** 常用 OpenAI 兼容服务预设。baseUrl 为站点根地址，后端会自动补 /v1。 */
+const PROVIDER_PRESETS: Record<string, { label: string; baseUrl: string; model: string }> = {
+  custom: { label: '自定义', baseUrl: '', model: '' },
+  doubao: {
+    label: '豆包 / 火山方舟（兼容模式）',
+    baseUrl: 'https://ark.cn-beijing.volces.com/api/v3',
+    model: 'doubao-seed-1-6-250615',
+  },
+  deepseek: {
+    label: 'DeepSeek',
+    baseUrl: 'https://api.deepseek.com',
+    model: 'deepseek-chat',
+  },
+  zhipu: {
+    label: '智谱 GLM',
+    baseUrl: 'https://open.bigmodel.cn/api/paas/v4',
+    model: 'glm-4-plus',
+  },
+  openai: {
+    label: 'OpenAI',
+    baseUrl: 'https://api.openai.com/v1',
+    model: 'gpt-4o-mini',
+  },
+  moonshot: {
+    label: 'Moonshot Kimi',
+    baseUrl: 'https://api.moonshot.cn/v1',
+    model: 'moonshot-v1-32k',
+  },
+  openrouter: {
+    label: 'OpenRouter',
+    baseUrl: 'https://openrouter.ai/api/v1',
+    model: 'deepseek/deepseek-chat',
+  },
+};
+
+const STORAGE_KEY = 'halfsugar.papers.llm';
+
+const EMPTY_LLM: LLMSetting = { baseUrl: '', apiKey: '', model: '' };
+
+function loadLLMSetting(): LLMSetting {
+  if (typeof window === 'undefined') return EMPTY_LLM;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return EMPTY_LLM;
+    const parsed = JSON.parse(raw) as Partial<LLMSetting>;
+    return {
+      baseUrl: parsed.baseUrl || '',
+      apiKey: parsed.apiKey || '',
+      model: parsed.model || '',
+    };
+  } catch {
+    return EMPTY_LLM;
+  }
 }
 
 const EXAMPLE_URLS = [
@@ -38,11 +104,20 @@ export default function PapersPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // 模型设置
+  const [llm, setLlm] = useState<LLMSetting>(EMPTY_LLM);
+  const [showSettings, setShowSettings] = useState(false);
+  const [provider, setProvider] = useState<string>('custom');
+  const [showKey, setShowKey] = useState(false);
+  const [savedHint, setSavedHint] = useState(false);
+
   const [meta, setMeta] = useState<{
     title?: string;
     url?: string;
     filetype?: string;
     charCount?: number;
+    model?: string;
+    modelSource?: string;
   } | null>(null);
   const [stage, setStage] = useState('');
   const [summary, setSummary] = useState('');
@@ -61,6 +136,50 @@ export default function PapersPage() {
     setStage('');
   };
 
+  // 挂载时读取本地保存的模型配置
+  useEffect(() => {
+    const saved = loadLLMSetting();
+    setLlm(saved);
+    if (saved.baseUrl || saved.apiKey || saved.model) {
+      setShowSettings(true);
+    }
+  }, []);
+
+  const handleProviderChange = (key: string) => {
+    setProvider(key);
+    if (key === 'custom') return;
+    const preset = PROVIDER_PRESETS[key];
+    if (preset) {
+      setLlm((prev) => ({
+        baseUrl: preset.baseUrl,
+        model: preset.model,
+        apiKey: prev.apiKey,
+      }));
+    }
+  };
+
+  const handleSaveSettings = () => {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(llm));
+      setSavedHint(true);
+      setTimeout(() => setSavedHint(false), 2000);
+    } catch {
+      setError('无法写入本地存储（浏览器隐私模式？）');
+    }
+  };
+
+  const handleClearSettings = () => {
+    setLlm(EMPTY_LLM);
+    setProvider('custom');
+    try {
+      window.localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const useCustomLLM = Boolean(llm.baseUrl && llm.apiKey && llm.model);
+
   const handleRead = useCallback(async () => {
     if (!url.trim()) {
       setError('请输入论文 URL');
@@ -76,7 +195,11 @@ export default function PapersPage() {
       const res = await fetch('/api/papers/read/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ url: url.trim(), mode }),
+        body: JSON.stringify({
+          url: url.trim(),
+          mode,
+          llm: useCustomLLM ? llm : undefined,
+        }),
         signal: controller.signal,
       });
 
@@ -124,7 +247,7 @@ export default function PapersPage() {
       abortRef.current = null;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url, mode]);
+  }, [url, mode, useCustomLLM, llm.baseUrl, llm.apiKey, llm.model]);
 
   function handleEvent(name: string, data: Record<string, unknown>) {
     switch (name) {
@@ -138,6 +261,8 @@ export default function PapersPage() {
           url: data.url as string,
           filetype: data.filetype as string | undefined,
           charCount: data.charCount as number,
+          model: data.model as string | undefined,
+          modelSource: data.modelSource as string | undefined,
         });
         break;
       case 'summaryDelta':
@@ -283,6 +408,161 @@ export default function PapersPage() {
         </div>
       </section>
 
+      {/* 模型设置 */}
+      <section className="mt-4 rounded-xl border border-border/60 bg-card shadow-sm">
+        <button
+          type="button"
+          onClick={() => setShowSettings((v) => !v)}
+          className="flex w-full items-center gap-2 px-4 py-3 text-left sm:px-6"
+        >
+          <Settings2 className="h-4 w-4 text-muted-foreground" />
+          <span className="text-sm font-medium text-foreground">模型设置</span>
+          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+            {useCustomLLM ? (
+              <>
+                <ShieldCheck className="h-3 w-3 text-primary" />
+                使用自定义模型（Key 仅存本地浏览器）
+              </>
+            ) : (
+              '当前使用平台内置托管模型（仅限本预览环境）'
+            )}
+          </span>
+          <span className="ml-auto text-xs text-muted-foreground">
+            {showSettings ? '收起' : '展开'}
+          </span>
+        </button>
+
+        {showSettings && (
+          <div className="space-y-4 border-t border-border/60 px-4 py-4 sm:px-6">
+            <p className="text-xs leading-relaxed text-muted-foreground">
+              部署到自有环境后，平台内置模型不可用，需填写你自己的 OpenAI 兼容接口。
+              API Key 仅保存在你当前浏览器的 localStorage，随请求发给本博客后端用于调用模型，
+              不会写入服务端磁盘。
+            </p>
+
+            {/* 服务商预设 */}
+            <div>
+              <label className="mb-1.5 block text-xs font-medium text-foreground">
+                服务商预设
+              </label>
+              <select
+                value={provider}
+                onChange={(e) => handleProviderChange(e.target.value)}
+                disabled={loading}
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
+              >
+                {Object.entries(PROVIDER_PRESETS).map(([key, p]) => (
+                  <option key={key} value={key}>
+                    {p.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Base URL */}
+            <div>
+              <label className="mb-1.5 block text-xs font-medium text-foreground">
+                Base URL（OpenAI 兼容端点，可含或不含 /v1）
+              </label>
+              <input
+                type="text"
+                value={llm.baseUrl}
+                onChange={(e) => setLlm((s) => ({ ...s, baseUrl: e.target.value }))}
+                disabled={loading}
+                placeholder="https://api.deepseek.com"
+                autoComplete="off"
+                spellCheck={false}
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+
+            {/* API Key */}
+            <div>
+              <label className="mb-1.5 flex items-center gap-1.5 text-xs font-medium text-foreground">
+                <KeyRound className="h-3 w-3" />
+                API Key
+              </label>
+              <div className="relative">
+                <input
+                  type={showKey ? 'text' : 'password'}
+                  value={llm.apiKey}
+                  onChange={(e) => setLlm((s) => ({ ...s, apiKey: e.target.value }))}
+                  disabled={loading}
+                  placeholder="sk-..."
+                  autoComplete="off"
+                  spellCheck={false}
+                  className="w-full rounded-lg border border-border bg-background px-3 py-2 pr-10 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowKey((v) => !v)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-muted-foreground hover:text-foreground"
+                  tabIndex={-1}
+                >
+                  {showKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Model */}
+            <div>
+              <label className="mb-1.5 block text-xs font-medium text-foreground">
+                模型名称（Model）
+              </label>
+              <input
+                type="text"
+                value={llm.model}
+                onChange={(e) => setLlm((s) => ({ ...s, model: e.target.value }))}
+                disabled={loading}
+                placeholder="deepseek-chat"
+                autoComplete="off"
+                spellCheck={false}
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={handleSaveSettings}
+                disabled={loading}
+                className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
+              >
+                保存设置
+              </button>
+              <button
+                type="button"
+                onClick={handleClearSettings}
+                disabled={loading}
+                className="rounded-lg border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted"
+              >
+                清除并使用内置模型
+              </button>
+              {savedHint && (
+                <span className="flex items-center gap-1 text-xs text-primary">
+                  <Check className="h-3.5 w-3.5" />
+                  已保存到本地浏览器
+                </span>
+              )}
+            </div>
+
+            {llm.baseUrl && llm.apiKey && llm.model && (
+              <p className="rounded-md bg-primary/5 px-3 py-2 text-xs text-primary">
+                将以自定义模型请求：{llm.model}（{llm.baseUrl.replace(/\/+$/, '')}
+                {/\/v\d+$/.test(llm.baseUrl.replace(/\/+$/, '')) ? '' : '/v1'}）
+              </p>
+            )}
+            {llm.baseUrl || llm.apiKey || llm.model ? (
+              !(llm.baseUrl && llm.apiKey && llm.model) && (
+                <p className="rounded-md bg-amber-500/10 px-3 py-2 text-xs text-amber-600 dark:text-amber-400">
+                  Base URL、API Key、模型名称需三项都填写，才会启用自定义模型，否则回退到内置模型。
+                </p>
+              )
+            ) : null}
+          </div>
+        )}
+      </section>
+
       {/* 状态/错误 */}
       {error && (
         <div className="mt-6 flex items-start gap-2 rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
@@ -327,6 +607,12 @@ export default function PapersPage() {
                 {meta.filetype && <span>类型：{meta.filetype}</span>}
                 {typeof meta.charCount === 'number' && (
                   <span>正文字数：{meta.charCount.toLocaleString()}</span>
+                )}
+                {meta.model && (
+                  <span className="inline-flex items-center gap-1">
+                    模型：{meta.model}
+                    {meta.modelSource === 'custom' ? '（自定义）' : '（内置）'}
+                  </span>
                 )}
               </div>
             </div>
