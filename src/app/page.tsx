@@ -1,117 +1,144 @@
 import { getAllPosts } from '@/lib/posts';
 import PostCard from '@/components/post-card';
+import FeaturedPost from '@/components/featured-post';
 import Link from 'next/link';
+import { Archive, Tags, Gamepad2, BarChart3 } from 'lucide-react';
 
 export default function HomePage() {
   const posts = getAllPosts();
 
-  // 获取所有分类
-  const categories = Array.from(
-    new Set(posts.flatMap((p) => p.categories || []))
+  // 所有分类（按文章数降序，取前 8 个）
+  const categoryCount = new Map<string, number>();
+  posts.forEach((p) =>
+    (p.categories || []).forEach((c) =>
+      categoryCount.set(c, (categoryCount.get(c) || 0) + 1)
+    )
   );
+  const topCategories = Array.from(categoryCount.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 8)
+    .map(([name]) => name);
+
+  // 精选：最新一篇有封面的作为大图，其后两篇有封面的作为小图
+  const withCover = posts.filter((p) => p.ogImage);
+  const featuredLarge = withCover[0] ?? posts[0];
+  const featuredCompact = withCover
+    .filter((p) => p.slug !== featuredLarge?.slug)
+    .slice(0, 2);
+
+  // 列表：跳过精选大图，其余按时间倒序
+  const listPosts = posts.filter((p) => p.slug !== featuredLarge?.slug);
+
+  const quickLinks = [
+    { href: '/archive', label: '归档', icon: Archive },
+    { href: '/tags', label: '标签', icon: Tags },
+    { href: '/games', label: '游戏', icon: Gamepad2 },
+    { href: '/stats', label: '统计', icon: BarChart3 },
+  ];
 
   return (
-    <div className="mx-auto max-w-4xl px-4 sm:px-6 py-12">
-      {/* Hero Section */}
-      <section className="mb-16 relative">
-        {/* 背景装饰 */}
-        <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-8">
-          {/* 头像 */}
-          <div className="h-20 w-20 rounded-full overflow-hidden border-4 border-primary/10 shadow-lg flex-shrink-0 group hover:scale-105 transition-transform duration-300">
+    <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
+      {/* Hero */}
+      <header className="mb-12 border-b border-border/60 pb-8">
+        <div className="flex items-center gap-4">
+          <div className="h-14 w-14 flex-shrink-0 overflow-hidden rounded-full border-2 border-border/60">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/images/avatar.png"
-              alt="avatar"
+              alt="HalfSugar avatar"
               className="h-full w-full object-cover"
             />
           </div>
-
-          {/* 标题区 */}
-          <div className="flex-1">
-            <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-2">
-              <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                HalfSugar
-              </span>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+              HalfSugar
             </h1>
-            <p className="text-base text-muted-foreground">
-              半甜不要腻 / Come on!
+            <p className="mt-0.5 text-sm text-muted-foreground">
+              半甜不要腻 · 记录学习、算法与 AI 前沿
             </p>
           </div>
-
-          {/* 统计卡片 */}
-          <div className="flex gap-3 text-sm">
-            <div className="px-4 py-2 rounded-lg bg-card border border-border/50 shadow-sm">
-              <div className="text-2xl font-bold text-primary">{posts.length}</div>
+          <div className="hidden gap-6 text-right sm:flex">
+            <div>
+              <div className="text-xl font-bold text-foreground">{posts.length}</div>
               <div className="text-xs text-muted-foreground">篇文章</div>
             </div>
-            <div className="px-4 py-2 rounded-lg bg-card border border-border/50 shadow-sm">
-              <div className="text-2xl font-bold text-primary">{categories.length}</div>
+            <div>
+              <div className="text-xl font-bold text-foreground">
+                {categoryCount.size}
+              </div>
               <div className="text-xs text-muted-foreground">个分类</div>
             </div>
           </div>
         </div>
 
-        {/* 简介 */}
-        <p className="text-muted-foreground leading-relaxed max-w-2xl text-base">
-          记录学习、算法、AI 前沿论文解读，偶尔分享小游戏和生活。
+        <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          这里是 HalfSugar 的个人博客，分享大模型与多模态前沿论文解读、工程实践、算法题解，
+          偶尔也有小游戏和生活碎片。内容按主题归档，欢迎用标签或搜索自由探索。
         </p>
 
         {/* 快捷入口 */}
-        <div className="flex flex-wrap gap-3 mt-6">
-          <Link
-            href="/archive"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-all hover:shadow-md hover:-translate-y-0.5"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            归档
-          </Link>
-          <Link
-            href="/tags"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-all hover:shadow-md hover:-translate-y-0.5"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-            </svg>
-            标签
-          </Link>
-          <Link
-            href="/games"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-all hover:shadow-md hover:-translate-y-0.5"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            游戏
-          </Link>
-          <Link
-            href="/stats"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium hover:bg-secondary/80 transition-all hover:shadow-md hover:-translate-y-0.5"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-            统计
-          </Link>
-        </div>
-      </section>
+        <nav className="mt-5 flex flex-wrap gap-2">
+          {quickLinks.map(({ href, label, icon: Icon }) => (
+            <Link
+              key={href}
+              href={href}
+              className="inline-flex items-center gap-1.5 rounded-lg border border-border/60 bg-card px-3 py-1.5 text-sm text-foreground transition-all hover:border-primary/40 hover:text-primary"
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {label}
+            </Link>
+          ))}
+        </nav>
 
-      {/* 文章列表 */}
+        {/* 热门分类 */}
+        {topCategories.length > 0 && (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <span className="text-xs text-muted-foreground">热门分类：</span>
+            {topCategories.map((c) => (
+              <Link
+                key={c}
+                href={`/category/${encodeURIComponent(c)}`}
+                className="rounded-md bg-secondary px-2 py-0.5 text-xs text-secondary-foreground transition-colors hover:bg-primary/10 hover:text-primary"
+              >
+                {c}
+              </Link>
+            ))}
+          </div>
+        )}
+      </header>
+
+      {/* 精选 */}
+      {featuredLarge && (
+        <section className="mb-12">
+          <div className="mb-4 flex items-center gap-2">
+            <span className="h-1.5 w-5 rounded-full bg-primary" />
+            <h2 className="text-base font-semibold text-foreground">最新精选</h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-5">
+            <div className="md:col-span-3">
+              <FeaturedPost post={featuredLarge} size="large" />
+            </div>
+            <div className="flex flex-col gap-4 md:col-span-2">
+              {featuredCompact.map((p) => (
+                <FeaturedPost key={p.slug} post={p} size="compact" />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 最近文章 */}
       <section>
-        <div className="flex items-center gap-2 mb-6">
-          <span className="h-1.5 w-6 rounded-full bg-primary" />
-          <h2 className="text-lg font-semibold text-foreground">Recent Posts</h2>
-          <span className="text-sm text-muted-foreground">
-            ({posts.length} 篇)
+        <div className="mb-5 flex items-baseline gap-2">
+          <span className="h-1.5 w-5 rounded-full bg-primary" />
+          <h2 className="text-base font-semibold text-foreground">最近文章</h2>
+          <span className="text-xs text-muted-foreground">
+            共 {listPosts.length} 篇
           </span>
         </div>
 
-        <div className="space-y-4">
-          {posts.map((post) => (
+        <div className="space-y-3">
+          {listPosts.map((post) => (
             <PostCard key={post.slug} post={post} />
           ))}
         </div>

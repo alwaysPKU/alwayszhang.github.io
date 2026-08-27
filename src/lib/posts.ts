@@ -18,6 +18,7 @@ export interface PostMeta {
   categories: string[];
   tags: string[];
   excerpt: string;
+  ogImage?: string;
 }
 
 export interface Post extends PostMeta {
@@ -271,6 +272,7 @@ export function getAllPosts(): PostMeta[] {
       categories: parseCategories(data.categories),
       tags: parseTags(data.tags),
       excerpt,
+      ogImage: data.ogImage ? String(data.ogImage).trim() : undefined,
     };
   });
 
