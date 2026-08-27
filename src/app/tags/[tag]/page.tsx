@@ -1,6 +1,7 @@
-import { getPostsByTag, getAllPosts } from '@/lib/posts';
+import { getPostsByTag, getAllPosts, resolveTag } from '@/lib/posts';
 import PostCard from '@/components/post-card';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
 interface Props {
@@ -17,27 +18,29 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { tag } = await params;
-  const decodedTag = decodeURIComponent(tag);
+  const canonical = resolveTag(decodeURIComponent(tag));
   return {
-    title: `${decodedTag} 标签文章`,
-    description: `HalfSugar 博客中关于 "${decodedTag}" 的所有文章`,
+    title: `${canonical} 标签文章`,
+    description: `HalfSugar 博客中关于 "${canonical}" 的所有文章`,
     openGraph: {
-      title: `${decodedTag} | HalfSugar`,
-      description: `关于 "${decodedTag}" 的所有技术文章`,
+      title: `${canonical} | HalfSugar`,
+      description: `关于 "${canonical}" 的所有技术文章`,
     },
   };
 }
 
 export default async function TagPage({ params }: Props) {
   const { tag } = await params;
-  const decodedTag = decodeURIComponent(tag);
-  const posts = getPostsByTag(tag);
+  const canonical = resolveTag(decodeURIComponent(tag));
+  const posts = getPostsByTag(canonical);
+
+  if (posts.length === 0) notFound();
 
   // 相关标签：该标签下所有文章出现的其他标签，按共现次数排序
   const relatedMap = new Map<string, number>();
   for (const post of posts) {
     for (const t of post.tags) {
-      if (t === decodedTag) continue;
+      if (t === canonical) continue;
       relatedMap.set(t, (relatedMap.get(t) || 0) + 1);
     }
   }
@@ -59,7 +62,7 @@ export default async function TagPage({ params }: Props) {
           </svg>
           全部标签
         </Link>
-        <h1 className="text-2xl font-bold text-foreground tracking-tight">#{decodedTag}</h1>
+        <h1 className="text-2xl font-bold text-foreground tracking-tight">#{canonical}</h1>
         <p className="text-sm text-muted-foreground mt-1">共 {posts.length} 篇文章</p>
       </div>
 

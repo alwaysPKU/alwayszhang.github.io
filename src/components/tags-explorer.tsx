@@ -7,32 +7,27 @@ interface TagItem {
   count: number;
 }
 
-export default function TagsExplorer({
-  tags,
-  hotTags,
-}: {
+export interface TagGroup {
+  name: string;
   tags: TagItem[];
-  hotTags: TagItem[];
+}
+
+export default function TagsExplorer({
+  groups,
+  allTags,
+}: {
+  groups: TagGroup[];
+  allTags: TagItem[];
 }) {
   const [query, setQuery] = useState('');
 
-  // 搜索时把热门也纳入，避免搜热门词无结果
-  const all = useMemo(() => {
-    const merged = new Map<string, number>();
-    for (const t of [...hotTags, ...tags]) merged.set(t.tag, t.count);
-    return Array.from(merged.entries())
-      .map(([tag, count]) => ({ tag, count }))
-      .sort((a, b) => b.count - a.count || a.tag.localeCompare(b.tag, 'zh-Hans-CN'));
-  }, [tags, hotTags]);
-
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return tags;
-    return all.filter((t) => t.tag.toLowerCase().includes(q));
-  }, [query, all, tags]);
+    if (!q) return [];
+    return allTags.filter((t) => t.tag.toLowerCase().includes(q));
+  }, [query, allTags]);
 
   const isSearching = query.trim().length > 0;
-  const list = isSearching ? filtered : tags;
 
   return (
     <div>
@@ -75,37 +70,75 @@ export default function TagsExplorer({
         )}
       </div>
 
-      {list.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
-          没有匹配 “{query.trim()}” 的标签
-        </div>
+      {isSearching ? (
+        filtered.length === 0 ? (
+          <div className="rounded-lg border border-dashed border-border py-12 text-center text-sm text-muted-foreground">
+            没有匹配 “{query.trim()}” 的标签
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-wrap gap-2">
+              {filtered.map(({ tag, count }) => (
+                <TagPill key={tag} tag={tag} count={count} variant="plain" />
+              ))}
+            </div>
+            <p className="mt-6 text-xs text-muted-foreground/80">
+              找到 {filtered.length} 个匹配标签
+            </p>
+          </>
+        )
       ) : (
-        <div className="flex flex-wrap gap-2">
-          {list.map(({ tag, count }) => (
-            <a
-              key={tag}
-              href={`/tags/${encodeURIComponent(tag)}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-border bg-card/40 px-3 py-1.5 text-sm text-foreground/80 transition-colors hover:border-primary/50 hover:bg-primary/5 hover:text-primary group"
-            >
-              <span className="group-hover:text-primary transition-colors">{tag}</span>
-              <span className="rounded-full bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground tabular-nums">
-                {count}
-              </span>
-            </a>
+        <div className="space-y-8">
+          {groups.map((group) => (
+            <section key={group.name}>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="inline-block w-1 h-4 bg-primary/70 rounded-full" />
+                <h2 className="text-sm font-semibold text-foreground">{group.name}</h2>
+                <span className="text-xs text-muted-foreground tabular-nums">
+                  {group.tags.length}
+                </span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {group.tags.map(({ tag, count }) => (
+                  <TagPill key={tag} tag={tag} count={count} variant="plain" />
+                ))}
+              </div>
+            </section>
           ))}
         </div>
       )}
-
-      {!isSearching && tags.length > 0 && (
-        <p className="mt-6 text-xs text-muted-foreground/80">
-          以下为出现 5 次以下的标签，共 {tags.length} 个；使用搜索可在全部标签中快速定位。
-        </p>
-      )}
-      {isSearching && (
-        <p className="mt-6 text-xs text-muted-foreground/80">
-          找到 {filtered.length} 个匹配标签
-        </p>
-      )}
     </div>
+  );
+}
+
+function TagPill({
+  tag,
+  count,
+  variant = 'plain',
+}: {
+  tag: string;
+  count: number;
+  variant?: 'hot' | 'plain';
+}) {
+  const sizeCls =
+    variant === 'hot' && count >= 10
+      ? 'text-base px-4 py-2'
+      : variant === 'hot' && count >= 7
+        ? 'text-[15px] px-3.5 py-1.5'
+        : 'text-sm px-3 py-1.5';
+  const base =
+    variant === 'hot'
+      ? 'border-border bg-card/60 hover:border-primary/50 hover:bg-primary/5 hover:text-primary'
+      : 'border-border bg-card/40 hover:border-primary/50 hover:bg-primary/5 hover:text-primary';
+  return (
+    <a
+      href={`/tags/${encodeURIComponent(tag)}`}
+      className={`inline-flex items-center gap-1.5 rounded-full border ${base} ${sizeCls} text-foreground/85 transition-all group`}
+    >
+      <span className="group-hover:text-primary transition-colors">{tag}</span>
+      <span className="rounded-full bg-muted px-1.5 py-0.5 text-[11px] text-muted-foreground tabular-nums">
+        {count}
+      </span>
+    </a>
   );
 }

@@ -1,31 +1,32 @@
-import { getAllTags } from '@/lib/posts';
-import TagsExplorer from '@/components/tags-explorer';
+import { getAllTags, groupTags } from '@/lib/posts';
+import TagsExplorer, { type TagGroup } from '@/components/tags-explorer';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: '标签',
-  description: '按标签浏览 HalfSugar 博客文章，涵盖 AI、大模型、深度学习、算法等主题',
+  description: '按主题浏览 HalfSugar 博客标签，涵盖 AI 技术架构、多模态、Agent、AI 治理、算法数学等',
   openGraph: {
     title: '标签分类 | HalfSugar',
-    description: '按标签浏览博客文章，涵盖 AI、大模型、深度学习、算法等主题',
+    description: '按主题浏览博客标签，涵盖 AI 技术架构、多模态、Agent、AI 治理、算法数学等',
   },
 };
 
 export default function TagsPage() {
   const tags = getAllTags();
   const hot = tags.filter((t) => t.count >= 5);
-  const rest = tags.filter((t) => t.count < 5);
+  const groups = groupTags(tags);
+  const totalGroups = groups.length;
 
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10">
       <header className="mb-8">
         <h1 className="text-2xl font-bold text-foreground tracking-tight">标签</h1>
         <p className="text-sm text-muted-foreground mt-1.5">
-          共 {tags.length} 个标签 · {hot.length} 个热门标签
+          共 {tags.length} 个标签 · {totalGroups} 个主题 · {hot.length} 个热门标签
         </p>
       </header>
 
-      {/* 热门标签：按文章数分档，字号可视化 */}
+      {/* 热门标签：按文章数分档字号 */}
       {hot.length > 0 && (
         <section className="mb-10">
           <div className="flex items-center gap-2 mb-4">
@@ -57,15 +58,13 @@ export default function TagsPage() {
         </section>
       )}
 
-      {/* 完整标签：可搜索 */}
+      {/* 按主题分组的完整标签，可搜索 */}
       <section>
-        <div className="flex items-center justify-between gap-3 mb-4">
-          <div className="flex items-center gap-2">
-            <span className="inline-block w-1 h-4 bg-primary rounded-full" />
-            <h2 className="text-base font-semibold text-foreground">全部标签</h2>
-          </div>
+        <div className="flex items-center gap-2 mb-4">
+          <span className="inline-block w-1 h-4 bg-primary rounded-full" />
+          <h2 className="text-base font-semibold text-foreground">按主题浏览</h2>
         </div>
-        <TagsExplorer tags={rest} hotTags={hot} />
+        <TagsExplorer groups={groups} allTags={tags} />
       </section>
     </div>
   );
