@@ -2,7 +2,7 @@
 title: "AI评测双榜深度解析：AAII智能指数与LMArena盲测的互补之道"
 date: 2026-07-22
 categories: [AI评测]
-tags: [AAII, LMArena, AI评测，模型对比，Kimi K3]
+tags: [AAII, LMArena, AI评测, 模型对比, Kimi K3]
 ---
 
 在AI大模型竞争白热化的2026年，如何评判一个模型的"强弱"成为业界核心议题。当前最具权威性的两大评测体系——**Artificial Analysis Intelligence Index（AAII智能指数）**与**LMArena（原Chatbot Arena）**——分别代表了"客观能力"与"主观体验"两个维度。

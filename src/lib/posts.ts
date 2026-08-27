@@ -38,8 +38,11 @@ function formatDate(val: unknown): string {
 function parseCategories(val: unknown): string[] {
   if (Array.isArray(val)) return val.map(String);
   if (typeof val === 'string') {
-    // handle comma-separated
-    return val.split(',').map((s: string) => s.trim()).filter(Boolean);
+    // 兼容中英文逗号、中文顿号、分号分隔
+    return val
+      .split(/[,，、;；]/)
+      .map((s: string) => s.trim())
+      .filter(Boolean);
   }
   return [];
 }
@@ -47,7 +50,10 @@ function parseCategories(val: unknown): string[] {
 function parseTags(val: unknown): string[] {
   if (Array.isArray(val)) return val.map(String);
   if (typeof val === 'string') {
-    return val.split(',').map((s: string) => s.trim()).filter(Boolean);
+    return val
+      .split(/[,，、;；]/)
+      .map((s: string) => s.trim())
+      .filter(Boolean);
   }
   return [];
 }
