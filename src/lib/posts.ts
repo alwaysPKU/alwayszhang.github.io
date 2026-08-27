@@ -88,6 +88,7 @@ export const TAG_GROUPS: { name: string; tags: string[] }[] = [
     name: 'AI 技术与架构',
     tags: [
       'Transformer', '注意力机制', '自注意力', '多头注意力', '线性注意力',
+      '稀疏注意力', '混合注意力',
       'Mamba', 'MoE', 'KV Cache', 'Prompt Caching', '缓存机制', '语义缓存',
       'DiT', 'VQ-VAE', 'VQGAN', 'Flow-Matching', 'DDPM', '扩散模型',
       'Streaming DiT', 'SAO', '自回归', '思维链', '推理优化', '推测解码',
@@ -122,6 +123,7 @@ export const TAG_GROUPS: { name: string; tags: string[] }[] = [
     tags: [
       'Agent', '智能体', 'AgentEnv', 'Agent Memory', 'RAG', 'Prompt Engineering',
       'AI编程', 'AI 编程', 'Codex', 'Claude Code', 'AI应用', 'C端', 'B端', '扣子',
+      '编程Agent',
       'AI降噪',
     ],
   },
@@ -132,6 +134,7 @@ export const TAG_GROUPS: { name: string; tags: string[] }[] = [
       '月之暗面', 'Qwen', '阿里巴巴', '阿里平头哥', '通义万象', '字节跳动',
       '豆包', 'Seeduplex', '商汤', 'SenseNova', '腾讯云', 'OpenAI', 'Anthropic',
       'Gemini', 'Claude', 'GPT-4o', 'GPT-5', '智元',
+      '智谱', 'GLM', 'Z.ai',
       'MiniMax', 'Hailuo', 'Boogu', 'Boogu-Image', 'MiniCPM', 'Lance',
       'DiDA', 'KDA', 'FlashKDA', 'Mem0', 'MemGPT',
     ],
@@ -139,7 +142,7 @@ export const TAG_GROUPS: { name: string; tags: string[] }[] = [
   {
     name: '算力·芯片·基建',
     tags: [
-      '算力', '国产算力', '英伟达', 'GPU', 'GB200', '华为', '昇腾950',
+      '算力', '国产算力', '国产芯片', '英伟达', 'GPU', 'GB200', '华为', '昇腾950',
       '真武M890', '超节点', '芯片封锁', 'AI基础设施', '数据工程', '多租户隔离', '硬件',
       '类脑计算', '脉冲神经网络', 'SNN', 'LIF', 'STDP', '神经形态芯片',
       '低功耗AI',
