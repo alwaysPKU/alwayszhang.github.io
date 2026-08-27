@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { PostMeta } from '@/lib/posts';
+import type { PostMeta } from '@/lib/posts';
 
 interface PostCardProps {
   post: PostMeta;

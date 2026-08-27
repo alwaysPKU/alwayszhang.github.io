@@ -15,8 +15,6 @@
     "wechat:publish": "node scripts/wechat-publish.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.958.0",
-    "@aws-sdk/lib-storage": "^3.958.0",
     "@giscus/react": "^3.1.0",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",
@@ -45,7 +43,6 @@
     "@radix-ui/react-toggle": "^1.1.10",
     "@radix-ui/react-toggle-group": "^1.1.11",
     "@radix-ui/react-tooltip": "^1.2.8",
-    "@supabase/supabase-js": "2.95.3",
     "chart.js": "^4.5.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -53,9 +50,6 @@
     "coze-coding-dev-sdk": "^0.7.24",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
-    "drizzle-kit": "^0.31.8",
-    "drizzle-orm": "^0.45.1",
-    "drizzle-zod": "^0.8.3",
     "embla-carousel-react": "^8.6.0",
     "gray-matter": "^4.0.3",
     "html-to-image": "^1.11.13",
@@ -63,7 +57,7 @@
     "katex": "^0.18.1",
     "lucide-react": "^0.468.0",
     "lunr": "^2.3.9",
-    "next": "16.1.1",
+    "next": "16.2.12",
     "next-themes": "^0.4.6",
     "pg": "^8.16.3",
     "qrcode.react": "^4.2.0",
@@ -81,6 +75,7 @@
     "remark-html": "^16.0.1",
     "remark-math": "^6.0.0",
     "remark-rehype": "^11.1.2",
+    "server-only": "^0.0.1",
     "sonner": "^2.0.7",
     "tailwind-merge": "^2.6.0",
     "tw-animate-css": "^1.4.0",
@@ -88,8 +83,6 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
-    "@react-dev-inspector/babel-plugin": "^2.0.1",
-    "@react-dev-inspector/middleware": "^2.0.1",
     "@tailwindcss/postcss": "^4",
     "@types/lunr": "^2.3.7",
     "@types/node": "^20",
@@ -98,9 +91,8 @@
     "@types/react-dom": "^19",
     "@types/sharp": "^0.32.0",
     "eslint": "^9",
-    "eslint-config-next": "16.1.1",
+    "eslint-config-next": "16.2.12",
     "only-allow": "^1.2.2",
-    "react-dev-inspector": "^2.0.1",
     "shadcn": "latest",
     "sharp": "^0.35.3",
     "tailwindcss": "^4",
@@ -111,5 +103,31 @@
   "packageManager": "pnpm@9.0.0",
   "engines": {
     "pnpm": ">=9.0.0"
+  },
+  "pnpm": {
+    "overrides": {
+      "fast-xml-parser": ">=5.3.4",
+      "ws": ">=8.21.0",
+      "lodash": ">=4.18.1",
+      "postcss": ">=8.5.10",
+      "nanoid": ">=3.3.18",
+      "minimatch": ">=10.2.3",
+      "brace-expansion": ">=1.1.12",
+      "@isaacs/brace-expansion": ">=5.0.1",
+      "picomatch": ">=4.0.4",
+      "flatted": ">=3.4.0",
+      "fast-uri": ">=3.1.4",
+      "path-to-regexp": ">=8.4.0",
+      "hono": ">=4.11.10",
+      "@hono/node-server": ">=1.19.10",
+      "@modelcontextprotocol/sdk": ">=1.26.0",
+      "qs": ">=6.14.2",
+      "body-parser": ">=2.3.0",
+      "sharp": ">=0.35.3",
+      "esbuild": ">=0.28.1",
+      "@babel/core": ">=7.29.6",
+      "ajv@6": "6.14.0",
+      "ajv@8": "8.20.0"
+    }
   }
 }

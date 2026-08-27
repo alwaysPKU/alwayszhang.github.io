@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Calendar, ArrowRight } from 'lucide-react';
-import { PostMeta } from '@/lib/posts';
+import type { PostMeta } from '@/lib/posts';
 
 interface FeaturedPostProps {
   post: PostMeta;
