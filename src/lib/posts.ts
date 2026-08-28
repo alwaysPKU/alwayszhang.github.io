@@ -252,8 +252,29 @@ export function groupTags(
 }
 
 let _postsCache: PostMeta[] | null = null;
+let _postsCacheMtimeMs = -1;
 
 export function getAllPosts(): PostMeta[] {
+  // 开发态：根据 posts 目录的最新修改时间自动失效缓存，
+  // 保证新建/重命名/删除文章后无需重启即可看到变化。
+  // 生产态只构建一次，目录 mtime 在运行期稳定，缓存长期有效。
+  if (process.env.NODE_ENV !== 'production') {
+    let latestMtime = 0;
+    try {
+      for (const f of fs.readdirSync(postsDirectory)) {
+        if (!f.endsWith('.md')) continue;
+        const m = fs.statSync(path.join(postsDirectory, f)).mtimeMs;
+        if (m > latestMtime) latestMtime = m;
+      }
+    } catch {
+      latestMtime = 0;
+    }
+    if (latestMtime !== _postsCacheMtimeMs) {
+      _postsCache = null;
+      _postsCacheMtimeMs = latestMtime;
+    }
+  }
+
   if (_postsCache) return _postsCache;
 
   const files = fs.readdirSync(postsDirectory).filter((f: string) => f.endsWith('.md'));
