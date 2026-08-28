@@ -26,8 +26,12 @@ export default function HomePage() {
     .filter((p) => p.slug !== featuredLarge?.slug)
     .slice(0, 2);
 
-  // 列表：跳过精选大图，其余按时间倒序
-  const listPosts = posts.filter((p) => p.slug !== featuredLarge?.slug);
+  // 列表：跳过精选大图，仅展示最新 15 篇，其余进入归档页
+  const RECENT_LIMIT = 15;
+  const listPosts = posts
+    .filter((p) => p.slug !== featuredLarge?.slug)
+    .slice(0, RECENT_LIMIT);
+  const hasMore = posts.length - 1 > RECENT_LIMIT;
 
   const quickLinks = [
     { href: '/archive', label: '归档', icon: Archive },
@@ -133,7 +137,7 @@ export default function HomePage() {
           <span className="h-1.5 w-5 rounded-full bg-primary" />
           <h2 className="text-base font-semibold text-foreground">最近文章</h2>
           <span className="text-xs text-muted-foreground">
-            共 {listPosts.length} 篇
+            展示 {listPosts.length} / {posts.length} 篇
           </span>
         </div>
 
@@ -142,6 +146,20 @@ export default function HomePage() {
             <PostCard key={post.slug} post={post} />
           ))}
         </div>
+
+        {hasMore && (
+          <div className="mt-8 text-center">
+            <Link
+              href="/archive"
+              className="inline-flex items-center gap-2 rounded-lg border border-border/60 bg-card px-5 py-2.5 text-sm font-medium text-foreground transition-all hover:border-primary/40 hover:text-primary"
+            >
+              查看全部 {posts.length} 篇文章
+              <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        )}
       </section>
     </div>
   );

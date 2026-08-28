@@ -251,7 +251,11 @@ export function groupTags(
   return groups;
 }
 
+let _postsCache: PostMeta[] | null = null;
+
 export function getAllPosts(): PostMeta[] {
+  if (_postsCache) return _postsCache;
+
   const files = fs.readdirSync(postsDirectory).filter((f: string) => f.endsWith('.md'));
   const posts = files.map((filename: string) => {
     const fullPath = path.join(postsDirectory, filename);
@@ -282,7 +286,8 @@ export function getAllPosts(): PostMeta[] {
   });
 
   // Sort by date descending (newest first)
-  return posts.sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
+  _postsCache = posts.sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
+  return _postsCache;
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
