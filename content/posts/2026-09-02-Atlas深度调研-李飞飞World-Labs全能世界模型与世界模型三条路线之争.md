@@ -1,6 +1,6 @@
 ---
 title: "Atlas 深度调研：李飞飞 World Labs 的全能世界模型，与世界模型三条路线之争"
-date: 2026-09-03
+date: 2026-09-02
 categories: 技术
 tags:
   - 世界模型
