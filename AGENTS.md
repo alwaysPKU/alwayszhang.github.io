@@ -40,6 +40,8 @@
 - 文章存放在 `content/posts/` 目录
 - 文件名格式：`YYYY-MM-DD-slug.md`
 - Front Matter 字段：`title`, `date`, `categories`, `tags`
+- **文章日期必须取写作当天的系统日期**（先执行 `date '+%Y-%m-%d'` 确认），文件名日期与 front matter 的 `date` 保持一致；**不要**用被调研事件的发布日期作为文章日期（事件日期作为事实写在正文里即可）
+- Markdown 正文中的美元符号必须转义为 `\$`（如 `\$10`），否则会被 KaTeX 误解析为数学公式定界符
 - 支持 GFM（GitHub Flavored Markdown）
 
 ### 页面路由

@@ -1,6 +1,6 @@
 ---
 title: "GPT-6 Astra 深度调研：大模型从“会答题”到“会干活”，Computer Use 时代的首场旗舰战争"
-date: 2026-09-04
+date: 2026-09-07
 categories: 技术
 tags:
   - GPT-6
