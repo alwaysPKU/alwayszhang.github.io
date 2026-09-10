@@ -19,12 +19,9 @@ export default function HomePage() {
     .slice(0, 8)
     .map(([name]) => name);
 
-  // 精选：最新一篇有封面的作为大图，其后两篇有封面的作为小图
-  const withCover = posts.filter((p) => p.ogImage);
-  const featuredLarge = withCover[0] ?? posts[0];
-  const featuredCompact = withCover
-    .filter((p) => p.slug !== featuredLarge?.slug)
-    .slice(0, 2);
+  // 精选：最新一篇大图，其后两篇小图（组件已兼容无封面样式）
+  const featuredLarge = posts[0];
+  const featuredCompact = posts.slice(1, 3);
 
   // 列表：跳过精选大图，仅展示最新 15 篇，其余进入归档页
   const RECENT_LIMIT = 15;
