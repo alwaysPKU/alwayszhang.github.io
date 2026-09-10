@@ -112,15 +112,21 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 - **后训练**：SFT → Strong-to-Weak 蒸馏（off-policy + on-policy）→ GSPO 强化学习；
 - 开源三版本：Instruct（全功能）、Thinking（纯推理）、Captioner（音频描述）。
 
-### 5. Gander（开源社区，2026.9.8）——开源版"小脑-大脑"
+### 5. Gander（腾讯混元语音团队，2026.9.8）——大厂首个开源"小脑-大脑"全模态交互 Agent
 
-来源：论文 arXiv 2609.08977（https://arxiv.org/abs/2609.08977），模型/代码/数据全开源：github.com/Omni-Interaction-Gander/Omni-Interaction-Agent
+来源：论文 arXiv 2609.08977（https://arxiv.org/abs/2609.08977）＋**官方项目页**（https://omni-interaction-gander.github.io/Omni-Interaction-Agent/ ，明确署名"**混元语音团队（研究项目）**"）；模型/代码/数据全开源：github.com/Omni-Interaction-Gander/Omni-Interaction-Agent
 
-- **定位**：端到端全模态交互 Agent，连续接收**视频 + 语音 + 文本**流式输入，全双工对话、随时打断、模型可主动给中间反馈/追问；
-- **两大设计**：① **Cerebellum-Brain 协同**——小脑负责实时交互与全模态对话，大脑负责复杂推理和高级 Agent 任务，两者通过 tool calling + agent orchestration runtime 持续通信；② 小脑基于**流式 Thinker-Talker**，用户输入和模型输出在 chunk 级摊平为一条有序 token 流；
-- **鲁棒性**：内部人评覆盖背景噪声、多人对话、backchannel 场景；
-- **意义**：开源阵营第一个把"全双工语音 + 视频在环 + Agent 工具调用"三件事用小脑/大脑分工写进技术报告的模型，与 GPT-Live 产品形态同构。
-- 注：arXiv 页面未标注机构，作者含 Mini-Omni 作者 Zhifei Xie 等；**与腾讯混元无关**（混元无此模型，见第五节澄清）。
+> 更正说明：本文初稿曾据 arXiv 作者页误判 Gander 为"与混元无关的开源社区项目"。经核对官方项目页，**Gander 是腾讯混元语音团队的研究项目**，其抗干扰/多人训练数据"选自高质量 Hy-Realtime 生产数据"（Hy 即 Hunyuan）。
+
+- **定位**：端到端全模态交互 Agent，持续接收**语音 + 视频 + 文本**流式输入，全双工对话、随时打断、模型可主动给中间反馈/追问；官方演示 12 类任务：语音+共享屏幕做游戏开发（边做边改按钮配色）、共享文档发起调研、语音查上海拍摄地并后台检索、**流式视频解说**、**视觉主动提醒**（"看到企鹅时告诉我"）、中英同声传译、附和/打断区分、抗背景噪声、多人对话分辨说话人、语音常识推理等。
+- **三组件架构**（比 arXiv 摘要更细，来自项目页）：
+  - **前端小脑（Cerebellum）**：持续接收音视频，负责实时对话和交互决策；
+  - **后端大脑（Brain）**：负责复杂推理、工具调用与耗时任务，**支持替换、接入无需额外训练**（评测中用未经微调的 GPT-5.6）；
+  - **智能体编排运行时**：管理任务状态，小脑通过 `task_start`/`task_send`/`task_resolve` 发起任务、追加要求、查询进度、取消或授权——**用户在后台任务跑着的时候仍可语音插话**。
+- **流式 Thinker-Talker 细节**：以 **1 秒为一个处理单元**，每单元先收音视频输入与工具返回，再决定聆听/说话/打断/发工具调用；保留最近 **128 个时间块（约两分钟滑动上下文）**；Thinker 出文本和交互动作，Talker 据文本与隐状态生成离散语音单元再流式合成；训练格式中每个说话单元**最多 8 个文本 token 与 50 个 S3 语音 token 时间对齐**。
+- **训练数据约 270 万条样本**四类：① 语音交互（InteractionSpeech 26.08 万段对话，明确标注打断与附和、时间线标记重叠区间）；② 音视频交互约 110 万条（来自 JoyAI-VL/LiveCC/Streamo，按每秒约 8 token 控制解说长度）；③ 智能体交互（32.02 万条语音 + 3.6 万条全模态 + 0.34 万条工具推理，GUI 轨迹由 **DeepSeek-V4-Pro** 生成带时间戳的交互轨迹）；④ 抗干扰与负样本（无关视频/噪声/多人/无指令环境，含 Hy-Realtime 生产数据）——核心是教模型"**在没有有效请求时保持安静**"。
+- **官方自评（难得地不护短）**：Full-Duplex-Bench v3（100 场景）中，Gander **适时接话率 100.0%、提前抢话率仅 8.0%（全场最低）**，但严格任务成功率 **Pass@1 0.400，低于六个基线**（GPT-Realtime 0.600、Gemini Live 3.1 0.540、级联 Whisper→GPT-4o→TTS 0.450、Grok 0.430、Gemini Live 2.5 0.490、Ultravox v0.7 0.410）；仅用文本驱动后端大脑时 Pass@1 0.520。语音对话（SpokenQA/VoiceBench 2052 条，不调大脑）在全双机组内 Llama Questions 75.60%、Web Questions 59.30% 两项第一；音视频理解 WorldSense 49.62%/Daily-Omni 78.53%，**均低于其初始化模型**，但音视频融合增益 Daily-Omni 达 +19.13 个百分点。
+- **意义**：这是**大厂首个把"全双工语音 + 视频在环 + Agent 工具编排"完整开源**的项目，与 GPT-Live 产品形态同构且可复现；评测表揭示了 2026 年全双工的核心权衡——**交互节奏（接话/抢话）与任务完成率是两个轴，节奏做到满分不代表任务做得对**。
 
 ### 6. 开源第二梯队
 
@@ -191,16 +197,19 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 | 星火 X2 | 科大讯飞 | 2026.7 全双工上线，中文/方言场景（官方发布会） |
 | GLM-Realtime | 智谱 | 实时语音 API（Flash/Air），含视频通道，音频约 0.18~0.3 元/分钟（智谱开放平台定价页） |
 
-### 5. 专门澄清：腾讯混元在全双工赛道的真实位置
+### 5. 腾讯混元：研究侧 Gander 开源 + 产品侧组件化双轨
 
-截至 2026-09，**腾讯混元没有公开发布端到端全双工语音对话大模型**（网上流传的"Gander 是混元模型"为误传，Gander 是 arXiv 2609.08977 的开源项目）。混元/腾讯云在语音侧的真实产品是组件化路线：
+混元在语音全双工上是"**研究开源 + 云产品组件**"两条腿走路：
 
+**研究侧**：混元语音团队 2026 年 9 月开源 **Gander**（详见第四节第 5 条），全模态全双工交互 Agent，模型/代码/数据全开放，是大厂中首个开源的小脑-大脑架构全双工系统；内部生产系统名为 **Hy-Realtime**（Gander 的抗干扰/多人训练数据即选自 Hy-Realtime 生产数据，说明该能力在腾讯内部已有线上化基础）。
+
+**产品侧**（腾讯云对外的是组件化供应链）：
 - **对话式 TTS**（`flow_02_turbo`）：首包延迟低至 300ms，支持声音克隆（腾讯云文档 cloud.tencent.com/document/product/647/131300）；
 - **TRTC AI 实时对话**：跨文本/音频/视频实时推理，对话延迟 <1000ms（腾讯云官网）；
 - **HunyuanVideo-Avatar**：图 + 音频驱动数字人，2025.5 开源单主体能力（腾讯云开发者社区）；
 - **Hy ASR**：语音识别组件（MoE 架构，媒体报道中文普通话 WER 3.34%，官方论文/文档未见同口径披露，谨慎引用）。
 
-即"ASR + TTS + 数字人 + 云 RTC"供应链打法，与 Moshi/GPT-Live 的端到端对话模型路线不同。
+即对外云服务走"ASR + TTS + 数字人 + RTC"组件打法，而前沿全双工研究以 Gander 开源形式输出——两条线并不矛盾。
 
 ## 六、横向对比总表（仅列有官方/论文来源的关键项）
 
@@ -210,20 +219,21 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 | Freeze-Omni | 腾讯优图/西工大等 | 冻结 LLM + chunk 状态预测 | VITA 系列有 | 弱 | 低延迟（论文未给统一值） | ✅ |
 | GLM-4-Voice-9B | 智谱 | 流式思考 + 文本参照生成 | 无 | 弱 | 10 token 即可开合成 | ✅（INT4 可跑） |
 | Qwen3-Omni | 阿里 | Thinker-Talker MoE | ✅ | ✅ | 音频首包 234ms | ✅ Apache 2.0 |
-| Gander | 开源社区 | 小脑-大脑 + 流式 Thinker-Talker | ✅ | ✅✅ | 论文未给统一值 | ✅ 模型+代码+数据 |
+| Gander | 腾讯混元语音团队 | 小脑-大脑 + 流式 Thinker-Talker（1s/块，128 块窗口） | ✅ | ✅✅ 任务编排运行时 | 官方未给端到端延迟（1s 为处理单元非延迟） | ✅ 模型+代码+数据 |
 | gpt-realtime | OpenAI | 端到端 S2S（Realtime API） | 图片输入 ✅ | ✅✅ MCP/SIP | 官方未给统一值，GA 定价 \$32/\$64 | ❌ API |
 | GPT-Live | OpenAI | 全双工架构 + 前台/后台 GPT-5.5 委派 | ❌ | ✅✅ | 官方未给统一值 | ❌ |
 | Gemini Live | Google | 原生多模态全双工 | ✅（图片 ≤1FPS） | ✅ | 官方主打低延迟（未给数值） | ❌ API（预览） |
 | Seeduplex | 字节 | RL 话轮决策 + 语音语义联合建模 | 无 | ✅ function call | 判停 -250ms / 打断 -300ms | ❌ API |
 | SeedRealtime | 字节 | 音视频原生全双工，无外置 VAD | ✅ | ✅ 主动交互 | 建联数百 ms 级 | ❌ |
-| 混元 | 腾讯 | 无全双工对话模型（ASR/TTS/数字人组件） | — | — | TTS 首包 300ms | 部分组件 |
+| 混元 | 腾讯 | 研究侧 Gander 开源全双工（见上）；产品侧 ASR/TTS/数字人组件 + Hy-Realtime 生产系统 | Gander ✅ | Gander ✅✅ | TTS 首包 300ms | Gander 全开源 |
 
 ## 七、四个趋势判断
 
 1. **"小脑-大脑"成为全双工 Agent 的标准架构**。GPT-Live（前台语音模型 + 后台 GPT-5.5）与 Gander（Cerebellum-Brain + tool calling runtime）在 2026 年 7 月和 9 月独立给出同构方案：实时交互要轻快要稳，深度推理要强要全，两者通过工具调用连接。Realtime API 的异步函数调用（等结果时对话不断）是同一思想的 API 层表达。
 2. **话轮智能从"VAD 开关"变成"模型决策"**。Moshi 双流、Freeze-Omni chunk 状态预测、Seeduplex 用强化学习学判停——竞争焦点已从延迟数字转向"什么时候该插话、什么时候该沉默"的社交节奏，官方评测指标也变成抢话率、误打断率、判停 MOS。
 3. **下一个战场是视觉在环与主动交互**。纯语音全双工 2026 年已成标配（OpenAI/Google/字节/智谱/MiniMax/阶跃/NVIDIA/xAI/讯飞全部入场）；拉开差距的是 SeedRealtime、Gemini Live、Gander 代表的"边听边看边说"，以及模型基于画面事件**主动开口**。
-4. **数据是新瓶颈**。真实全双工对话（含打断、重叠、附和）语料几乎不存在，DuplexGen 这类"大模型合成话轮 + TTS 渲染"的数据工程路线开始出现，和 RSI 时代"用 AI 造训练数据"的大逻辑一致。
+4. **数据是新瓶颈**。真实全双工对话（含打断、重叠、附和）语料几乎不存在，DuplexGen 这类"大模型合成话轮 + TTS 渲染"的数据工程路线开始出现，和 RSI 时代"用 AI 造训练数据"的大逻辑一致；Gander 的 270 万条四类数据（含"无指令时保持安静"的负样本）是目前开源侧最完整的全双工数据配方参考。
+5. **评测要拆成两根轴：交互节奏 ≠ 任务成功**。Gander 官方 Full-Duplex-Bench v3 结果很说明问题：它接话时机满分（适时接话 100%、抢话 8% 全场最低），但任务 Pass@1 仅 0.400 落后于 GPT-Realtime（0.600）；级联系统抢话率高达 33% 却有 0.450 的任务分、适时接话率 100%。**"会聊天"和"能办事"在全双工时代是两种能力**，小脑管前者、大脑管后者的分工架构（GPT-Live/Gander）正是对这一拆分的工程回应。
 
 ## 八、选型建议
 
@@ -241,7 +251,7 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 2. Freeze-Omni 论文：https://arxiv.org/abs/2411.00774 ｜项目页：https://freeze-omni.github.io/
 3. GLM-4-Voice 官方仓库：https://github.com/THUDM/GLM-4-Voice ｜技术报告：https://arxiv.org/abs/2412.02612
 4. Qwen3-Omni 技术报告：https://arxiv.org/abs/2509.17765 ｜论文解读：https://modelscope.cn/papers/190355
-5. Gander 技术报告：https://arxiv.org/abs/2609.08977 ｜代码：https://github.com/Omni-Interaction-Gander/Omni-Interaction-Agent
+5. Gander 技术报告：https://arxiv.org/abs/2609.08977 ｜**官方项目页（混元语音团队）**：https://omni-interaction-gander.github.io/Omni-Interaction-Agent/ ｜代码：https://github.com/Omni-Interaction-Gander/Omni-Interaction-Agent
 6. OpenAI gpt-realtime 发布（2025-08-28）：https://openai.com/index/introducing-gpt-realtime/
 7. OpenAI GPT-Live 发布（2026-07-08）：https://openai.com/index/introducing-gpt-live/
 8. Google Gemini Live API 文档：https://ai.google.dev/gemini-api/docs/live-api
