@@ -40,13 +40,20 @@
 - 文章存放在 `content/posts/` 目录
 - 文件名格式：`YYYY-MM-DD-slug.md`
 - Front Matter 字段：`title`, `date`, `categories`, `tags`
+- **系列文章字段（可选）`series`**：同一系列的文章填同一 `series.name`；`series.order` 为系列内排序序号（`0` = 总览/索引篇，会排在系列最前；正篇从 `1` 起递增）；`series.title` 为该篇在归档目录中显示的短标题（可省略）。归档页 `/archive` 会自动把同系列文章归拢成一棵目录树（总览实心书本节点 + 序号圆圈节点），独立文章仍按年/月时间线平铺。示例：
+  ```yaml
+  series:
+    name: "全双工语音模型精读"
+    order: 3
+    title: "GLM-4-Voice"
+  ```
 - **文章日期必须取写作当天的系统日期**（先执行 `date '+%Y-%m-%d'` 确认），文件名日期与 front matter 的 `date` 保持一致；**不要**用被调研事件的发布日期作为文章日期（事件日期作为事实写在正文里即可）
 - Markdown 正文中的美元符号必须转义为 `\$`（如 `\$10`），否则会被 KaTeX 误解析为数学公式定界符
 - 支持 GFM（GitHub Flavored Markdown）
 
 ### 页面路由
 - `/` - 首页，展示最新文章列表
-- `/archive` - 按年归档的所有文章
+- `/archive` - 按年/月归档；系列文章（front matter 含 `series`）自动归拢为目录树
 - `/tags` - 标签云
 - `/tags/[tag]` - 按标签筛选文章
 - `/games` - 小游戏中心（18个 HTML 游戏）

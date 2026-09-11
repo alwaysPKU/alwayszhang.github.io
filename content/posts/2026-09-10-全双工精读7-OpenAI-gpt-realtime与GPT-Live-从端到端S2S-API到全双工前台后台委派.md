@@ -11,6 +11,10 @@ tags:
   - Realtime-API
   - 论文精读
   - 技术调研
+series:
+  name: "全双工语音模型精读"
+  order: 7
+  title: "OpenAI gpt-realtime / GPT-Live"
 ---
 
 > 全双工语音模型系列精读第 7 篇。本文基于 OpenAI 官方博客与官方帮助文档，梳理 OpenAI 语音线两代产品：gpt-realtime（2025-08-28 GA）与 GPT-Live（2026-07-08）。配套总览见《全双工语音大模型全景调研》。

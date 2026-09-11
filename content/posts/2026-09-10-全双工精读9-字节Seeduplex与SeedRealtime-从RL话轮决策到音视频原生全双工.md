@@ -12,6 +12,10 @@ tags:
   - 豆包
   - 论文精读
   - 技术调研
+series:
+  name: "全双工语音模型精读"
+  order: 9
+  title: "字节 Seeduplex / SeedRealtime"
 ---
 
 > 全双工语音模型系列精读第 9 篇。本文基于字节 Seed 官方页面与火山引擎 API 文档，梳理字节语音全双工两步走：纯语音的 Seeduplex（2026.4）与音视频原生的 SeedRealtime（2026.8）。配套总览见《全双工语音大模型全景调研》。

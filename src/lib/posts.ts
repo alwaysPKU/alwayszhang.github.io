@@ -21,6 +21,19 @@ export interface PostMeta {
   tags: string[];
   excerpt: string;
   ogImage?: string;
+  series?: SeriesMeta;
+}
+
+/**
+ * 系列文章元信息。
+ * - name：系列展示名（同一系列的文章必须完全一致）
+ * - order：在系列内的排序序号；0 表示"总览/索引"文章，会排在最前
+ * - title：该篇在系列目录中显示的短标题（可省略，归档页会自动从 title 截取）
+ */
+export interface SeriesMeta {
+  name: string;
+  order: number;
+  title?: string;
 }
 
 export interface Post extends PostMeta {
@@ -48,6 +61,44 @@ function parseCategories(val: unknown): string[] {
       .filter(Boolean);
   }
   return [];
+}
+
+/**
+ * 解析 front matter 中的 series 字段，支持两种写法：
+ *   1) 嵌套对象：series: { name: "全双工语音模型精读", order: 3, title: "Moshi" }
+ *   2) 扁平字段：  series_name / series_order / series_title
+ * 只写了系列名但缺序号时，order 默认为 999（排到系列末尾）。
+ */
+function parseSeries(data: Record<string, unknown>): SeriesMeta | undefined {
+  const raw = data.series;
+  let name: unknown;
+  let order: unknown;
+  let title: unknown;
+
+  if (raw && typeof raw === 'object' && !Array.isArray(raw)) {
+    const obj = raw as Record<string, unknown>;
+    name = obj.name;
+    order = obj.order;
+    title = obj.title;
+  }
+  // 扁平字段兜底
+  if (name === undefined) name = data.series_name;
+  if (order === undefined) order = data.series_order;
+  if (title === undefined) title = data.series_title;
+
+  if (name === undefined || name === null || String(name).trim() === '') {
+    return undefined;
+  }
+
+  const parsedOrder = Number(order);
+  return {
+    name: String(name).trim(),
+    order: Number.isFinite(parsedOrder) ? parsedOrder : 999,
+    title:
+      title !== undefined && title !== null && String(title).trim() !== ''
+        ? String(title).trim()
+        : undefined,
+  };
 }
 
 /**
@@ -303,6 +354,7 @@ export function getAllPosts(): PostMeta[] {
       tags: parseTags(data.tags),
       excerpt,
       ogImage: data.ogImage ? String(data.ogImage).trim() : undefined,
+      series: parseSeries(data),
     };
   });
 
@@ -341,6 +393,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     tags: parseTags(data.tags),
     excerpt,
     contentHtml,
+    series: parseSeries(data),
   };
 }
 

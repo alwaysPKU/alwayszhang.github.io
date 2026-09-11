@@ -10,6 +10,10 @@ tags:
   - 多模态
   - 论文精读
   - 技术调研
+series:
+  name: "全双工语音模型精读"
+  order: 8
+  title: "Google Gemini Live"
 ---
 
 > 全双工语音模型系列精读第 8 篇。本文基于 Google 官方 Gemini API 文档（Live API）梳理其原生多模态全双工方案。配套总览见《全双工语音大模型全景调研》。

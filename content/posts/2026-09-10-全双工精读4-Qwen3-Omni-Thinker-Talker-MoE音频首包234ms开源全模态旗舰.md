@@ -11,6 +11,10 @@ tags:
   - MoE
   - 论文精读
   - 技术调研
+series:
+  name: "全双工语音模型精读"
+  order: 4
+  title: "Qwen3-Omni"
 ---
 
 > 全双工语音模型系列精读第 4 篇。本文基于 Qwen3-Omni 技术报告 arXiv:2509.17765 与官方开源仓库，梳理其 Thinker-Talker MoE 架构。配套总览见《全双工语音大模型全景调研》；下一代 Qwen3.5-Omni 见该文第五节。
