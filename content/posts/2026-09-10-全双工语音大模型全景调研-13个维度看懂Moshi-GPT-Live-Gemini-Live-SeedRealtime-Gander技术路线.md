@@ -11,6 +11,7 @@ tags:
   - SeedRealtime
   - Seeduplex
   - Qwen3-Omni
+  - Qwen3.5-Omni
   - Freeze-Omni
   - Gander
   - 端到端语音
@@ -65,7 +66,7 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 |---|---|---|---|
 | **双流原生派** | Moshi（Kyutai, 2024.9） | 用户流 + AI 流并行自回归 + 文本"内心独白"流对齐 | Moshi、Seeduplex、SeedRealtime |
 | **冻结骨干派** | Freeze-Omni（2024.11） | 语音数据量小，全量微调会让 LLM 灾难性遗忘；冻结 LLM，只训语音模块 + chunk 状态预测双工 | Freeze-Omni、VITA 系列 |
-| **Thinker-Talker 派** | Qwen2.5/3-Omni（阿里） | 推理（Thinker）与流式语音合成（Talker）解耦，Talker 轻量边想边说 | Qwen3-Omni、Gander 的小脑 |
+| **Thinker-Talker 派** | Qwen2.5/3-Omni（阿里） | 推理（Thinker）与流式语音合成（Talker）解耦，Talker 轻量边想边说 | Qwen3-Omni、Qwen3.5-Omni、Gander 的小脑 |
 | **小脑-大脑派** | GPT-Live（2026.7）/ Gander（2026.9） | 实时交互交给轻量"前台/小脑"，深度推理和工具委派给大模型"后台/大脑" | GPT-Live、Gander |
 
 注意第四条路线和前三条不互斥：它是**系统级分工**——工程界形成的共识是"实时性和深度推理不该由同一套权重承担"。
@@ -112,7 +113,18 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 - **后训练**：SFT → Strong-to-Weak 蒸馏（off-policy + on-policy）→ GSPO 强化学习；
 - 开源三版本：Instruct（全功能）、Thinking（纯推理）、Captioner（音频描述）。
 
-### 5. Gander（腾讯混元语音团队，2026.9.8）——大厂首个开源"小脑-大脑"全模态交互 Agent
+### 5. Qwen3.5-Omni Realtime（阿里，2026.3.30）——Thinker-Talker 派最新全模态旗舰
+
+来源：Qwen 官方博客《Qwen3.5-Omni: Scaling Up, Toward Native Omni-Modal AGI》（https://qwen.ai/blog?id=qwen3.5-omni ）＋阿里云百炼 Realtime API 文档
+
+- **定位**：Qwen 最新一代**全模态**（文本/图片/音频/音视频）模型，Thinker 与 Talker **均升级为 Hybrid-Attention MoE**，在 **1 亿小时以上**音视频数据上做原生多模态预训练。Realtime 版提供 `qwen3.5-omni-plus-realtime` 与 `qwen3.5-omni-flash-realtime` 两个实时模型，走百炼 Realtime API（支持 WebSocket / WebRTC / AOQ 三种接入）。
+- **Realtime 五大能力**（官方原文）：① **语义打断**——原生话轮意图识别，能区分"真插话下指令"与"附和声/背景噪声"，后者不触发打断；② **原生 WebSearch + 复杂 FunctionCall**，模型自主决定是否联网；③ **端到端语音控制**——直接语音指令调节音量、语速、情感；④ **声音克隆**（上传一段声音定制音色）；⑤ **ARIA**（Adaptive Rate Interleave Alignment，自适应速率交错对齐）——动态对齐文本 token 与语音 token，解决流式语音里漏读/误读/数字发音含糊。
+- **架构升级（对比 Qwen3-Omni）**：骨干 MoE→**Hybrid-Attention MoE**；Talker 输入从"双轨自回归"改为**交错（Interleave）**；文-音 token 比率从**固定 1:1 → ARIA 动态对齐**；语音表征沿用 RVQ（替代计算重的 DiT）；Thinker 经 Vision Encoder + AuT 收信号，音视频用 TMRoPE 时间对齐。
+- **规格**：上下文 **256K**（上代 32K）；可处理 **10 小时音频** / **400 秒 720P 音视频（1FPS）**；语音识别 **113 种**语言方言、语音生成 **36 种**（Realtime Flash 版 60+ 输入 / 30+ 输出语言）；39 种中文方言识别；输入 PCM 16kHz、输出 PCM 24kHz；声音复刻单会话最长 120 分钟。
+- **官方评测（Plus）**：在 **215 个**音频/音视频子任务上 SOTA，整体**超越 Gemini-3.1 Pro**；DailyOmni 84.6（Gemini 3.1 Pro 82.7）、VoiceBench 93.1；ASR LibriSpeech-clean WER 1.11、中文 Wenetspeech-net WER 4.30；语音合成稳定性多语言 WER 2.06（优于 ElevenLabs 12.62、GPT-Audio 2.65）；声音克隆相似度 0.79。涌现能力 **Audio-Visual Vibe Coding**（看着画面、听着语音指令直接写代码）。
+- **和 Gander 的边界**：Qwen3.5-Omni Realtime 是**单模型**内集成 WebSearch/FunctionCall，全模态感知 + 语音自然度 + 开箱工具见长；Gander 是"小脑 + 免训练后端大脑"的**异步长任务编排**架构（后台跑几分钟任务、前台随时插话改需求）。前者重"感知与对话全能"，后者重"长任务智能体协作"。
+
+### 6. Gander（腾讯混元语音团队，2026.9.8）——大厂首个开源"小脑-大脑"全模态交互 Agent
 
 来源：论文 arXiv 2609.08977（https://arxiv.org/abs/2609.08977）＋**官方项目页**（https://omni-interaction-gander.github.io/Omni-Interaction-Agent/ ，明确署名"**混元语音团队（研究项目）**"）；模型/代码/数据全开源：github.com/Omni-Interaction-Gander/Omni-Interaction-Agent
 
@@ -128,7 +140,7 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 - **官方自评（难得地不护短）**：Full-Duplex-Bench v3（100 场景）中，Gander **适时接话率 100.0%、提前抢话率仅 8.0%（全场最低）**，但严格任务成功率 **Pass@1 0.400，低于六个基线**（GPT-Realtime 0.600、Gemini Live 3.1 0.540、级联 Whisper→GPT-4o→TTS 0.450、Grok 0.430、Gemini Live 2.5 0.490、Ultravox v0.7 0.410）；仅用文本驱动后端大脑时 Pass@1 0.520。语音对话（SpokenQA/VoiceBench 2052 条，不调大脑）在全双机组内 Llama Questions 75.60%、Web Questions 59.30% 两项第一；音视频理解 WorldSense 49.62%/Daily-Omni 78.53%，**均低于其初始化模型**，但音视频融合增益 Daily-Omni 达 +19.13 个百分点。
 - **意义**：这是**大厂首个把"全双工语音 + 视频在环 + Agent 工具编排"完整开源**的项目，与 GPT-Live 产品形态同构且可复现；评测表揭示了 2026 年全双工的核心权衡——**交互节奏（接话/抢话）与任务完成率是两个轴，节奏做到满分不代表任务做得对**。
 
-### 6. 开源第二梯队
+### 7. 开源第二梯队
 
 | 模型 | 团队 | 要点 | 来源 |
 |---|---|---|---|
@@ -219,6 +231,7 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 | Freeze-Omni | 腾讯优图/西工大等 | 冻结 LLM + chunk 状态预测 | VITA 系列有 | 弱 | 低延迟（论文未给统一值） | ✅ |
 | GLM-4-Voice-9B | 智谱 | 流式思考 + 文本参照生成 | 无 | 弱 | 10 token 即可开合成 | ✅（INT4 可跑） |
 | Qwen3-Omni | 阿里 | Thinker-Talker MoE | ✅ | ✅ | 音频首包 234ms | ✅ Apache 2.0 |
+| Qwen3.5-Omni Realtime | 阿里 | Thinker-Talker Hybrid-MoE + ARIA 文音对齐 | ✅（音视频 400s） | ✅✅ WebSearch/FunctionCall | 官方主打 Realtime API 低延迟（未给统一数值） | Offline 开源 / Realtime API |
 | Gander | 腾讯混元语音团队 | 小脑-大脑 + 流式 Thinker-Talker（1s/块，128 块窗口） | ✅ | ✅✅ 任务编排运行时 | 官方未给端到端延迟（1s 为处理单元非延迟） | ✅ 模型+代码+数据 |
 | gpt-realtime | OpenAI | 端到端 S2S（Realtime API） | 图片输入 ✅ | ✅✅ MCP/SIP | 官方未给统一值，GA 定价 \$32/\$64 | ❌ API |
 | GPT-Live | OpenAI | 全双工架构 + 前台/后台 GPT-5.5 委派 | ❌ | ✅✅ | 官方未给统一值 | ❌ |
@@ -238,12 +251,28 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 ## 八、选型建议
 
 - **研究全双工架构**：Moshi（双流 + Inner Monologue 教科书级样板）；
-- **中文 + 开源 + 综合全能**：Qwen3-Omni（32 项开源 SOTA、Apache 2.0）；
+- **中文 + 开源 + 综合全能**：Qwen3-Omni（32 项开源 SOTA、Apache 2.0）；要最新全模态 + 语义打断 + 声音克隆/端到端语音控制且能接受 API，选 **Qwen3.5-Omni Realtime**（256K、113 语言、超越 Gemini-3.1 Pro 官方口径）；
 - **本地/端侧中文语音助手**：GLM-4-Voice-9B（INT4）或 MiniCPM-o（手机端）；
 - **二次开发怕伤骨干智商**：Freeze-Omni 路线（冻结 LLM，8 卡可训）；
 - **做音视频在环产品**：SeedRealtime / Gemini Live API（闭源仅这两家做到音视频原生全双工），开源选 Gander；
 - **要最强工具链/电话渠道**：gpt-realtime（MCP + SIP 成熟）；
 - **成本敏感的大规模并发**：Qwen3-Omni 自建（RTF <1）或国产 API（智谱/阶跃/MiniMax）。
+
+## 九、系列精读：每个模型一篇技术报告
+
+本文是总览。针对文中的重点模型，我按技术演进时间线写了 9 篇逐篇精读（均为官方论文/博客/文档一手来源）：
+
+| 篇号 | 模型 | 一句话看点 |
+| :--: | :--- | :--- |
+| ① | [Moshi](/posts/全双工精读1-Moshi-第一个实时全双工语音大模型与双流Inner-Monologue架构) | 全双工鼻祖，双流建模 + Inner Monologue，理论 160ms 延迟 |
+| ② | [Freeze-Omni](/posts/全双工精读2-Freeze-Omni-冻结LLM-8张卡6万条数据做出全双工语音对话) | 冻结 LLM 骨干，8 张卡、6 万条数据低成本做出全双工 |
+| ③ | [GLM-4-Voice](/posts/全双工精读3-GLM-4-Voice-175bps单码本12.5Hz-INT4可本地跑的中文语音助手) | 175bps 单码本、12.5Hz，INT4 量化后可本地跑的中文语音助手 |
+| ④ | [Qwen3-Omni](/posts/全双工精读4-Qwen3-Omni-Thinker-Talker-MoE音频首包234ms开源全模态旗舰) | Thinker-Talker MoE，音频首包 234ms，32 项开源 SOTA |
+| ⑤ | [Gander](/posts/全双工精读5-Gander-腾讯混元全双工语音智能体如何把实时对话和长任务执行缝进一个模型) | 腾讯混元"小脑-大脑"，把实时对话与长任务执行缝进一个模型 |
+| ⑥ | [Qwen3.5-Omni Realtime](/posts/全双工精读6-Qwen3.5-Omni-Realtime-Hybrid-MoE-ARIA文音对齐与语义打断全模态旗舰) | Hybrid-MoE + ARIA 文音对齐，语义打断/声音克隆全模态旗舰 |
+| ⑦ | [OpenAI gpt-realtime / GPT-Live](/posts/全双工精读7-OpenAI-gpt-realtime与GPT-Live-从端到端S2S-API到全双工前台后台委派) | 从端到端 S2S API 到全双工前台/后台委派 |
+| ⑧ | [Google Gemini Live](/posts/全双工精读8-Google-Gemini-Live-原生多模态全双工视觉在环与主动开口) | 原生多模态全双工，视觉在环 + 主动开口 |
+| ⑨ | [字节 Seeduplex / SeedRealtime](/posts/全双工精读9-字节Seeduplex与SeedRealtime-从RL话轮决策到音视频原生全双工) | RL 话轮决策到音视频原生全双工两步走 |
 
 ## 参考链接（一手来源）
 
@@ -251,11 +280,12 @@ Moshi 论文（arXiv 2410.00037）把级联+VAD 方案的三个病根讲得很�
 2. Freeze-Omni 论文：https://arxiv.org/abs/2411.00774 ｜项目页：https://freeze-omni.github.io/
 3. GLM-4-Voice 官方仓库：https://github.com/THUDM/GLM-4-Voice ｜技术报告：https://arxiv.org/abs/2412.02612
 4. Qwen3-Omni 技术报告：https://arxiv.org/abs/2509.17765 ｜论文解读：https://modelscope.cn/papers/190355
-5. Gander 技术报告：https://arxiv.org/abs/2609.08977 ｜**官方项目页（混元语音团队）**：https://omni-interaction-gander.github.io/Omni-Interaction-Agent/ ｜代码：https://github.com/Omni-Interaction-Gander/Omni-Interaction-Agent
-6. OpenAI gpt-realtime 发布（2025-08-28）：https://openai.com/index/introducing-gpt-realtime/
-7. OpenAI GPT-Live 发布（2026-07-08）：https://openai.com/index/introducing-gpt-live/
-8. Google Gemini Live API 文档：https://ai.google.dev/gemini-api/docs/live-api
-9. 字节 Seeduplex 官方页：https://seed.bytedance.com/seeduplex ｜火山引擎 API 文档：https://docs.volcengine.com/docs/6561/2549778
-10. 字节 SeedRealtime 官方页：https://seed.bytedance.com/en/SeedRealtime
-11. DuplexGen 数据集：https://huggingface.co/datasets/DuplexGen/duplexgen-spoken
-12. 腾讯云对话式 TTS 文档：https://cloud.tencent.com/document/product/647/131300
+5. Qwen3.5-Omni 官方博客（2026-03-30）：https://qwen.ai/blog?id=qwen3.5-omni ｜阿里云百炼 Realtime API：https://www.alibabacloud.com/help/en/model-studio/realtime
+6. Gander 技术报告：https://arxiv.org/abs/2609.08977 ｜**官方项目页（混元语音团队）**：https://omni-interaction-gander.github.io/Omni-Interaction-Agent/ ｜代码：https://github.com/Omni-Interaction-Gander/Omni-Interaction-Agent
+7. OpenAI gpt-realtime 发布（2025-08-28）：https://openai.com/index/introducing-gpt-realtime/
+8. OpenAI GPT-Live 发布（2026-07-08）：https://openai.com/index/introducing-gpt-live/
+9. Google Gemini Live API 文档：https://ai.google.dev/gemini-api/docs/live-api
+10. 字节 Seeduplex 官方页：https://seed.bytedance.com/seeduplex ｜火山引擎 API 文档：https://docs.volcengine.com/docs/6561/2549778
+11. 字节 SeedRealtime 官方页：https://seed.bytedance.com/en/SeedRealtime
+12. DuplexGen 数据集：https://huggingface.co/datasets/DuplexGen/duplexgen-spoken
+13. 腾讯云对话式 TTS 文档：https://cloud.tencent.com/document/product/647/131300
