@@ -4,6 +4,10 @@ date: 2026-08-25
 categories: [多模态, 论文解读]
 tags: [UMM, Chameleon, Emu3, Transfusion, Show-o, 统一模型, 论文解读]
 ogImage: /images/umm-p2-early-cover.jpeg
+series:
+  name: "UMM（理解与生成统一模型）"
+  order: 2
+  title: "02 · 早期统一模型篇"
 ---
 
 > 2024 年 5 月到 9 月，四个团队几乎同时交出了"统一理解与生成"的答卷。Meta 的 Chameleon 走 early-fusion 全离散路线，智源的 Emu3 证明纯 next-token prediction 就能统一图文视频，Meta 的 Transfusion 把 AR 和扩散 loss 加在同一个 Transformer 上，南洋理工的 Show-o 则混合了自回归与离散扩散。四条路线的分歧与共识，定义了此后一年所有 UMM 的设计空间。

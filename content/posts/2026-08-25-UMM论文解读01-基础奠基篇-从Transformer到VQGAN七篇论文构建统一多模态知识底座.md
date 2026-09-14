@@ -4,6 +4,10 @@ date: 2026-08-25
 categories: [多模态, 论文解读]
 tags: [UMM, Transformer, CLIP, LLaVA, DDPM, DiT, VQ-VAE, VQGAN, 论文解读]
 ogImage: /images/umm-p1-foundation-cover.jpeg
+series:
+  name: "UMM（理解与生成统一模型）"
+  order: 1
+  title: "01 · 基础奠基篇"
 ---
 
 > 本系列将 UMM（Unified Multimodal Model，理解与生成统一模型）学习路径中涉及的每一篇论文，逐一读取原文、提炼核心思想、标注关键贡献。第一篇聚焦 2017-2023 年间七篇奠基性工作，它们不是统一模型本身，却共同构成了今天所有统一模型的知识底座。

@@ -4,6 +4,10 @@ date: 2026-08-25
 categories: [多模态, 论文解读]
 tags: [VCoT, 视觉思维链, CoVT, Gen-VCoT, Visual-Sketchpad, CoT-VLA, Visual-Aware-CoT, 论文解读]
 ogImage: /images/umm-p4-vcot-cover.jpeg
+series:
+  name: "UMM（理解与生成统一模型）"
+  order: 4
+  title: "04 · VCoT 视觉思维篇"
 ---
 
 > Chain-of-Thought 让 LLM 能用文字"想一遍再答"，但人类在解决空间、几何、导航等问题时，不只在脑中推理——我们会画辅助线、做标记、在纸上打草稿。Visual Chain-of-Thought（VCoT）研究的就是：能不能让多模态模型也用视觉信息做推理中间产物，而不仅限于文字？本文解读六篇代表性论文，它们从连续 token、RGB 图像、外部画板、视觉检查清单、未来帧预测、统一模型内生视觉推理六个方向探索了这个问题。

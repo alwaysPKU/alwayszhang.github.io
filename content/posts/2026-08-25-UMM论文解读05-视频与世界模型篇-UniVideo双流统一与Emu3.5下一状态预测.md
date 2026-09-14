@@ -4,6 +4,10 @@ date: 2026-08-25
 categories: [多模态, 论文解读]
 tags: [UMM, UniVideo, Emu3.5, Lance, 世界模型, 视频生成, DiDA, Next-State-Prediction, Flow-Matching, 论文解读]
 ogImage: /images/umm-p5-video-cover.jpeg
+series:
+  name: "UMM（理解与生成统一模型）"
+  order: 5
+  title: "05 · 视频与世界模型篇"
 ---
 
 > 统一模型在图像领域验证成功后，自然向视频和世界模型延伸。快手可灵与滑铁卢大学的 UniVideo 用 MLLM+MMDiT 双流架构把统一理解/生成/编辑扩展到视频；智源的 Emu3.5 把"下一 token 预测"升维到"下一状态预测"，用 790 年互联网视频训练出一个 34B 的原生多模态世界模型；字节跳动的 Lance 则以 3B 激活参数的双流 MoE，在单个原生模型里系统覆盖图像+视频的理解/生成/编辑。三篇论文代表 UMM 向时空维度扩展的三条路径：工程化双流拼接、第一性原理的原生自回归、以及共享上下文+解耦专家的多任务协同。

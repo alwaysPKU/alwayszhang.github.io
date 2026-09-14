@@ -74,22 +74,19 @@ function groupByMonth(posts: Post[]): MonthGroup[] {
 }
 
 /**
- * 把一个月内的文章拆成「系列分组」和「独立文章」。
- * - 带 front matter `series` 的文章聚合成系列卡片，系列内按 order 排序；
- * - 其余文章保持平铺时间线。
+ * 把一年内的文章拆成「系列分组」和「独立文章」。
+ * - 带 front matter `series` 的文章按"年"聚合成系列卡片（即使跨月也只出现一棵目录树），
+ *   系列内按 order 升序（order=0 的总览排在最前）；
+ * - 其余文章返回给调用方，仍按年/月时间线平铺。
  */
-function partitionPosts(posts: Post[]): { seriesGroups: SeriesGroup[]; standalone: Post[] } {
+function collectSeries(posts: Post[]): { seriesGroups: SeriesGroup[]; seriesSlugs: Set<string> } {
   const map = new Map<string, Post[]>();
-  const standalone: Post[] = [];
 
   for (const post of posts) {
-    if (post.series) {
-      const arr = map.get(post.series.name) ?? [];
-      arr.push(post);
-      map.set(post.series.name, arr);
-    } else {
-      standalone.push(post);
-    }
+    if (!post.series) continue;
+    const arr = map.get(post.series.name) ?? [];
+    arr.push(post);
+    map.set(post.series.name, arr);
   }
 
   const seriesGroups: SeriesGroup[] = Array.from(map.entries()).map(([name, arr]) => ({
@@ -97,10 +94,15 @@ function partitionPosts(posts: Post[]): { seriesGroups: SeriesGroup[]; standalon
     posts: arr.sort((a, b) => (a.series!.order - b.series!.order)),
   }));
 
-  // 系列卡片按其最新一篇文章的日期倒序（入参本身已按日期倒序，取首篇即可）
+  // 系列卡片按其最新一篇文章的日期倒序（入参已按日期倒序，取每系列首篇即可）
   seriesGroups.sort((a, b) => (a.posts[0].date < b.posts[0].date ? 1 : -1));
 
-  return { seriesGroups, standalone };
+  const seriesSlugs = new Set<string>();
+  for (const group of seriesGroups) {
+    for (const post of group.posts) seriesSlugs.add(post.slug);
+  }
+
+  return { seriesGroups, seriesSlugs };
 }
 
 function ChevronIcon() {
@@ -181,6 +183,10 @@ function PostList({ posts }: { posts: Post[] }) {
 
 /** 系列文章：目录树卡片（总览在最前，其后按序号 1..N 竖排） */
 function SeriesCard({ name, posts }: SeriesGroup) {
+  // 系列跨月时显示完整 MM-DD，单月内只显示 DD，减少噪音
+  const months = new Set(posts.map((p) => p.date.slice(5, 7)));
+  const crossMonth = months.size > 1;
+
   return (
     <div className="rounded-lg border border-border/60 bg-card/50 overflow-hidden">
       <div className="flex items-center gap-2 px-3 py-2 border-b border-border/50 bg-muted/30">
@@ -255,31 +261,13 @@ function SeriesCard({ name, posts }: SeriesGroup) {
                 </span>
 
                 <time className="ml-auto flex-shrink-0 text-xs text-muted-foreground/70 tabular-nums">
-                  {post.date.slice(5)}
+                  {crossMonth ? post.date.slice(5) : post.date.slice(8)}
                 </time>
               </Link>
             </li>
           );
         })}
       </ol>
-    </div>
-  );
-}
-
-/** 一个月内的内容：先渲染系列目录树，再渲染独立文章时间线 */
-function MonthContent({ posts }: { posts: Post[] }) {
-  const { seriesGroups, standalone } = partitionPosts(posts);
-
-  if (seriesGroups.length === 0) {
-    return <PostList posts={standalone} />;
-  }
-
-  return (
-    <div className="space-y-3">
-      {seriesGroups.map((group) => (
-        <SeriesCard key={group.name} name={group.name} posts={group.posts} />
-      ))}
-      {standalone.length > 0 && <PostList posts={standalone} />}
     </div>
   );
 }
@@ -298,7 +286,10 @@ export default function ArchivePage() {
 
       <div className="space-y-2">
         {yearGroups.map(({ year, posts: yearPosts }) => {
-          const monthGroups = groupByMonth(yearPosts);
+          // 系列按"年"聚合：跨月也只渲染一棵完整目录树
+          const { seriesGroups, seriesSlugs } = collectSeries(yearPosts);
+          const standalonePosts = yearPosts.filter((p) => !seriesSlugs.has(p.slug));
+          const monthGroups = groupByMonth(standalonePosts);
           const isNewest = year === newestYear;
 
           return (
@@ -322,9 +313,19 @@ export default function ArchivePage() {
                 )}
               </summary>
 
-              <div className="px-4 pb-4 pt-1">
+              <div className="px-4 pb-4 pt-1 space-y-4">
+                {/* 系列目录树（年内置顶，每系列一棵） */}
+                {seriesGroups.length > 0 && (
+                  <div className="space-y-3">
+                    {seriesGroups.map((group) => (
+                      <SeriesCard key={group.name} name={group.name} posts={group.posts} />
+                    ))}
+                  </div>
+                )}
+
+                {/* 独立文章按月时间线 */}
                 {monthGroups.length === 1 ? (
-                  <MonthContent posts={monthGroups[0].posts} />
+                  <PostList posts={monthGroups[0].posts} />
                 ) : (
                   <div className="space-y-4">
                     {monthGroups.map(({ month, monthLabel, posts: monthPosts }) => (
@@ -337,7 +338,7 @@ export default function ArchivePage() {
                           </span>
                           <span className="h-px flex-1 bg-border/60" />
                         </h3>
-                        <MonthContent posts={monthPosts} />
+                        <PostList posts={monthPosts} />
                       </div>
                     ))}
                   </div>

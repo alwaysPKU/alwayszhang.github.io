@@ -4,6 +4,10 @@ date: 2026-08-25
 categories: [多模态, 论文解读]
 tags: [UMM, Janus-Pro, BAGEL, SenseNova, NEO-unify, MoT, 统一模型, 论文解读]
 ogImage: /images/umm-p3-mainstream-cover.jpeg
+series:
+  name: "UMM（理解与生成统一模型）"
+  order: 3
+  title: "03 · 主流模型篇"
 ---
 
 > 如果说 2024 年夏天的四篇论文回答了"统一是否可行"，那么 2025 至 2026 年的三篇代表作——DeepSeek Janus-Pro、字节 BAGEL、商汤 SenseNova U1——回答的是"统一能否匹敌甚至超越专用模型"。三条路线分别选择了解耦编码、MoT 双塔、去 VE/VAE 原生统一，它们的分歧不是工程细节，而是对"统一"这个词的不同哲学理解。
