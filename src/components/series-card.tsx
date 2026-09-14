@@ -69,7 +69,8 @@ export function SeriesCard({
           const isOverview = order === 0;
           const isFirst = i === 0;
           const isLast = i === posts.length - 1;
-          const label = post.series!.title || post.title;
+          // 系列目录保持文章原标题，不做短标题替换、不截断
+          const label = post.title;
 
           return (
             <li key={post.slug} className="relative">
@@ -85,12 +86,12 @@ export function SeriesCard({
               <Link
                 href={`/posts/${post.slug}`}
                 title={post.title}
-                className="group relative flex items-center gap-2.5 rounded-md py-1.5 pl-7 pr-2 transition-colors hover:bg-muted/60"
+                className="group relative flex items-start gap-2.5 rounded-md py-1.5 pl-7 pr-2 transition-colors hover:bg-muted/60"
               >
                 {/* 节点：总览为实心书本，其余为序号圆圈 */}
                 <span
                   className={[
-                    'absolute left-0 flex h-[18px] w-[18px] items-center justify-center rounded-full border transition-colors',
+                    'absolute left-0 mt-[3px] flex h-[18px] w-[18px] items-center justify-center rounded-full border transition-colors',
                     isOverview
                       ? 'border-primary bg-primary text-primary-foreground'
                       : 'border-border bg-background text-muted-foreground group-hover:border-primary/60 group-hover:text-primary',
@@ -105,7 +106,7 @@ export function SeriesCard({
                   )}
                 </span>
 
-                <span className="min-w-0 flex items-baseline gap-1.5">
+                <span className="min-w-0 flex flex-wrap items-baseline gap-x-1.5">
                   {isOverview && (
                     <span className="flex-shrink-0 text-[11px] font-semibold text-primary">
                       总览
@@ -113,7 +114,7 @@ export function SeriesCard({
                   )}
                   <span
                     className={[
-                      'truncate transition-colors',
+                      'leading-snug break-words transition-colors',
                       isOverview
                         ? 'text-sm font-medium text-foreground group-hover:text-primary'
                         : 'text-sm text-foreground/90 group-hover:text-primary',
@@ -124,7 +125,7 @@ export function SeriesCard({
                 </span>
 
                 {showDate && (
-                  <time className="ml-auto flex-shrink-0 text-xs text-muted-foreground/70 tabular-nums">
+                  <time className="ml-auto flex-shrink-0 pt-[3px] text-xs text-muted-foreground/70 tabular-nums">
                     {crossMonth ? post.date.slice(5) : post.date.slice(8)}
                   </time>
                 )}
