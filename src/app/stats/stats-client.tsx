@@ -122,7 +122,7 @@ export default function StatsClient({
 
   const chartOptions = {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -137,6 +137,18 @@ export default function StatsClient({
       },
     },
   };
+
+  const doughnutOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
+
+  const chartBox = "relative h-[320px] w-full";
 
   return (
     <div className="min-h-screen py-12">
@@ -184,7 +196,9 @@ export default function StatsClient({
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               月度发文趋势
             </h2>
-            <Line data={monthlyData} options={chartOptions} />
+            <div className={chartBox}>
+              <Line data={monthlyData} options={chartOptions} />
+            </div>
           </div>
 
           {/* 年度统计 */}
@@ -192,7 +206,9 @@ export default function StatsClient({
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               年度发文统计
             </h2>
-            <Bar data={yearlyData} options={chartOptions} />
+            <div className={chartBox}>
+              <Bar data={yearlyData} options={chartOptions} />
+            </div>
           </div>
 
           {/* 标签分布 */}
@@ -200,7 +216,9 @@ export default function StatsClient({
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               热门标签 TOP 10
             </h2>
-            <Doughnut data={tagData} options={{ responsive: true, maintainAspectRatio: true }} />
+            <div className={chartBox}>
+              <Doughnut data={tagData} options={doughnutOptions} />
+            </div>
           </div>
 
           {/* 分类分布 */}
@@ -208,7 +226,9 @@ export default function StatsClient({
             <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
               分类分布
             </h2>
-            <Doughnut data={categoryData} options={{ responsive: true, maintainAspectRatio: true }} />
+            <div className={chartBox}>
+              <Doughnut data={categoryData} options={doughnutOptions} />
+            </div>
           </div>
         </div>
       </div>
