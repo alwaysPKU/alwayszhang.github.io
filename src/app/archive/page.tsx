@@ -20,11 +20,6 @@ interface Post {
   slug: string;
   title: string;
   date: string;
-  series?: {
-    name: string;
-    order: number;
-    title?: string;
-  };
 }
 
 interface YearGroup {
@@ -36,11 +31,6 @@ interface MonthGroup {
   month: string; // "08"
   monthLabel: string;
   posts: Post[];
-}
-
-interface SeriesGroup {
-  name: string;
-  posts: Post[]; // 已按 series.order 升序（order=0 的总览排在最前）
 }
 
 function groupByYear(posts: Post[]): YearGroup[] {
@@ -73,38 +63,6 @@ function groupByMonth(posts: Post[]): MonthGroup[] {
     }));
 }
 
-/**
- * 把一年内的文章拆成「系列分组」和「独立文章」。
- * - 带 front matter `series` 的文章按"年"聚合成系列卡片（即使跨月也只出现一棵目录树），
- *   系列内按 order 升序（order=0 的总览排在最前）；
- * - 其余文章返回给调用方，仍按年/月时间线平铺。
- */
-function collectSeries(posts: Post[]): { seriesGroups: SeriesGroup[]; seriesSlugs: Set<string> } {
-  const map = new Map<string, Post[]>();
-
-  for (const post of posts) {
-    if (!post.series) continue;
-    const arr = map.get(post.series.name) ?? [];
-    arr.push(post);
-    map.set(post.series.name, arr);
-  }
-
-  const seriesGroups: SeriesGroup[] = Array.from(map.entries()).map(([name, arr]) => ({
-    name,
-    posts: arr.sort((a, b) => (a.series!.order - b.series!.order)),
-  }));
-
-  // 系列卡片按其最新一篇文章的日期倒序（入参已按日期倒序，取每系列首篇即可）
-  seriesGroups.sort((a, b) => (a.posts[0].date < b.posts[0].date ? 1 : -1));
-
-  const seriesSlugs = new Set<string>();
-  for (const group of seriesGroups) {
-    for (const post of group.posts) seriesSlugs.add(post.slug);
-  }
-
-  return { seriesGroups, seriesSlugs };
-}
-
 function ChevronIcon() {
   return (
     <svg
@@ -121,44 +79,6 @@ function ChevronIcon() {
   );
 }
 
-function LayersIcon() {
-  return (
-    <svg
-      className="h-3.5 w-3.5 text-primary"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <polygon points="12 2 2 7 12 12 22 7 12 2" />
-      <polyline points="2 17 12 22 22 17" />
-      <polyline points="2 12 12 17 22 12" />
-    </svg>
-  );
-}
-
-function BookIcon() {
-  return (
-    <svg
-      className="h-2.5 w-2.5"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-    </svg>
-  );
-}
-
-/** 独立文章的平铺时间线 */
 function PostList({ posts }: { posts: Post[] }) {
   return (
     <ul className="space-y-0.5">
@@ -181,97 +101,6 @@ function PostList({ posts }: { posts: Post[] }) {
   );
 }
 
-/** 系列文章：目录树卡片（总览在最前，其后按序号 1..N 竖排） */
-function SeriesCard({ name, posts }: SeriesGroup) {
-  // 系列跨月时显示完整 MM-DD，单月内只显示 DD，减少噪音
-  const months = new Set(posts.map((p) => p.date.slice(5, 7)));
-  const crossMonth = months.size > 1;
-
-  return (
-    <div className="rounded-lg border border-border/60 bg-card/50 overflow-hidden">
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-border/50 bg-muted/30">
-        <LayersIcon />
-        <span className="text-[11px] font-semibold uppercase tracking-wide text-primary">
-          系列
-        </span>
-        <span className="text-sm font-medium text-foreground truncate">{name}</span>
-        <span className="ml-auto text-xs text-muted-foreground tabular-nums flex-shrink-0">
-          {posts.length} 篇
-        </span>
-      </div>
-
-      <ol className="px-3 py-1.5">
-        {posts.map((post, i) => {
-          const order = post.series!.order;
-          const isOverview = order === 0;
-          const isFirst = i === 0;
-          const isLast = i === posts.length - 1;
-          const label = post.series!.title || post.title;
-
-          return (
-            <li key={post.slug} className="relative">
-              {/* 竖向连接线：首篇从节点中部开始，末篇到节点中部结束 */}
-              <span
-                aria-hidden
-                className={[
-                  'absolute left-[9px] w-px bg-border/70',
-                  isFirst ? 'top-1/2' : 'top-0',
-                  isLast ? 'bottom-1/2' : 'bottom-0',
-                ].join(' ')}
-              />
-              <Link
-                href={`/posts/${post.slug}`}
-                title={post.title}
-                className="group relative flex items-center gap-2.5 rounded-md py-1.5 pl-7 pr-2 transition-colors hover:bg-muted/60"
-              >
-                {/* 节点：总览为实心书本，其余为序号圆圈 */}
-                <span
-                  className={[
-                    'absolute left-0 flex h-[18px] w-[18px] items-center justify-center rounded-full border transition-colors',
-                    isOverview
-                      ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-border bg-background text-muted-foreground group-hover:border-primary/60 group-hover:text-primary',
-                  ].join(' ')}
-                >
-                  {isOverview ? (
-                    <BookIcon />
-                  ) : (
-                    <span className="text-[10px] font-medium tabular-nums leading-none">
-                      {order}
-                    </span>
-                  )}
-                </span>
-
-                <span className="min-w-0 flex items-baseline gap-1.5">
-                  {isOverview && (
-                    <span className="flex-shrink-0 text-[11px] font-semibold text-primary">
-                      总览
-                    </span>
-                  )}
-                  <span
-                    className={[
-                      'truncate transition-colors',
-                      isOverview
-                        ? 'text-sm font-medium text-foreground group-hover:text-primary'
-                        : 'text-sm text-foreground/90 group-hover:text-primary',
-                    ].join(' ')}
-                  >
-                    {label}
-                  </span>
-                </span>
-
-                <time className="ml-auto flex-shrink-0 text-xs text-muted-foreground/70 tabular-nums">
-                  {crossMonth ? post.date.slice(5) : post.date.slice(8)}
-                </time>
-              </Link>
-            </li>
-          );
-        })}
-      </ol>
-    </div>
-  );
-}
-
 export default function ArchivePage() {
   const posts = getAllPosts();
   const yearGroups = groupByYear(posts);
@@ -281,15 +110,15 @@ export default function ArchivePage() {
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-10">
       <h1 className="text-2xl font-bold text-foreground mb-2">归档</h1>
       <p className="text-sm text-muted-foreground mb-8">
-        共 {posts.length} 篇文章 · 按年/月分组，系列文章自动归拢为目录
+        共 {posts.length} 篇文章 · 按年/月时间线排列，系列文章见{' '}
+        <Link href="/series" className="text-primary hover:underline underline-offset-4">
+          系列归档
+        </Link>
       </p>
 
       <div className="space-y-2">
         {yearGroups.map(({ year, posts: yearPosts }) => {
-          // 系列按"年"聚合：跨月也只渲染一棵完整目录树
-          const { seriesGroups, seriesSlugs } = collectSeries(yearPosts);
-          const standalonePosts = yearPosts.filter((p) => !seriesSlugs.has(p.slug));
-          const monthGroups = groupByMonth(standalonePosts);
+          const monthGroups = groupByMonth(yearPosts);
           const isNewest = year === newestYear;
 
           return (
@@ -313,17 +142,7 @@ export default function ArchivePage() {
                 )}
               </summary>
 
-              <div className="px-4 pb-4 pt-1 space-y-4">
-                {/* 系列目录树（年内置顶，每系列一棵） */}
-                {seriesGroups.length > 0 && (
-                  <div className="space-y-3">
-                    {seriesGroups.map((group) => (
-                      <SeriesCard key={group.name} name={group.name} posts={group.posts} />
-                    ))}
-                  </div>
-                )}
-
-                {/* 独立文章按月时间线 */}
+              <div className="px-4 pb-4 pt-1">
                 {monthGroups.length === 1 ? (
                   <PostList posts={monthGroups[0].posts} />
                 ) : (
