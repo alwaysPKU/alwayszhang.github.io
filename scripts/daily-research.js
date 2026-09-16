@@ -151,8 +151,9 @@ async function run() {
   const dateDisplay = `${yy}年${mm}月${dd}日`;
   const prompt = `你是资深 AI 技术调研编辑。下面是 ${targetDate} 这一天国内外 AI 领域（大模型、AI 应用、多模态、具身智能）在头部厂商 blog/官方动态及 arXiv 的原始检索素材。
 
-请基于素材写一篇 Markdown 连载文章《AI 每日调研 · ${dateDisplay}》，要求：
-1. 结构：先用 3-5 个要点做"今日速览"；再按「大模型 / AI 应用 / 多模态 / 具身智能」分节细述，每节覆盖厂商动态与 arXiv 论文；最后给一小节"本周趋势观察"。
+请基于素材写一篇 Markdown 连载文章《AI 每日调研》，要求：
+0. 先给一句"重点标题"：用不超过 25 个字（一个顿号/斜杠分隔的短语列表也行）概括当天最值得关注的核心动态，必须基于素材，不要空泛套话。这一句单独放一行，格式为 `【重点】xxx`，作为整篇文章的第一行。
+1. 正文结构：先用 3-5 个要点做"今日速览"；再按「大模型 / AI 应用 / 多模态 / 具身智能」分节细述，每节覆盖厂商动态与 arXiv 论文；最后给一小节"本周趋势观察"。正文从第二行开始，不要把【重点】这行重复写进正文。
 2. 每一条信息尽量保留原文出处链接，用 markdown 链接 [标题](url)；引不到具体 URL 的用 [来源] 括注。
 3. 只依据素材，不要编造；素材不足的地方直接说明"暂未捕获到该方向动态"。
 4. 语言中文，正文里如有美元金额请写成「美元」避免歧义，不要在正文出现裸的 $ 符号。
@@ -161,17 +162,23 @@ async function run() {
 素材如下：
 ${source}
 
-请只输出正文 Markdown，不要写 front matter、不要用代码块包裹全文。`;
+请只输出 Markdown 正文（第一行为【重点】…，第二行起为正文），不要写 front matter、不要用代码块包裹全文。`;
 
   const resp = await lc.invoke(
     [{ role: 'user', content: prompt }],
     { model: DEFAULT_MODEL, temperature: 0.5 },
   );
-  let body = (resp.content || '').trim();
+  const body = (resp.content || '').trim();
+
+  // 解析第一行的重点标题：【重点】xxx
+  const titleMatch = body.match(/^【重点】(.+)$/m);
+  const keyTitle = titleMatch ? titleMatch[1].trim() : '大模型多模态具身智能前沿动态';
+  // 去掉正文里的重点行，避免重复写入正文
+  let article = body.replace(/^【重点】.+$/m, '').trim();
 
   const frontMatter = [
     '---',
-    `title: "AI 每日调研 · ${dateDisplay}：大模型与多模态、具身智能的前沿动态"`,
+    `title: "AI 每日调研 · ${dateDisplay}｜${keyTitle}"`,
     `date: "${targetDate}"`,
     'categories: ["技术调研"]',
     'tags:',
@@ -187,8 +194,8 @@ ${source}
     '',
   ].join('\n');
 
-  const safe = body.replace(/\\\$/g, '美元').replace(/\$(\d)/g, '美元$1').replace(/\$/g, '（美元）');
-  const filename = `${targetDate}-AI每日调研-大模型多模态具身智能前沿动态.md`;
+  const safe = article.replace(/\\\$/g, '美元').replace(/\$(\d)/g, '美元$1').replace(/\$/g, '（美元）');
+  const filename = `${targetDate}-AI每日调研-${keyTitle.replace(/[\\/:*?"<>|\s·｜]/g, '')}.md`;
   const fullPath = path.join(POSTS_DIR, filename);
 
   // 幂等：当天文章已存在则跳过，避免定时任务重复提交

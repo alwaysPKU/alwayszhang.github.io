@@ -75,7 +75,7 @@ export default function DailyPage() {
                     href={`/posts/${post.slug}`}
                     className="block text-sm font-medium text-foreground/90 leading-snug break-words transition-colors group-hover:text-primary"
                   >
-                    {post.title.replace('AI 每日调研 · ', '').replace(/：.*$/, '')}
+                    {post.title.replace('AI 每日调研 · ', '')}
                   </Link>
                   <span className="block text-xs text-muted-foreground/80 mt-0.5">
                     AI 每日调研
