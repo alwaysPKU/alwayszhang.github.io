@@ -1,4 +1,4 @@
-import { getAllPosts, getAllTags } from "@/lib/posts";
+import { getAllPostsIncludingDaily } from "@/lib/posts";
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
@@ -19,8 +19,7 @@ export const metadata: Metadata = {
 const postsDirectory = path.join(process.cwd(), "content/posts");
 
 export default function StatsPage() {
-  const posts = getAllPosts();
-  const tags = getAllTags();
+  const posts = getAllPostsIncludingDaily();
 
   // 按月统计文章数量
   const monthlyStats: { [key: string]: number } = {};
@@ -37,8 +36,16 @@ export default function StatsPage() {
     yearlyStats[year] = (yearlyStats[year] || 0) + 1;
   });
 
-  // 标签统计
-  const tagStats = tags.map(({ tag, count }) => ({ tag, count }));
+  // 标签统计（基于全部文章，含每日调研连载）
+  const tagMap: { [key: string]: number } = {};
+  posts.forEach((post) => {
+    post.tags.forEach((t) => {
+      tagMap[t] = (tagMap[t] || 0) + 1;
+    });
+  });
+  const tagStats = Object.entries(tagMap)
+    .map(([tag, count]) => ({ tag, count }))
+    .sort((a, b) => b.count - a.count);
 
   // 分类统计
   const categoryStats: { [key: string]: number } = {};
@@ -74,7 +81,7 @@ export default function StatsPage() {
   return (
     <StatsClient
       totalPosts={posts.length}
-      totalTags={tags.length}
+      totalTags={tagStats.length}
       monthlyStats={monthlyStats}
       yearlyStats={yearlyStats}
       tagStats={tagStats}
