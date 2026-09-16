@@ -153,7 +153,7 @@ export default function ArchivePage() {
                           <span className="h-px flex-1 bg-border/60" />
                           <span>{monthLabel}</span>
                           <span className="tabular-nums">
-                            {monthPosts.length}
+                            {monthPosts.length} 篇
                           </span>
                           <span className="h-px flex-1 bg-border/60" />
                         </h3>
