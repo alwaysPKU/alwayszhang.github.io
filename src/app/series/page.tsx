@@ -30,16 +30,11 @@ export default function SeriesPage() {
         <p className="text-sm text-muted-foreground">还没有系列文章。</p>
       ) : (
         <div className="space-y-4">
-          {series.map((group) => {
-            // 系列跨月时显示完整 MM-DD，单月内只显示 DD
-            const months = new Set(group.posts.map((p) => p.date.slice(5, 7)));
-            const crossMonth = months.size > 1;
-            return (
-              <div key={group.name}>
-                <SeriesCard {...group} crossMonth={crossMonth} />
-              </div>
-            );
-          })}
+          {series.map((group) => (
+            <div key={group.name}>
+              <SeriesCard {...group} />
+            </div>
+          ))}
         </div>
       )}
     </div>

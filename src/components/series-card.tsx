@@ -41,15 +41,13 @@ function BookIcon() {
 /**
  * 系列文章目录树卡片：
  * 卡片头为系列名 + 篇数，正文竖排各篇（总览实心书本节点 + 序号圆圈节点，左侧竖线串联）。
- * - showDate：是否在每篇右侧显示日期；
- * - crossMonth：系列跨月时显示完整 MM-DD，单月内只显示 DD，减少噪音（由调用方决定）。
+ * - showDate：是否在每篇右侧显示完整日期 YYYY-MM-DD（跨天/跨月均完整展示，避免只剩"日"产生歧义）。
  */
 export function SeriesCard({
   name,
   posts,
   showDate = true,
-  crossMonth = true,
-}: SeriesGroup & { showDate?: boolean; crossMonth?: boolean }) {
+}: SeriesGroup & { showDate?: boolean }) {
   return (
     <div className="rounded-lg border border-border/60 bg-card/50 overflow-hidden">
       <div className="flex items-center gap-2 px-3 py-2 border-b border-border/50 bg-muted/30">
@@ -125,8 +123,11 @@ export function SeriesCard({
                 </span>
 
                 {showDate && (
-                  <time className="ml-auto flex-shrink-0 pt-[3px] text-xs text-muted-foreground/70 tabular-nums">
-                    {crossMonth ? post.date.slice(5) : post.date.slice(8)}
+                  <time
+                    dateTime={post.date}
+                    className="ml-auto flex-shrink-0 pt-[3px] text-xs text-muted-foreground/70 tabular-nums"
+                  >
+                    {post.date}
                   </time>
                 )}
               </Link>
