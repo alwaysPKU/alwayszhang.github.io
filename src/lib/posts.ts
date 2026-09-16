@@ -305,7 +305,13 @@ export function groupTags(
 let _postsCache: PostMeta[] | null = null;
 let _postsCacheMtimeMs = -1;
 
-export function getAllPosts(): PostMeta[] {
+/** 「AI 每日调研」连载系列名：该系列文章只在 /daily 与首页展示，其余归档/标签页默认排除 */
+export const DAILY_SERIES_NAME = 'AI 每日调研';
+
+/**
+ * 读取并缓存全部文章（含每日调研连载）。内部函数，供上层按需过滤。
+ */
+function readAllPosts(): PostMeta[] {
   // 开发态：根据 posts 目录的最新修改时间自动失效缓存，
   // 保证新建/重命名/删除文章后无需重启即可看到变化。
   // 生产态只构建一次，目录 mtime 在运行期稳定，缓存长期有效。
@@ -361,6 +367,23 @@ export function getAllPosts(): PostMeta[] {
   // Sort by date descending (newest first)
   _postsCache = posts.sort((a, b) => (a.date > b.date ? -1 : a.date < b.date ? 1 : 0));
   return _postsCache;
+}
+
+/** 全部文章（默认排除「AI 每日调研」连载）。各归档/标签/系列/搜索页使用。 */
+export function getAllPosts(): PostMeta[] {
+  return readAllPosts().filter((p) => p.series?.name !== DAILY_SERIES_NAME);
+}
+
+/** 含「AI 每日调研」连载的全部文章。首页、/daily 使用。 */
+export function getAllPostsIncludingDaily(): PostMeta[] {
+  return readAllPosts();
+}
+
+/**
+ * 判断一篇文章是否属于「AI 每日调研」连载。
+ */
+export function isDailyPost(post: PostMeta): boolean {
+  return post.series?.name === DAILY_SERIES_NAME;
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {

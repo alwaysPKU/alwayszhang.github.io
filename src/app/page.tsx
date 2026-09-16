@@ -1,11 +1,11 @@
-import { getAllPosts } from '@/lib/posts';
+import { getAllPostsIncludingDaily } from '@/lib/posts';
 import PostCard from '@/components/post-card';
 import FeaturedPost from '@/components/featured-post';
 import Link from 'next/link';
 import { Archive, Tags, Gamepad2, BarChart3 } from 'lucide-react';
 
 export default function HomePage() {
-  const posts = getAllPosts();
+  const posts = getAllPostsIncludingDaily();
 
   // 所有分类（按文章数降序，取前 8 个）
   const categoryCount = new Map<string, number>();

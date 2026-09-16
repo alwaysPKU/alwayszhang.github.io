@@ -1,4 +1,4 @@
-import { getAllPosts, type PostMeta } from '@/lib/posts';
+import { getAllPosts, getAllPostsIncludingDaily, type PostMeta } from '@/lib/posts';
 
 export interface SeriesGroup {
   /** 系列名（front matter 的 series.name） */
@@ -44,9 +44,10 @@ export const DAILY_SERIES_NAME = 'AI 每日调研';
 /**
  * 获取每日调研连载系列的文章，按日期倒序（最新在前）。
  * 用于 /daily 连载页展示。
+ * 注意：必须用 getAllPostsIncludingDaily() —— getAllPosts() 已默认排除该系列。
  */
 export function getDailyPosts(seriesName = DAILY_SERIES_NAME): PostMeta[] {
-  const posts = getAllPosts();
+  const posts = getAllPostsIncludingDaily();
   return posts
     .filter((p) => p.series?.name === seriesName)
     .sort((a, b) => (a.date < b.date ? 1 : -1));
