@@ -9,6 +9,7 @@ import SearchModal from './search-modal';
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/archive', label: 'Archive' },
+  { href: '/daily', label: 'Daily' },
   { href: '/series', label: 'Series' },
   { href: '/tags', label: 'Tags' },
   { href: '/papers', label: 'Papers' },

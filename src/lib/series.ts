@@ -37,3 +37,17 @@ export function getAllSeries(): SeriesGroup[] {
   groups.sort((a, b) => (a.latestDate < b.latestDate ? 1 : -1));
   return groups;
 }
+
+/** 每日调研连载系列的固定名 */
+export const DAILY_SERIES_NAME = 'AI 每日调研';
+
+/**
+ * 获取每日调研连载系列的文章，按日期倒序（最新在前）。
+ * 用于 /daily 连载页展示。
+ */
+export function getDailyPosts(seriesName = DAILY_SERIES_NAME): PostMeta[] {
+  const posts = getAllPosts();
+  return posts
+    .filter((p) => p.series?.name === seriesName)
+    .sort((a, b) => (a.date < b.date ? 1 : -1));
+}

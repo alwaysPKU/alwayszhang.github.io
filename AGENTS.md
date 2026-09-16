@@ -54,12 +54,20 @@
 ### 页面路由
 - `/` - 首页，展示最新文章列表
 - `/archive` - 按年/月的纯时间线归档（所有文章，含系列单篇）
+- `/daily` - 每日调研连载页：展示系列 `AI 每日调研` 的文章，按日期倒序
 - `/series` - 系列文章归档：带 `series` front matter 的文章按系列聚合成目录树
 - `/tags` - 标签云
 - `/tags/[tag]` - 按标签筛选文章
 - `/games` - 小游戏中心（18个 HTML 游戏）
 - `/about` - 关于页面
 - `/posts/[slug]` - 文章详情页
+
+### 每日调研连载（定时任务）
+- 脚本：`scripts/daily-research.js`，用 coze-coding-dev-sdk（SearchClient + LLMClient）检索国内外头部厂商动态与 arXiv 论文，汇总成 `series.name = "AI 每日调研"` 的连载文章，写入 `content/posts/YYYY-MM-DD-AI每日调研-*.md`。
+- 幂等：当天文章已存在则跳过写入，避免重复提交。
+- 手动运行：`node scripts/daily-research.js [--date=YYYY-MM-DD] [--dry]`（沙箱内置 SDK 认证）。
+- 定时触发：`.github/workflows/daily-research.yml`，`schedule: cron '0 10 * * *'`（北京时间 18:00）运行脚本，生成后 commit + push 回 master 触发 Pages 部署。
+- CI 注意：GitHub Actions 里 SDK 需通过仓库 Secrets（`CI_COZE_INTEGRATION_BASE_URL` 等 COZE_* 凭据）注入；未配置时 workflow 优雅跳过并在日志提示。
 
 ### 功能特性
 - 暗色模式（next-themes）

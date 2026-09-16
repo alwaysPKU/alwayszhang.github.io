@@ -1,0 +1,65 @@
+name: Daily AI Research (每日 AI 调研)
+
+on:
+  # 每天 18:00（北京时间）= UTC 10:00 自动运行
+  schedule:
+    - cron: '0 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: 'daily-research'
+  cancel-in-progress: false
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install pnpm
+        run: npm install -g pnpm@9
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run daily research
+        id: research
+        env:
+          # coze-coding-dev-sdk 通过内置集成网关①走身份认证（与沙箱一致）
+          COZE_INTEGRATION_BASE_URL: ${{ secrets.CI_COZE_INTEGRATION_BASE_URL }}
+          COZE_INTEGRATION_MODEL_BASE_URL: ${{ secrets.CI_COZE_INTEGRATION_MODEL_BASE_URL }}
+          COZE_WORKLOAD_IDENTITY_API_KEY: ${{ secrets.CI_COZE_WORKLOAD_IDENTITY_API_KEY }}
+          COZE_WORKLOAD_IDENTITY_CLIENT_ID: ${{ secrets.CI_COZE_WORKLOAD_IDENTITY_CLIENT_ID }}
+          COZE_WORKLOAD_IDENTITY_CLIENT_SECRET: ${{ secrets.CI_COZE_WORKLOAD_IDENTITY_CLIENT_SECRET }}
+          COZE_WORKLOAD_IDENTITY_TOKEN_ENDPOINT: ${{ secrets.CI_COZE_WORKLOAD_IDENTITY_TOKEN_ENDPOINT }}
+          COZE_WORKLOAD_ACCESS_TOKEN_ENDPOINT: ${{ secrets.CI_COZE_WORKLOAD_ACCESS_TOKEN_ENDPOINT }}
+        run: |
+          if [ -z "$COZE_INTEGRATION_BASE_URL" ]; then
+            echo "::warning::未配置 COZE 集成凭据 secrets，跳过本次自动生成（可在仓库 Settings → Secrets and variables → Actions 配置）。"
+            exit 0
+          fi
+          node scripts/daily-research.js
+
+      - name: Commit new research posts
+        env:
+          # 幂等：当天无新文章时 nothing to commit
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "alwaysPKU"
+          git config user.email "alwaysPKU@users.noreply.github.com"
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "今日文章已存在或无新增，跳过提交。"
+            exit 0
+          fi
+          git add content/posts
+          git commit -m "feat(daily): AI 每日调研连载 $(date '+%Y-%m-%d')" || exit 0
+          git push origin HEAD:master

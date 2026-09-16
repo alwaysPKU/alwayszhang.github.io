@@ -114,6 +114,11 @@ export default function ArchivePage() {
         <Link href="/series" className="text-primary hover:underline underline-offset-4">
           系列归档
         </Link>
+        ，每日调研连载见{' '}
+        <Link href="/daily" className="text-primary hover:underline underline-offset-4">
+          Daily
+        </Link>
+        。
       </p>
 
       <div className="space-y-2">
