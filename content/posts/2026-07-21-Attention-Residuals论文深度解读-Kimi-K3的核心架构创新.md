@@ -3,6 +3,9 @@ title: "Attention Residuals 论文深度解读：Kimi K3 的核心架构创新"
 date: 2026-07-21
 categories: [论文解读]
 tags: [Kimi, Attention Residuals, AttnRes, Transformer, 深度学习, 架构创新, Kimi K3]
+series:
+  name: "论文解读"
+  order: 10
 ---
 
 ## 论文信息

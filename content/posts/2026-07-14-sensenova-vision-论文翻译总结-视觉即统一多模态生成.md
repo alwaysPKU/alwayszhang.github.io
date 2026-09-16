@@ -4,6 +4,9 @@ title: SenseNova-Vision 论文翻译总结
 date: 2026-07-14
 categories: [大模型]
 tags: 大模型, 多模态, 论文解读
+series:
+  name: "论文解读"
+  order: 3
 ---
 
 > 论文：Vision as Unified Multimodal Generation

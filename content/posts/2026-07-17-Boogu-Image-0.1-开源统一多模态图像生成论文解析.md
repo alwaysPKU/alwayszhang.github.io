@@ -3,6 +3,9 @@ title: "Boogu-Image-0.1 论文解析：开源统一多模态图像生成的新�
 date: 2026-07-17
 categories: [论文解读]
 tags: [图像生成, 多模态, 开源模型, Boogu, 文本到图像, 图像编辑]
+series:
+  name: "论文解读"
+  order: 7
 ---
 
 # Boogu-Image-0.1 论文解析：开源统一多模态图像生成的新范式

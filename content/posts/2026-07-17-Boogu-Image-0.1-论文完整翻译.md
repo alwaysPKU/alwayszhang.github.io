@@ -3,6 +3,9 @@ title: "Boogu-Image-0.1 论文完整翻译：Boosting Open-Source Unified Multim
 date: 2026-07-17
 categories: [论文翻译, AI, 图像生成]
 tags: [Boogu-Image, 多模态, 图像生成, 开源, Agentic, 论文翻译]
+series:
+  name: "论文解读"
+  order: 8
 ---
 
 # Boogu-Image-0.1 论文完整翻译

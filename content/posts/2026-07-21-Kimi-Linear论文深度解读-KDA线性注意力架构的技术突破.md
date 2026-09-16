@@ -4,6 +4,9 @@ date: 2026-07-21
 categories: [AI, 论文解读]
 tags: [Kimi, 线性注意力, KDA, Transformer, 长上下文, 架构创新]
 excerpt: "深入解读 Kimi Linear 技术报告（arXiv:2510.26692），这是 Kimi K3 的架构基础论文。KDA（Kimi Delta Attention）是一种创新的线性注意力机制，首次在公平比较下全面超越全注意力架构。"
+series:
+  name: "论文解读"
+  order: 9
 ---
 
 # Kimi Linear 论文深度解读：KDA 线性注意力架构的技术突破

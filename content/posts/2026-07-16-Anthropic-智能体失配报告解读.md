@@ -9,6 +9,9 @@ tags:
   - Anthropic
   - 智能体
   - 失配
+series:
+  name: "论文解读"
+  order: 5
 ---
 
 # Anthropic 智能体失配报告解读：AI 的四种「使坏」模式

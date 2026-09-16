@@ -3,6 +3,9 @@ title: "Boogu-Image-0.1 Agentic 技术实现详解：从理解到生成的智能
 date: 2026-07-17
 categories: [AI, 多模态]
 tags: [Boogu, 图像生成, Agentic AI, Prompt Engineering, 技术解析]
+series:
+  name: "论文解读"
+  order: 6
 ---
 
 ## 引言
