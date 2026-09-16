@@ -61,7 +61,7 @@ export function SeriesCard({
         </span>
       </div>
 
-      <ol className="px-3 py-1.5">
+      <ol className="px-3 py-1.5 max-h-[360px] overflow-y-auto sc series-scroll">
         {posts.map((post, i) => {
           const order = post.series!.order;
           const isOverview = order === 0;

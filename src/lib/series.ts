@@ -25,8 +25,15 @@ export function getAllSeries(): SeriesGroup[] {
     map.set(post.series.name, arr);
   }
 
+  // 「论文解读」系列按编号（order）倒排 —— 编号越大越靠前，最新解读置顶；
+  // 其余系列按 order 升序（order=0 总览排最前）。
+  const REVERSE_SERIES_NAMES = new Set(['论文解读']);
   const groups: SeriesGroup[] = Array.from(map.entries()).map(([name, arr]) => {
-    const ordered = arr.sort((a, b) => a.series!.order - b.series!.order);
+    const ordered = arr.sort((a, b) =>
+      REVERSE_SERIES_NAMES.has(name)
+        ? b.series!.order - a.series!.order
+        : a.series!.order - b.series!.order,
+    );
     const latestDate = ordered.reduce(
       (max, p) => (p.date > max ? p.date : max),
       ordered[0]?.date ?? '',
