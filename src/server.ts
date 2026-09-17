@@ -1,6 +1,7 @@
 import { createServer } from 'http';
 import { parse } from 'url';
 import next from 'next';
+import { startDailyScheduler } from './lib/daily-scheduler';
 
 const dev = process.env.COZE_PROJECT_ENV !== 'PROD';
 const hostname = process.env.HOSTNAME || 'localhost';
@@ -32,4 +33,7 @@ app.prepare().then(() => {
       }`,
     );
   });
+
+  // 挂载 AI 每日调研自动调度（每天 18:00 北京时间自动调研并发布）
+  startDailyScheduler();
 });
