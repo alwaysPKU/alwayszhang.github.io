@@ -24,6 +24,7 @@ const LEVELS = [
   '大模型',
   'AI 应用',
   '多模态',
+  'Omni 全模态统一大模型',
   '具身智能',
 ];
 
@@ -153,7 +154,7 @@ async function run() {
 
 请基于素材写一篇 Markdown 连载文章《AI 每日调研》，要求：
 0. 先给一句"重点标题"：用不超过 25 个字（一个顿号/斜杠分隔的短语列表也行）概括当天最值得关注的核心动态，必须基于素材，不要空泛套话。这一句单独放一行，格式为【重点】xxx，作为整篇文章的第一行。
-1. 正文结构：先用 3-5 个要点做"今日速览"；再按「大模型 / AI 应用 / 多模态 / 具身智能」分节细述，每节覆盖厂商动态与 arXiv 论文；最后给一小节"本周趋势观察"。正文从第二行开始，不要把【重点】这行重复写进正文。
+1. 正文结构：先用 3-5 个要点做"今日速览"；再按「大模型 / AI 应用 / 多模态 / Omni 全模态 / 具身智能」分节细述，每节覆盖厂商动态与 arXiv 论文；最后给一小节"本周趋势观察"。其中"Omni 全模态"一节专门汇总视觉-语音-文本统一模型（如 Qwen-Omni、GLM-4-Voice、Seed-Omni、GPT-4o 类、Gemini 等）的发布与进展。正文从第二行开始，不要把【重点】这行重复写进正文。
 2. 每一条信息尽量保留原文出处链接，用 markdown 链接 [标题](url)；引不到具体 URL 的用 [来源] 括注。
 3. 只依据素材，不要编造；素材不足的地方直接说明"暂未捕获到该方向动态"。
 4. 语言中文，正文里如有美元金额请写成「美元」避免歧义，不要在正文出现裸的 $ 符号。
@@ -172,7 +173,7 @@ ${source}
 
   // 解析第一行的重点标题：【重点】xxx
   const titleMatch = body.match(/^【重点】(.+)$/m);
-  const keyTitle = titleMatch ? titleMatch[1].trim() : '大模型多模态具身智能前沿动态';
+  const keyTitle = titleMatch ? titleMatch[1].trim() : '大模型多模态Omni具身智能前沿动态';
   // 去掉正文里的重点行，避免重复写入正文
   let article = body.replace(/^【重点】.+$/m, '').trim();
 
@@ -185,6 +186,7 @@ ${source}
     '  - AI每日调研',
     '  - 大模型',
     '  - 多模态',
+    '  - Omni',
     '  - 具身智能',
     '  - 技术趋势',
     'series:',
@@ -198,9 +200,12 @@ ${source}
   const filename = `${targetDate}-AI每日调研-${keyTitle.replace(/[\\/:*?"<>|\s·｜]/g, '')}.md`;
   const fullPath = path.join(POSTS_DIR, filename);
 
-  // 幂等：当天文章已存在则跳过，避免定时任务重复提交
-  if (fs.existsSync(fullPath)) {
-    console.log(`[daily-research] 已存在 ${fullPath}，跳过写入（幂等）。`);
+  // 幂等：当天已有任意「AI每日调研」文章则跳过，避免定时任务重复产出多篇
+  const sameDay = fs
+    .readdirSync(POSTS_DIR)
+    .some((f) => f.startsWith(`${targetDate}-AI每日调研-`) && f.endsWith('.md'));
+  if (sameDay) {
+    console.log(`[daily-research] 当天(${targetDate})已有调研文章，跳过写入（幂等）。`);
     console.log(`[daily-research] 输出文件名=${filename}`);
     return;
   }
