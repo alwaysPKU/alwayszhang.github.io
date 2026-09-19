@@ -94,13 +94,22 @@ async function runResearchOnce(): Promise<void> {
 
 let lastCheckedDay = '';
 
-/** 主循环：每分钟检查一次是否到达"今天 18:00 之后且尚未运行" */
+/**
+ * 主循环：每分钟检查一次。
+ * 触发规则（比"仅 18:00 那一分钟"稳健得多）：
+ *  - 只要当前北京时间已到 18:00 之后（含补发/晚启动场景）
+ *  - 且当天尚未生成过调研文章
+ *  - 则在当天首次通过该判断时触发一次
+ * 这样即便 18:00 整那一刻服务没在跑，只要之后任一时间服务存活，
+ * 都会自动补齐当天的文章；已生成则天然幂等跳过。
+ */
 export function startDailyScheduler(): void {
-  console.log('[daily-scheduler] 已挂载（每天北京时间 18:00 自动调研并发布）。');
+  console.log('[daily-scheduler] 已挂载（每天北京时间 18:00 后自动调研并发布，含窗口期补发）。');
   const tick = () => {
-    const { h, m, date } = beijingTime();
-    // 到达 18:00-18:01 区间且当天没跑过，则触发一次
-    if (h === 18 && m >= 0 && m <= 1 && date !== lastCheckedDay) {
+    const { h, date } = beijingTime();
+    const dayElapsed = h >= 18; // 已过当天 18:00
+    if (dayElapsed && date !== lastCheckedDay) {
+      // 当天首次通过（含晚启动导致的补发），记录后触发
       lastCheckedDay = date;
       runResearchOnce();
     }
