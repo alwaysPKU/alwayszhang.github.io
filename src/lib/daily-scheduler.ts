@@ -84,12 +84,21 @@ async function runResearchOnce(): Promise<void> {
     return;
   }
   await run(`git commit -m "feat(daily): AI 每日调研连载 ${date}"`);
-  const push = await run('git push origin HEAD:master');
-  if (!push.ok) {
-    console.error('[daily-scheduler] push 失败：', push.err || push.out);
+  // 双分支推送：main 保留源码历史，master 触发 GitHub Pages 部署。
+  // commit 落在当时所在分支，先把另一分支 fast-forward 到相同提交，
+  // 确保 main 与 master 一致，避免 main 长期滞后。
+  const cur = (await run('git rev-parse --abbrev-ref HEAD')).out.trim();
+  const other = cur === 'main' ? 'master' : 'main';
+  if (/^[a-zA-Z][\w./-]*$/.test(other) && other !== cur) {
+    await run(`git checkout ${other} && git merge --ff-only ${cur} && git checkout ${cur}`);
+  }
+  const pushMain = await run('git push origin main');
+  const pushMaster = await run('git push origin master');
+  if (!pushMain.ok || !pushMaster.ok) {
+    console.error('[daily-scheduler] push 失败：', pushMain.err || pushMaster.err);
     return;
   }
-  console.log(`[daily-scheduler] 已推送 master，触发部署完成（${date}）。`);
+  console.log(`[daily-scheduler] 已推送 main + master，触发部署完成（${date}）。`);
 }
 
 let lastCheckedDay = '';
