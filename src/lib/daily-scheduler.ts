@@ -60,10 +60,9 @@ function run(cmd: string): Promise<{ ok: boolean; out: string; err: string }> {
   });
 }
 
-async function runResearchOnce(): Promise<void> {
-  const { date } = beijingTime();
+async function runResearchOnce(date: string): Promise<void> {
   if (todayPostExists(date)) {
-    console.log(`[daily-scheduler] ${date} 今日调研文章已存在，跳过。`);
+    console.log(`[daily-scheduler] ${date} 调研文章已存在，跳过。`);
     return;
   }
   console.log(`[daily-scheduler] ${date} 开始自动调研并生成文章…`);
@@ -103,24 +102,51 @@ async function runResearchOnce(): Promise<void> {
 
 let lastCheckedDay = '';
 
+/** 把北京时间日期 + 偏移量天数转成 'YYYY-MM-DD' */
+function addDays(baseDate: string, days: number): string {
+  const [y, m, d] = baseDate.split('-').map(Number);
+  const dt = new Date(y, m - 1, d);
+  dt.setDate(dt.getDate() + days);
+  const yy = dt.getFullYear();
+  const mm = String(dt.getMonth() + 1).padStart(2, '0');
+  const dd = String(dt.getDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}`;
+}
+
 /**
- * 主循环：每分钟检查一次。
- * 触发规则（比"仅 18:00 那一分钟"稳健得多）：
- *  - 只要当前北京时间已到 18:00 之后（含补发/晚启动场景）
- *  - 且当天尚未生成过调研文章
- *  - 则在当天首次通过该判断时触发一次
- * 这样即便 18:00 整那一刻服务没在跑，只要之后任一时间服务存活，
- * 都会自动补齐当天的文章；已生成则天然幂等跳过。
+ * 主循环：每分钟检查一次。职责分两部分：
+ *  1) 启动/每分钟：补发最近 LOOKBACK_DAYS 天（不含今天）的缺失文章 —— 负责"漏篇补回"；
+ *  2) 当天已过北京时间 18:00 时：生成今天的文章 —— 负责"按时日更"。
+ * 两者都用"文件是否已存在"做幂等，不会重复生成或重复推送。
+ * 单次执行用 running 锁串行化，避免并发重复调研。
  */
+const LOOKBACK_DAYS = 7;
+let running = false;
 export function startDailyScheduler(): void {
-  console.log('[daily-scheduler] 已挂载（每天北京时间 18:00 后自动调研并发布，含窗口期补发）。');
-  const tick = () => {
-    const { h, date } = beijingTime();
-    const dayElapsed = h >= 18; // 已过当天 18:00
-    if (dayElapsed && date !== lastCheckedDay) {
-      // 当天首次通过（含晚启动导致的补发），记录后触发
-      lastCheckedDay = date;
-      runResearchOnce();
+  console.log('[daily-scheduler] 已挂载（启动即补最近缺失日 + 每天北京时间 18:00 后自动调研并发布）。');
+  const tick = async () => {
+    if (running) return;
+    running = true;
+    try {
+      const { h, date } = beijingTime();
+      // 1) 补发历史缺口（仅当天的第一次 tick 执行，避免每分钟重复回看）
+      if (date !== lastCheckedDay) {
+        lastCheckedDay = date;
+        for (let i = LOOKBACK_DAYS - 1; i >= 0; i--) {
+          const target = addDays(date, -i);
+          if (target === date) continue;
+          if (!todayPostExists(target)) {
+            console.log(`[daily-scheduler] 检测到 ${target} 缺文章，自动补发…`);
+            await runResearchOnce(target);
+          }
+        }
+      }
+      // 2) 当天已过 18:00 且尚无文章 → 生成当天
+      if (h >= 18 && !todayPostExists(date)) {
+        await runResearchOnce(date);
+      }
+    } finally {
+      running = false;
     }
   };
   tick();
