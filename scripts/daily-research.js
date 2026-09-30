@@ -54,6 +54,48 @@ function todayStr() {
   return `${y}-${m}-${day}`;
 }
 
+/**
+ * 收集 targetDate 之前最近 DAYS 天的已报道调研文章（用于去重 & 追热点连续性）。
+ * 返回一段 markdown 摘要，包含每篇文章的日期、标题（重点）与正文前若干字符。
+ */
+function collectRecentPosts(targetDate, days = 5) {
+  try {
+    const files = fs
+      .readdirSync(POSTS_DIR)
+      .filter((f) => f.includes('AI每日调研') && f.endsWith('.md'))
+      .map((f) => {
+        // 文件名前缀即 YYYY-MM-DD
+        const date = f.slice(0, 10);
+        return { date, file: path.join(POSTS_DIR, f) };
+      })
+      .filter((item) => /^\d{4}-\d{2}-\d{2}$/.test(item.date) && item.date < targetDate)
+      .sort((a, b) => (a.date < b.date ? 1 : -1))
+      .slice(0, days);
+
+    if (files.length === 0) return '';
+    const blocks = files.map(({ date, file }, idx) => {
+      let body = '';
+      try {
+        body = fs.readFileSync(file, 'utf8');
+      } catch {
+        return '';
+      }
+      // 跳过 front matter，只取正文（并去掉第一行的【重点】行头，但要保留重点内容供参考）
+      const withoutFm = body.replace(/^---[\s\S]*?---\n/, '');
+      const trimmed = withoutFm.trim();
+      // 标题优先取 <title>，没有则取文件名
+      const titleMatch = body.match(/title:\s*"([^"]+)"/);
+      const title = titleMatch ? titleMatch[1] : date;
+      return `${idx + 1}. 【${date}】${title}\n${trimmed.slice(0, 900)}…`;
+    }).filter(Boolean);
+
+    return blocks.join('\n\n');
+  } catch (e) {
+    console.warn('[daily-research] 读取近期历史文章失败：', e?.message);
+    return '';
+  }
+}
+
 /** 搜一个领域，返回格式化素材串 */
 async function searchLevel(sc, level) {
   const blocks = [`===== 领域：${level} =====`];
@@ -137,15 +179,18 @@ async function run() {
   }
 
   const source = collected.join('\n\n');
+  const recentPosts = collectRecentPosts(targetDate, 5);
 
   if (dry) {
     console.log('\n===== 已检索到素材（--dry 不写文件） =====\n');
     console.log(source.slice(0, 4000));
+    console.log(`\n===== 近期已报道内容（用于去重参考） =====\n`);
+    console.log(recentPosts ? recentPosts.slice(0, 2000) : '（无近期文章）');
     console.log(`\n[素材总长度 ${source.length} 字符]`);
     return;
   }
 
-  console.log(`[daily-research] 素材 ${source.length} 字符，交给 LLM 生成文章...`);
+  console.log(`[daily-research] 素材 ${source.length} 字符，交给 LLM 生成文章（已附最近 5 天已报道内容用于去重）...`);
 
   const lc = new LLMClient(cfg);
   const [yy, mm, dd] = targetDate.split('-');
@@ -154,6 +199,10 @@ async function run() {
 
 请基于素材写一篇 Markdown 连载文章《AI 每日调研》，要求：
 0. 先给一句"重点标题"：用不超过 25 个字（一个顿号/斜杠分隔的短语列表也行）概括当天最值得关注的核心动态，必须基于素材，不要空泛套话。这一句单独放一行，格式为【重点】xxx，作为整篇文章的第一行。
+00. 【信息去重——重要】下面是最近 5 天已经报道过的内容（“近期已报道内容”）。写作时必须对照它：
+   - 同一事件/厂商/模型，如果前几天刚详细报道过，且当天没有实质性新进展，则不要在“重点标题”和正文里重复强调；可以一笔带过，或直接省略。
+   - 如果某条当天素材确实是旧闻的后续/新版本/新数据，请明确标注“X月X日曾报道，现更新：…”，体现连续性但突出新增信息。
+   - 重点标题优先选当天特有的新鲜动态，避免与近几天标题雷同。
 1. 正文结构：先用 3-5 个要点做"今日速览"；再按「大模型 / AI 应用 / 多模态 / Omni 全模态 / 具身智能」分节细述，每节覆盖厂商动态与 arXiv 论文；最后给一小节"本周趋势观察"。其中"Omni 全模态"一节专门汇总视觉-语音-文本统一模型（如 Qwen-Omni、GLM-4-Voice、Seed-Omni、GPT-4o 类、Gemini 等）的发布与进展。正文从第二行开始，不要把【重点】这行重复写进正文。
 2. 每一条信息尽量保留原文出处链接，用 markdown 链接 [标题](url)；引不到具体 URL 的用 [来源] 括注。
 3. 只依据素材，不要编造；素材不足的地方直接说明"暂未捕获到该方向动态"。
@@ -162,6 +211,9 @@ async function run() {
 
 素材如下：
 ${source}
+
+【近期已报道内容】（${targetDate} 之前最近 5 天的文章，供去重参考；请对照它避免重复报道）：
+${recentPosts ? recentPosts : '(暂无近期文章)'}
 
 请只输出 Markdown 正文（第一行为【重点】…，第二行起为正文），不要写 front matter、不要用代码块包裹全文。`;
 
