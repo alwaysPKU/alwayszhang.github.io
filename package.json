@@ -94,7 +94,7 @@
     "eslint-config-next": "16.2.12",
     "only-allow": "^1.2.2",
     "shadcn": "latest",
-    "sharp": "^0.35.3",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4",
     "tsup": "^8.3.5",
     "tsx": "^4.19.2",
