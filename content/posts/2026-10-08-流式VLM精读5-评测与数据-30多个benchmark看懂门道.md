@@ -92,6 +92,55 @@ series:
 | **Streaming Video Instruction Tuning** | 实时叙述 / 事件 / 动作 / 时序定位 / 时间敏感QA |
 | **MMDuet2** | 场景分割 + 主动对话构造 |
 
+## 资源索引（Paper / Code / Demo）
+
+**Benchmarks**
+
+| Benchmark | Paper | Code / Project |
+|---|---|---|
+| StreamingBench | [2411.03628](https://arxiv.org/pdf/2411.03628) | [THUNLP-MT/StreamingBench](https://github.com/THUNLP-MT/StreamingBench) |
+| OVO-Bench | [2501.05510](https://arxiv.org/pdf/2501.05510) | [JoeLeelyf/OVO-Bench](https://github.com/JoeLeelyf/OVO-Bench) |
+| RTV-Bench | [2505.02064](https://arxiv.org/pdf/2505.02064) | [LJungang/RTV-Bench](https://github.com/LJungang/RTV-Bench) |
+| SVBench | [2502.10810](https://arxiv.org/pdf/2502.10810) | [sotayang/SVBench](https://github.com/sotayang/SVBench) |
+| StreamingEval | [ACL 2026 Findings](https://aclanthology.org/2026.findings-acl.295.pdf) | [wwgTang-111/StreamingEval1](https://github.com/wwgTang-111/StreamingEval1) |
+| ProactiveVideoQA | [2507.09313](https://arxiv.org/pdf/2507.09313) | [yellow-binary-tree/ProactiveVideoQA](https://github.com/yellow-binary-tree/ProactiveVideoQA) |
+| OmniPro | [2605.18577](https://arxiv.org/pdf/2605.18577) | [RuixiangZhao/OmniPro](https://github.com/RuixiangZhao/OmniPro) |
+| SPOT-Bench（Don't Pause!） | [2604.24317](https://arxiv.org/pdf/2604.24317) | [dibschat/SPOT-Bench](https://github.com/dibschat/SPOT-Bench) |
+| OmniMMI | [2503.22952](https://arxiv.org/pdf/2503.22952) | [OmniMMI/M4](https://github.com/OmniMMI/M4) |
+| Eyes Wide Open（EyeWO） | [2510.14560](https://arxiv.org/pdf/2510.14560) | [zhangyl4/EyeWO](https://github.com/zhangyl4/EyeWO) |
+| MMDuet（When to Speak） | [2411.17991](https://arxiv.org/pdf/2411.17991) | [yellow-binary-tree/mmduet](https://github.com/yellow-binary-tree/mmduet) |
+| OVIBench | [2608.22279](https://arxiv.org/pdf/2608.22279) | — |
+| Artic（DeViBench） | [2602.12641](https://arxiv.org/pdf/2602.12641) | [pku-netvideo/DeViBench](https://github.com/pku-netvideo/DeViBench) |
+| DeViBench（Chat with AI） | [2507.10510](https://arxiv.org/pdf/2507.10510) | [JiangkaiWu/DeViBench](https://github.com/JiangkaiWu/DeViBench) |
+| RIVER | [2603.03985](https://arxiv.org/pdf/2603.03985) | [OpenGVLab/RIVER](https://github.com/OpenGVLab/RIVER) |
+| NBA_Streaming | [2608.09200](https://arxiv.org/pdf/2608.09200v2) | — |
+| StreamArena | [2608.05703](https://arxiv.org/pdf/2608.05703) | — |
+| StreamEQA | [2512.04451](https://arxiv.org/pdf/2512.04451) | [MrYF-Wang/StreamEQA](https://github.com/MrYF-Wang/StreamEQA) |
+| OST-Bench | [2507.07984](https://arxiv.org/pdf/2507.07984) | [InternRobotics/OST-Bench](https://github.com/InternRobotics/OST-Bench) |
+| HomeSafe-Bench | [2603.11975](https://arxiv.org/pdf/2603.11975) | [pujiayue/HomeSafe-Bench](https://github.com/pujiayue/HomeSafe-Bench) |
+| SVCBench | [2603.12703](https://arxiv.org/pdf/2603.12703) | [项目主页](https://buaa-colalab.github.io/SVCBench/) |
+| StreamGaze | [2512.01707](https://arxiv.org/pdf/2512.01707) | [daeunni/StreamGaze](https://github.com/daeunni/StreamGaze) |
+| Qualcomm Interactive Cooking | [2511.21998](https://arxiv.org/pdf/2511.21998) | [Qualcomm-AI-research](https://github.com/Qualcomm-AI-research/qualcomm_interactive_cooking_eval) |
+| OVO-S-Bench | [2606.03890](https://arxiv.org/pdf/2606.03890) | [项目主页](https://internlm.github.io/OVO-S-Bench/) |
+| X-Stream | [2606.02482](https://arxiv.org/pdf/2606.02482) | [项目主页](https://peiwensun2000.github.io/xstream/) |
+| OnlineSI | [2601.16538](https://arxiv.org/pdf/2601.16538) | [StoreBlank/online-spatial-intelligence](https://github.com/StoreBlank/online-spatial-intelligence) |
+| MovieChat | [2307.16449](https://arxiv.org/pdf/2307.16449) | [rese1f/MovieChat](https://github.com/rese1f/MovieChat) |
+| Survey | [sotayang.github.io PDF](https://sotayang.github.io/Streaming_Video_Understanding_Survey.pdf) | — |
+
+**Training Datasets**
+
+| 数据集 | Paper | Code |
+|---|---|---|
+| StreamingCoT | [2510.25332](https://arxiv.org/pdf/2510.25332) | [Fleeting-hyh/StreamingCoT](https://github.com/Fleeting-hyh/StreamingCoT) |
+| VideoChat3 | [2607.14935](https://arxiv.org/pdf/2607.14935) | [MCG-NJU/VideoChat3](https://github.com/MCG-NJU/VideoChat3) |
+| LiveStar | [2511.05299](https://arxiv.org/pdf/2511.05299) | [sotayang/LiveStar](https://github.com/sotayang/LiveStar) |
+| LiveCC | [2504.16030](https://arxiv.org/pdf/2504.16030) | [showlab/livecc](https://github.com/showlab/livecc) |
+| ROMA | [2601.10323](https://arxiv.org/pdf/2601.10323) | [Eureka-Maggie/ROMA](https://github.com/Eureka-Maggie/ROMA) |
+| CogStream | [2506.10516](https://arxiv.org/pdf/2506.10516) | [LiamZhao326/CogStream](https://github.com/LiamZhao326/CogStream) |
+| Harnessing in the Wild | [2606.08615](https://arxiv.org/pdf/2606.08615v1) | — |
+| Streamo（Streaming Video Instruction Tuning） | [2512.21334](https://arxiv.org/pdf/2512.21334) | [maifoundations/Streamo](https://github.com/maifoundations/Streamo) |
+| MMDuet2 | [2512.06810](https://arxiv.org/pdf/2512.06810) | [yellow-binary-tree/MMDuet2](https://github.com/yellow-binary-tree/MMDuet2) |
+
 ## 评测的盲区 / 机会（客观提醒）
 
 1. **"该沉默"评价偏弱**：绝大多数 benchmark 只评"该答时答了没、准不准"，很少评"不该答时有没有忍住"。而人类体验恰恰很在意后者。这是评测缺口，也是写论文的机会。
