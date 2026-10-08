@@ -100,6 +100,52 @@ async function runResearchOnce(date: string): Promise<void> {
   console.log(`[daily-scheduler] 已推送 main + master，触发部署完成（${date}）。`);
 }
 
+/**
+ * 自愈系统 cron 兜底
+ * ------------------
+ * 沙箱每次重启会清空 cron（包被卸载 / crontab 为空），导致服务不在线时无法准点日更。
+ * 服务启动时调用本函数：确保 cron 已安装、服务已启动、18:00 定时任务已写入。
+ * 任何一步失败都静默降级（不影响进程内调度与回溯补发），仅打印日志。
+ */
+async function ensureCronGuard(): Promise<void> {
+  // 仅 Linux 环境尝试，且需要 root/apt（沙箱内为 root）
+  if (process.platform !== 'linux') return;
+  const cronScript = path.join(PROJECT_ROOT, 'scripts', 'daily-cron.sh');
+  const cronLog = '/app/work/logs/bypass/daily-cron.log';
+  const cronLine = `0 18 * * * ${cronScript} >> ${cronLog} 2>&1`;
+
+  // 1) crontab 已包含该任务且 cron 在跑 → 无需处理
+  const existing = await run('crontab -l');
+  const runningCron = await run("pgrep -x cron");
+  if (existing.ok && existing.out.includes(cronScript) && runningCron.ok) {
+    return;
+  }
+
+  console.log('[daily-scheduler] 检测到系统 cron 缺失/未运行，尝试自愈…');
+  // 2) 安装 cron（沙箱重启后可能被卸载）
+  if (!(await run('command -v crontab')).ok) {
+    const install = await run('apt-get install -y cron');
+    if (!install.ok) {
+      console.log('[daily-scheduler] cron 安装失败，已降级为仅进程内调度。');
+      return;
+    }
+  }
+  // 3) 启动 cron 服务
+  await run('service cron start');
+  // 4) 写入 crontab（保留已有条目，去重后追加）
+  const current = await run('crontab -l');
+  const lines = (current.ok ? current.out : '')
+    .split('\n')
+    .filter((l) => l.trim() && !l.includes(cronScript));
+  lines.push(cronLine);
+  const write = await run(`printf '%s\\n' ${JSON.stringify(lines.join('\n'))} | crontab -`);
+  if (write.ok) {
+    console.log('[daily-scheduler] 系统 cron 兜底已自愈（每天 18:00 触发）。');
+  } else {
+    console.log('[daily-scheduler] crontab 写入失败，已降级为仅进程内调度。', write.err);
+  }
+}
+
 let lastCheckedDay = '';
 
 /** 把北京时间日期 + 偏移量天数转成 'YYYY-MM-DD' */
@@ -124,6 +170,8 @@ const LOOKBACK_DAYS = 7;
 let running = false;
 export function startDailyScheduler(): void {
   console.log('[daily-scheduler] 已挂载（启动即补最近缺失日 + 每天北京时间 18:00 后自动调研并发布）。');
+  // 启动时自愈系统 cron 兜底（异步执行，不阻塞主调度）
+  void ensureCronGuard();
   const tick = async () => {
     if (running) return;
     running = true;

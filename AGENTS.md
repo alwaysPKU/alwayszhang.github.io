@@ -71,6 +71,8 @@
 - 展示范围：每日调研连载只在 `/daily` 页与首页展示；`getAllPosts()`（archive/tags/series/stats/搜索等）默认排除 `AI 每日调研` 系列，首页与 `getDailyPosts()` 须用 `getAllPostsIncludingDaily()`。
 - 定时触发：`.github/workflows/daily-research.yml`，`schedule: cron '0 10 * * *'`（北京时间 18:00）运行脚本，生成后 commit + push 回 master 触发 Pages 部署。
 - CI 注意：GitHub Actions 里 SDK 需通过仓库 Secrets（`CI_COZE_INTEGRATION_BASE_URL` 等 COZE_* 凭据）注入；未配置时 workflow 优雅跳过并在日志提示。
+- 沙箱三层保障：①服务进程内调度（`src/lib/daily-scheduler.ts`，每分钟 tick：启动回看 7 天补缺 + 当天 18:00 生成）；②系统 cron（`scripts/daily-cron.sh`，`0 18 * * *`）；③GitHub Actions。沙箱每次重启会清空 cron 包/crontab，调度器启动时 `ensureCronGuard()` 会自动检测并重装 cron、启动服务、写回 crontab（自愈，无需手动）。
+- 去重：生成新文章前 `collectRecentPosts()` 读取目标日期前最近 5 天已报道内容注入 prompt，要求避免旧闻重复、续闻标注「曾报道，现更新」，保持新鲜度。
 
 ### 功能特性
 - 暗色模式（next-themes）
