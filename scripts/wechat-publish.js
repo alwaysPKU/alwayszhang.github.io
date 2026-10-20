@@ -225,6 +225,10 @@ function applyWechatStyles(htmlContent) {
   result = result.replace(/<li>\s*<p[^>]*>/g, '<li>');
   result = result.replace(/<\/p>\s*<\/li>/g, '</li>');
 
+  // 个人订阅号正文不支持可点击外链：将 <a> 统一转为带链接色样式的纯文本，
+  // 否则微信草稿接口会报 45166 invalid content
+  result = result.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/g, `<span style="${styles.a}">$1</span>`);
+
   return result;
 }
 
