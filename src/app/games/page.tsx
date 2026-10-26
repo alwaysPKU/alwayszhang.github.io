@@ -17,6 +17,11 @@ interface Game {
 }
 
 const games: Game[] = [
+  { name: '萌宠配对乐', file: 'pet-match.html', emoji: '🐧', desc: '16 宫格翻牌配对，企鹅/狗狗双主题' },
+  { name: '算术小达人', file: 'math-quiz.html', emoji: '🧮', desc: '100 以内加减乘除，三档难度' },
+  { name: '欢乐打地鼠', file: 'whack-a-mole.html', emoji: '🔨', desc: '30 秒反应力挑战，小心炸弹' },
+  { name: '数字华容道', file: 'number-puzzle.html', emoji: '🧩', desc: '滑动数字块按顺序排队' },
+  { name: '水果切切乐', file: 'fruit-slice.html', emoji: '🍉', desc: '60 秒切水果挑战，别切炸弹' },
   { name: '2048', file: '2048.html', emoji: '🟧', desc: '经典数字合并游戏' },
   { name: 'Sudoku', file: 'sudoku.html', emoji: '🔢', desc: '数独挑战' },
   { name: 'Game of Life', file: 'game-of-life.html', emoji: '🧬', desc: '康威生命游戏' },
@@ -44,7 +49,7 @@ export default function GamesPage() {
     <div className="mx-auto max-w-5xl px-4 sm:px-6 py-10">
       <h1 className="text-2xl font-bold text-foreground mb-2">Games</h1>
       <p className="text-sm text-muted-foreground mb-8">
-        在线小游戏合集，点击即可游玩，无需安装。
+        儿童益智 + 经典街机小游戏合集，点击即可游玩，无需安装。
       </p>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>算术小达人</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Comic Sans MS','PingFang SC','Microsoft YaHei',sans-serif;background:linear-gradient(160deg,#F0FFF4,#E8F6FF 60%,#FFF9E8);min-height:100vh;display:flex;flex-direction:column;align-items:center;color:#4a5a4a;padding:16px;user-select:none}
+h1{font-size:1.9rem;margin:8px 0 4px;color:#3aa76d}
+.sub{font-size:.95rem;color:#7a8a7a;margin-bottom:14px}
+/* 难度选择 */
+.diff-picker{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;justify-content:center}
+.diff-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:14px 20px;border:3px solid #c8ecd4;border-radius:18px;background:#fff;font-size:.95rem;font-weight:bold;color:#4a5a4a;cursor:pointer;transition:all .2s;box-shadow:0 4px 10px rgba(80,180,120,.12)}
+.diff-btn small{font-weight:normal;color:#8a9a8a;font-size:.75rem}
+.diff-btn:hover{transform:scale(1.05)}
+.diff-btn.active{border-color:#3aa76d;background:#f0fff5;box-shadow:0 6px 14px rgba(58,167,109,.28)}
+/* 信息栏 */
+.info{display:flex;gap:10px;margin-bottom:12px;flex-wrap:wrap;justify-content:center}
+.info span{background:#fff;padding:8px 16px;border-radius:999px;font-size:.95rem;box-shadow:0 2px 6px rgba(0,0,0,.06);border:2px solid #dcf2e4}
+.info b{color:#3aa76d}
+/* 题目卡 */
+.quiz-card{background:#fff;border:4px solid #c8ecd4;border-radius:24px;padding:26px 30px;width:min(92vw,420px);box-shadow:0 8px 24px rgba(80,180,120,.15);text-align:center}
+.question{font-size:2.6rem;font-weight:bold;color:#3a4a3a;letter-spacing:2px;margin-bottom:16px;min-height:3.4rem}
+.question .op{color:#ff9f43;margin:0 6px}
+.answer{display:inline-block;min-width:110px;padding:4px 14px;border-bottom:4px dashed #3aa76d;color:#3aa76d;font-size:2.6rem;font-weight:bold}
+.answer.placeholder{color:#b8d8c4}
+.feedback{min-height:2.2rem;font-size:1.15rem;font-weight:bold;margin-top:10px}
+.feedback.good{color:#3aa76d}
+.feedback.bad{color:#ff7b54}
+/* 数字键盘 */
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.key{padding:16px 0;font-size:1.5rem;font-weight:bold;border:none;border-radius:16px;cursor:pointer;background:#f0f7f0;color:#3a4a3a;box-shadow:0 3px 0 #c8ddd0;transition:all .1s}
+.key:active{transform:translateY(3px);box-shadow:0 0 0 #c8ddd0}
+.key.ok{background:#3aa76d;color:#fff;box-shadow:0 3px 0 #2a8757}
+.key.del{background:#ffe9e0;color:#d96a3b;box-shadow:0 3px 0 #ecc9b8}
+/* 结果 */
+.result{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:50;background:rgba(240,255,244,.75);backdrop-filter:blur(3px)}
+.result.show{display:flex}
+.result-card{background:#fff;border:4px solid #8ee6a8;border-radius:28px;padding:34px 44px;text-align:center;box-shadow:0 16px 48px rgba(58,167,109,.3);animation:bounceIn .6s;max-width:90vw}
+@keyframes bounceIn{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+.result-card h2{font-size:2rem;color:#3aa76d;margin-bottom:10px}
+.result-card p{color:#7a8a7a;margin:6px 0}
+.result-card .score{font-size:1.4rem;color:#ff9f43;font-weight:bold;margin:10px 0 16px}
+.big-btn{padding:14px 34px;border:none;border-radius:999px;font-size:1.15rem;font-weight:bold;cursor:pointer;background:linear-gradient(135deg,#5ad18a,#3aa7a0);color:#fff;box-shadow:0 6px 16px rgba(80,190,140,.4);transition:transform .15s;margin-top:8px}
+.big-btn:hover{transform:scale(1.07)}
+.confetti{position:fixed;top:-20px;width:12px;height:18px;z-index:55;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+</style>
+</head>
+<body>
+<h1>🧮 算术小达人</h1>
+<p class="sub">10 道题挑战，看看你能答对几道！</p>
+
+<div class="diff-picker" id="diffPicker">
+  <button class="diff-btn active" data-d="easy" onclick="setDiff('easy',this)">🌱 简单<small>10 以内加减</small></button>
+  <button class="diff-btn" data-d="mid" onclick="setDiff('mid',this)">🌿 中等<small>20 以内加减 + 乘法</small></button>
+  <button class="diff-btn" data-d="hard" onclick="setDiff('hard',this)">🌳 困难<small>100 以内加减乘除</small></button>
+</div>
+
+<div class="info">
+  <span>第 <b id="qno">1</b>/10 题</span>
+  <span>得分 <b id="score">0</b></span>
+  <span>用时 <b id="time">0</b> 秒</span>
+</div>
+
+<div class="quiz-card">
+  <div class="question" id="question"></div>
+  <div class="keypad" id="keypad"></div>
+  <div class="feedback" id="feedback"></div>
+</div>
+
+<div class="result" id="result">
+  <div class="result-card">
+    <h2 id="resultTitle">🎉 完成啦！</h2>
+    <div class="score" id="resultScore"></div>
+    <p id="resultDetail"></p>
+    <p id="resultRank"></p>
+    <button class="big-btn" onclick="startGame()">再玩一次</button>
+  </div>
+</div>
+
+<script>
+const TOTAL = 10;
+const PRAISE = ['答对啦，真棒！','太聪明了！','完全正确！','好厉害！','就是这么算的！'];
+const OOPS = ['差一点点，正确答案是 ', '再想想哦，答案是 ', '没关系，正确答案是 '];
+let diff = 'easy', qIndex = 0, score = 0, correct = 0, answer = 0, input = '', seconds = 0, timer = null, locked = false;
+
+let actx = null;
+function audio(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); return actx; }
+function tone(freq, dur, delay=0, type='sine', vol=0.18){
+  try{
+    const a = audio(), o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, a.currentTime + delay);
+    g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + delay + dur);
+    o.connect(g); g.connect(a.destination);
+    o.start(a.currentTime + delay); o.stop(a.currentTime + delay + dur);
+  }catch(e){}
+}
+const sfx = {
+  key:   () => tone(600, 0.05, 0, 'triangle', 0.08),
+  good:  () => { tone(523,0.12); tone(784,0.2,0.08); },
+  bad:   () => tone(240,0.2,0,'sine',0.12),
+  win:   () => { [523,659,784,1047].forEach((f,i)=>tone(f,0.28,i*0.13,'triangle',0.2)); }
+};
+
+function rnd(n){ return Math.floor(Math.random()*n); }
+
+function genQuestion(){
+  let a, b, op;
+  if(diff === 'easy'){
+    op = rnd(2) === 0 ? '+' : '−';
+    if(op === '+'){ a = rnd(10); b = rnd(11 - a); answer = a + b; }
+    else { a = 1 + rnd(10); b = rnd(a + 1); answer = a - b; }
+  }else if(diff === 'mid'){
+    const kind = rnd(3);
+    if(kind < 2){
+      op = rnd(2) === 0 ? '+' : '−';
+      if(op === '+'){ a = rnd(15); b = rnd(21 - a); answer = a + b; }
+      else { a = 1 + rnd(20); b = rnd(a + 1); answer = a - b; }
+    }else{
+      op = '×'; a = 2 + rnd(8); b = 2 + rnd(8); answer = a * b;
+    }
+  }else{
+    const kind = rnd(4);
+    if(kind === 0){ op = '+'; a = 10 + rnd(60); b = 10 + rnd(101 - a); answer = a + b; }
+    else if(kind === 1){ op = '−'; a = 20 + rnd(80); b = 10 + rnd(a - 9); answer = a - b; }
+    else if(kind === 2){ op = '×'; a = 2 + rnd(8); b = 2 + rnd(Math.min(8, Math.floor(100/a) - 1) + 1); answer = a * b; }
+    else { op = '÷'; b = 2 + rnd(8); answer = 2 + rnd(Math.min(9, Math.floor(100/b) - 1) + 1); a = b * answer; }
+  }
+  document.getElementById('question').innerHTML =
+    `${a} <span class="op">${op}</span> ${b} <span class="op">=</span> <span class="answer placeholder" id="ans">?</span>`;
+  input = '';
+}
+
+function buildKeypad(){
+  const keys = ['1','2','3','4','5','6','7','8','9','⌫','0','✔'];
+  document.getElementById('keypad').innerHTML = keys.map(k=>{
+    const cls = k==='✔' ? 'key ok' : (k==='⌫' ? 'key del' : 'key');
+    return `<button class="${cls}" onclick="press('${k}')">${k}</button>`;
+  }).join('');
+}
+
+function press(k){
+  if(locked) return;
+  sfx.key();
+  if(k === '⌫'){ input = input.slice(0, -1); }
+  else if(k === '✔'){ if(input !== '') submit(); return; }
+  else { if(input.length < 3) input += k; }
+  const el = document.getElementById('ans');
+  el.textContent = input === '' ? '?' : input;
+  el.classList.toggle('placeholder', input === '');
+}
+
+function submit(){
+  if(locked) return;
+  locked = true;
+  const fb = document.getElementById('feedback');
+  if(parseInt(input, 10) === answer){
+    score += 10; correct++;
+    document.getElementById('score').textContent = score;
+    fb.textContent = '⭐ ' + PRAISE[rnd(PRAISE.length)];
+    fb.className = 'feedback good';
+    sfx.good();
+  }else{
+    fb.textContent = '🍀 ' + OOPS[rnd(OOPS.length)] + answer;
+    fb.className = 'feedback bad';
+    sfx.bad();
+  }
+  setTimeout(()=>{
+    fb.textContent = ''; fb.className = 'feedback';
+    qIndex++;
+    if(qIndex >= TOTAL) endGame();
+    else{
+      document.getElementById('qno').textContent = qIndex + 1;
+      genQuestion(); locked = false;
+    }
+  }, 1300);
+}
+
+function setDiff(d, btn){
+  diff = d;
+  document.querySelectorAll('.diff-btn').forEach(b=>b.classList.toggle('active', b===btn));
+  startGame();
+}
+
+function startGame(){
+  qIndex = 0; score = 0; correct = 0; seconds = 0; locked = false;
+  if(timer) clearInterval(timer);
+  timer = setInterval(()=>{ seconds++; document.getElementById('time').textContent = seconds; }, 1000);
+  document.getElementById('qno').textContent = 1;
+  document.getElementById('score').textContent = 0;
+  document.getElementById('result').classList.remove('show');
+  genQuestion();
+}
+
+function endGame(){
+  clearInterval(timer);
+  const pct = Math.round(correct / TOTAL * 100);
+  document.getElementById('resultScore').textContent = `得分 ${score} 分`;
+  document.getElementById('resultDetail').textContent = `答对 ${correct}/${TOTAL} 题，正确率 ${pct}%，用时 ${seconds} 秒`;
+  let rank;
+  if(pct === 100) rank = '🏆 算术小天才！全部答对，太了不起了！';
+  else if(pct >= 80) rank = '🌟 算术小达人！只差一点点就满分啦！';
+  else if(pct >= 60) rank = '💪 表现不错，继续练习会更棒！';
+  else rank = '🌈 别灰心，多练习几次一定行！';
+  document.getElementById('resultRank').textContent = rank;
+  document.getElementById('result').classList.add('show');
+  if(pct >= 60){ sfx.win(); confetti(); } else { sfx.good(); }
+}
+
+function confetti(){
+  const colors = ['#3aa76d','#ff9f43','#7bc4ff','#ff7b9c','#ffe066','#d9a5ff'];
+  for(let i=0;i<60;i++){
+    const d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = Math.random()*100 + 'vw';
+    d.style.background = colors[i % colors.length];
+    d.style.animationDuration = (2.2 + Math.random()*2) + 's';
+    d.style.animationDelay = Math.random()*0.8 + 's';
+    d.style.borderRadius = Math.random()>0.5 ? '50%' : '3px';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), 5200);
+  }
+}
+
+buildKeypad();
+startGame();
+</script>
+</body>
+</html>

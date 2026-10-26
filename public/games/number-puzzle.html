@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>数字华容道</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Comic Sans MS','PingFang SC','Microsoft YaHei',sans-serif;background:linear-gradient(160deg,#FFF3E0,#FFE8F0 55%,#E3F2FD);min-height:100vh;display:flex;flex-direction:column;align-items:center;color:#5a4a5a;padding:16px;user-select:none}
+h1{font-size:1.9rem;margin:8px 0 4px;color:#8e6cc8}
+.sub{font-size:.95rem;color:#9a8a9a;margin-bottom:12px}
+.size-picker{display:flex;gap:12px;margin-bottom:14px}
+.size-btn{padding:12px 24px;border:3px solid #dccbf5;border-radius:16px;background:#fff;font-size:1rem;font-weight:bold;color:#5a4a5a;cursor:pointer;transition:all .2s;box-shadow:0 4px 10px rgba(142,108,200,.12)}
+.size-btn:hover{transform:scale(1.05)}
+.size-btn.active{border-color:#8e6cc8;background:#f6f0ff;box-shadow:0 6px 14px rgba(142,108,200,.28)}
+.info{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
+.info span{background:#fff;padding:8px 16px;border-radius:999px;font-size:.95rem;box-shadow:0 2px 6px rgba(0,0,0,.06);border:2px solid #eadcf8}
+.info b{color:#8e6cc8}
+.board{display:grid;gap:8px;width:min(88vw,400px);background:#fff;padding:10px;border-radius:20px;box-shadow:0 8px 24px rgba(142,108,200,.18);border:3px solid #eadcf8}
+.tile{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:clamp(1.4rem,8vmin,2.2rem);font-weight:bold;color:#fff;border-radius:14px;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,.15);transition:transform .12s, opacity .12s;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.tile:active{transform:scale(.94)}
+.tile.empty{background:transparent;box-shadow:none;cursor:default}
+.tile.c1{background:linear-gradient(135deg,#ff9eb8,#ff7b9c)}
+.tile.c2{background:linear-gradient(135deg,#ffc46b,#ff9f43)}
+.tile.c3{background:linear-gradient(135deg,#8ee6a8,#3aa76d)}
+.tile.c4{background:linear-gradient(135deg,#9ed4ff,#5aa9e6)}
+.tile.c5{background:linear-gradient(135deg,#d9b3ff,#a06cd5)}
+.tile.c6{background:linear-gradient(135deg,#7fe0d4,#3aa7a0)}
+.result{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:50;background:rgba(255,243,224,.75);backdrop-filter:blur(3px)}
+.result.show{display:flex}
+.card{background:#fff;border:4px solid #d9b3ff;border-radius:28px;padding:34px 44px;text-align:center;box-shadow:0 16px 48px rgba(142,108,200,.3);animation:bounceIn .6s;max-width:90vw}
+@keyframes bounceIn{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+.card h2{font-size:2rem;color:#8e6cc8;margin-bottom:10px}
+.card p{color:#9a8a9a;margin:6px 0}
+.big-btn{padding:14px 34px;border:none;border-radius:999px;font-size:1.15rem;font-weight:bold;cursor:pointer;background:linear-gradient(135deg,#b48ee0,#8e6cc8);color:#fff;box-shadow:0 6px 16px rgba(142,108,200,.4);transition:transform .15s;margin-top:10px}
+.big-btn:hover{transform:scale(1.07)}
+.confetti{position:fixed;top:-20px;width:12px;height:18px;z-index:55;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+</style>
+</head>
+<body>
+<h1>🧩 数字华容道</h1>
+<p class="sub">移动数字块，把它们按 1、2、3…… 的顺序排整齐！</p>
+
+<div class="size-picker">
+  <button class="size-btn active" onclick="setSize(3,this)">🐣 简单 3×3</button>
+  <button class="size-btn" onclick="setSize(4,this)">🦁 挑战 4×4</button>
+</div>
+
+<div class="info">
+  <span>步数 <b id="moves">0</b></span>
+  <span>用时 <b id="time">0</b> 秒</span>
+</div>
+
+<div class="board" id="board"></div>
+
+<button class="big-btn" onclick="init()">🔁 重新打乱</button>
+
+<div class="result" id="result">
+  <div class="card">
+    <h2>🎉 拼图成功！</h2>
+    <p id="detail"></p>
+    <p id="rank"></p>
+    <button class="big-btn" onclick="init()">再玩一次</button>
+  </div>
+</div>
+
+<script>
+let size = 3, tiles = [], moves = 0, seconds = 0, timer = null, done = false;
+
+let actx = null;
+function audio(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); return actx; }
+function tone(freq, dur, delay=0, type='sine', vol=0.16){
+  try{
+    const a = audio(), o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, a.currentTime + delay);
+    g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + delay + dur);
+    o.connect(g); g.connect(a.destination);
+    o.start(a.currentTime + delay); o.stop(a.currentTime + delay + dur);
+  }catch(e){}
+}
+const sfx = {
+  slide: () => tone(440 + Math.random()*80, 0.06, 0, 'triangle', 0.1),
+  win:   () => { [523,659,784,1047,1319].forEach((f,i)=>tone(f,0.3,i*0.13,'triangle',0.2)); }
+};
+
+function setSize(n, btn){
+  size = n;
+  document.querySelectorAll('.size-btn').forEach(b=>b.classList.toggle('active', b===btn));
+  init();
+}
+
+// 从完成状态随机走 N 步，保证有解且不会出现「走完又走回」
+function shuffle(){
+  const total = size * size;
+  tiles = Array.from({length: total}, (_,i)=> i + 1);
+  tiles[total-1] = 0;
+  const steps = size === 3 ? 80 : 160;
+  let prev = -1;
+  for(let s=0;s<steps;s++){
+    const blank = tiles.indexOf(0);
+    const r = Math.floor(blank/size), c = blank % size;
+    const opts = [];
+    if(r > 0) opts.push(blank - size);
+    if(r < size-1) opts.push(blank + size);
+    if(c > 0) opts.push(blank - 1);
+    if(c < size-1) opts.push(blank + 1);
+    const valid = opts.filter(o => o !== prev);
+    const pick = valid[Math.floor(Math.random()*valid.length)];
+    [tiles[blank], tiles[pick]] = [tiles[pick], tiles[blank]];
+    prev = blank;
+  }
+  // 极小概率打乱后恰为完成态，重洗
+  if(isSolved()) shuffle();
+}
+
+function isSolved(){
+  for(let i=0;i<tiles.length-1;i++) if(tiles[i] !== i+1) return false;
+  return true;
+}
+
+function render(){
+  const board = document.getElementById('board');
+  board.style.gridTemplateColumns = `repeat(${size},1fr)`;
+  board.innerHTML = tiles.map((v,i)=>
+    v === 0
+      ? '<div class="tile empty"></div>'
+      : `<div class="tile c${(v-1)%6+1}" onclick="move(${i})">${v}</div>`
+  ).join('');
+}
+
+function move(i){
+  if(done) return;
+  const blank = tiles.indexOf(0);
+  const r1 = Math.floor(i/size), c1 = i % size;
+  const r2 = Math.floor(blank/size), c2 = blank % size;
+  if(Math.abs(r1-r2) + Math.abs(c1-c2) !== 1) return;
+  [tiles[i], tiles[blank]] = [tiles[blank], tiles[i]];
+  moves++;
+  document.getElementById('moves').textContent = moves;
+  sfx.slide();
+  render();
+  if(isSolved()){
+    done = true;
+    clearInterval(timer);
+    setTimeout(win, 250);
+  }
+}
+
+function win(){
+  sfx.win();
+  document.getElementById('detail').textContent = `用了 ${moves} 步、${seconds} 秒完成 ${size}×${size} 拼图`;
+  let rank;
+  const par = size === 3 ? 40 : 150;
+  if(moves <= par) rank = '🏆 华容道小高手！步数控制得太棒了！';
+  else rank = '🌟 成功排好队！下次试试用更少步数！';
+  document.getElementById('rank').textContent = rank;
+  document.getElementById('result').classList.add('show');
+  confetti();
+}
+
+function confetti(){
+  const colors = ['#8e6cc8','#d9b3ff','#ff9eb8','#ffc46b','#8ee6a8','#9ed4ff'];
+  for(let i=0;i<60;i++){
+    const d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = Math.random()*100 + 'vw';
+    d.style.background = colors[i % colors.length];
+    d.style.animationDuration = (2.2 + Math.random()*2) + 's';
+    d.style.animationDelay = Math.random()*0.8 + 's';
+    d.style.borderRadius = Math.random()>0.5 ? '50%' : '3px';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), 5200);
+  }
+}
+
+function init(){
+  done = false; moves = 0; seconds = 0;
+  if(timer) clearInterval(timer);
+  timer = setInterval(()=>{ seconds++; document.getElementById('time').textContent = seconds; }, 1000);
+  document.getElementById('moves').textContent = 0;
+  document.getElementById('result').classList.remove('show');
+  shuffle();
+  render();
+}
+
+init();
+</script>
+</body>
+</html>

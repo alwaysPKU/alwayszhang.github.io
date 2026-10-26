@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>水果切切乐</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Comic Sans MS','PingFang SC','Microsoft YaHei',sans-serif;background:linear-gradient(180deg,#FFF6E5,#FFE8D6);min-height:100vh;display:flex;flex-direction:column;align-items:center;color:#6b4a2f;padding:12px;user-select:none;overflow:hidden}
+h1{font-size:1.8rem;margin:6px 0 2px;color:#e0732f;text-shadow:0 2px 0 #fff}
+.sub{font-size:.9rem;color:#9a7a5a;margin-bottom:8px}
+.hud{display:flex;gap:10px;margin-bottom:8px;flex-wrap:wrap;justify-content:center}
+.hud span{background:#fff;padding:7px 14px;border-radius:999px;font-size:.95rem;box-shadow:0 2px 6px rgba(0,0,0,.08);border:2px solid #ffd9b0}
+.hud b{color:#e0732f}
+#stage{position:relative;width:min(94vw,460px)}
+canvas{display:block;width:100%;height:62vh;background:linear-gradient(180deg,#BEE9F7 0%,#DFF6E3 70%,#C8EDB8 100%);border-radius:20px;border:3px solid #ffd9b0;box-shadow:0 8px 24px rgba(224,115,47,.18);touch-action:none;cursor:crosshair}
+.flash{position:absolute;inset:0;background:rgba(255,60,40,.35);border-radius:20px;opacity:0;pointer-events:none;transition:opacity .1s}
+.mask{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:50;background:rgba(255,246,229,.75);backdrop-filter:blur(3px)}
+.mask.hide{display:none}
+.card{background:#fff;border:4px solid #ffb36b;border-radius:28px;padding:32px 40px;text-align:center;box-shadow:0 16px 48px rgba(224,115,47,.3);animation:bounceIn .6s;max-width:90vw}
+@keyframes bounceIn{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+.card h2{font-size:1.8rem;color:#e0732f;margin-bottom:10px}
+.card p{color:#9a7a5a;margin:6px 0}
+.card .score{font-size:1.5rem;color:#3aa76d;font-weight:bold;margin:10px 0 14px}
+.big-btn{padding:14px 36px;border:none;border-radius:999px;font-size:1.2rem;font-weight:bold;cursor:pointer;background:linear-gradient(135deg,#ffb36b,#e0732f);color:#fff;box-shadow:0 6px 16px rgba(224,115,47,.4);transition:transform .15s;margin-top:8px}
+.big-btn:hover{transform:scale(1.07)}
+.confetti{position:fixed;top:-20px;width:12px;height:18px;z-index:55;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+</style>
+</head>
+<body>
+<h1>🍉 水果切切乐</h1>
+<p class="sub">手指划过水果把它切开！千万别切到炸弹💣！</p>
+
+<div class="hud">
+  <span>得分 <b id="score">0</b></span>
+  <span>生命 <b id="lives">❤️❤️❤️</b></span>
+  <span>剩余 <b id="time">60</b> 秒</span>
+</div>
+
+<div id="stage">
+  <canvas id="cv"></canvas>
+  <div class="flash" id="flash"></div>
+</div>
+
+<div class="mask" id="startMask">
+  <div class="card">
+    <h2>准备好了吗？</h2>
+    <p>60 秒挑战，切开水果得分</p>
+    <p>切到炸弹会失去一颗心，三颗心用完就结束啦！</p>
+    <button class="big-btn" onclick="startGame()">开始游戏</button>
+  </div>
+</div>
+
+<div class="mask hide" id="resultMask">
+  <div class="card">
+    <h2 id="resultTitle">⏰ 时间到！</h2>
+    <div class="score" id="finalScore"></div>
+    <p id="finalDetail"></p>
+    <p id="rank"></p>
+    <button class="big-btn" onclick="restart()">再玩一次</button>
+  </div>
+</div>
+
+<script>
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+const FRUITS = ['🍎','🍊','🍉','🍇','🍓','🍑','🍌','🥝'];
+const JUICE = {'🍎':'#e64545','🍊':'#ff9f43','🍉':'#ff5a76','🍇':'#a06cd5','🍓':'#ff7b9c','🍑':'#ffb36b','🍌':'#f5d020','🥝':'#7bc45a'};
+const DURATION = 60;
+let W = 0, H = 0, dpr = 1;
+let fruits = [], parts = [], particles = [], trail = [];
+let score = 0, lives = 3, timeLeft = DURATION, sliced = 0;
+let playing = false, spawnT = null, clockT = null, raf = null;
+
+let actx = null;
+function audio(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); return actx; }
+function tone(freq, dur, delay=0, type='sine', vol=0.18){
+  try{
+    const a = audio(), o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, a.currentTime + delay);
+    g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + delay + dur);
+    o.connect(g); g.connect(a.destination);
+    o.start(a.currentTime + delay); o.stop(a.currentTime + delay + dur);
+  }catch(e){}
+}
+const sfx = {
+  slice: () => { tone(900+Math.random()*200, 0.06, 0, 'triangle', 0.14); tone(500, 0.08, 0.03, 'sine', 0.1); },
+  bomb:  () => { tone(140, 0.4, 0, 'sawtooth', 0.25); tone(90, 0.5, 0.06, 'sawtooth', 0.2); },
+  win:   () => { [523,659,784,1047].forEach((f,i)=>tone(f,0.28,i*0.13,'triangle',0.2)); }
+};
+
+function resize(){
+  const r = cv.getBoundingClientRect();
+  dpr = window.devicePixelRatio || 1;
+  cv.width = r.width * dpr;
+  cv.height = r.height * dpr;
+  W = r.width; H = r.height;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+function spawn(){
+  if(!playing) return;
+  const n = 1 + (Math.random() < 0.35 ? 1 : 0);
+  for(let k=0;k<n;k++){
+    const isBomb = Math.random() < 0.16;
+    const size = 26 + Math.random()*8;
+    fruits.push({
+      x: W*0.15 + Math.random()*W*0.7,
+      y: H + 40,
+      vx: (Math.random()-0.5) * 3.2,
+      vy: -(H/58) * (0.92 + Math.random()*0.3),
+      r: size,
+      char: isBomb ? '💣' : FRUITS[Math.floor(Math.random()*FRUITS.length)],
+      bomb: isBomb,
+      rot: 0, vr: (Math.random()-0.5)*0.15
+    });
+  }
+  spawnT = setTimeout(spawn, 650 + Math.random()*550);
+}
+
+function update(){
+  const g = 0.16;
+  for(const f of fruits){ f.x += f.vx; f.y += f.vy; f.vy += g; f.rot += f.vr; }
+  fruits = fruits.filter(f => f.y < H + 80);
+  for(const p of parts){ p.x += p.vx; p.y += p.vy; p.vy += g; p.rot += p.vr; p.life--; }
+  parts = parts.filter(p => p.life > 0 && p.y < H + 80);
+  for(const p of particles){ p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.life--; }
+  particles = particles.filter(p => p.life > 0);
+  trail.push();
+}
+
+function draw(){
+  ctx.clearRect(0, 0, W, H);
+  // 水果
+  for(const f of fruits){
+    ctx.save();
+    ctx.translate(f.x, f.y);
+    ctx.rotate(f.rot);
+    ctx.font = `${f.r*1.7}px sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(f.char, 0, 0);
+    ctx.restore();
+  }
+  // 碎块
+  for(const p of parts){
+    ctx.save();
+    ctx.globalAlpha = Math.min(1, p.life/30);
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.rot);
+    ctx.font = `${p.r*1.5}px sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(p.char, 0, 0);
+    ctx.restore();
+  }
+  // 果汁粒子
+  for(const p of particles){
+    ctx.globalAlpha = p.life/28;
+    ctx.fillStyle = p.color;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  // 刀光
+  if(trail.length > 1){
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    for(let i=1;i<trail.length;i++){
+      const a = i / trail.length;
+      ctx.strokeStyle = `rgba(255,255,255,${a*0.9})`;
+      ctx.lineWidth = 2 + a*7;
+      ctx.beginPath();
+      ctx.moveTo(trail[i-1].x, trail[i-1].y);
+      ctx.lineTo(trail[i].x, trail[i].y);
+      ctx.stroke();
+    }
+  }
+}
+
+function loop(){
+  if(!playing) return;
+  update(); draw();
+  raf = requestAnimationFrame(loop);
+}
+
+function sliceAt(x, y){
+  if(!playing) return;
+  for(let i=fruits.length-1;i>=0;i--){
+    const f = fruits[i];
+    const dx = f.x - x, dy = f.y - y;
+    if(dx*dx + dy*dy < (f.r*1.15)*(f.r*1.15)){
+      fruits.splice(i, 1);
+      if(f.bomb){
+        lives--;
+        document.getElementById('lives').textContent = '❤️'.repeat(lives) + '🤍'.repeat(3-lives);
+        sfx.bomb();
+        const fl = document.getElementById('flash');
+        fl.style.opacity = 1;
+        setTimeout(()=>fl.style.opacity = 0, 160);
+        boom(f.x, f.y);
+        if(lives <= 0){ endGame(true); return; }
+      }else{
+        score++; sliced++;
+        document.getElementById('score').textContent = score;
+        sfx.slice();
+        burst(f);
+      }
+    }
+  }
+}
+
+function burst(f){
+  // 两个碎块
+  for(const dir of [-1, 1]){
+    parts.push({ x: f.x, y: f.y, vx: dir*(1.2+Math.random()*1.6), vy: f.vy*0.4 - 1.5,
+      r: f.r*0.62, char: f.char, rot: f.rot, vr: dir*0.22, life: 60 });
+  }
+  // 果汁粒子
+  const color = JUICE[f.char] || '#ff9f43';
+  for(let k=0;k<9;k++){
+    const a = Math.random()*Math.PI*2, s = 1 + Math.random()*2.6;
+    particles.push({ x: f.x, y: f.y, vx: Math.cos(a)*s, vy: Math.sin(a)*s - 1,
+      r: 2.5 + Math.random()*3.5, color, life: 28 });
+  }
+}
+
+function boom(x, y){
+  for(let k=0;k<16;k++){
+    const a = Math.random()*Math.PI*2, s = 1.5 + Math.random()*3.5;
+    particles.push({ x, y, vx: Math.cos(a)*s, vy: Math.sin(a)*s,
+      r: 3 + Math.random()*4, color: k%2 ? '#555' : '#ff5a3c', life: 30 });
+  }
+}
+
+// 指针轨迹
+function addTrail(x, y){
+  trail.push({ x, y });
+  if(trail.length > 12) trail.shift();
+}
+function posOf(e){
+  const r = cv.getBoundingClientRect();
+  const p = e.touches ? e.touches[0] : e;
+  return { x: p.clientX - r.left, y: p.clientY - r.top };
+}
+cv.addEventListener('pointermove', e=>{
+  const p = posOf(e);
+  addTrail(p.x, p.y);
+  if(e.buttons > 0 || e.pointerType === 'touch') sliceAt(p.x, p.y);
+});
+cv.addEventListener('pointerdown', e=>{
+  const p = posOf(e);
+  addTrail(p.x, p.y);
+  sliceAt(p.x, p.y);
+});
+cv.addEventListener('touchmove', e=>{ e.preventDefault(); const p = posOf(e); addTrail(p.x,p.y); sliceAt(p.x,p.y); }, { passive:false });
+cv.addEventListener('touchstart', e=>{ e.preventDefault(); const p = posOf(e); addTrail(p.x,p.y); sliceAt(p.x,p.y); }, { passive:false });
+setInterval(()=>{ if(trail.length) trail.shift(); }, 40);
+
+function startGame(){
+  document.getElementById('startMask').classList.add('hide');
+  score = 0; lives = 3; timeLeft = DURATION; sliced = 0;
+  fruits = []; parts = []; particles = [];
+  document.getElementById('score').textContent = 0;
+  document.getElementById('lives').textContent = '❤️❤️❤️';
+  document.getElementById('time').textContent = timeLeft;
+  playing = true;
+  spawn();
+  clockT = setInterval(()=>{
+    timeLeft--;
+    document.getElementById('time').textContent = timeLeft;
+    if(timeLeft <= 0) endGame(false);
+  }, 1000);
+  loop();
+}
+
+function endGame(outOfLives){
+  playing = false;
+  clearInterval(clockT); clearTimeout(spawnT);
+  if(raf) cancelAnimationFrame(raf);
+  document.getElementById('resultTitle').textContent = outOfLives ? '💥 心用完啦！' : '⏰ 时间到！';
+  document.getElementById('finalScore').textContent = `得分 ${score} 分`;
+  document.getElementById('finalDetail').textContent = `一共切开了 ${sliced} 个水果`;
+  let rank;
+  if(score >= 35) rank = '🏆 水果忍者大师！刀法如神！';
+  else if(score >= 22) rank = '🌟 切果小高手！又快又准！';
+  else if(score >= 12) rank = '💪 不错的刀工，继续练习！';
+  else rank = '🌈 慢慢来，瞄准了再切哦！';
+  document.getElementById('rank').textContent = rank;
+  document.getElementById('resultMask').classList.remove('hide');
+  if(score >= 12 && !outOfLives){ sfx.win(); confetti(); }
+}
+
+function restart(){
+  document.getElementById('resultMask').classList.add('hide');
+  document.getElementById('startMask').classList.remove('hide');
+  draw();
+}
+
+function confetti(){
+  const colors = ['#e0732f','#ffb36b','#7bc45a','#ff5a76','#a06cd5','#f5d020'];
+  for(let i=0;i<60;i++){
+    const d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = Math.random()*100 + 'vw';
+    d.style.background = colors[i % colors.length];
+    d.style.animationDuration = (2.2 + Math.random()*2) + 's';
+    d.style.animationDelay = Math.random()*0.8 + 's';
+    d.style.borderRadius = Math.random()>0.5 ? '50%' : '3px';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), 5200);
+  }
+}
+
+draw();
+</script>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>萌宠配对乐</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Comic Sans MS','PingFang SC','Microsoft YaHei',sans-serif;background:linear-gradient(160deg,#FFF9F0,#FFEEF5 55%,#E8F4FF);min-height:100vh;display:flex;flex-direction:column;align-items:center;color:#5a4a42;padding:16px;user-select:none}
+h1{font-size:1.9rem;margin:8px 0 4px;color:#ff7b9c}
+.sub{font-size:.95rem;color:#a08a80;margin-bottom:14px}
+/* 主题选择 */
+.theme-picker{display:flex;gap:16px;margin:10px 0 18px}
+.theme-btn{display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 26px;border:3px solid #ffd6e0;border-radius:20px;background:#fff;font-size:1rem;font-weight:bold;color:#5a4a42;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(255,150,180,.15)}
+.theme-btn .icons{font-size:1.8rem}
+.theme-btn:hover{transform:scale(1.06);border-color:#ff9eb8}
+.theme-btn.active{border-color:#ff7b9c;background:#fff5f8;box-shadow:0 6px 16px rgba(255,123,156,.3)}
+/* 信息栏 */
+.info{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;justify-content:center}
+.info span{background:#fff;padding:8px 16px;border-radius:999px;font-size:.95rem;box-shadow:0 2px 6px rgba(0,0,0,.06);border:2px solid #ffe3ec}
+.info b{color:#ff7b9c}
+/* 棋盘 */
+.board{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:min(92vw,420px)}
+.card{aspect-ratio:1;position:relative;cursor:pointer;transform-style:preserve-3d;transition:transform .45s}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;border-radius:16px;backface-visibility:hidden;font-size:clamp(1.6rem,9vmin,2.6rem)}
+.back{background:linear-gradient(135deg,#ffb6c9,#ffd6a5);box-shadow:0 3px 8px rgba(255,150,180,.3);font-size:clamp(1.3rem,7vmin,2rem)}
+.front{background:#fff;transform:rotateY(180deg);border:3px solid #ffd6e0;box-shadow:inset 0 0 0 4px #fff5f8}
+.card.matched{animation:pop .5s}
+.card.matched .front{border-color:#8ee6a8;background:#f2fff5}
+@keyframes pop{0%,100%{transform:rotateY(180deg) scale(1)}45%{transform:rotateY(180deg) scale(1.18)}}
+.card.shake{animation:shake .4s}
+@keyframes shake{0%,100%{transform:rotateY(180deg) translateX(0)}25%{transform:rotateY(180deg) translateX(-6px)}75%{transform:rotateY(180deg) translateX(6px)}}
+/* 鼓励气泡 */
+.cheer{position:fixed;top:18%;left:50%;transform:translateX(-50%) scale(0);background:#fff;border:3px solid #ffb6c9;color:#ff7b9c;font-size:1.5rem;font-weight:bold;padding:12px 28px;border-radius:999px;box-shadow:0 8px 24px rgba(255,123,156,.35);z-index:60;pointer-events:none;transition:transform .25s}
+.cheer.show{transform:translateX(-50%) scale(1)}
+/* 胜利遮罩 */
+.win{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:50;background:rgba(255,249,240,.7);backdrop-filter:blur(3px)}
+.win.show{display:flex}
+.win-card{background:#fff;border:4px solid #ffb6c9;border-radius:28px;padding:34px 44px;text-align:center;box-shadow:0 16px 48px rgba(255,123,156,.35);animation:bounceIn .6s}
+@keyframes bounceIn{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+.win-card h2{font-size:2rem;color:#ff7b9c;margin-bottom:10px}
+.win-card p{color:#a08a80;margin-bottom:18px}
+.big-btn{padding:14px 34px;border:none;border-radius:999px;font-size:1.15rem;font-weight:bold;cursor:pointer;background:linear-gradient(135deg,#ff9eb8,#ffb36b);color:#fff;box-shadow:0 6px 16px rgba(255,150,120,.4);transition:transform .15s}
+.big-btn:hover{transform:scale(1.07)}
+/* confetti & 气球 */
+.confetti{position:fixed;top:-20px;width:12px;height:18px;z-index:55;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+.balloon{position:fixed;bottom:-80px;font-size:2.4rem;z-index:54;pointer-events:none;animation:rise linear forwards}
+@keyframes rise{to{transform:translateY(-120vh)}}
+.controls{margin-top:16px;display:flex;gap:12px}
+</style>
+</head>
+<body>
+<h1>🐧 萌宠配对乐 🐶</h1>
+<p class="sub">翻开卡片，找到两个一样的好朋友，把它们配成对！</p>
+
+<div class="theme-picker" id="themePicker">
+  <button class="theme-btn active" data-theme="penguin" onclick="setTheme('penguin',this)">
+    <span class="icons">🐧 🦭 🐋</span><span>企鹅小队</span>
+  </button>
+  <button class="theme-btn" data-theme="dog" onclick="setTheme('dog',this)">
+    <span class="icons">🐶 🦴 🎾</span><span>狗狗小队</span>
+  </button>
+</div>
+
+<div class="info">
+  <span>步数 <b id="moves">0</b></span>
+  <span>已配对 <b id="pairs">0</b>/8</span>
+  <span>用时 <b id="time">0</b> 秒</span>
+</div>
+
+<div class="board" id="board"></div>
+
+<div class="controls">
+  <button class="big-btn" onclick="init()">🔁 重新开始</button>
+</div>
+
+<div class="cheer" id="cheer"></div>
+
+<div class="win" id="win">
+  <div class="win-card">
+    <h2>🎉 全部配对成功！</h2>
+    <p id="winText">你真棒！</p>
+    <button class="big-btn" onclick="init()">再玩一次</button>
+  </div>
+</div>
+
+<script>
+const THEMES = {
+  penguin: { chars: ['🐧','🦭','🐋','🐟','🦐','🐙','❄️','⛄'], back: '❄️' },
+  dog:     { chars: ['🐶','🐕','🐩','🦮','🦴','🐾','🎾','🧸'], back: '🐾' }
+};
+const CHEERS = ['真棒！','好厉害！','太棒了！','继续加油！','你真聪明！','哇，配对成功！'];
+let theme = 'penguin';
+let cards = [], flipped = [], matched = new Set(), moves = 0, seconds = 0, timer = null, lock = false;
+
+// Web Audio 合成音效
+let actx = null;
+function audio(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); return actx; }
+function tone(freq, dur, delay=0, type='sine', vol=0.18){
+  try{
+    const a = audio(), o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, a.currentTime + delay);
+    g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + delay + dur);
+    o.connect(g); g.connect(a.destination);
+    o.start(a.currentTime + delay); o.stop(a.currentTime + delay + dur);
+  }catch(e){}
+}
+const sfx = {
+  flip:  () => tone(520, 0.08, 0, 'triangle'),
+  match: () => { tone(523, 0.15); tone(659, 0.18, 0.09); tone(784, 0.22, 0.18); },
+  wrong: () => tone(220, 0.18, 0, 'sine', 0.12),
+  win:   () => { [523,659,784,1047,1319].forEach((f,i)=>tone(f, 0.3, i*0.13, 'triangle', 0.2)); }
+};
+
+function setTheme(t, btn){
+  theme = t;
+  document.querySelectorAll('.theme-btn').forEach(b=>b.classList.toggle('active', b===btn));
+  init();
+}
+
+function init(){
+  const chars = THEMES[theme].chars;
+  cards = [...chars, ...chars];
+  // Fisher-Yates 洗牌
+  for(let i=cards.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [cards[i],cards[j]]=[cards[j],cards[i]]; }
+  flipped = []; matched = new Set(); moves = 0; seconds = 0; lock = false;
+  if(timer) clearInterval(timer);
+  timer = setInterval(()=>{ seconds++; document.getElementById('time').textContent = seconds; }, 1000);
+  document.getElementById('moves').textContent = 0;
+  document.getElementById('pairs').textContent = 0;
+  document.getElementById('win').classList.remove('show');
+  document.getElementById('board').innerHTML = cards.map((c,i)=>
+    `<div class="card" data-i="${i}" onclick="flip(${i})">
+       <div class="face back">${THEMES[theme].back}</div>
+       <div class="face front">${c}</div>
+     </div>`).join('');
+}
+
+function flip(i){
+  if(lock || flipped.includes(i) || matched.has(i) || flipped.length===2) return;
+  sfx.flip();
+  const el = document.querySelectorAll('.card')[i];
+  el.classList.add('flipped');
+  flipped.push(i);
+  if(flipped.length === 2){
+    moves++; document.getElementById('moves').textContent = moves;
+    const [a,b] = flipped;
+    if(cards[a] === cards[b]){
+      lock = true;
+      setTimeout(()=>{
+        matched.add(a); matched.add(b);
+        const els = document.querySelectorAll('.card');
+        els[a].classList.add('matched'); els[b].classList.add('matched');
+        document.getElementById('pairs').textContent = matched.size/2;
+        sfx.match(); showCheer();
+        flipped = []; lock = false;
+        if(matched.size === cards.length) setTimeout(winGame, 600);
+      }, 350);
+    }else{
+      lock = true;
+      setTimeout(()=>{
+        const els = document.querySelectorAll('.card');
+        els[a].classList.add('shake'); els[b].classList.add('shake');
+        sfx.wrong();
+        setTimeout(()=>{
+          els[a].classList.remove('flipped','shake');
+          els[b].classList.remove('flipped','shake');
+          flipped = []; lock = false;
+        }, 420);
+      }, 700);
+    }
+  }
+}
+
+function showCheer(){
+  const el = document.getElementById('cheer');
+  el.textContent = CHEERS[Math.floor(Math.random()*CHEERS.length)];
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 900);
+}
+
+function winGame(){
+  clearInterval(timer);
+  sfx.win();
+  document.getElementById('winText').textContent =
+    `用了 ${moves} 步、${seconds} 秒，你真是配对小能手！`;
+  document.getElementById('win').classList.add('show');
+  confetti(); balloons();
+}
+
+function confetti(){
+  const colors = ['#ff7b9c','#ffb36b','#8ee6a8','#7bc4ff','#d9a5ff','#ffe066'];
+  for(let i=0;i<60;i++){
+    const d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = Math.random()*100 + 'vw';
+    d.style.background = colors[i % colors.length];
+    d.style.animationDuration = (2.2 + Math.random()*2) + 's';
+    d.style.animationDelay = Math.random()*0.8 + 's';
+    d.style.borderRadius = Math.random()>0.5 ? '50%' : '3px';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), 5200);
+  }
+}
+function balloons(){
+  const bs = ['🎈','🎈','🎉','🎈','⭐'];
+  for(let i=0;i<8;i++){
+    const d = document.createElement('div');
+    d.className = 'balloon';
+    d.textContent = bs[i % bs.length];
+    d.style.left = (8 + Math.random()*84) + 'vw';
+    d.style.animationDuration = (3 + Math.random()*2) + 's';
+    d.style.animationDelay = Math.random()*1.2 + 's';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), 6500);
+  }
+}
+
+init();
+</script>
+</body>
+</html>

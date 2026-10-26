@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>欢乐打地鼠</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Comic Sans MS','PingFang SC','Microsoft YaHei',sans-serif;background:linear-gradient(180deg,#AEE9F5 0%,#D8F7C5 55%,#8FD694 100%);min-height:100vh;display:flex;flex-direction:column;align-items:center;color:#5a4632;padding:16px;user-select:none;overflow-x:hidden}
+h1{font-size:1.9rem;margin:8px 0 4px;color:#e06b3a;text-shadow:0 2px 0 #fff}
+.sub{font-size:.95rem;color:#7a6a52;margin-bottom:12px}
+.info{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;justify-content:center}
+.info span{background:#fff;padding:8px 16px;border-radius:999px;font-size:.95rem;box-shadow:0 2px 6px rgba(0,0,0,.08);border:2px solid #ffd9b8}
+.info b{color:#e06b3a}
+.field{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:min(92vw,420px)}
+.hole{position:relative;aspect-ratio:1;background:radial-gradient(ellipse at center 78%,#7a5230 0%,#5d3d22 55%,#4a2f18 100%);border-radius:50%;box-shadow:inset 0 8px 16px rgba(0,0,0,.45),0 4px 0 #3a2410;cursor:pointer;overflow:hidden}
+.mole{position:absolute;left:50%;bottom:-6%;transform:translate(-50%,100%);font-size:clamp(2.2rem,12vmin,3.2rem);transition:transform .18s ease-out;pointer-events:none;line-height:1}
+.hole.up .mole{transform:translate(-50%,12%)}
+.hole.bonked .mole{transform:translate(-50%,60%) scale(.85);filter:grayscale(.6)}
+.hitfx{position:absolute;left:50%;top:20%;transform:translate(-50%,-50%);font-size:1.6rem;pointer-events:none;animation:fx .5s ease-out forwards;z-index:5}
+@keyframes fx{to{transform:translate(-50%,-160%);opacity:0}}
+.combo{position:fixed;top:16%;left:50%;transform:translateX(-50%) scale(0);background:#fff;border:3px solid #ffb36b;color:#e06b3a;font-size:1.4rem;font-weight:bold;padding:10px 26px;border-radius:999px;box-shadow:0 8px 24px rgba(224,107,58,.3);z-index:60;pointer-events:none;transition:transform .2s}
+.combo.show{transform:translateX(-50%) scale(1)}
+.start-mask,.result{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:50;background:rgba(174,233,245,.7);backdrop-filter:blur(3px)}
+.result{display:none}
+.result.show{display:flex}
+.card{background:#fff;border:4px solid #ffb36b;border-radius:28px;padding:34px 42px;text-align:center;box-shadow:0 16px 48px rgba(224,107,58,.3);animation:bounceIn .6s;max-width:90vw}
+@keyframes bounceIn{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+.card h2{font-size:1.8rem;color:#e06b3a;margin-bottom:10px}
+.card p{color:#7a6a52;margin:6px 0}
+.card .score{font-size:1.5rem;color:#3aa76d;font-weight:bold;margin:10px 0 16px}
+.big-btn{padding:14px 36px;border:none;border-radius:999px;font-size:1.2rem;font-weight:bold;cursor:pointer;background:linear-gradient(135deg,#ffb36b,#e06b3a);color:#fff;box-shadow:0 6px 16px rgba(224,107,58,.4);transition:transform .15s;margin-top:8px}
+.big-btn:hover{transform:scale(1.07)}
+.confetti{position:fixed;top:-20px;width:12px;height:18px;z-index:55;pointer-events:none;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+.count{font-size:5rem;color:#fff;text-shadow:0 4px 12px rgba(0,0,0,.25);font-weight:bold}
+</style>
+</head>
+<body>
+<h1>🔨 欢乐打地鼠</h1>
+<p class="sub">地鼠🐹冒头就点它！小心别碰到炸弹💣哦！</p>
+
+<div class="info">
+  <span>得分 <b id="score">0</b></span>
+  <span>连击 <b id="comboN">0</b></span>
+  <span>剩余 <b id="time">30</b> 秒</span>
+</div>
+
+<div class="field" id="field"></div>
+
+<div class="combo" id="combo"></div>
+
+<div class="start-mask" id="startMask">
+  <div class="card" id="startCard">
+    <h2>准备好了吗？</h2>
+    <p>30 秒挑战，打中地鼠得 1 分</p>
+    <p>连续命中还有连击加分，打到炸弹扣 2 分！</p>
+    <button class="big-btn" onclick="countdown()">开始游戏</button>
+  </div>
+  <div class="count" id="countNum" style="display:none"></div>
+</div>
+
+<div class="result" id="result">
+  <div class="card">
+    <h2>⏰ 时间到！</h2>
+    <div class="score" id="finalScore"></div>
+    <p id="finalDetail"></p>
+    <p id="rank"></p>
+    <button class="big-btn" onclick="restart()">再玩一次</button>
+  </div>
+</div>
+
+<script>
+const DURATION = 30;
+let score = 0, combo = 0, bestCombo = 0, hits = 0, timeLeft = DURATION;
+let playing = false, spawnTimer = null, clockTimer = null;
+const holes = [];
+
+let actx = null;
+function audio(){ if(!actx) actx = new (window.AudioContext||window.webkitAudioContext)(); return actx; }
+function tone(freq, dur, delay=0, type='sine', vol=0.18){
+  try{
+    const a = audio(), o = a.createOscillator(), g = a.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, a.currentTime + delay);
+    g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + delay + dur);
+    o.connect(g); g.connect(a.destination);
+    o.start(a.currentTime + delay); o.stop(a.currentTime + delay + dur);
+  }catch(e){}
+}
+const sfx = {
+  hit:  () => { tone(700,0.07,0,'triangle'); tone(900,0.1,0.05,'triangle'); },
+  bomb: () => { tone(150,0.3,0,'sawtooth',0.2); tone(100,0.35,0.05,'sawtooth',0.15); },
+  tick: () => tone(880,0.06,0,'triangle',0.1),
+  go:   () => tone(1047,0.25,0,'triangle',0.2),
+  win:  () => { [523,659,784,1047].forEach((f,i)=>tone(f,0.28,i*0.13,'triangle',0.2)); }
+};
+
+function buildField(){
+  const field = document.getElementById('field');
+  field.innerHTML = '';
+  holes.length = 0;
+  for(let i=0;i<9;i++){
+    const h = document.createElement('div');
+    h.className = 'hole';
+    h.innerHTML = '<div class="mole">🐹</div>';
+    h.addEventListener('pointerdown', ()=>whack(i));
+    field.appendChild(h);
+    holes.push({ el: h, mole: h.querySelector('.mole'), up: false, isBomb: false, hideT: null });
+  }
+}
+
+function spawn(){
+  if(!playing) return;
+  const free = holes.map((h,i)=>({h,i})).filter(o=>!o.h.up);
+  if(free.length){
+    const pick = free[Math.floor(Math.random()*free.length)];
+    const h = holes[pick.i];
+    h.isBomb = Math.random() < 0.15;
+    h.mole.textContent = h.isBomb ? '💣' : '🐹';
+    h.up = true;
+    h.el.classList.add('up');
+    h.hideT = setTimeout(()=>hide(pick.i), 650 + Math.random()*500);
+  }
+  spawnTimer = setTimeout(spawn, 350 + Math.random()*350);
+}
+
+function hide(i){
+  const h = holes[i];
+  h.up = false; h.isBomb = false;
+  h.el.classList.remove('up','bonked');
+  if(h.hideT){ clearTimeout(h.hideT); h.hideT = null; }
+}
+
+function whack(i){
+  if(!playing) return;
+  const h = holes[i];
+  if(!h.up) return;
+  if(h.isBomb){
+    score = Math.max(0, score - 2); combo = 0;
+    sfx.bomb(); showFx(i, '💥');
+  }else{
+    hits++; combo++;
+    bestCombo = Math.max(bestCombo, combo);
+    const gain = combo >= 6 ? 3 : (combo >= 3 ? 2 : 1);
+    score += gain;
+    sfx.hit(); showFx(i, '+' + gain + ' ⭐');
+    if(combo > 0 && combo % 3 === 0) showCombo(combo);
+  }
+  h.el.classList.add('bonked');
+  document.getElementById('score').textContent = score;
+  document.getElementById('comboN').textContent = combo;
+  if(h.hideT){ clearTimeout(h.hideT); h.hideT = null; }
+  h.hideT = setTimeout(()=>hide(i), 200);
+}
+
+function showFx(i, text){
+  const fx = document.createElement('div');
+  fx.className = 'hitfx'; fx.textContent = text;
+  holes[i].el.appendChild(fx);
+  setTimeout(()=>fx.remove(), 520);
+}
+
+function showCombo(n){
+  const el = document.getElementById('combo');
+  el.textContent = `🔥 ${n} 连击！`;
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 800);
+}
+
+function countdown(){
+  document.getElementById('startCard').style.display = 'none';
+  const c = document.getElementById('countNum');
+  c.style.display = 'block';
+  let n = 3;
+  c.textContent = n; sfx.tick();
+  const t = setInterval(()=>{
+    n--;
+    if(n === 0){
+      clearInterval(t);
+      c.textContent = 'GO!'; sfx.go();
+      setTimeout(()=>{ document.getElementById('startMask').style.display = 'none'; startGame(); }, 600);
+    }else{ c.textContent = n; sfx.tick(); }
+  }, 800);
+}
+
+function startGame(){
+  score = 0; combo = 0; bestCombo = 0; hits = 0; timeLeft = DURATION; playing = true;
+  document.getElementById('score').textContent = 0;
+  document.getElementById('comboN').textContent = 0;
+  document.getElementById('time').textContent = timeLeft;
+  clockTimer = setInterval(()=>{
+    timeLeft--;
+    document.getElementById('time').textContent = timeLeft;
+    if(timeLeft <= 0) endGame();
+  }, 1000);
+  spawn();
+}
+
+function endGame(){
+  playing = false;
+  clearInterval(clockTimer);
+  clearTimeout(spawnTimer);
+  holes.forEach((h,i)=>hide(i));
+  document.getElementById('finalScore').textContent = `得分 ${score} 分`;
+  document.getElementById('finalDetail').textContent = `打中 ${hits} 只地鼠，最高连击 ${bestCombo}`;
+  let rank;
+  if(score >= 40) rank = '🏆 地鼠小霸王！反应超快！';
+  else if(score >= 25) rank = '🌟 捕鼠小能手！好厉害！';
+  else if(score >= 12) rank = '💪 不错哦，再快一点就更棒！';
+  else rank = '🌈 手眼配合继续练，下次一定更多！';
+  document.getElementById('rank').textContent = rank;
+  document.getElementById('result').classList.add('show');
+  if(score >= 12){ sfx.win(); confetti(); } else sfx.hit();
+}
+
+function restart(){
+  document.getElementById('result').classList.remove('show');
+  const mask = document.getElementById('startMask');
+  mask.style.display = 'flex';
+  document.getElementById('startCard').style.display = 'block';
+  document.getElementById('countNum').style.display = 'none';
+}
+
+function confetti(){
+  const colors = ['#e06b3a','#ffb36b','#3aa76d','#7bc4ff','#ffe066','#ff7b9c'];
+  for(let i=0;i<60;i++){
+    const d = document.createElement('div');
+    d.className = 'confetti';
+    d.style.left = Math.random()*100 + 'vw';
+    d.style.background = colors[i % colors.length];
+    d.style.animationDuration = (2.2 + Math.random()*2) + 's';
+    d.style.animationDelay = Math.random()*0.8 + 's';
+    d.style.borderRadius = Math.random()>0.5 ? '50%' : '3px';
+    document.body.appendChild(d);
+    setTimeout(()=>d.remove(), 5200);
+  }
+}
+
+buildField();
+</script>
+</body>
+</html>
