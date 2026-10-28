@@ -1,15 +1,15 @@
 ---
-title: "流式 VLM 精读 9：JoyAI-VL-Interaction——京东 8B 视觉交互模型，每秒三选一的决策与完整可部署系统"
+title: "流式 VLM 精读 4：JoyAI-VL-Interaction——京东 8B 视觉交互模型，每秒三选一的决策与完整可部署系统"
 date: 2026-10-26
 categories: [技术, 多模态]
 tags: [VLM, 流式视频, JoyAI, 主动交互, 交互模型, 京东]
 series:
   name: "流式视频理解 VLM 精读"
-  order: 9
+  order: 4
   title: "JoyAI-VL-Interaction：交互模型"
 ---
 
-> 本文是「流式视频理解 VLM 精读」系列第 9 篇，精读 JoyAI-VL-Interaction（京东，arXiv 2606.14777）。前三篇精读（StreamingVLM、MiniCPM-o 4.5、MOSS-VL）分别解决了无限流、全双工、边说边看；这篇京东的答卷把焦点从"模型能力"挪到"交互范式+落地系统"：**模型每秒自主决定沉默、响应、还是委托给后台大模型**，并且连模型带训练配方、数据、可部署系统全部开源。值得一提的是，它在 MOSS-VL 的流式基准对比表中正是基线之一（OVO-Bench 均分 59.2）。
+> 本文是「流式视频理解 VLM 精读」系列第 4 篇，精读 JoyAI-VL-Interaction（京东，arXiv 2606.14777）。前三篇精读（StreamingVLM、MiniCPM-o 4.5、MOSS-VL）分别解决了无限流、全双工、边说边看；这篇京东的答卷把焦点从"模型能力"挪到"交互范式+落地系统"：**模型每秒自主决定沉默、响应、还是委托给后台大模型**，并且连模型带训练配方、数据、可部署系统全部开源。值得一提的是，它在 MOSS-VL 的流式基准对比表中正是基线之一（OVO-Bench 均分 59.2）。
 >
 > - 论文：https://arxiv.org/abs/2606.14777
 > - 代码：https://github.com/jd-opensource/JoyAI-VL-Interaction
@@ -120,5 +120,6 @@ series:
 
 ---
 
-**上一篇**：[流式 VLM 精读 8：MOSS-VL——边说边看的 L5 交互](/posts/2026-10-26-流式VLM精读8-MOSS-VL-边说边看L5交互-门控交叉注意力与XRoPE/)
+**上一篇**：[流式 VLM 精读 3：MOSS-VL——边说边看的 L5 交互](/posts/2026-10-26-流式VLM精读3-MOSS-VL-边说边看L5交互-门控交叉注意力与XRoPE/)
+**下一篇**：[流式 VLM 精读 5：主动交互——模型到底应该何时开口？](/posts/2026-10-08-流式VLM精读5-主动交互-模型到底应该何时开口/)
 **系列开篇**：[流式 VLM 精读 0：领域地图](/posts/2026-10-08-流式VLM精读0-领域地图-从全双工语音到边看边想边开口/)

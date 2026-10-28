@@ -1,15 +1,15 @@
 ---
-title: "流式 VLM 精读 8：MOSS-VL——边说边看的 L5 交互，门控交叉注意力与 XRoPE"
+title: "流式 VLM 精读 3：MOSS-VL——边说边看的 L5 交互，门控交叉注意力与 XRoPE"
 date: 2026-10-26
 categories: [技术, 多模态]
 tags: [VLM, 流式视频, MOSS-VL, 交叉注意力, XRoPE, 主动交互]
 series:
   name: "流式视频理解 VLM 精读"
-  order: 8
+  order: 3
   title: "MOSS-VL：边说边看"
 ---
 
-> 本文是「流式视频理解 VLM 精读」系列第 8 篇，精读 MOSS-VL 技术报告（OpenMOSS / 复旦邱锡鹏团队，arXiv 2608.15045）。前两篇里，StreamingVLM 用训练-推理对齐解决"无限流"，MiniCPM-o 4.5 用 Omni-Flow 解决"看听说并行"。MOSS-VL 提出并回答了最后一个台阶：**模型在说话的同时还能不能继续看**——看到证据变了就立刻改口。他们称之为 L5，并用一套从架构到数据到训练课程的协同设计把它做了出来。
+> 本文是「流式视频理解 VLM 精读」系列第 3 篇，精读 MOSS-VL 技术报告（OpenMOSS / 复旦邱锡鹏团队，arXiv 2608.15045）。前两篇里，StreamingVLM 用训练-推理对齐解决"无限流"，MiniCPM-o 4.5 用 Omni-Flow 解决"看听说并行"。MOSS-VL 提出并回答了最后一个台阶：**模型在说话的同时还能不能继续看**——看到证据变了就立刻改口。他们称之为 L5，并用一套从架构到数据到训练课程的协同设计把它做了出来。
 >
 > - 论文：https://arxiv.org/abs/2608.15045
 > - 代码与模型：https://github.com/OpenMOSS/MOSS-VL ｜ https://huggingface.co/OpenMOSS-Team
@@ -99,5 +99,6 @@ Realtime-SFT 语料里每个样本都把模型置于显式交互角色：必须�
 
 ---
 
-**上一篇**：[流式 VLM 精读 7：MiniCPM-o 4.5——Omni-Flow 全双工](/posts/2026-10-26-流式VLM精读7-MiniCPM-o4.5-OmniFlow全双工-9B端侧边看边听边说/)
+**上一篇**：[流式 VLM 精读 2：MiniCPM-o 4.5——Omni-Flow 全双工](/posts/2026-10-26-流式VLM精读2-MiniCPM-o4.5-OmniFlow全双工-9B端侧边看边听边说/)
+**下一篇**：[流式 VLM 精读 4：JoyAI-VL-Interaction——每秒三选一的决策与可部署系统](/posts/2026-10-26-流式VLM精读4-JoyAI-VL-Interaction-京东8B视觉交互模型-每秒三选一决策与可部署系统/)
 **系列开篇**：[流式 VLM 精读 0：领域地图](/posts/2026-10-08-流式VLM精读0-领域地图-从全双工语音到边看边想边开口/)

@@ -1,15 +1,15 @@
 ---
-title: "流式 VLM 精读 6：StreamingVLM——无限视频流的实时解说，训练与推理对齐的艺术"
+title: "流式 VLM 精读 1：StreamingVLM——无限视频流的实时解说，训练与推理对齐的艺术"
 date: 2026-10-26
 categories: [技术, 多模态]
 tags: [VLM, 流式视频, StreamingVLM, KV-Cache, 无限视频流, ICLR2026]
 series:
   name: "流式视频理解 VLM 精读"
-  order: 6
+  order: 1
   title: "StreamingVLM：无限视频流"
 ---
 
-> 本文是「流式视频理解 VLM 精读」系列第 6 篇，精读 StreamingVLM（MIT HAN Lab / NVIDIA，arXiv 2510.09608，ICLR 2026）。在本系列第 0 篇的领域地图里，它是"长时记忆"阶段的里程碑；这篇技术报告值得单读的原因在于：它没有发明任何新模块，却用**"训练模拟推理"**这一对齐思想，让 7B 模型在单张 H100 上以 8 FPS 稳定解说 2 小时以上的无限视频流。
+> 本文是「流式视频理解 VLM 精读」系列第 1 篇，精读 StreamingVLM（MIT HAN Lab / NVIDIA，arXiv 2510.09608，ICLR 2026）。在本系列第 0 篇的领域地图里，它是"长时记忆"阶段的里程碑；这篇技术报告值得单读的原因在于：它没有发明任何新模块，却用**"训练模拟推理"**这一对齐思想，让 7B 模型在单张 H100 上以 8 FPS 稳定解说 2 小时以上的无限视频流。
 >
 > - 论文：https://arxiv.org/abs/2510.09608
 > - 代码：https://github.com/mit-han-lab/streaming-vlm
@@ -98,5 +98,5 @@ StreamingVLM 的答案是 (d)：**滑窗 + KV 复用**——不重算历史，�
 
 ---
 
-**上一篇**：[流式 VLM 精读 5：评测与数据——30 多个 benchmark 看懂门道](/posts/2026-10-08-流式VLM精读5-评测与数据-30多个benchmark看懂门道/)
-**下一篇**：[流式 VLM 精读 7：MiniCPM-o 4.5——Omni-Flow 全双工](/posts/2026-10-26-流式VLM精读7-MiniCPM-o4.5-OmniFlow全双工-9B端侧边看边听边说/)
+**上一篇**：[流式 VLM 精读 0：领域地图——从全双工语音到边看边想边开口](/posts/2026-10-08-流式VLM精读0-领域地图-从全双工语音到边看边想边开口/)
+**下一篇**：[流式 VLM 精读 2：MiniCPM-o 4.5——Omni-Flow 全双工](/posts/2026-10-26-流式VLM精读2-MiniCPM-o4.5-OmniFlow全双工-9B端侧边看边听边说/)

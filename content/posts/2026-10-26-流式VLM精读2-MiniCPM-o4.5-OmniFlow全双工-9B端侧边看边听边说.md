@@ -1,15 +1,15 @@
 ---
-title: "流式 VLM 精读 7：MiniCPM-o 4.5——Omni-Flow 全双工，9B 模型在端侧边看边听边说"
+title: "流式 VLM 精读 2：MiniCPM-o 4.5——Omni-Flow 全双工，9B 模型在端侧边看边听边说"
 date: 2026-10-26
 categories: [技术, 多模态]
 tags: [VLM, 流式视频, MiniCPM-o, 全双工, Omni-Flow, 端侧部署]
 series:
   name: "流式视频理解 VLM 精读"
-  order: 7
+  order: 2
   title: "MiniCPM-o 4.5：全双工"
 ---
 
-> 本文是「流式视频理解 VLM 精读」系列第 7 篇，精读 MiniCPM-o 4.5（OpenBMB，arXiv 2604.27393）。上一篇的 StreamingVLM 解决了"无限流怎么看"，但它仍是回合制的延伸——感知与生成交替进行。MiniCPM-o 4.5 要拆掉的是这堵更根本的墙：**让看、听、说真正并行**，并且用 9B 参数、不到 12GB 内存跑在端侧设备上。论文自称"第一个全双工全模态 LLM"。
+> 本文是「流式视频理解 VLM 精读」系列第 2 篇，精读 MiniCPM-o 4.5（OpenBMB，arXiv 2604.27393）。上一篇的 StreamingVLM 解决了"无限流怎么看"，但它仍是回合制的延伸——感知与生成交替进行。MiniCPM-o 4.5 要拆掉的是这堵更根本的墙：**让看、听、说真正并行**，并且用 9B 参数、不到 12GB 内存跑在端侧设备上。论文自称"第一个全双工全模态 LLM"。
 >
 > - 论文：https://arxiv.org/abs/2604.27393
 > - 模型与代码：见论文首页的 Demo / Model / Code 链接（OpenBMB 官方渠道）
@@ -110,5 +110,5 @@ MiniCPM-o 4.5 总参数约 9B，所有可学习组件 token 级可微连接，�
 
 ---
 
-**上一篇**：[流式 VLM 精读 6：StreamingVLM——无限视频流的实时解说](/posts/2026-10-26-流式VLM精读6-StreamingVLM-无限视频流实时解说-KVcache复用与重叠块训练/)
-**下一篇**：[流式 VLM 精读 8：MOSS-VL——边说边看的 L5 交互](/posts/2026-10-26-流式VLM精读8-MOSS-VL-边说边看L5交互-门控交叉注意力与XRoPE/)
+**上一篇**：[流式 VLM 精读 1：StreamingVLM——无限视频流的实时解说](/posts/2026-10-26-流式VLM精读1-StreamingVLM-无限视频流实时解说-KVcache复用与重叠块训练/)
+**下一篇**：[流式 VLM 精读 3：MOSS-VL——边说边看的 L5 交互](/posts/2026-10-26-流式VLM精读3-MOSS-VL-边说边看L5交互-门控交叉注意力与XRoPE/)
